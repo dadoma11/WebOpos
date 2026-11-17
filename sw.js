@@ -1,4 +1,4 @@
-var C='tai-v19';
+var C='tai-v20';
 self.addEventListener('install',function(e){self.skipWaiting()});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(x){return x!==C}).map(function(x){return caches.delete(x)}))}).then(function(){return self.clients.claim()}))});
 self.addEventListener('fetch',function(e){if(e.request.method!=='GET')return;
