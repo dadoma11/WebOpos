@@ -54,13 +54,13 @@ function card(ex,blk){var d=document.createElement('div');d.className='ex';d.dat
  d.innerHTML='<div class="exh"><span class="lv" title="Dificultad">'+stars+'</span><b>'+esc(ex.title)+'</b><span class="st">'+(done[ex.id]?'✔':'')+'</span></div><p class="stm">'+esc(ex.statement)+'</p>'+
  '<details class="erdw" open><summary>📐 Esquema de la BD de este ejercicio</summary><div class="erdhost"></div></details>'+
  '<textarea spellcheck="false" placeholder="Escribe aquí tu SQL (Ctrl+Enter para ejecutar)"></textarea>'+
- '<div class="row"><button class="run">▶ Ejecutar</button><button class="chk">✔ Comprobar</button><button class="hnt">💡 Pista</button><button class="sol">👁 Solución</button><button class="edt">✏️</button><span class="vd"></span></div><div class="hn" hidden></div><div class="so" hidden></div><div class="o"></div><div class="edf" hidden></div>';
+ '<div class="row"><button class="run">▶ Ejecutar</button><button class="chk">✔ Comprobar</button><button class="hnt">💡 Pista</button><button class="sol">👁 Solución</button><button class="edt" title="Editar ejercicio">✏️</button><button class="rld" title="Reiniciar ejercicio: limpia tu respuesta, resultados y marca de resuelto">↻</button><span class="vd"></span></div><div class="hn" hidden></div><div class="so" hidden></div><div class="o"></div><div class="edf" hidden></div>';
  var ta=d.querySelector('textarea');ta.value=LS.g('sqldraft_'+ex.id)||'';ta.oninput=function(){LS.s('sqldraft_'+ex.id,ta.value)};
  var db0=fresh(),inf=info(db0),nm=mentioned(inf,ex);if(!nm.length)nm=Object.keys(inf);
  d.querySelector('.erdhost').innerHTML=diagram(inf,nm,'Tablas implicadas');
  function run(chk){var o=d.querySelector('.o'),v=d.querySelector('.vd');v.textContent='';try{var db=fresh();var r=exec(db,ta.value,ex.verify&&chk?ex.verify:null);
    o.innerHTML=resTable(r);if(chk){var d2=fresh(),s=exec(d2,ex.solution,ex.verify),ord=/order by/i.test(ex.solution)&&!ex.verify;var ok=sig(r,ord)===sig(s,ord);v.innerHTML=ok?'<span class="ok">✔ Correcto</span>':'<span class="ko">✘ No coincide con el resultado esperado</span>';
-    if(ok){done[ex.id]=1;LS.s('sqldone',JSON.stringify(done));d.querySelector('.st').textContent='✔';progress(blk)}}
+    if(ok){done[ex.id]=1;LS.s('sqldone',JSON.stringify(done));d.querySelector('.st').textContent='✔';progress(blk);listStatus(blk)}}
   }catch(x){o.innerHTML='<div class="out ko">'+esc(x.message)+'</div>'}}
  d.querySelector('.run').onclick=function(){run(false)};d.querySelector('.chk').onclick=function(){run(true)};
  ta.onkeydown=function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run(false)}};
@@ -70,12 +70,14 @@ function card(ex,blk){var d=document.createElement('div');d.className='ex';d.dat
   try{var db=fresh();db.exec(ex.solution);var inf2=info(db),n2=Object.keys(inf2).filter(function(n){return !inf[n]||nm.indexOf(n)>=0});
    var newt=Object.keys(inf2).filter(function(n){return !inf[n]});if(newt.length||/alter|index/i.test(ex.solution)){var names=nm.filter(function(n){return inf2[n]}).concat(newt);html+=diagram(inf2,names,'Estructura resultante tras la solución')}}catch(e){}
   if(ex.verify)html+='<div class="sub">Comprobación: <code>'+esc(ex.verify)+'</code></div>';s.innerHTML=html;bindDl(s)};
+ d.querySelector('.rld').onclick=function(){ta.value='';LS.d('sqldraft_'+ex.id);delete done[ex.id];LS.s('sqldone',JSON.stringify(done));d.querySelector('.st').textContent='';d.querySelector('.o').innerHTML='';d.querySelector('.vd').textContent='';d.querySelector('.hn').hidden=true;d.querySelector('.so').hidden=true;progress(blk);listStatus(blk)};
  var ef=d.querySelector('.edf');d.querySelector('.edt').onclick=function(){ef.hidden=!ef.hidden;if(ef.hidden)return;
   ef.innerHTML='<label class="f">Categoría<select class="e_cat">'+Object.keys(CATS).map(function(k){return '<option value="'+k+'"'+(k===ex.cat?' selected':'')+'>'+CATS[k]+'</option>'}).join('')+'</select></label><label class="f">Título<input type="text" class="e_t" value="'+esc(ex.title)+'"></label><label class="f">Enunciado<textarea class="e_s" style="min-height:60px">'+esc(ex.statement)+'</textarea></label><label class="f">Solución<textarea class="e_so" style="min-height:70px">'+esc(ex.solution)+'</textarea></label><label class="f">Comprobación opcional (SELECT que se ejecuta tras el script)<textarea class="e_v" style="min-height:44px">'+esc(ex.verify||'')+'</textarea></label><label class="f">Pista<input type="text" class="e_h" value="'+esc(ex.hint||'')+'"></label><label class="f">Tablas a mostrar en el esquema (separadas por coma; vacío = automático)<input type="text" class="e_tb" value="'+esc(ex.tablas||'')+'"></label><div class="row"><button class="e_ok">Guardar</button><button class="e_del">Borrar ejercicio</button></div>';
   ef.querySelector('.e_ok').onclick=function(){ex.cat=ef.querySelector('.e_cat').value;ex.title=ef.querySelector('.e_t').value;ex.statement=ef.querySelector('.e_s').value;ex.solution=ef.querySelector('.e_so').value;ex.verify=ef.querySelector('.e_v').value||undefined;ex.hint=ef.querySelector('.e_h').value;ex.tablas=ef.querySelector('.e_tb').value||undefined;save();blk.render()};
   ef.querySelector('.e_del').onclick=function(){if(confirm('¿Borrar este ejercicio?')){cfg.exercises.splice(cfg.exercises.indexOf(ex),1);save();blk.render()}}};
  bindDl(d);return d}
 function bindDl(root){Array.prototype.forEach.call(root.querySelectorAll('.erd'),function(b){var bt=b.querySelector('.dlp');if(bt)bt.onclick=function(){dl(b)}})}
+function listStatus(blk){Array.prototype.forEach.call(blk.el.querySelectorAll('.elist li'),function(li){var s=li.querySelector('.lst');if(s)s.textContent=done[li.dataset.id]?'✔':'○'})}
 function progress(blk){var l=blk.list.filter(function(e){return done[e.id]}).length;var p=blk.el.querySelector('.bp');if(p)p.textContent=l+' / '+blk.list.length+' resueltos'}
 /* ---------- bloque ---------- */
 function mount(el){var cats=(el.dataset.cats||'').split(',').filter(Boolean),all=!cats.length,blk={el:el,list:[]};
@@ -85,6 +87,11 @@ function mount(el){var cats=(el.dataset.cats||'').split(',').filter(Boolean),all
   if(all){h+='<div class="exlist"><button data-c="" class="'+(cur===''?'on':'')+'">Todos</button>'+cs.map(function(c){return '<button data-c="'+c+'" class="'+(cur===c?'on':'')+'">'+CATS[c]+'</button>'}).join('')+'</div>'}
   h+='<details class="erdw" open><summary>📐 Esquema completo de la base de datos de prácticas</summary><div class="fullerd"></div></details><div class="exs"></div><div class="row"><button class="newex">+ Nuevo ejercicio</button></div>';
   el.innerHTML=h;
+  var vis=blk.list.filter(function(e){return all?(!cur||e.cat===cur):true});
+  var lh='<details class="elist" open><summary>📋 Listado de enunciados ('+vis.length+')</summary><ol>'+vis.map(function(e){return '<li data-id="'+e.id+'"><a href="#" data-id="'+e.id+'"><span class="lst">'+(done[e.id]?'✔':'○')+'</span> <b>'+esc(e.title)+'</b> — '+esc(e.statement.length>110?e.statement.slice(0,110)+'…':e.statement)+'</a></li>'}).join('')+'</ol><div class="row"><button class="rall2" title="Reiniciar todos los ejercicios de este bloque">↻ Reiniciar todos</button></div></details>';
+  el.querySelector('.erdw').insertAdjacentHTML('beforebegin',lh);
+  Array.prototype.forEach.call(el.querySelectorAll('.elist a'),function(a){a.onclick=function(ev){ev.preventDefault();var t=el.querySelector('.ex[data-id="'+a.dataset.id+'"]');if(t){t.scrollIntoView({behavior:'smooth',block:'start'})}}});
+  el.querySelector('.rall2').onclick=function(){if(!confirm('¿Reiniciar todos los ejercicios de este bloque (respuestas y marcas)?'))return;vis.forEach(function(e){LS.d('sqldraft_'+e.id);delete done[e.id]});LS.s('sqldone',JSON.stringify(done));blk.render()};
   var inf=info(fresh());el.querySelector('.fullerd').innerHTML=diagram(inf,Object.keys(inf),'Base de datos de prácticas: tablas, claves y relaciones');bindDl(el);
   var box=el.querySelector('.exs');blk.list.filter(function(e){return all?(!cur||e.cat===cur):true}).forEach(function(e){box.appendChild(card(e,blk))});progress(blk);
   Array.prototype.forEach.call(el.querySelectorAll('.exlist button'),function(b){b.onclick=function(){el.dataset.cur=b.dataset.c;blk.render()}});

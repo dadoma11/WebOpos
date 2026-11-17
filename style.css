@@ -85,3 +85,5 @@ details{margin:.5rem 0}summary{cursor:pointer;color:var(--acd);font-weight:600}
 .tryb{margin-left:.4rem;padding:.05rem .5rem;font-size:.75rem;border-color:var(--ac);color:var(--acd)}.tryw{margin:.4rem 0;padding:.5rem;border:1px dashed var(--ac);border-radius:8px;background:var(--card)}.tryw textarea{width:100%;min-height:70px;font-family:ui-monospace,Menlo,Consolas,monospace}
 .edf{padding:.5rem;border:1px dashed var(--bd);border-radius:8px;margin-top:.4rem}
 @media(max-width:860px){.sqlab{padding:.7rem .6rem}.erdb svg{zoom:.8}}
+.elist{margin:.6rem 0;border:1px solid var(--bd);border-radius:8px;padding:.4rem .7rem;background:var(--bg)}.elist summary{font-weight:700;cursor:pointer}.elist ol{margin:.4rem 0;padding-left:1.3rem}.elist li{margin:.25rem 0;font-size:.9rem}.elist a{text-decoration:none;color:var(--fg)}.elist a:hover{color:var(--acd)}.lst{color:#2e9d5b;font-weight:800;display:inline-block;width:1em}
+.rld{font-weight:800}
