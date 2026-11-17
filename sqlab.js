@@ -134,4 +134,5 @@ function inlineRun(){var doc=document.querySelector('.doc');if(!doc||!document.q
    var ts=Object.keys(info(fresh()));w.querySelector('.sub').insertAdjacentHTML('beforeend',' · tablas: '+ts.join(', '))}})}
 document.addEventListener('DOMContentLoaded',function(){var bl=document.querySelectorAll('.sqlab');if(!bl.length)return;
  load(function(){Array.prototype.forEach.call(bl,function(el){if(el.dataset.console)mountConsole(el);else mount(el)});inlineRun()})});
+window.SQLAB={load:load,fresh:fresh,info:info,diagram:diagram,bindDl:bindDl,resTable:resTable,esc:esc,SQL:function(){return SQL}};
 })();
