@@ -53,3 +53,23 @@ label.f{display:flex;flex-direction:column;font-size:.8rem;color:var(--mu);gap:.
 .exlist{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}.exlist button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 .sqlres{overflow-x:auto;margin-top:.5rem}.sqlres table{font-size:.85rem}
 details{margin:.5rem 0}summary{cursor:pointer;color:var(--acd);font-weight:600}
+/* móvil */
+.fab{display:none}
+@media(max-width:860px){
+ body{font-size:16px;padding-bottom:4.2rem}
+ .top{padding:.5rem .8rem}.top nav{gap:.7rem}
+ button,.chip,.toc a{min-height:40px}
+ .bar{gap:.4rem}.chip{padding:.45rem .75rem}
+ .doc h2{font-size:1.05rem;margin:1.6rem 0 .5rem}.doc h3{font-size:1rem}
+ table{font-size:.85rem}th,td{padding:.35rem .45rem}
+ .box{padding:.5rem .65rem;margin:.9rem -.2rem}
+ .grid{grid-template-columns:1fr}
+ .home,.practicas{padding:.9rem .8rem 4rem}
+ .pcard{padding:.8rem}.row>*{flex:1 1 140px}.row button{min-height:44px}
+ input,select,textarea{font-size:16px}
+ .fab{display:block;position:fixed;left:.8rem;bottom:.8rem;z-index:30;background:var(--ac);color:#fff;border:0;border-radius:24px;padding:.6rem 1rem;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+ .toc.open{display:block;height:100vh;height:100dvh;position:fixed;inset:0;z-index:40;max-height:none;background:var(--card);padding:1rem;border:0;overflow:auto;font-size:1rem}
+ .toc.open a{padding:.7rem 0;border-bottom:1px solid var(--bd)}
+ .pn{position:fixed;left:0;right:0;bottom:0;z-index:25;margin:0;padding:.55rem .8rem .55rem 7.2rem;background:var(--card);border-top:1px solid var(--bd)}
+}
+@media(max-width:860px){.toc.open .tochead::after{content:"✕ Cerrar";float:right;font-weight:600;color:var(--acd)}.toc.open .tochead{padding:.4rem 0;cursor:pointer}}

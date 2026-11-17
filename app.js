@@ -7,6 +7,7 @@ if(doc){var key=doc.dataset.key,cb=document.getElementById('done'),on=document.g
  cb.checked=!!done[key];cb.onchange=function(){done[key]=cb.checked;ls.s('done',JSON.stringify(done))};
  on.checked=ls.g('only')==='1';function ap(){document.body.classList.toggle('only',on.checked)}ap();on.onchange=function(){ls.s('only',on.checked?'1':'0');ap()};
  if(location.hash){var el=document.querySelector(location.hash);if(el)el.scrollIntoView()}}
+var tb=document.getElementById('tocbtn'),tc=document.querySelector('.toc');if(tb&&tc){tb.onclick=function(){tc.classList.toggle('open')};tc.onclick=function(e){if(e.target.tagName==='A'||e.target===tc||e.target.className==='tochead')tc.classList.remove('open')}}
 var cards=document.querySelectorAll('.card');
 if(cards.length){var n=0;cards.forEach(function(c){if(done[c.dataset.key]){c.classList.add('done');n++}});
  document.getElementById('pb').style.width=(100*n/cards.length)+'%';document.getElementById('pt').textContent=n+' de '+cards.length+' temas estudiados';
