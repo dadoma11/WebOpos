@@ -24,23 +24,19 @@ fetch(ROOT+'data/preguntas.json').then(function(r){return r.json()}).then(functi
  function save(){LS.s(uk('tq_'+key),JSON.stringify(st))}
  /* 3. barra superior */
  var bar=document.createElement('div');bar.id='tqbar';bar.className='tqbar';var h1=doc.querySelector('h1');h1.parentNode.insertBefore(bar,h1.nextSibling);
- function stats(){var ok=0,ko=0;qs.forEach(function(q){if(st[q.id]===1)ok++;else if(st[q.id]===0)ko++});
-  bar.innerHTML='<span>🧠 <b>'+qs.length+'</b> preguntas de repaso intercaladas · <span class="ok">✔ '+ok+'</span> <span class="ko">✘ '+ko+'</span> · pendientes '+(qs.length-ok-ko)+'</span><label class="tchk"><input type="checkbox" id="tqon" '+(on?'checked':'')+'> Intercalar preguntas</label><label class="tchk"><input type="checkbox" id="tqo" '+(only?'checked':'')+'> Preguntas solo EXAMEN/IMPORTANTE</label><button id="tqr">↺ Reiniciar</button><a class="chip" href="'+ROOT+'examinate.html?t='+key+'">⏱ Examen del tema</a>';
+ function stats(){
+  bar.innerHTML='<span>🧠 Repaso rápido: una pregunta al azar tras cada apartado</span><label class="tchk"><input type="checkbox" id="tqon" '+(on?'checked':'')+'> Intercalar preguntas</label><label class="tchk"><input type="checkbox" id="tqo" '+(only?'checked':'')+'> Solo EXAMEN/IMPORTANTE</label><a class="chip" href="'+ROOT+'examinate.html?t='+key+'">⏱ Examen del tema</a>';
   bar.querySelector('#tqon').onchange=function(){on=this.checked;LS.s('tq_pop',on?'1':'0');build()};
-  bar.querySelector('#tqo').onchange=function(){only=this.checked;LS.s('tq_only',only?'1':'0');build()};
-  bar.querySelector('#tqr').onclick=function(){if(confirm('¿Borrar tus respuestas de este tema?')){st={};save();build()}}}
+  bar.querySelector('#tqo').onchange=function(){only=this.checked;LS.s('tq_only',only?'1':'0');build()}}
  /* 4. tarjetas emergentes tras cada fragmento */
  function build(){Array.prototype.forEach.call(doc.querySelectorAll('.tqpop'),function(e){e.remove()});stats();if(!on)return;
   chunks.forEach(function(c){var list=c.qs.filter(function(q){return !only||q.x||q.i});if(!list.length)return;
-   var card=document.createElement('div');card.className='tqpop';c.end.after(card);var idx=0;
-   // empieza por la primera sin responder
-   for(var i=0;i<list.length;i++){if(st[list[i].id]===undefined){idx=i;break}}
-   function show(){var q0=list[idx],q=shufQ(q0),done=st[q.id]!==undefined,g=done&&st[q.id]===1,ans=null;
-    card.innerHTML='<div class="tph"><b>🧠 Repaso rápido: lo que llevas de «'+esc(c.h.textContent.replace(/^[\d.\s]+/,'').slice(0,60))+'»</b><span>'+(idx+1)+' / '+list.length+'</span></div><div class="qmeta">'+(q.g?'<i class="G">generada</i> ':'')+(q.x?'<i class="E">EXAMEN</i> ':'')+(q.i?'<i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'+q.o.map(function(o,i){return '<div class="opt"><button class="pick" data-i="'+i+'"><span class="L">'+L[i]+'</span><span class="ot">'+o+'</span></button></div>'}).join('')+'</div><div class="fb" hidden></div><div class="row"><button class="pv"'+(idx?'':' disabled')+'>‹ Anterior</button><button class="nx"'+(idx<list.length-1?'':' disabled')+'>Siguiente ›</button><button class="hd">Seguir leyendo ▾</button></div>';
-    function reveal(sel){var opts=card.querySelectorAll('.opt');Array.prototype.forEach.call(opts,function(e,j){e.classList.add(j===q.c?'good':'dim');if(sel!==null&&j===sel&&sel!==q.c)e.classList.add('bad')});var fb=card.querySelector('.fb');fb.hidden=false;fb.innerHTML=(sel===q.c?'<span class="ok">✔ Correcto.</span> ':sel===null?'Ya respondida antes. ':'<span class="ko">✘ Incorrecto.</span> ')+'Correcta: <b>'+L[q.c]+'</b>. '+(q.e||'')+(q.p?' <small><i>('+esc(q.p)+')</i></small>':'')}
-    if(done)reveal(g?q.c:null);
-    Array.prototype.forEach.call(card.querySelectorAll('.pick'),function(b){b.onclick=function(){if(card.querySelector('.fb:not([hidden])'))return;var i=+b.dataset.i;st[q.id]=i===q.c?1:0;save();reveal(i);var s=bar.querySelector('span');stats()}});
-    card.querySelector('.pv').onclick=function(){idx--;show()};card.querySelector('.nx').onclick=function(){idx++;show()};
-    card.querySelector('.hd').onclick=function(){card.classList.toggle('min');this.textContent=card.classList.contains('min')?'Mostrar pregunta ▸':'Seguir leyendo ▾'}}
+   var card=document.createElement('div');card.className='tqpop';c.end.after(card);
+   var q=shufQ(list[Math.floor(Math.random()*list.length)]),locked=false;
+   function show(){
+    card.innerHTML='<div class="tph"><b>🧠 Repaso rápido: «'+esc(c.h.textContent.replace(/^[\d.\s]+/,'').slice(0,60))+'»</b></div><div class="qmeta">'+(q.g?'<i class="G">generada</i> ':'')+(q.x?'<i class="E">EXAMEN</i> ':'')+(q.i?'<i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'+q.o.map(function(o,i){return '<div class="opt"><button class="pick" data-i="'+i+'"><span class="L">'+L[i]+'</span><span class="ot">'+o+'</span></button></div>'}).join('')+'</div><div class="fb" hidden></div>';
+    Array.prototype.forEach.call(card.querySelectorAll('.pick'),function(b){b.onclick=function(){if(locked)return;locked=true;var i=+b.dataset.i;
+     Array.prototype.forEach.call(card.querySelectorAll('.opt'),function(e,j){e.classList.add(j===q.c?'good':'dim');if(j===i&&i!==q.c)e.classList.add('bad')});
+     var fb=card.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===q.c?'<span class="ok">✔ Correcto.</span> ':'<span class="ko">✘ Incorrecto.</span> ')+'Correcta: <b>'+L[q.c]+'</b>. '+(q.e||'')+(q.p?' <small><i>('+esc(q.p)+')</i></small>':'')}})}
    show()})}
  build()}).catch(function(){})})();
