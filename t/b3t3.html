@@ -1,0 +1,245 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 3 · Tema 3 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Lenguajes de bases de datos. Estándar ANSI/SQL</a><a href="#s1">2. Sintaxis básica de SQL</a><a href="#s2">3. Lenguajes de BD</a><a href="#s3">4. Procedimientos almacenados</a><a href="#s4">5. Eventos y disparadores (triggers)</a><a href="#s5">6. Transacciones y niveles de aislamiento</a></aside>
+<main class="doc" data-key="b3t3"><div class="crumb">Bloque 3 · Tema 3</div><h1>SQL: lenguajes de bases de datos, procedimientos, triggers y transacciones</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (9)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema3.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema3.pdf">PDF móvil</a><a class="chip pr" href="../practicas.html#sql">🧪 Prácticas relacionadas</a></div>
+<h2 id="s0">1. Lenguajes de bases de datos. Estándar ANSI/SQL</h2>
+<ul>
+<li><b>SQL</b> (Structured Query Language): lenguaje estándar de las BD relacionales; <b>declarativo</b>. Desarrollado por <b>IBM en los 70</b> (proyecto <b>System R</b>, nombre <b>SEQUEL</b>); normalizado por <b>ANSI (1986)</b> e <b>ISO (1987)</b>.</li>
+<li><b>Objetivos del estándar</b>: lenguaje <b>común y portable</b>, fijar sintaxis y semántica, <b>interoperabilidad</b> entre SGBD, consultas/manipulación/definición/control de acceso de forma declarativa.</li>
+</ul>
+<div class="tw"><table><tr><th>Versión</th><th>Año</th><th>Novedades</th></tr>
+<tr><td><b>SQL-86</b></td><td>1986</td><td>Primera versión estándar ANSI</td></tr>
+<tr><td><b>SQL-89</b></td><td>1989</td><td>Mejoras menores</td></tr>
+<tr><td><b>SQL-92</b></td><td>1992</td><td><b>Muy extendido</b>: JOIN, CHECK, IN, UNION, subconsultas</td></tr>
+<tr><td><b>SQL:1999</b></td><td>1999</td><td><b>Procedures y triggers</b></td></tr>
+<tr><td><b>SQL:2003</b></td><td>2003</td><td><b>XML</b>, tipos autoincrementales (<b>IDENTITY</b>)</td></tr>
+<tr><td><b>SQL:2011</b></td><td>2011</td><td><b>Consultas temporales</b> (PERIOD, SYSTEM_TIME)</td></tr>
+<tr><td><b>SQL:2016</b></td><td>2016</td><td><b>JSON</b>, funciones analíticas y agregadas</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Subconjuntos de ANSI SQL</b></p>
+<div class="tw"><table><tr><th>Subconjunto</th><th>Función</th><th>Comandos</th></tr>
+<tr><td><b>DDL</b> (Data Definition Language)</td><td><b>Definir estructuras</b></td><td><b>CREATE, ALTER, DROP</b></td></tr>
+<tr><td><b>DML</b> (Data Manipulation Language)</td><td><b>Manipular datos</b> existentes</td><td><b>INSERT, UPDATE, DELETE</b></td></tr>
+<tr><td><b>DCL</b> (Data Control Language)</td><td><b>Permisos y seguridad</b></td><td><b>GRANT, REVOKE</b></td></tr>
+<tr><td><b>QL / QBL</b> (Query Language)</td><td><b>Consultar</b> y recuperar</td><td><b>SELECT, JOIN, GROUP BY</b></td></tr>
+<tr><td><b>TCL</b> (Transaction Control Language)</td><td><b>Transacciones</b> (consistencia, rollback, commit)</td><td><b>BEGIN, COMMIT, ROLLBACK</b></td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>SGBD</th><th>Extensión propia</th><th>Rasgos</th></tr>
+<tr><td><b>Oracle</b></td><td><b>PL/SQL</b></td><td>Procedimientos, funciones, paquetes, cursores; tipos <b>NUMBER, VARCHAR2, CLOB</b>; <b>SYSDATE, NVL, DECODE</b>; autoincremento con <b>SEQUENCE</b> (e IDENTITY); limitar filas con <b>ROWNUM / FETCH FIRST</b></td></tr>
+<tr><td><b>MySQL</b></td><td>Sintaxis simple</td><td><b>AUTO_INCREMENT</b>, <b>CONCAT()</b>, <b>NOW()</b>; limitar con <b>LIMIT</b></td></tr>
+<tr><td><b>SQL Server</b></td><td><b>Transact-SQL (T-SQL)</b></td><td>Variables, IF, WHILE, <b>TRY…CATCH</b>; limitar con <b>TOP</b></td></tr>
+<tr><td><b>PostgreSQL</b></td><td><b>PL/pgSQL</b></td><td><b>SERIAL / BIGSERIAL</b>; gran <b>adherencia a ANSI</b>; <b>COALESCE, ILIKE</b>, JSON, arrays; <b>LIMIT y OFFSET</b>, <b>RETURNING</b></td></tr>
+</table></div>
+<h2 id="s1">2. Sintaxis básica de SQL</h2>
+<ul>
+<li><b>SELECT columnas FROM tabla [WHERE] [GROUP BY] [HAVING] [ORDER BY];</b></li>
+</ul>
+<div class="tw"><table><tr><th>Cláusula</th><th>Función</th></tr>
+<tr><td><b>SELECT</b></td><td>Columnas a mostrar</td></tr>
+<tr><td><b>FROM</b></td><td>Tabla(s) de origen</td></tr>
+<tr><td><b>WHERE</b></td><td><b>Filtra filas</b></td></tr>
+<tr><td><b>GROUP BY</b></td><td><b>Agrupa</b> para funciones de agregación</td></tr>
+<tr><td><b>HAVING</b></td><td><b>Filtra los grupos</b> formados</td></tr>
+<tr><td><b>ORDER BY</b></td><td><b>Ordena</b> el resultado final</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Filtro</th><th>Función</th></tr>
+<tr><td><b>=</b></td><td>Igualdad exacta</td></tr>
+<tr><td><b>BETWEEN … AND …</b></td><td>Rango, <b>inclusivo</b> en ambos extremos</td></tr>
+<tr><td><b>IN (…)</b></td><td>Pertenece a una lista</td></tr>
+<tr><td><b>LIKE</b></td><td>Patrones: <b>%</b> = cualquier nº de caracteres; <b>_</b> = un único carácter (<code>'28_00'</code>)</td></tr>
+<tr><td><b>IS NULL</b></td><td>Valores nulos</td></tr>
+<tr><td><b>AND / OR / NOT</b></td><td>Ambas / al menos una / negación</td></tr>
+</table></div>
+<ul>
+<li><b>ORDER BY</b>: <b>ASC</b> (por defecto) o <b>DESC</b>; admite varias columnas (<code>ORDER BY Apellidos ASC, FechaIngreso DESC</code>).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>GROUP BY</b></p>
+<p>Agrupa filas con <b>valores idénticos</b> en una o varias columnas para aplicar <b>funciones de agregación</b> (SUM, AVG, COUNT…). Ej.: <code>SELECT DepartamentoID, COUNT(*) FROM Empleados GROUP BY DepartamentoID;</code></p>
+</div>
+<ul>
+<li><b>HAVING</b>: filtra <b>después</b> de GROUP BY, con condiciones sobre <b>agregaciones</b> (imposible con WHERE). Ej.: <code>HAVING COUNT(*) &gt; 10</code>.</li>
+</ul>
+<div class="tw"><table><tr><th>Función de agregación</th><th>Descripción</th></tr>
+<tr><td><b>COUNT(todo)</b></td><td>Cuenta <b>todas las filas</b>, incluso con nulos</td></tr>
+<tr><td><b>COUNT(columna)</b></td><td>Cuenta solo <b>no NULL</b></td></tr>
+<tr><td><b>SUM()</b></td><td>Suma</td></tr>
+<tr><td><b>AVG()</b></td><td>Media aritmética</td></tr>
+<tr><td><b>MAX() / MIN()</b></td><td>Valor más alto / más bajo</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>JOIN</th><th>Resultado</th></tr>
+<tr><td><b>INNER JOIN</b></td><td>Solo filas con <b>coincidencia</b> en la condición ON</td></tr>
+<tr><td><b>LEFT JOIN</b></td><td><b>Todas las de la izquierda</b> + coincidencias de la derecha (resto a NULL)</td></tr>
+<tr><td><b>RIGHT JOIN</b></td><td><b>Todas las de la derecha</b> + coincidencias de la izquierda</td></tr>
+<tr><td><b>FULL JOIN</b></td><td><b>Todas las filas de ambas</b>; no lo soportan todos (<b>MySQL</b> no, hay que emular con <b>UNION</b>)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Combinación de resultados</th><th>Descripción</th></tr>
+<tr><td><b>UNION</b></td><td>Combina y <b>elimina duplicados</b></td></tr>
+<tr><td><b>UNION ALL</b></td><td><b>Mantiene duplicados</b>; más rápido</td></tr>
+<tr><td><b>INTERSECT</b></td><td>Solo filas <b>presentes en ambas</b>; <b>no en MySQL</b> (sí PostgreSQL, SQL Server, Oracle)</td></tr>
+<tr><td><b>EXCEPT / MINUS (Oracle)</b></td><td>Filas de la <b>primera consulta que no están en la segunda</b></td></tr>
+</table></div>
+<ul>
+<li>Requieren <b>mismo número de columnas y tipos compatibles</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Categoría</th><th>Tipos</th></tr>
+<tr><td><b>Numéricos</b></td><td><b>INT/INTEGER, SMALLINT, BIGINT</b>; <b>DECIMAL(p,s)</b> (exacto) y <b>NUMERIC(p,s)</b> (validación más estricta); <b>FLOAT, REAL, DOUBLE PRECISION</b> (aproximados)</td></tr>
+<tr><td><b>Texto</b></td><td><b>CHAR(n)</b> (longitud fija, rellena con espacios), <b>VARCHAR(n)</b> (variable), <b>CLOB</b> (texto grande)</td></tr>
+<tr><td><b>Fecha y hora</b></td><td><b>DATE, TIME, TIMESTAMP, INTERVAL</b></td></tr>
+<tr><td><b>Lógico</b></td><td><b>BOOLEAN</b> (no en todos los SGBD según SQL-92)</td></tr>
+<tr><td><b>Binarios</b></td><td><b>BINARY(n), VARBINARY(n), BLOB</b> (imágenes, PDF)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Operadores de comparación</b></p>
+<div class="tw"><table><tr><th>Operador</th><th>Descripción</th><th>Ejemplo</th></tr>
+<tr><td><b>=</b></td><td>Igual a</td><td><code>Edad = 18</code></td></tr>
+<tr><td><b>&lt;&gt;</b></td><td><b>Distinto de</b></td><td><code>Nombre &lt;&gt; 'Ana'</code></td></tr>
+<tr><td><b>&gt;  &lt;</b></td><td>Mayor / menor que</td><td><code>Precio &gt; 100</code></td></tr>
+<tr><td><b>&gt;=  &lt;=</b></td><td>Mayor o igual / menor o igual</td><td><code>Stock &gt;= 10</code></td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Lógicos</b>: <b>AND</b> (ambas), <b>OR</b> (al menos una), <b>NOT</b> (niega). <b>Aritméticos</b>: + − * /.</li>
+</ul>
+<div class="tw"><table><tr><th>Funciones integradas</th><th>Ejemplos</th></tr>
+<tr><td><b>Numéricas</b></td><td><b>ABS(x)</b>, <b>ROUND(x,n)</b>, <b>CEIL(x)</b> (hacia arriba), <b>FLOOR(x)</b> (hacia abajo), <b>MOD(x,y)</b></td></tr>
+<tr><td><b>Texto</b></td><td><b>UPPER, LOWER, LENGTH, CONCAT, SUBSTRING(texto, inicio, longitud)</b></td></tr>
+<tr><td><b>Fecha y hora</b></td><td><b>CURRENT_DATE, CURRENT_TIMESTAMP, DATEADD(intervalo, cantidad, fecha), DATEDIFF(intervalo, f1, f2)</b></td></tr>
+</table></div>
+<h3>2.9 Subconsultas</h3>
+<ul>
+<li><b>SELECT dentro de otra consulta</b>; en <b>WHERE, FROM, SELECT o HAVING</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>Escalar</b></td><td>Devuelve <b>un único valor</b> (una fila, una columna): <code>Salario &gt; (SELECT AVG(Salario) …)</code></td></tr>
+<tr><td><b>De conjunto (tabla)</b></td><td>Varias filas y columnas; con <b>IN, = ANY, = ALL</b> o en el <b>FROM</b> como tabla derivada</td></tr>
+<tr><td><b>Correlacionada</b></td><td>Se ejecuta <b>una vez por cada fila</b> de la consulta externa (depende de ella); como un bucle interno</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Objeto</th><th>Descripción</th></tr>
+<tr><td><b>Vista (VIEW)</b></td><td><b>Consulta almacenada = tabla virtual</b>; no guarda datos (<code>CREATE VIEW … AS SELECT …</code>)</td></tr>
+<tr><td><b>Índice (INDEX)</b></td><td>Acelera las búsquedas (como el índice de un libro); <b>únicos, compuestos, clustered y non-clustered</b></td></tr>
+<tr><td><b>PRIMARY KEY</b></td><td>Identifica cada fila; <b>no admite NULL</b></td></tr>
+<tr><td><b>FOREIGN KEY</b></td><td>Relación con otra tabla</td></tr>
+<tr><td><b>UNIQUE / NOT NULL / CHECK</b></td><td>Valores distintos / sin nulos / condición lógica</td></tr>
+</table></div>
+<h2 id="s2">3. Lenguajes de BD</h2>
+<h3>3.1 DDL (afecta al esquema, no a los datos)</h3>
+<div class="tw"><table><tr><th>Instrucción</th><th>Función</th></tr>
+<tr><td><b>CREATE</b></td><td>Crea <b>tablas, vistas, índices, esquemas, usuarios, procedimientos y funciones</b>. <code>CREATE TABLE nombre (columna tipo [restricciones], …);</code></td></tr>
+<tr><td><b>ALTER</b></td><td><b>Modifica la estructura</b>: añadir columnas (<b>ADD</b>), cambiar tipo (<b>MODIFY / ALTER COLUMN</b>), eliminar (<b>DROP COLUMN</b>), renombrar (<b>RENAME COLUMN / RENAME TO</b>), añadir o quitar restricciones</td></tr>
+<tr><td><b>DROP</b></td><td><b>Elimina el objeto completo</b> (tabla, vista, índice…), estructura y datos, <b>permanentemente</b> (solo recuperable con backup)</td></tr>
+<tr><td><b>TRUNCATE</b></td><td><b>Vacía la tabla</b> manteniendo su definición</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>DROP</b></p>
+<p>Algunos SGBD admiten <b>IF EXISTS</b> (<code>DROP TABLE IF EXISTS Empleados;</code>) para evitar errores. Si hay <b>claves foráneas</b> que dependen de la tabla, el SGBD puede impedir el borrado salvo que se eliminen antes esas relaciones o se use <b>CASCADE</b>.</p>
+</div>
+<div class="tw"><table><tr><th></th><th><b>TRUNCATE</b></th><th><b>DELETE</b></th></tr>
+<tr><td><b>WHERE</b></td><td><b>No permite</b> (elimina todo)</td><td><b>Sí permite</b></td></tr>
+<tr><td><b>Velocidad</b></td><td><b>Más rápida</b> (opera a nivel de páginas)</td><td>Más lenta (registra cada fila)</td></tr>
+<tr><td><b>Triggers y log</b></td><td>No activa triggers ni registra fila a fila</td><td><b>Puede activar triggers</b></td></tr>
+<tr><td><b>Transacción</b></td><td></td><td>Puede deshacerse dentro de una transacción</td></tr>
+</table></div>
+<h3>3.2 DML (datos, sin alterar estructura)</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>INSERT</b></p>
+<p><b>Añade nuevas filas</b> a una tabla existente; se puede indicar el valor de todas o algunas columnas. <code>INSERT INTO tabla (c1, c2) VALUES (v1, v2);</code> <b>INSERT … SELECT</b> inserta los resultados de una consulta (mismo nº y tipo de columnas).</p>
+</div>
+<ul>
+<li><b>UPDATE</b>: <code>UPDATE tabla SET col = valor [, …] WHERE condición;</code> — <b>solo una tabla por instrucción</b>; el valor puede ser constante, expresión o subconsulta. <b>Sin WHERE se modifican todas las filas</b> (peligroso).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>DELETE</b></p>
+<p><b>Elimina filas</b> que cumplan una condición. Más flexible que TRUNCATE (permite <b>WHERE</b>). Sin WHERE borra todas las filas (como TRUNCATE, pero <b>más lento y registrando cada eliminación</b>); <b>puede activar triggers</b>; <b>puede deshacerse en una transacción</b>.</p>
+</div>
+<h3>3.3 DCL</h3>
+<ul>
+<li><b>GRANT privilegios ON objeto TO usuario</b>: concede permisos (<b>SELECT, INSERT, UPDATE, DELETE, ALL</b>).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>REVOKE</b></p>
+<p><b>Retira permisos</b> previamente otorgados a un usuario o rol sobre un objeto. <code>REVOKE privilegios ON objeto FROM usuario;</code></p>
+</div>
+<h3>3.4 OQL (Object Query Language)</h3>
+<ul>
+<li>Para <b>BD orientadas a objetos</b>; parte del estándar <b>ODMG</b>; inspirado en SQL (SELECT, FROM, WHERE, GROUP BY, ORDER BY) pero con <b>clases, objetos, herencia, colecciones</b> y <b>navegación por referencias</b> (<code>e.departamento.nombre</code>). Usado con <b>ObjectStore, Versant</b>, C++ y Java. Hoy <b>residual</b> frente a <b>JPQL, HQL (Hibernate), LINQ</b>.</li>
+</ul>
+<h2 id="s3">4. Procedimientos almacenados</h2>
+<ul>
+<li><b>Bloques de código SQL almacenados y ejecutados en el servidor</b>: encapsulan lógica de negocio, automatizan tareas, reutilizan operaciones y mejoran rendimiento.</li>
+<li><b>MySQL</b>: <code>DELIMITER // CREATE PROCEDURE Nombre() BEGIN … END // DELIMITER ;</code> · <b>SQL Server</b>: <code>CREATE PROCEDURE Nombre AS BEGIN … END;</code></li>
+</ul>
+<div class="tw"><table><tr><th>Parámetro</th><th>Descripción</th></tr>
+<tr><td><b>IN</b></td><td><b>Entrada</b>: el procedimiento recibe un valor</td></tr>
+<tr><td><b>OUT</b></td><td><b>Salida</b>: devuelve un valor al llamante</td></tr>
+<tr><td><b>INOUT</b></td><td><b>Mixto</b>: entrada y salida (MySQL)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Parámetros OUT</b></p>
+<p>Se utilizan para <b>devolver información desde el procedimiento al llamante</b>; útiles para cálculos, totales o consultas individuales. MySQL: <code>OUT salario DECIMAL(10,2)</code> con <code>SELECT Salario INTO salario…</code>. SQL Server: <code>@salario DECIMAL(10,2) OUTPUT</code>.</p>
+</div>
+<div class="tw"><table><tr><th>Llamada</th><th>Sintaxis</th></tr>
+<tr><td><b>MySQL</b></td><td><code>CALL ObtenerSalario(3, @res); SELECT @res;</code></td></tr>
+<tr><td><b>SQL Server</b></td><td><code>EXEC ObtenerSalario @empID = 3, @salario = @res OUTPUT;</code></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Elemento</th><th>MySQL</th><th>SQL Server</th></tr>
+<tr><td><b>Variable local</b></td><td><code>DECLARE nombre tipo;</code></td><td><code>DECLARE @nombre tipo;</code></td></tr>
+<tr><td><b>Condicional</b></td><td><code>IF … THEN … ELSE … END IF;</code></td><td><code>IF … ELSE</code></td></tr>
+<tr><td><b>Múltiples casos</b></td><td><code>CASE WHEN … THEN … ELSE … END</code></td><td>igual</td></tr>
+<tr><td><b>Bucle</b></td><td><b>WHILE … DO … END WHILE</b>; también <b>LOOP</b> (con <code>LEAVE</code>) y <b>REPEAT … UNTIL</b> (<b>se ejecuta al menos una vez</b>)</td><td><b>WHILE</b></td></tr>
+</table></div>
+<h2 id="s4">5. Eventos y disparadores (triggers)</h2>
+<ul>
+<li><b>Trigger</b>: bloque SQL que se <b>ejecuta automáticamente</b> ante un evento (<b>INSERT, UPDATE o DELETE</b>) sobre una tabla; a diferencia de los procedimientos, <b>no se llama manualmente</b>. En MySQL, un <b>evento</b> también puede ser una tarea programada en el tiempo.</li>
+<li>Sintaxis: <code>CREATE TRIGGER nombre {BEFORE | AFTER} {INSERT | UPDATE [OF columna] | DELETE} ON tabla [FOR EACH ROW] [WHEN (condición)] BEGIN … END;</code></li>
+</ul>
+<div class="tw"><table><tr><th>Elemento</th><th>Descripción</th></tr>
+<tr><td><b>OF columna</b></td><td>Limita un UPDATE a una columna</td></tr>
+<tr><td><b>FOR EACH ROW</b></td><td>Una vez <b>por cada fila afectada</b></td></tr>
+<tr><td><b>WHEN (condición)</b></td><td>Solo si se cumple</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Tipo</th><th>Momento</th><th>Uso</th></tr>
+<tr><td><b>BEFORE</b></td><td><b>Antes</b> de la operación</td><td><b>Validar o modificar</b> datos antes de insertarlos</td></tr>
+<tr><td><b>AFTER</b></td><td><b>Después</b> de la operación</td><td><b>Registrar</b> lo ocurrido</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Pseudoregistro</th><th>Cuándo</th><th>Contiene</th></tr>
+<tr><td><b>NEW.columna</b></td><td><b>INSERT, UPDATE</b></td><td><b>Valor nuevo</b></td></tr>
+<tr><td><b>OLD.columna</b></td><td><b>UPDATE, DELETE</b></td><td><b>Valor antiguo</b> (antes de modificar)</td></tr>
+</table></div>
+<ul>
+<li>En INSERT no existe OLD; en DELETE no existe NEW.</li>
+<li><b>Usos</b>: <b>auditoría</b> (AFTER UPDATE → LogCambios), <b>validación</b> (BEFORE INSERT → error si NEW.Valor &lt; 0), <b>automatización</b> (actualizar campos derivados o sincronizar tablas).</li>
+</ul>
+<h2 id="s5">6. Transacciones y niveles de aislamiento</h2>
+<ul>
+<li><b>Transacción</b>: unidad lógica de trabajo que se ejecuta <b>completa o no se ejecuta</b>; propiedades <b>ACID</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Sentencia</th><th>Descripción</th></tr>
+<tr><td><b>BEGIN / START TRANSACTION</b></td><td><b>Inicia</b> la transacción</td></tr>
+<tr><td><b>COMMIT</b></td><td><b>Confirma</b> y guarda los cambios</td></tr>
+<tr><td><b>ROLLBACK</b></td><td><b>Cancela</b> y revierte los cambios desde el último BEGIN</td></tr>
+<tr><td><b>SAVEPOINT nombre</b></td><td>Punto de recuperación intermedio</td></tr>
+<tr><td><b>ROLLBACK TO nombre</b></td><td>Deshace <b>parcialmente</b> hasta el SAVEPOINT</td></tr>
+<tr><td><b>RELEASE SAVEPOINT</b></td><td>Libera el punto (PostgreSQL, Oracle)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Problemas de concurrencia</b></p>
+<div class="tw"><table><tr><th>Fenómeno</th><th>Descripción</th></tr>
+<tr><td><b>Lectura sucia</b></td><td>Se leen datos que otra transacción <b>aún no ha confirmado</b></td></tr>
+<tr><td><b>Lectura no repetible</b></td><td>Se vuelve a leer un valor <b>modificado por otra</b> transacción</td></tr>
+<tr><td><b>Lectura fantasma</b></td><td>Se repite una consulta y aparecen <b>nuevas filas</b></td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Nivel de aislamiento (ANSI)</th><th>Lectura sucia</th><th>No repetible</th><th>Fantasma</th></tr>
+<tr><td><b>READ UNCOMMITTED</b></td><td>Permitida</td><td>Permitida</td><td>Permitida</td></tr>
+<tr><td><b>READ COMMITTED</b></td><td><b>Evitada</b></td><td>Permitida</td><td>Permitida</td></tr>
+<tr><td><b>REPEATABLE READ</b></td><td><b>Evitada</b></td><td><b>Evitada</b></td><td>Permitida</td></tr>
+<tr><td><b>SERIALIZABLE</b></td><td><b>Evitada</b></td><td><b>Evitada</b></td><td><b>Evitada</b></td></tr>
+</table></div>
+<div class="pn"><a href="b3t2.html">← 3.2</a><a href="b3t4.html">3.4 →</a></div></main></div><script src="../app.js"></script></body></html>

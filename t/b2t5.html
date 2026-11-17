@@ -1,0 +1,264 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 2 · Tema 5 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción a los SGBD</a><a href="#s1">2. Bases de datos relacionales</a><a href="#s2">3. Bases de datos orientadas a objetos (SGBDOO)</a><a href="#s3">4. Bases de datos NoSQL</a></aside>
+<main class="doc" data-key="b2t5"><div class="crumb">Bloque 2 · Tema 5</div><h1>Sistemas de gestión de bases de datos: relacionales, orientadas a objetos y NoSQL</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (12)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque2_Tema5.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque2_Tema5.pdf">PDF móvil</a><a class="chip pr" href="../practicas.html#sql">🧪 Prácticas relacionadas</a></div>
+<h2 id="s0">1. Introducción a los SGBD</h2>
+<ul>
+<li><b>SGBD (DBMS)</b>: conjunto de programas que permiten <b>almacenar, organizar, manipular y recuperar datos</b> de forma eficiente. Son <b>intermediarios entre usuarios y bases de datos</b> (lenguajes como <b>SQL</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Etapa</th><th>Hito</th></tr>
+<tr><td><b>1960-70</b></td><td>Modelos <b>jerárquico (IMS)</b> y <b>en red (CODASYL)</b></td></tr>
+<tr><td><b>1970-80</b></td><td><b>Modelo relacional</b> de <b>E. F. Codd</b>; primeros SGBD relacionales (<b>Oracle, DB2</b>)</td></tr>
+<tr><td><b>1980-90</b></td><td>Interfaces gráficas, transacciones y estándar <b>SQL</b></td></tr>
+<tr><td><b>1990-2000</b></td><td>SGBD <b>orientados a objetos</b>, integración con Java</td></tr>
+<tr><td><b>Años 2000</b></td><td><b>NoSQL</b> (escalabilidad y flexibilidad web)</td></tr>
+<tr><td><b>Actualidad</b></td><td>SGBD en la <b>nube</b>, <b>multimodelo</b>, <b>Big Data</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ventajas frente a archivos planos</th><th>Idea</th></tr>
+<tr><td><b>1. Independencia lógica y física</b></td><td>Los programas no dependen de la estructura física</td></tr>
+<tr><td><b>2. Menos redundancia e inconsistencia</b></td><td>Datos centralizados</td></tr>
+<tr><td><b>3. Integridad y validación</b></td><td>Reglas y restricciones</td></tr>
+<tr><td><b>4. Acceso concurrente y controlado</b></td><td>Varios usuarios sin conflictos</td></tr>
+<tr><td><b>5. Seguridad</b></td><td>Permisos, autenticación, cifrado</td></tr>
+<tr><td><b>6. Recuperación ante fallos</b></td><td>Backup y restore automáticos</td></tr>
+<tr><td><b>7. Eficiencia en consultas</b></td><td>Optimizadores e <b>índices</b></td></tr>
+<tr><td><b>8. Escalabilidad y mantenimiento centralizado</b></td><td>Sistemas distribuidos y nube</td></tr>
+</table></div>
+<h2 id="s1">2. Bases de datos relacionales</h2>
+<h3>2.1 Modelo relacional</h3>
+<ul>
+<li>Propuesto por <b>E. F. Codd en 1970</b>; estructura matemática simple: la <b>relación</b> (tabla).</li>
+</ul>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición</th></tr>
+<tr><td><b>Relación</b></td><td><b>Tabla</b> que representa una entidad; nombre único, conjunto de atributos y tuplas</td></tr>
+<tr><td><b>Tupla</b></td><td><b>Fila / registro</b>: una instancia concreta</td></tr>
+<tr><td><b>Atributo</b></td><td><b>Columna / campo</b>; mismo tipo de dato y mismo dominio</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Clave primaria (primary key)</b></p>
+<p>Atributo o combinación de atributos que <b>identifica de manera única</b> cada tupla. Debe ser <b>no nulo y único</b> (ej.: el DNI).</p>
+</div>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición</th></tr>
+<tr><td><b>Clave foránea (foreign key)</b></td><td>Campo que <b>enlaza con la clave primaria de otra tabla</b>; garantiza la <b>integridad referencial</b> (ej.: <code>id_cliente</code> en Pedidos → Clientes)</td></tr>
+<tr><td><b>Dominio</b></td><td><b>Conjunto de valores válidos</b> de un atributo (ej.: edad 0-120)</td></tr>
+<tr><td><b>Grado</b></td><td><b>Número de atributos (columnas)</b> (Clientes con id, nombre, email → grado <b>3</b>)</td></tr>
+<tr><td><b>Cardinalidad</b></td><td><b>Número de tuplas (filas)</b> (250 registros → cardinalidad <b>250</b>)</td></tr>
+</table></div>
+<ul>
+<li><b>Normalización</b>: reduce la <b>redundancia</b>, asegura la <b>integridad</b> y mejora la eficiencia (1FN, 2FN, 3FN…).</li>
+</ul>
+<h3>2.2 Reglas de Codd</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Reglas de Codd</b></p>
+<p>Formuladas por <b>Edgar F. Codd en 1985</b>: <b>13 principios</b> (reglas 0 a 12) que debe cumplir un SGBD para considerarse <b>plenamente relacional</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Regla</th><th>Nombre</th><th>Descripción</th></tr>
+<tr><td><b>0</b></td><td>Sistema relacional</td><td>Usar <b>solo capacidades relacionales</b> para gestionar datos</td></tr>
+<tr><td><b>1</b></td><td>Representación de la información</td><td>Toda la información en <b>valores en tablas</b></td></tr>
+<tr><td><b>2</b></td><td>Acceso garantizado</td><td>Cada dato accesible por <b>tabla, clave y atributo</b></td></tr>
+<tr><td><b>3</b></td><td>Tratamiento de nulos</td><td>Gestión lógica de valores desconocidos o no aplicables (<b>NULL</b>)</td></tr>
+<tr><td><b>4</b></td><td>Diccionario de datos</td><td>Catálogo (metadatos) consultable con el <b>mismo modelo relacional</b></td></tr>
+<tr><td><b>5</b></td><td>Lenguaje completo de datos</td><td>Definición, manipulación y control (<b>SQL</b>)</td></tr>
+<tr><td><b>6</b></td><td>Actualización mediante vistas</td><td>Las <b>vistas</b> deben poder actualizarse si es lógicamente posible</td></tr>
+<tr><td><b>7</b></td><td>Manipulación en conjunto</td><td>Operaciones sobre <b>conjuntos de registros</b></td></tr>
+<tr><td><b>8</b></td><td>Independencia física</td><td>Cambios físicos no afectan a las aplicaciones</td></tr>
+<tr><td><b>9</b></td><td>Independencia lógica</td><td>Cambios lógicos no obligan a cambiar programas</td></tr>
+<tr><td><b>10</b></td><td>Integridad declarativa</td><td>Reglas definidas <b>en la base de datos</b>, no en el código</td></tr>
+<tr><td><b>11</b></td><td>Independencia de distribución</td><td>Igual comportamiento centralizado o distribuido</td></tr>
+<tr><td><b>12</b></td><td>No subversión</td><td>No se puede eludir el modelo relacional desde niveles bajos</td></tr>
+</table></div>
+<h3>2.3 Restricciones</h3>
+<div class="tw"><table><tr><th>Restricción</th><th>Descripción</th></tr>
+<tr><td><b>Dominio</b></td><td>El valor debe pertenecer al dominio definido</td></tr>
+<tr><td><b>Unicidad</b></td><td>Sin valores duplicados (claves primarias y candidatas)</td></tr>
+<tr><td><b>Nulidad (NOT NULL)</b></td><td>Si un campo admite nulos</td></tr>
+<tr><td><b>Clave primaria (PRIMARY KEY)</b></td><td>Unicidad + no nulidad</td></tr>
+<tr><td><b>Clave foránea (FOREIGN KEY)</b></td><td>Referencia a la clave primaria de otra tabla</td></tr>
+<tr><td><b>Integridad referencial</b></td><td>Evita <b>registros huérfanos</b> (no insertar pedido con <code>id_cliente</code> inexistente)</td></tr>
+<tr><td><b>Definida por el usuario (CHECK)</b></td><td>Condiciones personalizadas: <code>CHECK (edad &gt;= 18)</code></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Regla de integridad</th><th>Condición</th></tr>
+<tr><td><b>De entidad</b></td><td>La clave primaria debe ser <b>única y no nula</b> (<code>id_cliente INT PRIMARY KEY</code>)</td></tr>
+<tr><td><b>Referencial</b></td><td>Los valores de la clave foránea deben <b>coincidir con una clave primaria existente o ser nulos</b> (si se permite): <code>FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)</code></td></tr>
+<tr><td><b>De dominio</b></td><td>Cada valor pertenece a su <b>dominio</b> (tipo y formato esperado)</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Dominio</b></p>
+<p>Conjunto de valores válidos de un atributo. Se define por: <b>un tipo de dato</b> (INT, VARCHAR, DATE, BOOLEAN), <b>una restricción lógica</b> (edad &gt;= 0) o <b>un conjunto específico de valores</b> (estado IN ('Activo', 'Inactivo')).</p>
+</div>
+<ul>
+<li><b>Mecanismos para aplicar el dominio</b>: <b>tipos de datos</b> (VARCHAR(50)), <b>CHECK</b>, <b>ENUM</b> (MySQL), <b>expresiones regulares (REGEXP)</b> y <b>procedimientos o triggers</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Restricción de BD</th><th>Descripción</th><th>Ejemplo</th></tr>
+<tr><td><b>UNIQUE</b></td><td>Valores únicos aunque no sea clave primaria</td><td><code>email UNIQUE</code></td></tr>
+<tr><td><b>DEFAULT</b></td><td>Valor por defecto si no se proporciona</td><td><code>estado DEFAULT 'activo'</code></td></tr>
+<tr><td><b>NOT NULL</b></td><td>Obliga a que haya valor</td><td><code>nombre NOT NULL</code></td></tr>
+<tr><td><b>CHECK</b> (validación compuesta)</td><td>Condiciones complejas</td><td><code>CHECK (edad &gt;= 18 AND pais = 'España')</code></td></tr>
+</table></div>
+<ul>
+<li>Se aplican <b>a nivel de columna</b> (NOT NULL, DEFAULT, CHECK) o <b>de tabla</b> (UNIQUE sobre varias columnas).</li>
+</ul>
+<h3>2.4 Lenguaje SQL</h3>
+<ul>
+<li><b>SQL</b> (Structured Query Language): estándar de las BD relacionales; desarrollado por <b>IBM en los 70</b>, estándar <b>ANSI e ISO</b>. Sintaxis <b>declarativa</b>: se indica <b>qué</b> se quiere, no <b>cómo</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Subconjuntos de SQL</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Propósito</th><th>Ejemplos</th></tr>
+<tr><td><b>DDL</b> (Data Definition Language)</td><td><b>Definición</b> de estructuras</td><td><b>CREATE TABLE, ALTER, DROP</b></td></tr>
+<tr><td><b>DML</b> (Data Manipulation Language)</td><td><b>Manipulación</b> de datos</td><td><b>INSERT, UPDATE, DELETE</b></td></tr>
+<tr><td><b>DQL</b> (Data Query Language)</td><td><b>Consulta</b> de datos</td><td><b>SELECT</b></td></tr>
+<tr><td><b>DCL</b> (Data Control Language)</td><td><b>Control de acceso</b></td><td><b>GRANT, REVOKE</b></td></tr>
+<tr><td><b>TCL</b> (Transaction Control Language)</td><td><b>Control de transacciones</b></td><td><b>COMMIT, ROLLBACK, SAVEPOINT</b></td></tr>
+</table></div>
+</div>
+<h3>2.5 Normalización</h3>
+<ul>
+<li>Proceso teórico para <b>organizar los datos, reducir la redundancia y garantizar la integridad</b>, dividiendo la BD en relaciones más simples <b>sin pérdida de información</b>, mediante las <b>formas normales</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Dependencia funcional</th><th>Definición</th></tr>
+<tr><td><b>Dependencia funcional X → Y</b></td><td>«Y depende funcionalmente de X» o «X determina Y»: tuplas con el mismo X tienen el mismo Y</td></tr>
+<tr><td><b>Reflexiva</b></td><td>Si <b>Y ⊆ X</b>, entonces X → Y</td></tr>
+<tr><td><b>Aumentativa</b></td><td>Si X → Y, entonces <b>XZ → YZ</b></td></tr>
+<tr><td><b>Transitiva</b></td><td>Si X → Y e Y → Z, entonces <b>X → Z</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Forma normal</th><th>Condición</th><th>Objetivo</th></tr>
+<tr><td><b>1FN</b></td><td>Atributos <b>atómicos</b> (sin grupos repetitivos ni multivaluados)</td><td>Estructura tabular</td></tr>
+<tr><td><b>2FN</b></td><td>1FN + <b>sin dependencias parciales</b> (atributos que dependen solo de parte de la clave compuesta)</td><td>Separar lo que no depende de toda la clave</td></tr>
+<tr><td><b>3FN</b></td><td>2FN + <b>sin dependencias transitivas</b> (atributo que depende de otro no clave)</td><td>Aislar dependencias indirectas</td></tr>
+<tr><td><b>BCNF</b></td><td>Más estricta que 3FN: para toda dependencia A → B, <b>A debe ser superclave</b></td><td>Descomposición libre de anomalías</td></tr>
+<tr><td><b>4FN</b></td><td>Eliminar <b>dependencias multivaluadas</b></td><td>Separar valores múltiples</td></tr>
+<tr><td><b>5FN</b></td><td>Descompone relaciones con <b>dependencias de unión (join dependency)</b></td><td>Reconstrucción sin pérdida</td></tr>
+</table></div>
+<h3>2.6 Modelo ACID</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>ACID</b></p>
+<div class="tw"><table><tr><th>Letra</th><th>Propiedad</th><th>Significado</th></tr>
+<tr><td><b>A</b></td><td><b>Atomicidad</b></td><td>La transacción es <b>indivisible</b>: se ejecuta <b>completa o no se ejecuta</b>; si hay fallo, se <b>revierten</b> los cambios</td></tr>
+<tr><td><b>C</b></td><td><b>Consistencia</b></td><td>Lleva la BD de un <b>estado válido a otro válido</b>, respetando las reglas de integridad</td></tr>
+<tr><td><b>I</b></td><td><b>Aislamiento (Isolation)</b></td><td>Las transacciones concurrentes se ejecutan <b>como si fueran secuenciales</b>; previene <b>lecturas sucias, no repetibles y fantasmas</b></td></tr>
+<tr><td><b>D</b></td><td><b>Durabilidad</b></td><td>Tras el <b>commit</b>, los cambios <b>permanecen</b> aunque el sistema falle (logs, backups, escritura en disco)</td></tr>
+</table></div>
+</div>
+<h3>2.7 SGBD relacionales</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>SGBD relacionales</b></p>
+<div class="tw"><table><tr><th>SGBD</th><th>Características</th></tr>
+<tr><td><b>MySQL</b></td><td><b>Código abierto</b>, ligero; desarrollo web (<b>LAMP</b>)</td></tr>
+<tr><td><b>PostgreSQL</b></td><td>Open Source, <b>avanzado, extensible</b>, fuerte cumplimiento de estándares; soluciones críticas</td></tr>
+<tr><td><b>Oracle Database</b></td><td><b>Comercial</b>, robusto; grandes volúmenes y seguridad avanzada</td></tr>
+<tr><td><b>SQL Server</b></td><td><b>Microsoft</b>; integrado con <b>.NET, Power BI y Azure</b></td></tr>
+<tr><td><b>MariaDB</b></td><td><b>Derivado de MySQL</b>; comunidad y compatibilidad</td></tr>
+</table></div>
+</div>
+<h2 id="s2">3. Bases de datos orientadas a objetos (SGBDOO)</h2>
+<ul>
+<li>Evolución del modelo relacional que integra la <b>programación orientada a objetos</b> con la persistencia: almacenan <b>objetos completos (atributos + métodos)</b>; clases, herencia, encapsulamiento y polimorfismo; cada objeto con <b>identificador único</b>. Útiles en <b>ingeniería, CAD, multimedia, GIS y simulación</b>.</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Definición de SGBDOO</b></p>
+<p><b>Sistema de gestión de base de datos que representa la información en forma de objetos</b>, tal y como se utilizan en la programación orientada a objetos.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Características del modelo orientado a objetos</b></p>
+<div class="tw"><table><tr><th>Característica</th><th>Descripción</th></tr>
+<tr><td><b>Modularidad</b></td><td>Dividir el sistema en partes independientes (objetos o clases)</td></tr>
+<tr><td><b>Abstracción</b></td><td>Oculta detalles internos; muestra solo lo esencial</td></tr>
+<tr><td><b>Reusabilidad</b></td><td>Reutilizar clases y objetos mediante <b>herencia</b></td></tr>
+<tr><td><b>Encapsulamiento</b></td><td>Datos protegidos dentro del objeto; acceso solo por <b>métodos</b></td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición</th></tr>
+<tr><td><b>Objeto</b></td><td>Entidad que encapsula <b>datos (atributos) y comportamientos (métodos)</b></td></tr>
+<tr><td><b>Clase</b></td><td><b>Plantilla</b> para crear objetos</td></tr>
+<tr><td><b>Herencia</b></td><td>Una clase deriva de otra y hereda sus propiedades</td></tr>
+<tr><td><b>Encapsulamiento</b></td><td>Los datos solo se modifican mediante sus métodos</td></tr>
+<tr><td><b>Polimorfismo</b></td><td>Objetos de distintas clases responden <b>al mismo mensaje de forma distinta</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td><b>Se elimina el mapeo objeto-relacional (ORM)</b></td><td><b>Menor adopción y estandarización</b></td></tr>
+<tr><td>Más natural con lenguajes OO</td><td><b>Menor rendimiento</b> en operaciones simples</td></tr>
+<tr><td>Ideal para datos <b>multimedia, jerárquicos o complejos (CAD)</b></td><td>Escasa compatibilidad con herramientas tradicionales</td></tr>
+<tr><td>Soporta encapsulamiento, herencia y polimorfismo</td><td>Lenguajes de consulta <b>menos estandarizados</b></td></tr>
+</table></div>
+<h3>ORM (Object-Relational Mapping)</h3>
+<ul>
+<li>Técnica que <b>mapea clases con tablas relacionales</b>, para persistir objetos <b>sin escribir SQL a mano</b>. Automatiza la conversión objeto ↔ registro, hace <b>CRUD</b> (Crear, Leer, Actualizar, Eliminar), da <b>portabilidad</b> entre motores y más productividad.</li>
+<li><b>Ejemplos</b>: <b>Hibernate</b> (Java), <b>NHibernate</b> (C#/.NET), <b>Entity Framework</b> (ADO.NET, Microsoft), <b>ActiveRecord</b> (Ruby on Rails).</li>
+</ul>
+<div class="tw"><table><tr><th>Lenguaje</th><th>Descripción</th></tr>
+<tr><td><b>OQL</b> (Object Query Language)</td><td>Estándar propuesto por <b>ODMG</b> (Object Data Management Group); parecido a SQL pero para objetos</td></tr>
+<tr><td><b>JPQL</b> (Java Persistence Query Language)</td><td>Con <b>JPA o Hibernate</b></td></tr>
+<tr><td><b>Extensiones OO</b> en SGBD relacionales</td><td><b>Oracle, PostgreSQL</b> (tipos definidos por el usuario)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>OQL</b></p>
+<p>Uno de los lenguajes más usados: <b>Object Query Language</b>, <b>inspirado en SQL pero adaptado al paradigma orientado a objetos</b>. Consulta objetos, colecciones, atributos complejos y relaciones jerárquicas (select, where, group by, order by) y <b>navega atributos de tipo objeto o colección</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Identificador en BDOO</th><th>Descripción</th></tr>
+<tr><td><b>OID (Object Identifier)</b> — <b>obligatorio</b></td><td>Identificador <b>único asignado automáticamente</b> al crear el objeto; <b>constante</b> mientras exista; referencia directa sin buscar por atributos</td></tr>
+<tr><td><b>OID derivado de atributos</b> (opcional)</td><td>Compuesto por atributos (DNI, ID de producto); <b>similar a una clave primaria</b>; no sustituye al OID</td></tr>
+<tr><td><b>Referencias</b></td><td>Atributos que <b>apuntan al OID de otro objeto</b> (como punteros); más eficientes que las claves foráneas en relaciones complejas</td></tr>
+<tr><td><b>Nombre simbólico</b></td><td>Alias para acceder al objeto (<code>objeto_usuario['juan']</code>)</td></tr>
+<tr><td><b>Identificadores de clase y subclase</b></td><td>Identifican el <b>tipo</b> del objeto (no es único)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>SGBDOO de ejemplo</b></p>
+<div class="tw"><table><tr><th>SGBDOO</th><th>Descripción</th></tr>
+<tr><td><b>ObjectDB</b></td><td>Para <b>Java</b>, compatible con <b>JPA</b>; ligera y de alto rendimiento</td></tr>
+<tr><td><b>db4o</b></td><td>OODB para <b>Java y .NET</b>; almacena objetos <b>sin mapeo</b></td></tr>
+<tr><td><b>Versant</b></td><td>Robusta y escalable; aplicaciones industriales y científicas</td></tr>
+<tr><td><b>Matisse</b></td><td>Orientado a objetos con integración <b>SQL y OQL</b></td></tr>
+</table></div>
+</div>
+<h2 id="s3">4. Bases de datos NoSQL</h2>
+<ul>
+<li><b>NoSQL (Not Only SQL)</b>: nacen por el almacenamiento masivo de datos <b>no estructurados</b>, la <b>escalabilidad horizontal</b> y la disponibilidad constante (redes sociales, comercio electrónico, <b>IoT, Big Data</b>). Se justifican por las limitaciones de las relacionales en entornos distribuidos, la necesidad de <b>flexibilidad de esquema</b>, alta escalabilidad y datos heterogéneos o semiestructurados.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Clasificación de las bases NoSQL</b></p>
+<p>No usan el modelo relacional; ofrecen mayor <b>escalabilidad, flexibilidad y rendimiento</b> con grandes volúmenes y estructuras poco definidas. Se clasifican <b>según el modelo de datos</b> que emplean.</p>
+</div>
+<div class="tw"><table><tr><th>Tipo</th><th>Funcionamiento</th><th>Ventajas</th><th>Limitaciones</th><th>Ejemplos</th></tr>
+<tr><td><b>Clave-valor</b></td><td>Pares <b>clave : valor</b> (clave única, valor cualquier dato)</td><td><b>Muy rápidas</b> en lectura/escritura; cachés, sesiones y perfiles; escalabilidad horizontal</td><td>No para relaciones complejas</td><td><b>Redis</b> (en memoria), <b>Riak</b> (alta disponibilidad), <b>Amazon DynamoDB</b> (AWS)</td></tr>
+<tr><td><b>Documentales</b></td><td>Documentos <b>JSON, BSON o XML</b></td><td>Estructuras complejas y anidadas; consultas por campos; datos semiestructurados</td><td>Posible <b>duplicación</b> de datos</td><td><b>MongoDB</b> (el más popular), <b>CouchDB</b> (replicación y sincronización), <b>RavenDB</b> (.NET)</td></tr>
+<tr><td><b>En columnas</b></td><td>Datos por <b>columnas</b> agrupadas en <b>familias de columnas</b></td><td>Alto rendimiento analítico; <b>Big Data</b> y procesamiento por lotes</td><td>Más complejas de modelar</td><td><b>Apache Cassandra</b>, <b>HBase</b> (sobre Hadoop, MapReduce), <b>ScyllaDB</b> (compatible con Cassandra)</td></tr>
+<tr><td><b>Grafos</b></td><td><b>Nodos</b> (entidades) y <b>aristas</b> (relaciones)</td><td>Recorrer relaciones; redes sociales, recomendaciones, rutas</td><td>Menos adecuadas para cargas transaccionales simples</td><td><b>Neo4j</b> (el referente), <b>OrientDB</b> (grafos + documentos), <b>ArangoDB</b> (multimodelo)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Características comunes de NoSQL</b></p>
+<div class="tw"><table><tr><th>Característica</th><th>Descripción</th></tr>
+<tr><td><b>Escalabilidad horizontal</b></td><td>Añadir <b>nodos</b> fácilmente</td></tr>
+<tr><td><b>Alta disponibilidad</b></td><td>Tolerancia a fallos y <b>replicación</b></td></tr>
+<tr><td><b>Modelo BASE</b></td><td>Alternativa a ACID</td></tr>
+<tr><td><b>Flexibilidad de esquema</b></td><td>Estructuras dinámicas o <b>sin esquema fijo</b></td></tr>
+<tr><td><b>Alto rendimiento</b></td><td>Lecturas y escrituras masivas</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>BASE</th><th>Significado</th></tr>
+<tr><td><b>B</b>asically <b>A</b>vailable</td><td><b>Siempre disponible</b>, incluso ante fallos parciales</td></tr>
+<tr><td><b>S</b>oft state</td><td>El estado <b>puede cambiar con el tiempo</b>, incluso sin nuevas entradas (replicación asincrónica)</td></tr>
+<tr><td><b>E</b>ventually consistent</td><td><b>Consistencia eventual</b>: todos los nodos tendrán la misma información al final</td></tr>
+</table></div>
+<ul>
+<li>BASE no garantiza consistencia inmediata, pero permite <b>mejor escalabilidad y tolerancia a fallos</b> en entornos distribuidos.</li>
+</ul>
+<div class="tw"><table><tr><th>Característica</th><th><b>Relacional (SQL)</b></th><th><b>NoSQL</b></th></tr>
+<tr><td><b>Modelo de datos</b></td><td><b>Tablas</b> (relaciones)</td><td>Clave-valor, documentos, columnas, grafos</td></tr>
+<tr><td><b>Esquema</b></td><td><b>Fijo</b>, definido de antemano</td><td><b>Flexible o inexistente</b></td></tr>
+<tr><td><b>Escalabilidad</b></td><td><b>Vertical</b> (mejorar el hardware)</td><td><b>Horizontal</b> (añadir nodos)</td></tr>
+<tr><td><b>Consulta</b></td><td><b>SQL</b></td><td>Depende del motor (propietario o APIs)</td></tr>
+<tr><td><b>Consistencia</b></td><td><b>ACID</b> (fuerte)</td><td><b>BASE</b> (eventual)</td></tr>
+<tr><td><b>Ideal para</b></td><td>Aplicaciones tradicionales, datos estructurados</td><td><b>Big Data</b>, apps web escalables, datos no estructurados</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ejemplo</th><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>MongoDB</b></td><td>Documental</td><td>Flexible; consultas sobre documentos JSON</td></tr>
+<tr><td><b>Redis</b></td><td>Clave-valor</td><td>Muy rápido; <b>caché</b> y almacenamiento temporal</td></tr>
+<tr><td><b>Cassandra</b></td><td>Column-family</td><td>Escalable y tolerante a fallos</td></tr>
+<tr><td><b>Neo4j</b></td><td>Grafos</td><td>Relaciones complejas (redes sociales)</td></tr>
+</table></div>
+<div class="pn"><a href="b2t4.html">← 2.4</a><a href="b3t1.html">3.1 →</a></div></main></div><script src="../app.js"></script></body></html>

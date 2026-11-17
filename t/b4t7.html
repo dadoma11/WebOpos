@@ -1,0 +1,471 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 7 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Modelo OSI</a><a href="#s1">2. Modelo TCP/IP</a><a href="#s2">3. Protocolo IP</a><a href="#s3">4. Enrutamiento</a><a href="#s4">5. Otros protocolos TCP/IP</a></aside>
+<main class="doc" data-key="b4t7"><div class="crumb">Bloque 4 · Tema 7</div><h1>Modelo OSI, modelo TCP/IP, protocolo IP (IPv4/IPv6), enrutamiento y otros protocolos</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (12)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema7.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema7.pdf">PDF móvil</a><a class="chip pr" href="../practicas.html#red">🧪 Prácticas relacionadas</a></div>
+<h2 id="s0">1. Modelo OSI</h2>
+<ul>
+<li><b>OSI</b> (Open Systems Interconnection): modelo de <b>referencia</b> de la <b>ISO</b> (norma <b>ISO 7498</b>) para facilitar la <b>interoperabilidad</b> entre sistemas; marco conceptual para unificar conceptos.</li>
+</ul>
+<h3>1.1 Características</h3>
+<div class="tw"><table><tr><th>Característica</th><th>Detalle</th></tr>
+<tr><td><b>Teórico y de referencia</b></td><td>No es una implementación: dice cómo <b>deberían interactuar</b> los sistemas</td></tr>
+<tr><td><b>Siete capas</b></td><td>Apiladas jerárquicamente, cada una con una función</td></tr>
+<tr><td><b>Interacción entre capas</b></td><td>Cada capa <b>ofrece servicios a la superior</b> y <b>recibe de la inferior</b>, mediante <b>interfaces</b> y <b>primitivas de servicio</b></td></tr>
+<tr><td><b>Comunicación entre entidades iguales</b></td><td>Cada capa se comunica <b>lógicamente con su homóloga</b> del sistema remoto mediante protocolos propios</td></tr>
+<tr><td><b>Independencia tecnológica</b></td><td>Un cambio en una capa no afecta al resto si se mantienen las interfaces</td></tr>
+<tr><td><b>Promoción de estándares</b></td><td>Base de muchos protocolos; en la práctica se usa <b>TCP/IP</b></td></tr>
+</table></div>
+<h3>1.2 Capas OSI</h3>
+<div class="tw"><table><tr><th>Nivel</th><th>Capa</th><th>Función</th><th>PDU</th></tr>
+<tr><td><b>7</b></td><td><b>Aplicación</b></td><td>La más <b>cercana al usuario</b>: servicios de red a las aplicaciones (transferencia de archivos, correo, web). <b>No es la aplicación</b>, sino su interfaz</td><td>Datos</td></tr>
+<tr><td><b>6</b></td><td><b>Presentación</b></td><td><b>Representación de datos</b>: conversión de formatos, codificación de caracteres, <b>compresión y cifrado</b></td><td>Datos</td></tr>
+<tr><td><b>5</b></td><td><b>Sesión</b></td><td><b>Establece, mantiene y finaliza sesiones</b>; sincronización y control del diálogo (half/full duplex)</td><td>Datos</td></tr>
+<tr><td><b>4</b></td><td><b>Transporte</b></td><td>Comunicación <b>extremo a extremo</b>, fiable o no, entre aplicaciones: <b>segmentación, control de errores y de flujo, reensamblado</b></td><td>Segmento</td></tr>
+<tr><td><b>3</b></td><td><b>Red</b></td><td><b>Encaminamiento (routing)</b> entre redes distintas; <b>direccionamiento lógico</b> y selección de rutas</td><td>Paquete</td></tr>
+<tr><td><b>2</b></td><td><b>Enlace de datos</b></td><td>Comunicación <b>libre de errores entre nodos directamente conectados</b>; detecta/corrige errores, organiza bits en <b>tramas</b>, controla el acceso al medio. Subniveles: <b>MAC</b> (acceso al medio y direccionamiento físico) y <b>LLC</b> (Logical Link Control)</td><td>Trama</td></tr>
+<tr><td><b>1</b></td><td><b>Física</b></td><td>Transmisión de <b>bits sin estructura</b> por el medio: características <b>eléctricas, mecánicas</b>, conectores, voltajes, modulación, velocidad</td><td>Bit</td></tr>
+</table></div>
+<ul>
+<li>Cada capa <b>encapsula</b> los datos de la superior añadiendo su <b>cabecera</b> → <b>PDU</b> (Protocol Data Unit).</li>
+</ul>
+<h3>1.2.1 Comunicación entre capas. Servicios e interfaces</h3>
+<ul>
+<li><b>Interfaz</b>: punto de unión entre dos capas consecutivas (se piden funciones sin conocer la implementación).</li>
+</ul>
+<div class="tw"><table><tr><th>Primitiva de servicio</th><th>Significado</th></tr>
+<tr><td><b>Request</b></td><td>La capa <b>superior solicita</b> un servicio</td></tr>
+<tr><td><b>Indication</b></td><td>La capa <b>inferior notifica</b> un evento a la superior</td></tr>
+<tr><td><b>Response</b></td><td>La capa superior <b>responde</b> a un evento indicado</td></tr>
+<tr><td><b>Confirm</b></td><td>La capa inferior <b>confirma</b> la finalización del servicio</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Unidad</th><th>Definición</th></tr>
+<tr><td><b>SDU</b> (Service Data Unit)</td><td>Datos que una capa <b>recibe de la superior</b></td></tr>
+<tr><td><b>PDU</b> (Protocol Data Unit)</td><td>Unidad que una capa <b>transmite a su homóloga remota</b>: <b>SDU + cabecera propia</b></td></tr>
+<tr><td><b>ICI</b> (Interface Control Information)</td><td>Información adicional (opciones, parámetros) que viaja junto a la SDU</td></tr>
+</table></div>
+<ul>
+<li><b>SDU(n) = PDU(n+1)</b> · <b>PDU(n) = SDU(n) + cabecera del protocolo de la capa n</b>.</li>
+<li><b>Comunicación entre sistemas</b>: lógicamente, cada capa sólo "ve" a su par remoto; el intercambio real baja por todas las capas inferiores. En el <b>emisor</b> se <b>encapsula</b> (cabeceras, a veces cola) hasta convertirse en señales físicas; en el <b>receptor</b> se <b>desencapsula</b>: cada capa lee y elimina su cabecera.</li>
+</ul>
+<h2 id="s1">2. Modelo TCP/IP</h2>
+<ul>
+<li>También <b>modelo DoD</b> (Department of Defense); años <b>70</b>, proyecto <b>ARPANET</b>. No es puramente teórico: surgió <b>junto a la implementación real</b> de sus protocolos.</li>
+</ul>
+<h3>2.1 Características generales</h3>
+<div class="tw"><table><tr><th>Característica</th><th>Detalle</th></tr>
+<tr><td><b>Enfoque práctico</b></td><td>Protocolos reales (IP, TCP, UDP…)</td></tr>
+<tr><td><b>Menos capas</b></td><td><b>Cuatro</b> (algunos autores cinco)</td></tr>
+<tr><td><b>Independencia</b> de hardware y SO</td><td>Ethernet, Wi-Fi, etc.</td></tr>
+<tr><td><b>Robustez y escalabilidad</b></td><td>Redes grandes, heterogéneas, tolerantes a fallos; <b>"best effort"</b> en la capa de red (IP)</td></tr>
+<tr><td><b>Interconexión de redes</b></td><td>Direccionamiento lógico universal (<b>direcciones IP</b>)</td></tr>
+<tr><td><b>Base de Internet</b></td><td>Web, correo, DNS… sobre TCP/IP</td></tr>
+</table></div>
+<h3>2.3 Comparativa OSI vs TCP/IP</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>OSI frente a TCP/IP</b></p>
+<div class="tw"><table><tr><th>Aspecto</th><th>OSI</th><th>TCP/IP</th></tr>
+<tr><td><b>Capas</b></td><td><b>Siete</b>: física, enlace, red, transporte, sesión, presentación, aplicación</td><td><b>Cuatro</b>: acceso a red, internet, transporte, aplicación</td></tr>
+<tr><td><b>Enfoque</b></td><td><b>Teórico y normativo</b>, diseñado <b>antes</b> de los protocolos</td><td><b>Práctico y funcional</b>, construido <b>junto con</b> sus protocolos</td></tr>
+<tr><td><b>Adopción</b></td><td>Poco uso como pila; valor como herramienta de estudio</td><td><b>Estándar de facto</b>, base de Internet</td></tr>
+</table></div>
+</div>
+<h3>2.4 Capas TCP/IP</h3>
+<div class="tw"><table><tr><th>Capa TCP/IP</th><th>Equivale en OSI</th><th>Funciones</th></tr>
+<tr><td><b>Aplicación</b></td><td>Aplicación + Presentación + Sesión</td><td>La más cercana al usuario; las aplicaciones usan la red de forma transparente</td></tr>
+<tr><td><b>Transporte</b></td><td>Transporte</td><td>Comunicación <b>extremo a extremo entre procesos</b>: fiabilidad, orden, control de flujo y errores, multiplexación; identifica aplicaciones por <b>puertos</b></td></tr>
+<tr><td><b>Internet</b></td><td>Red</td><td><b>Encaminamiento</b> de paquetes por múltiples redes; <b>fragmentación y reensamblado</b> IP</td></tr>
+<tr><td><b>Acceso a red</b> (interfaz de red)</td><td>Física + Enlace</td><td>Transmisión de bits, <b>tramas</b>, control de errores de enlace, acceso al medio, <b>direcciones MAC</b></td></tr>
+</table></div>
+<h2 id="s2">3. Protocolo IP</h2>
+<ul>
+<li><b>IP</b> (Internet Protocol): pilar de TCP/IP; <b>encamina paquetes</b> del origen al destino aunque estén en redes distintas. Versiones: <b>IPv4</b> (la más extendida) e <b>IPv6</b> (sucesor, resuelve el agotamiento de direcciones).</li>
+</ul>
+<div class="tw"><table><tr><th>Principio</th><th>Detalle</th></tr>
+<tr><td><b>Direccionamiento lógico</b></td><td>Dirección única: <b>32 bits</b> en IPv4, <b>128 bits</b> en IPv6</td></tr>
+<tr><td><b>No orientado a conexión</b></td><td>No establece ruta previa ni acuerda con el receptor; cada paquete es autónomo y puede tomar rutas distintas</td></tr>
+<tr><td><b>Best effort (no fiable)</b></td><td>No garantiza llegada, orden, ausencia de errores ni de duplicados (lo aporta <b>TCP</b>)</td></tr>
+<tr><td><b>Encapsulación</b></td><td>Añade la <b>cabecera IP</b> (origen, destino, TTL, protocolo) a los datos de TCP/UDP</td></tr>
+<tr><td><b>Fragmentación y reensamblado</b></td><td>Si el paquete supera la <b>MTU</b>; en <b>IPv4 puede fragmentar cualquier nodo</b>; en <b>IPv6 sólo el origen</b>. Tamaño máximo IPv4: 65.535 bytes</td></tr>
+<tr><td><b>Encaminamiento entre redes</b></td><td>Interconexión de redes heterogéneas a través de routers</td></tr>
+</table></div>
+<h3>3.1 IPv4</h3>
+<ul>
+<li>Especificado en la <b>RFC 791</b>.</li>
+</ul>
+<h3>3.1.1 Características principales</h3>
+<ul>
+<li><b>32 bits</b> → 2³² direcciones (~<b>4.294 millones</b>); 4 octetos decimales separados por puntos (0-255), p. ej. 192.168.1.1.</li>
+<li>Dos partes: <b>red</b> y <b>host</b>. La <b>máscara de red</b> indica qué bits son de red (p. ej. <b>/24</b> = 24 bits de red).</li>
+<li>Campo <b>Protocol</b>: protocolo superior (<b>TCP = 6, UDP = 17, ICMP = 1</b>).</li>
+<li><b>QoS básico</b>: campos <b>DSCP y ECN</b>.</li>
+</ul>
+<h3>3.1.2 Cabecera IP</h3>
+<ul>
+<li>Longitud variable: <b>mínimo 20 bytes</b>, hasta <b>60 bytes</b> con opciones.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Campos de la cabecera IPv4</b></p>
+<div class="tw"><table><tr><th>Campo</th><th>Tamaño</th><th>Función</th></tr>
+<tr><td><b>Version</b></td><td>4 bits</td><td>Versión; en IPv4 = <b>4</b></td></tr>
+<tr><td><b>IHL</b> (Internet Header Length)</td><td>4 bits</td><td>Longitud de la cabecera en <b>palabras de 32 bits</b>; mínimo <b>5</b> (20 bytes), máximo <b>15</b> (60 bytes)</td></tr>
+<tr><td><b>Service Type</b></td><td>8 bits</td><td><b>DSCP</b> (6 bits, políticas de QoS) y <b>ECN</b> (2 bits, congestión)</td></tr>
+<tr><td><b>Total Length</b></td><td>16 bits</td><td>Longitud total (cabecera + datos) en bytes; máximo <b>65.535</b></td></tr>
+<tr><td><b>Identification</b></td><td>16 bits</td><td>Identificador para <b>agrupar los fragmentos</b> de un datagrama</td></tr>
+<tr><td><b>Flags</b></td><td>3 bits</td><td><b>DF</b> (Don't Fragment) y <b>MF</b> (More Fragments: 0 = último fragmento, 1 = hay más)</td></tr>
+<tr><td><b>Fragment Offset</b></td><td>13 bits</td><td>Posición del fragmento respecto al original, en <b>bloques de 8 bytes</b></td></tr>
+<tr><td><b>TTL</b> (Time To Live)</td><td>8 bits</td><td><b>Máximo de saltos</b>; se decrementa en cada router y al llegar a <b>0</b> se descarta (aviso con ICMP)</td></tr>
+<tr><td><b>Protocol</b></td><td>8 bits</td><td>Protocolo de la capa superior</td></tr>
+<tr><td><b>Header Checksum</b></td><td>16 bits</td><td>Verificación de errores <b>de la cabecera</b></td></tr>
+<tr><td><b>Source Address</b></td><td>32 bits</td><td>IP del emisor</td></tr>
+<tr><td><b>Destination Address</b></td><td>32 bits</td><td>IP del receptor</td></tr>
+<tr><td><b>Options</b></td><td>Variable</td><td>Opcional (trazado de ruta, seguridad); poco usado</td></tr>
+</table></div>
+</div>
+<h3>3.1.3 Direccionamiento classful</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Direccionamiento classful</b></p>
+<p>Esquema <b>original</b> de IPv4: divide el espacio en <b>clases</b> con tamaño fijo de red y host. Fácil de implementar pero <b>poco eficiente</b> en el uso del espacio.</p>
+</div>
+<div class="tw"><table><tr><th>Clase</th><th>Primer octeto</th><th>Rango</th><th>Bits red / host</th><th>Nº de redes</th><th>Nº de hosts</th><th>Uso</th></tr>
+<tr><td><b>A</b></td><td><b>0 – 127</b></td><td>0.0.0.0 a 127.255.255.255</td><td><b>8 / 24</b></td><td>128 (menos reservadas)</td><td>~<b>16 millones</b></td><td>Grandes redes</td></tr>
+<tr><td><b>B</b></td><td><b>128 – 191</b></td><td>128.0.0.0 a 191.255.255.255</td><td><b>16 / 16</b></td><td>~16.000</td><td>~<b>65.000</b></td><td>Redes medianas</td></tr>
+<tr><td><b>C</b></td><td><b>192 – 223</b></td><td>192.0.0.0 a 223.255.255.255</td><td><b>24 / 8</b></td><td>~2 millones</td><td><b>254</b></td><td>Redes pequeñas</td></tr>
+<tr><td><b>D</b></td><td><b>224 – 239</b></td><td>224.0.0.0 a 239.255.255.255</td><td>No aplica</td><td>No aplica</td><td>No aplica</td><td><b>Multicast</b></td></tr>
+<tr><td><b>E</b></td><td><b>240 – 255</b></td><td>240.0.0.0 a 255.255.255.255</td><td>Reservado</td><td>Reservado</td><td>Reservado</td><td>Investigación, futuro</td></tr>
+</table></div>
+<ul>
+<li><b>127.0.0.0/8</b> (127.0.0.1): <b>loopback</b> (la propia máquina). <b>0.0.0.0</b>: dirección <b>no especificada</b> (p. ej. antes de recibir IP por DHCP).</li>
+<li>Hosts por red = direcciones disponibles <b>− 2</b>: la <b>primera</b> (dirección de <b>red</b>) y la <b>última</b> (<b>broadcast</b>).</li>
+</ul>
+<h3>3.1.4 Direccionamiento classless. Subnetting</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>CIDR (Classless Inter-Domain Routing)</b></p>
+<p>Introducido en <b>1993</b> (<b>RFC 1518 y 1519</b>) para <b>reemplazar el direccionamiento classful</b>: mejora la eficiencia del espacio de direcciones y <b>reduce las tablas de enrutamiento</b>.</p>
+</div>
+<ul>
+<li>CIDR usa <b>máscaras de subred de longitud variable (VLSM)</b>; permite crear <b>subredes</b> con los bits de la izquierda de la parte host. <b>Notación de barra</b>: bits en 1 de la máscara = parte de red.</li>
+</ul>
+<div class="tw"><table><tr><th>Ejemplo</th><th>Red / host</th><th>Máscara</th></tr>
+<tr><td><b>192.168.1.0/24</b></td><td>24 / 8</td><td>255.255.255.0</td></tr>
+<tr><td><b>10.0.0.0/8</b></td><td>8 / 24</td><td>255.0.0.0</td></tr>
+<tr><td><b>172.16.5.0/23</b></td><td>23 / 9 → <b>510 hosts</b></td><td><b>255.255.254.0</b></td></tr>
+</table></div>
+<ul>
+<li><b>Supernetting</b>: varias redes contiguas se anuncian como <b>una única entrada</b> en las tablas de enrutamiento.</li>
+<li><b>Ejemplo práctico: 10.50.5.0/22</b> → máscara <b>255.255.252.0</b> · dirección de red real <b>10.50.4.0</b> (host a 0; tercer octeto 0000 0100) · rango de hosts <b>10.50.4.1 a 10.50.7.254</b> · broadcast <b>10.50.7.255</b> (host a 1) · <b>1024</b> direcciones → <b>1022 utilizables</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Rangos reservados (RFC 1918 y otros)</b></p>
+<div class="tw"><table><tr><th>Rango</th><th>Uso</th></tr>
+<tr><td><b>10.0.0.0 – 10.255.255.255</b></td><td>Direcciones <b>privadas</b></td></tr>
+<tr><td><b>172.16.0.0 – 172.31.255.255</b></td><td>Direcciones <b>privadas</b></td></tr>
+<tr><td><b>192.168.0.0 – 192.168.255.255</b></td><td>Direcciones <b>privadas</b></td></tr>
+<tr><td><b>127.0.0.0/8</b></td><td><b>Loopback</b></td></tr>
+<tr><td><b>169.254.0.0/16</b></td><td><b>APIPA</b> (autoasignación si falla DHCP)</td></tr>
+<tr><td><b>224.0.0.0/4</b></td><td><b>Multicast</b></td></tr>
+<tr><td><b>255.255.255.255/32</b></td><td><b>Broadcast limitado</b></td></tr>
+</table></div>
+</div>
+<h3>3.1.5 Asignación de IPs</h3>
+<ul>
+<li>A nivel global la coordina la <b>IANA</b> (Internet Assigned Numbers Authority), dependiente de <b>ICANN</b>, que delega bloques a cinco <b>RIR</b> (registros regionales), que los asignan a ISPs y organizaciones.</li>
+</ul>
+<div class="tw"><table><tr><th>RIR</th><th>Región</th></tr>
+<tr><td><b>AFRINIC</b></td><td>África</td></tr>
+<tr><td><b>ARIN</b></td><td>América del Norte, partes del Caribe</td></tr>
+<tr><td><b>APNIC</b></td><td>Asia-Pacífico</td></tr>
+<tr><td><b>LACNIC</b></td><td>América Latina y Caribe</td></tr>
+<tr><td><b>RIPE NCC</b></td><td>Europa, Oriente Medio, Asia Central</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Método</th><th>Descripción</th></tr>
+<tr><td><b>Estática</b></td><td>Configuración <b>manual</b>; servidores, routers, equipos con IP fija</td></tr>
+<tr><td><b>Dinámica (DHCP)</b></td><td>Dirección <b>temporal automática</b> al conectarse; la más común</td></tr>
+<tr><td><b>Autoasignación (APIPA / Link-Local)</b></td><td>Sin DHCP ni IP estática, el host se asigna una IP en <b>169.254.0.0/16</b></td></tr>
+</table></div>
+<h3>3.1.6 NAT</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>NAT (Network Address Translation / IP Masquerading)</b></p>
+<p>Mecanismo que <b>modifica las direcciones IP</b> de los encabezados al atravesar un router. Permite que varios dispositivos de una <b>red privada</b> accedan a Internet compartiendo <b>una única IP pública</b>. Se usa por la <b>escasez de direcciones IPv4</b> y por <b>seguridad</b>.</p>
+</div>
+<ul>
+<li><b>Funcionamiento</b>: (1) el router NAT sustituye la <b>IP origen privada</b> por su <b>IP pública</b> → (2) guarda una <b>tabla de traducción</b> IP/puerto interno ↔ externo → (3) en la respuesta usa la tabla para reenviar al dispositivo correcto.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de NAT</th><th>Descripción</th></tr>
+<tr><td><b>Estático</b></td><td><b>Siempre la misma</b> IP privada ↔ IP pública; para que un dispositivo interno sea <b>accesible desde fuera</b></td></tr>
+<tr><td><b>Dinámico</b></td><td>Asigna IP públicas de un <b>grupo</b> según demanda; requiere varias IP públicas libres</td></tr>
+<tr><td><b>PAT</b> (Port Address Translation, NAT Overload o NAPT)</td><td>Varios dispositivos comparten <b>una IP pública</b> diferenciándose por el <b>puerto</b>; <b>el más común</b> en hogares y pymes</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ejemplo PAT: dispositivo interno</th><th>Puerto origen</th><th>NAT asigna IP/puerto externo</th></tr>
+<tr><td>192.168.1.2</td><td>54321</td><td>80.25.10.1:1025</td></tr>
+<tr><td>192.168.1.3</td><td>54322</td><td>80.25.10.1:1026</td></tr>
+</table></div>
+<ul>
+<li>Herramientas relacionadas: <b>STUN</b> (conocer el tipo de NAT y la IP pública; P2P y VoIP) · <b>UPnP / NAT-PMP / PCP</b> (apertura automática de puertos).</li>
+</ul>
+<h3>3.2 IPv6</h3>
+<ul>
+<li>Evolución de IP desarrollada por el <b>IETF</b> a finales de los 90, ante el agotamiento de IPv4. Especificado en la <b>RFC 2460</b>; direccionamiento en la <b>RFC 2373</b>.</li>
+</ul>
+<h3>3.2.1 Características</h3>
+<div class="tw"><table><tr><th>Característica</th><th>Detalle</th></tr>
+<tr><td><b>Direcciones de 128 bits</b></td><td>3,4 × 10³⁸ direcciones</td></tr>
+<tr><td><b>Formato hexadecimal</b></td><td><b>8 bloques de 4 dígitos hex</b> separados por dos puntos</td></tr>
+<tr><td><b>Cabecera simplificada</b></td><td>Más simple y eficiente, menos carga en routers</td></tr>
+<tr><td><b>Autoconfiguración (SLAAC)</b></td><td>Obtiene dirección <b>sin DHCP</b>, con información del router local</td></tr>
+<tr><td><b>Fragmentación sólo en el origen</b></td><td>Los routers intermedios no fragmentan</td></tr>
+<tr><td><b>Extensibilidad</b></td><td><b>Cabeceras de extensión</b> (seguridad, movilidad)</td></tr>
+<tr><td><b>Sin broadcast</b></td><td>Se sustituye por <b>multicast y anycast</b></td></tr>
+<tr><td><b>IPsec integrado</b></td><td>Diseñado con IPsec obligatorio de serie (opcional en la práctica)</td></tr>
+<tr><td><b>Mejor QoS</b></td><td>Campos <b>Traffic Class y Flow Label</b></td></tr>
+<tr><td><b>Jumbogramas</b></td><td>Paquetes <b>superiores a 65.535 bytes</b></td></tr>
+</table></div>
+<h3>3.2.2 Diferencias con IPv4</h3>
+<div class="tw"><table><tr><th>Característica</th><th>IPv4</th><th>IPv6</th></tr>
+<tr><td><b>Longitud de dirección</b></td><td>32 bits</td><td><b>128 bits</b></td></tr>
+<tr><td><b>Formato</b></td><td>Decimal, 4 octetos con puntos</td><td>Hexadecimal, 8 bloques con dos puntos</td></tr>
+<tr><td><b>Nº de direcciones</b></td><td>≈ 4.300 millones</td><td>≈ 3,4 × 10³⁸</td></tr>
+<tr><td><b>Cabecera</b></td><td>Variable (<b>20–60 bytes</b>)</td><td><b>Fija (40 bytes)</b></td></tr>
+<tr><td><b>Fragmentación</b></td><td>Cualquier router</td><td><b>Sólo el nodo emisor</b></td></tr>
+<tr><td><b>Configuración automática</b></td><td>Opcional (DHCP o manual)</td><td>Incluida (<b>SLAAC</b>) y compatible con <b>DHCPv6</b></td></tr>
+<tr><td><b>Resolución de direcciones</b></td><td><b>ARP</b></td><td><b>NDP</b> (Neighbor Discovery Protocol)</td></tr>
+<tr><td><b>QoS</b></td><td>Limitado (DSCP, TOS)</td><td>Mejorado (Traffic Class, Flow Label)</td></tr>
+<tr><td><b>Broadcast</b></td><td>Utiliza broadcast</td><td><b>Eliminado</b> → multicast y anycast</td></tr>
+<tr><td><b>IPsec</b></td><td>Opcional</td><td>Integrado en el estándar</td></tr>
+<tr><td><b>NAT</b></td><td>Común y necesario</td><td><b>No necesario</b></td></tr>
+<tr><td><b>Compatibilidad</b></td><td>Ampliamente implantado</td><td><b>No compatible nativamente con IPv4</b></td></tr>
+<tr><td><b>Movilidad y extensiones</b></td><td>Limitado</td><td>Mejorada, extensible por cabeceras</td></tr>
+</table></div>
+<h3>3.2.3 Cabecera IPv6</h3>
+<ul>
+<li><b>Tamaño fijo de 40 bytes</b> (frente a 20–60 de IPv4).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Cabecera IPv6</b></p>
+<div class="tw"><table><tr><th>Campo</th><th>Longitud</th><th>Descripción</th></tr>
+<tr><td><b>Version</b></td><td>4 bits</td><td>Valor fijo <b>6</b></td></tr>
+<tr><td><b>Traffic Class</b></td><td>8 bits</td><td><b>Prioridad</b> (QoS); equivale a DSCP/ECN</td></tr>
+<tr><td><b>Flow Label</b></td><td><b>20 bits</b></td><td>Identifica <b>flujos</b> entre dos nodos para tratamiento especial (QoS, tiempo real)</td></tr>
+<tr><td><b>Payload Length</b></td><td>16 bits</td><td>Longitud del contenido (datos + cabeceras de extensión)</td></tr>
+<tr><td><b>Next Header</b></td><td>8 bits</td><td>Protocolo siguiente (TCP, UDP, ICMPv6 o cabecera de extensión)</td></tr>
+<tr><td><b>Hop Limit</b></td><td>8 bits</td><td>Máximo de saltos; equivale al <b>TTL</b> de IPv4</td></tr>
+<tr><td><b>Source Address</b></td><td><b>128 bits</b></td><td>IPv6 del emisor</td></tr>
+<tr><td><b>Destination Address</b></td><td><b>128 bits</b></td><td>IPv6 del receptor</td></tr>
+</table></div>
+</div>
+<ul>
+<li>Diferencias clave: <b>no tiene checksum, identificación, fragment offset ni flags</b>; la fragmentación es del <b>origen</b>; la información adicional va en <b>cabeceras de extensión</b>, sólo procesadas si es necesario.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Cabeceras de extensión IPv6</b></p>
+<p>Se <b>encadenan de forma ordenada</b> en lugar de una cabecera sobrecargada:</p>
+<div class="tw"><table><tr><th>Cabecera</th><th>Función</th></tr>
+<tr><td><b>Hop-by-Hop Options</b></td><td>Se analiza <b>en cada router</b> (única extensión no finalista)</td></tr>
+<tr><td><b>Routing</b></td><td>Especifica <b>rutas intermedias</b></td></tr>
+<tr><td><b>Fragment</b></td><td>Gestión de fragmentación (sólo origen)</td></tr>
+<tr><td><b>Destination Options</b></td><td>Datos para el <b>nodo destino</b></td></tr>
+<tr><td><b>Authentication Header (AH)</b> y <b>Encapsulating Security Payload (ESP)</b></td><td><b>IPsec</b></td></tr>
+</table></div>
+</div>
+<h3>3.2.4 Direcciones IPv6</h3>
+<ul>
+<li><b>128 bits en 8 bloques de 16 bits</b>, hexadecimales, separados por <code>:</code> (p. ej. <code>2001:0db8:0000:0000:0000:ff00:0042:8329</code>).</li>
+<li><b>Dos reglas de simplificación</b>: (1) <b>omitir ceros a la izquierda</b> de cada bloque (0042 → 42); (2) sustituir <b>una secuencia continua de bloques en cero por <code>::</code></b>, <b>sólo una vez por dirección</b> → <code>2001:db8::ff00:42:8329</code>. <b>Loopback</b>: <code>::1</code>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de direcciones IPv6</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Prefijo</th><th>Descripción</th></tr>
+<tr><td><b>Loopback</b></td><td><b>::1/128</b></td><td>Equivale a 127.0.0.1; el propio dispositivo</td></tr>
+<tr><td><b>Unspecified</b></td><td><b>::/128</b></td><td>No especificada (antes de obtener IP)</td></tr>
+<tr><td><b>Link-local unicast</b></td><td><b>FE80::/10</b></td><td>Válidas <b>sólo en el mismo enlace</b> (sin router)</td></tr>
+<tr><td><b>Unique-local unicast</b></td><td><b>FC00::/7</b></td><td>Equivalentes a las <b>privadas</b> de IPv4</td></tr>
+<tr><td><b>Global unicast</b></td><td><b>2000::/3</b></td><td><b>Enrutables públicamente</b> en Internet</td></tr>
+<tr><td><b>Multicast</b></td><td><b>FF00::/8</b></td><td>Varios destinatarios simultáneamente</td></tr>
+<tr><td><b>Anycast</b></td><td>Sin prefijo exclusivo</td><td>Misma dirección en varios nodos; <b>responde el más cercano</b></td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>IPv4 incrustadas</b>: <code>::FFFF:192.168.1.1</code> (pila mixta).</li>
+<li><b>Subnetting IPv6</b>: subredes habituales <b>/64</b> (RFC 4291): <b>64 bits de red</b> (routing prefix + subnet ID) + <b>64 bits de host</b> (interface ID, generado con <b>SLAAC</b>). Ej.: <code>2001:db8:abcd:0012::/64</code>. Prefijos más cortos (<b>/48, /56</b>) agrupan varias subredes (corporativo, ISP).</li>
+</ul>
+<h3>3.2.5 Convivencia con IPv4</h3>
+<div class="tw"><table><tr><th>Mecanismo</th><th>Descripción</th><th>Requiere ambas pilas</th></tr>
+<tr><td><b>Dual-stack</b></td><td>El host implementa <b>IPv4 e IPv6 en paralelo</b> y decide según el destino (p. ej. tras DNS)</td><td><b>Sí</b></td></tr>
+<tr><td><b>Tunelización</b></td><td><b>Encapsula IPv6 dentro de IPv4</b> para cruzar redes que no entienden IPv6</td><td>No</td></tr>
+<tr><td><b>Tunelización automática</b></td><td>Extremos detectados <b>dinámicamente</b>: <b>6to4</b> (2002::/16, protocolo <b>41</b>), <b>Teredo</b> (IPv6 sobre <b>UDP/IPv4</b>, atraviesa NAT), <b>ISATAP</b> (redes corporativas, direcciones FE80::5EFE:w.x.y.z)</td><td>No</td></tr>
+<tr><td><b>Tunelización manual (pseudoautomática)</b></td><td>Extremos IPv4 definidos <b>manualmente</b></td><td>No</td></tr>
+<tr><td><b>Traducción</b> (<b>NAT64, DNS64</b>)</td><td><b>NAT64</b>: host IPv6 accede a servidores IPv4 traduciendo direcciones y cabeceras en un gateway · <b>DNS64</b>: modifica respuestas DNS para dar direcciones IPv6 equivalentes</td><td>No</td></tr>
+</table></div>
+<h3>3.2.6 Correspondencia de protocolos con IPv4</h3>
+<div class="tw"><table><tr><th>Protocolo IPv4</th><th>RFC</th><th>Protocolo IPv6</th><th>RFC</th></tr>
+<tr><td><b>ICMP</b></td><td>792</td><td><b>ICMPv6</b></td><td>4443</td></tr>
+<tr><td><b>ARP</b></td><td>826</td><td><b>NDP</b> (Neighbour Discovery Protocol)</td><td>4861</td></tr>
+<tr><td><b>RARP</b></td><td>903</td><td><b>INDP</b> (Inverse NDP)</td><td>3122</td></tr>
+<tr><td><b>RIPv2</b></td><td>2453</td><td><b>RIPng</b></td><td>2080</td></tr>
+<tr><td><b>OSPFv2</b></td><td>2328</td><td><b>OSPF for IPv6</b></td><td>5340</td></tr>
+<tr><td><b>BGP4</b></td><td>4271</td><td><b>BGP4 Multiprotocolo</b></td><td>4760</td></tr>
+</table></div>
+<h2 id="s3">4. Enrutamiento</h2>
+<ul>
+<li><b>Enrutamiento</b>: determinar el camino de los paquetes entre origen y destino a través de redes interconectadas (factores: saltos, ancho de banda, congestión…). Lo hacen los <b>routers</b>, que miran la IP de destino y deciden la interfaz con su <b>tabla de enrutamiento</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>Estático</b></td><td>Rutas <b>manuales</b> del administrador; sencillo y predecible, poco flexible</td></tr>
+<tr><td><b>Dinámico</b></td><td>Los routers <b>intercambian información</b> con protocolos de enrutamiento y actualizan tablas solos; más escalable y adaptable, pero con más recursos y configuración</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Componente</th><th>Definición</th></tr>
+<tr><td><b>Tabla de enrutamiento</b></td><td>Prefijo de red, <b>next hop</b>, interfaz de salida y <b>métrica</b></td></tr>
+<tr><td><b>Next hop</b></td><td>IP del <b>router siguiente</b> al que enviar el paquete</td></tr>
+<tr><td><b>Métrica</b></td><td>Valor numérico del <b>coste</b> de la ruta (<b>menor es mejor</b>): distancia, retardo, ancho de banda</td></tr>
+<tr><td><b>Protocolo de encaminamiento</b></td><td>Reglas con las que el router construye sus tablas y se comunica con otros</td></tr>
+<tr><td><b>Algoritmo de encaminamiento</b></td><td>Cómo decide por dónde enviar: <b>Vector Distancia</b> y <b>Estado de enlace</b></td></tr>
+</table></div>
+<h3>4.1 Vector distancia</h3>
+<ul>
+<li>Cada router informa a sus vecinos de <b>qué redes conoce y a cuántos saltos</b>. Proceso:</li>
+</ul>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1</b></td><td><b>Inicializa su tabla</b> con las redes directamente conectadas</td></tr>
+<tr><td><b>2</b></td><td><b>Envía periódicamente su tabla</b> a los vecinos (redes y saltos)</td></tr>
+<tr><td><b>3</b></td><td>Recibe las tablas vecinas, <b>suma 1 a cada métrica</b> y actualiza si hay ruta más corta o es la única</td></tr>
+<tr><td><b>4</b></td><td>Se <b>repite continuamente</b>, aunque no haya cambios</td></tr>
+</table></div>
+<ul>
+<li><b>Métrica típica: número de saltos (hops)</b>; se fija un máximo para evitar bucles infinitos.</li>
+</ul>
+<div class="tw"><table><tr><th>Inconveniente</th><th>Detalle</th></tr>
+<tr><td><b>Convergencia lenta</b></td><td>Tardan en notar y propagar cambios (caída de enlace)</td></tr>
+<tr><td><b>Posibles bucles</b></td><td>Información lenta o errónea hace circular paquetes sin llegar</td></tr>
+<tr><td><b>Poca escalabilidad</b></td><td>Métrica limitada y sin visión global</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Prevención de bucles</th><th>Funcionamiento</th></tr>
+<tr><td><b>Split Horizon</b></td><td><b>No anunciar</b> una ruta por la <b>misma interfaz</b> por la que se recibió</td></tr>
+<tr><td><b>Poison Reverse</b></td><td>Se anuncia la ruta como <b>inalcanzable (métrica infinita)</b></td></tr>
+<tr><td><b>Hold-down timers</b></td><td><b>Retrasan la aceptación</b> de nuevas rutas tras un fallo</td></tr>
+</table></div>
+<ul>
+<li>Protocolos: <b>RIP</b> (Routing Information Protocol; usa <b>UDP</b>, <b>límite de 15 saltos</b>; <b>RIPng</b> para IPv6) · <b>EIGRP</b> (<b>Cisco</b>, <b>híbrido</b>: vector distancia + estado de enlace, métricas múltiples).</li>
+</ul>
+<h3>4.2 Estado de enlace (link-state)</h3>
+<ul>
+<li>Visión más precisa y actualizada, mejor <b>escalabilidad, convergencia y resistencia a errores</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1. Descubrimiento de vecinos</b></td><td>Mensajes específicos (paquetes <b>Hello</b> en OSPF)</td></tr>
+<tr><td><b>2. Medición del estado de enlaces</b></td><td>Si está activo, su coste</td></tr>
+<tr><td><b>3. Difusión</b></td><td>El router difunde <b>su propia información de enlaces</b> (no toda la tabla) a todo el <b>sistema autónomo</b> mediante <b>LSA</b> (Link State Advertisements)</td></tr>
+<tr><td><b>4. Base de datos topológica</b></td><td>Todos construyen un <b>mapa completo</b> de la red</td></tr>
+<tr><td><b>5. Cálculo de rutas</b></td><td>Cada router calcula con el <b>algoritmo de Dijkstra (Shortest Path First)</b></td></tr>
+</table></div>
+<ul>
+<li>Ventajas: <b>convergencia rápida</b>, menos bucles, escalable. Inconvenientes: <b>más CPU y memoria</b>, descubrimiento inicial complicado.</li>
+</ul>
+<div class="tw"><table><tr><th>Protocolo</th><th>Características</th></tr>
+<tr><td><b>OSPF</b> (Open Shortest Path First)</td><td>Muy usado en IP; <b>áreas jerárquicas</b>; métrica <b>coste</b> (según ancho de banda)</td></tr>
+<tr><td><b>IS-IS</b> (Intermediate System to Intermediate System)</td><td>Similar a OSPF, diseño más general (no limitado a IP); <b>grandes operadores</b></td></tr>
+</table></div>
+<ul>
+<li>Ambos usan <b>LSA y Dijkstra</b>.</li>
+</ul>
+<h3>4.3 Protocolos de enrutamiento interior (IGP)</h3>
+<ul>
+<li>Dentro de un <b>mismo sistema autónomo (AS)</b>: red bajo control administrativo único.</li>
+</ul>
+<div class="tw"><table><tr><th>Protocolo</th><th>Tipo</th><th>Características</th></tr>
+<tr><td><b>RIP</b></td><td>Vector distancia</td><td>Simple; métrica <b>saltos (máx. 15)</b>; <b>lento en converger</b></td></tr>
+<tr><td><b>OSPF</b></td><td>Estado de enlace</td><td><b>Rápido, jerárquico, escalable</b>; métrica de <b>coste</b></td></tr>
+<tr><td><b>IGRP</b></td><td>Vector distancia</td><td>Se basa en RIP</td></tr>
+<tr><td><b>EIGRP</b></td><td><b>Híbrido</b></td><td><b>Propietario de Cisco</b>: vector distancia + estado de enlace</td></tr>
+<tr><td><b>IS-IS</b></td><td>Estado de enlace</td><td>Muy escalable; grandes redes de operadores</td></tr>
+</table></div>
+<h3>4.4 Protocolos de enrutamiento exterior (EGP)</h3>
+<ul>
+<li>Interconectan <b>sistemas autónomos distintos</b> (proveedor-proveedor, proveedor-organización).</li>
+</ul>
+<div class="tw"><table><tr><th>Protocolo</th><th>Tipo</th><th>Características</th></tr>
+<tr><td><b>BGP</b> (Border Gateway Protocol)</td><td><b>Vector de ruta</b></td><td><b>Sostiene Internet</b>; <b>basado en políticas</b>, no busca la ruta más corta. <b>BGP4</b>: versión actual, <b>IPv4 e IPv6</b> (extensiones multiprotocolo)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Clasificación de los protocolos de enrutamiento dinámico</b></p>
+<div class="tw"><table><tr><th>Grupo</th><th>Subgrupo</th><th>Protocolos</th></tr>
+<tr><td><b>Gateway interior</b></td><td><b>Vector distancia</b></td><td><b>RIPv1 → RIPv2</b> · <b>IGRP → EIGRP</b></td></tr>
+<tr><td><b>Gateway interior</b></td><td><b>Estado de enlace</b></td><td><b>OSPF</b> · <b>IS-IS</b></td></tr>
+<tr><td><b>Gateway exterior</b></td><td>(vector de ruta)</td><td><b>BGP</b></td></tr>
+</table></div>
+</div>
+<h3>4.5 Comando route</h3>
+<ul>
+<li>Consulta y modifica la <b>tabla de enrutamiento IP</b> del SO; permite definir <b>rutas estáticas</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Acción</th><th>Windows (cmd)</th><th>Linux clásico (obsoleto)</th><th>Linux moderno (<b>ip route</b>)</th></tr>
+<tr><td><b>Mostrar tabla</b></td><td><code>route print</code></td><td><code>route -n</code> (numérico, más rápido)</td><td><code>ip route show</code></td></tr>
+<tr><td><b>Añadir ruta</b></td><td><code>route add &lt;red&gt; mask &lt;máscara&gt; &lt;gateway&gt; [metric &lt;valor&gt;] [if &lt;interfaz&gt;]</code></td><td><code>route add -net &lt;red&gt; netmask &lt;máscara&gt; gw &lt;gateway&gt;</code></td><td><code>ip route add &lt;red&gt;/&lt;prefijo&gt; via &lt;gateway&gt;</code></td></tr>
+<tr><td><b>Eliminar ruta</b></td><td><code>route delete &lt;red&gt;</code></td><td><code>route del -net &lt;red&gt; netmask &lt;máscara&gt;</code></td><td><code>ip route del &lt;red&gt;/&lt;prefijo&gt;</code></td></tr>
+<tr><td><b>Ruta permanente</b></td><td><code>route -p add 10.0.0.0 mask 255.0.0.0 192.168.1.254</code></td><td></td><td></td></tr>
+</table></div>
+<ul>
+<li>Ejemplos: <code>route add 192.168.2.0 mask 255.255.255.0 192.168.1.1</code> · <code>route add -net 10.1.0.0 netmask 255.255.0.0 gw 192.168.1.1</code> · <code>ip route add 192.168.10.0/24 via 192.168.1.1</code>.</li>
+</ul>
+<h2 id="s4">5. Otros protocolos TCP/IP</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Principales protocolos TCP/IP por capas</b></p>
+<div class="tw"><table><tr><th>Capa TCP/IP</th><th>Protocolos</th></tr>
+<tr><td><b>Aplicación</b></td><td><b>Sistema de nombres</b>: DNS · <b>Configuración de host</b>: BOOTP, DHCP · <b>Correo</b>: SMTP, POP, IMAP · <b>Transferencia de archivos</b>: FTP, TFTP · <b>Web</b>: HTTP</td></tr>
+<tr><td><b>Transporte</b></td><td><b>UDP, TCP</b></td></tr>
+<tr><td><b>Internet</b></td><td><b>IP, NAT</b> · Soporte de IP: <b>ICMP</b> · Enrutamiento: <b>OSPF, EIGRP</b></td></tr>
+<tr><td><b>Acceso a la red</b></td><td><b>ARP, PPP, Ethernet</b>, controladores de interfaz</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Protocolo</th><th>Descripción</th></tr>
+<tr><td><b>PPP</b> (Point-to-Point Protocol)</td><td><b>Nivel 2</b>: enlaces directos entre dos nodos por líneas serie (conexiones telefónicas); autenticación, compresión y encapsulación de varios protocolos de red. Autenticación: <b>PAP</b> (clave de acceso) y <b>CHAP</b> (desafío-respuesta). Cifrado: <b>ECP</b> (Encryption Control Protocol)</td></tr>
+<tr><td><b>ARP</b></td><td>Resuelve <b>IP → MAC</b> en una red local</td></tr>
+<tr><td><b>RARP</b></td><td><b>Obsoleto</b>: MAC → IP; sustituido por <b>BOOTP y DHCP</b></td></tr>
+<tr><td><b>ICMP</b></td><td>Auxiliar de IP: <b>notifica errores</b> y diagnósticos (<b>ping, traceroute</b>)</td></tr>
+<tr><td><b>UDP</b></td><td>Transporte <b>sin conexión ni garantía de entrega</b>, muy rápido (DNS, streaming, VoIP)</td></tr>
+<tr><td><b>TCP</b></td><td>Transporte <b>orientado a conexión, fiable</b>, con control de flujo y <b>entrega ordenada</b> (HTTP, SMTP, FTP)</td></tr>
+<tr><td><b>FTP</b></td><td>Transferencia de archivos sobre TCP; puertos <b>20 y 21</b></td></tr>
+<tr><td><b>SSL/TLS</b></td><td>Cifra comunicaciones a nivel de transporte; TLS reemplaza a SSL; base de HTTPS, FTPS</td></tr>
+<tr><td><b>DNS</b></td><td>Resuelve <b>nombres de dominio → IP</b></td></tr>
+<tr><td><b>DHCP</b></td><td>Asigna <b>IP y parámetros de red</b> automáticamente</td></tr>
+<tr><td><b>HTTP</b></td><td>Hipertexto, base de la web; <b>TCP puerto 80</b></td></tr>
+<tr><td><b>HTTPS</b></td><td>HTTP sobre <b>TLS</b>; <b>puerto 443</b></td></tr>
+<tr><td><b>POP3</b></td><td>Recibir correo: <b>descarga y borra</b> del servidor por defecto</td></tr>
+<tr><td><b>IMAP</b></td><td>Acceso al correo <b>manteniéndolo en el servidor</b>; sincroniza varios dispositivos</td></tr>
+<tr><td><b>SMTP</b></td><td><b>Envío</b> de correo entre servidores; TCP <b>25 o 587</b></td></tr>
+<tr><td><b>SNMP</b></td><td>Monitorización y gestión remota de dispositivos de red</td></tr>
+<tr><td><b>SSH</b></td><td>Acceso remoto <b>seguro</b>; sustituye a Telnet</td></tr>
+<tr><td><b>Telnet</b></td><td>Acceso remoto en modo texto <b>sin cifrado</b>; obsoleto</td></tr>
+<tr><td><b>TFTP</b></td><td>Transferencia simple <b>sin autenticación ni cifrado</b>; redes locales, tareas automatizadas</td></tr>
+<tr><td><b>LDAP</b></td><td>Acceso y gestión de <b>servicios de directorio</b> (usuarios, grupos, políticas)</td></tr>
+<tr><td><b>CMIP</b></td><td>Alternativa a SNMP definida por <b>OSI</b>; más complejo y poco implementado</td></tr>
+<tr><td><b>XMPP</b></td><td>Protocolo abierto de <b>mensajería instantánea</b>, notificaciones y presencia (Jabber, Google Talk)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Resumen de protocolos, puertos y capa</b></p>
+<div class="tw"><table><tr><th>Protocolo</th><th>Puerto(s)</th><th>Capa</th></tr>
+<tr><td><b>PPP</b></td><td>-</td><td>Enlace de datos</td></tr>
+<tr><td><b>ARP</b></td><td>-</td><td>Enlace de datos</td></tr>
+<tr><td><b>RARP</b></td><td>-</td><td>Enlace de datos</td></tr>
+<tr><td><b>ICMP</b></td><td>-</td><td><b>Red</b></td></tr>
+<tr><td><b>UDP</b></td><td>-</td><td><b>Transporte</b></td></tr>
+<tr><td><b>TCP</b></td><td>-</td><td><b>Transporte</b></td></tr>
+<tr><td><b>FTP</b></td><td><b>20 (datos), 21 (control)</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>SSL/TLS</b></td><td><b>443 (HTTPS), 465 (SMTPS), 993 (IMAPS)</b></td><td><b>Transporte</b></td></tr>
+<tr><td><b>DNS</b></td><td><b>53</b> (UDP y TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>DHCP</b></td><td><b>67 (servidor), 68 (cliente)</b> de UDP</td><td>Aplicación</td></tr>
+<tr><td><b>HTTP</b></td><td><b>80</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>HTTPS</b></td><td><b>443</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>POP3</b></td><td><b>110</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>POP3S</b></td><td><b>995</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>IMAP</b></td><td><b>143</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>IMAPS</b></td><td><b>993</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>SMTP</b></td><td><b>25 / 587 / 465</b> (TCP)</td><td>Aplicación</td></tr>
+<tr><td><b>SNMP</b></td><td><b>161</b> (consulta, UDP), <b>162</b> (traps, TCP y UDP)</td><td>Aplicación</td></tr>
+<tr><td><b>SSH</b></td><td><b>22</b> (TCP y UDP)</td><td>Aplicación</td></tr>
+<tr><td><b>TELNET</b></td><td><b>23</b> (TCP)</td><td>Aplicación</td></tr>
+</table></div>
+</div>
+<div class="pn"><a href="b4t6.html">← 4.6</a><a href="b4t8.html">4.8 →</a></div></main></div><script src="../app.js"></script></body></html>

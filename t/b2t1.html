@@ -1,0 +1,503 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 2 · Tema 1 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción a la informática</a><a href="#s1">2. Representación de la información</a><a href="#s2">3. Sistemas de información (SI)</a><a href="#s3">4. Arquitectura de ordenadores</a><a href="#s4">5. Componentes internos de los equipos microinformáticos</a></aside>
+<main class="doc" data-key="b2t1"><div class="crumb">Bloque 2 · Tema 1</div><h1>Informática básica, representación de la información, arquitectura y componentes de equipos microinformáticos</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (25)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque2_Tema1.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque2_Tema1.pdf">PDF móvil</a><a class="chip pr" href="../practicas.html#conv">🧪 Prácticas relacionadas</a></div>
+<h2 id="s0">1. Introducción a la informática</h2>
+<ul>
+<li><b>Informática</b> = <b>información + automática</b>: ciencia del <b>tratamiento automático de la información</b> con sistemas computacionales (algoritmos, <b>software</b> y <b>hardware</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Objetivo</th><th>Idea</th></tr>
+<tr><td><b>Procesamiento eficiente</b></td><td>Convertir datos en <b>información útil</b></td></tr>
+<tr><td><b>Automatización</b></td><td>Ejecutar tareas repetitivas o complejas, <b>reduciendo errores humanos</b></td></tr>
+<tr><td><b>Optimización</b></td><td>Menos tiempo, costes y recursos</td></tr>
+<tr><td><b>Comunicación</b></td><td>Intercambio de datos entre usuarios, sistemas y organizaciones</td></tr>
+<tr><td><b>Almacenamiento y recuperación</b></td><td>Datos disponibles con <b>integridad, seguridad y eficiencia</b></td></tr>
+</table></div>
+<h3>1.1 Generaciones de ordenadores</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Primera generación (1940-1956): válvulas de vacío</b></p>
+<p><b>Tubos de vacío</b> y <b>tarjetas perforadas</b> para entrada/salida. Muy voluminosos, costosos y de mantenimiento complejo. Programación en <b>lenguaje máquina</b>. Ejemplo: <b>ENIAC</b>, primer ordenador electrónico de propósito general.</p>
+</div>
+<div class="tw"><table><tr><th>Generación</th><th>Tecnología</th><th>Rasgos</th></tr>
+<tr><td><b>2.ª (1956-1964)</b></td><td><b>Transistores</b></td><td>Más fiabilidad, menos tamaño y consumo; primeros <b>lenguajes de alto nivel</b> (<b>COBOL, FORTRAN</b>); almacenamiento magnético (cintas y discos)</td></tr>
+<tr><td><b>3.ª (1964-1971)</b></td><td><b>Circuitos integrados</b></td><td>Varios componentes en una pastilla de silicio; <b>sistemas operativos</b> y <b>multiprogramación</b></td></tr>
+<tr><td><b>4.ª (1971-presente)</b></td><td><b>Microprocesadores</b></td><td>CPU en un solo chip; nace el <b>PC</b>; software comercial, sistemas gráficos y redes</td></tr>
+<tr><td><b>5.ª (actualidad)</b></td><td><b>Inteligencia artificial</b></td><td>Aprendizaje automático, <b>IoT</b>, <b>computación en la nube</b>, realidad aumentada, computación <b>cuántica</b>, interfaces cerebro-máquina</td></tr>
+</table></div>
+<h2 id="s1">2. Representación de la información</h2>
+<ul>
+<li><b>Bit</b> (binary digit): unidad básica, estados <b>0 o 1</b>. <b>8 bits = 1 byte</b> = <b>256 valores</b> (0 a 255).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Unidades de información</b></p>
+<div class="tw"><table><tr><th>Unidad</th><th>Equivalencia</th></tr>
+<tr><td><b>Bit (b)</b></td><td><b>1/8 de byte</b></td></tr>
+<tr><td><b>Byte (B)</b></td><td><b>8 bits</b></td></tr>
+<tr><td><b>Kilobyte (KB)</b></td><td><b>1.024 B</b></td></tr>
+<tr><td><b>Megabyte (MB)</b></td><td><b>1.024 KB</b></td></tr>
+<tr><td><b>Gigabyte (GB)</b></td><td><b>1.024 MB</b></td></tr>
+<tr><td><b>Terabyte (TB)</b></td><td><b>1.024 GB</b></td></tr>
+<tr><td><b>Petabyte (PB)</b></td><td><b>1.024 TB</b></td></tr>
+<tr><td><b>Exabyte (EB)</b></td><td><b>1.024 PB</b></td></tr>
+<tr><td><b>Zettabyte (ZB)</b></td><td><b>1.024 EB</b></td></tr>
+<tr><td><b>Yottabyte (YB)</b></td><td><b>1.024 ZB</b></td></tr>
+</table></div>
+</div>
+<h3>2.1 Sistemas de numeración</h3>
+<div class="tw"><table><tr><th>Sistema</th><th>Base</th><th>Dígitos</th><th>Uso</th></tr>
+<tr><td><b>Decimal</b></td><td><b>10</b></td><td>0-9</td><td>Humano; cada posición = potencia de 10</td></tr>
+<tr><td><b>Binario</b></td><td><b>2</b></td><td><b>0 y 1</b></td><td><b>Sistema interno</b> de los ordenadores</td></tr>
+<tr><td><b>Octal</b></td><td><b>8</b></td><td>0-7</td><td>Históricamente en lenguajes y sistemas <b>UNIX</b></td></tr>
+<tr><td><b>Hexadecimal</b></td><td><b>16</b></td><td>0-9 y <b>A (10) a F (15)</b></td><td>Programación, <b>direcciones de memoria</b>, <b>colores web</b>, depuración</td></tr>
+</table></div>
+<ul>
+<li><b>Decimal → binario</b>: <b>divisiones sucesivas entre 2</b> y leer los <b>restos de abajo arriba</b> (13 → <b>1101</b>).</li>
+<li><b>Binario → decimal</b>: multiplicar cada bit por la <b>potencia de 2</b> de su posición (desde 0 a la derecha) y sumar (1101 = 8+4+0+1 = <b>13</b>).</li>
+</ul>
+<h3>2.2 Codificación de caracteres</h3>
+<div class="tw"><table><tr><th>Código</th><th>Características</th></tr>
+<tr><td><b>ASCII</b></td><td><b>128 caracteres</b> (letras, dígitos, puntuación, control); versión extendida <b>ASCII-8 = 256</b></td></tr>
+<tr><td><b>Unicode</b></td><td>Estándar universal con <b>más de 143.000 caracteres</b>, emojis incluidos</td></tr>
+<tr><td><b>UTF-8</b></td><td><b>1 a 4 bytes</b> (variable); <b>compatible con ASCII</b>; muy usado en la <b>web</b></td></tr>
+<tr><td><b>UTF-16</b></td><td><b>2 o 4 bytes</b>; común en <b>Windows</b></td></tr>
+<tr><td><b>UTF-32</b></td><td><b>Siempre 4 bytes</b>; poco eficiente en almacenamiento</td></tr>
+<tr><td><b>ISO/IEC 8859</b></td><td>Alfabetos <b>europeos</b></td></tr>
+<tr><td><b>EBCDIC</b></td><td><b>Mainframes de IBM</b></td></tr>
+</table></div>
+<h3>2.3 Imágenes, sonido y vídeo</h3>
+<div class="tw"><table><tr><th>Tipo de imagen</th><th>Características</th></tr>
+<tr><td><b>Mapa de bits (bitmap, rasterizada)</b></td><td><b>Matriz de píxeles</b>; la <b>resolución</b> = anchura × altura; <b>profundidad de color</b>: <b>8 bits = 256 colores</b>, <b>24 bits = color verdadero</b> (8 por canal RGB), <b>32 bits = con canal alfa</b> (transparencia). <b>Se pixelan</b> al ampliar</td></tr>
+<tr><td><b>Vectorial</b></td><td><b>Líneas, curvas y polígonos</b> definidos por fórmulas; <b>escalables sin pérdida</b>; ideales para logotipos, diagramas e iconos; no adecuadas para fotografías. Formatos: <b>SVG</b> (XML, estándar web), <b>EPS</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Formatos de imagen</b></p>
+<div class="tw"><table><tr><th>Formato</th><th>Compresión</th><th>Transparencia</th><th>Calidad</th><th>Tamaño</th><th>Uso</th></tr>
+<tr><td><b>BMP</b></td><td><b>Sin compresión</b></td><td>No</td><td>Muy alta</td><td>Muy grande</td><td>Edición sin pérdida, imagen base</td></tr>
+<tr><td><b>JPEG</b></td><td><b>Con pérdida</b> (ajustable)</td><td><b>No</b></td><td>Buena (puede perder detalles)</td><td>Reducido</td><td><b>Fotografías</b> e imágenes web; millones de colores</td></tr>
+<tr><td><b>PNG</b></td><td><b>Sin pérdida</b></td><td><b>Sí</b></td><td>Muy alta</td><td>Moderado</td><td>Gráficos, <b>logotipos</b>, imágenes con transparencia o texto</td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Modelos de color</b></p>
+<p><b>RGB</b> (Red, Green, Blue): modelo <b>aditivo</b>, <b>pantallas</b>. <b>CMYK</b> (Cyan, Magenta, Yellow, Key/Black): modelo <b>sustractivo</b>, <b>impresión</b>. <b>HSB/HSV</b> (Hue, Saturation, Brightness/Value): <b>tono, saturación y brillo</b>, útil en edición gráfica.</p>
+</div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Conceptos de imagen</b></p>
+<p><b>Profundidad de color</b>: número de <b>bits por píxel</b> (1 bit = 2 colores, 8 bits = 256). <b>Resolución</b>: número total de píxeles (<b>no se mide en bits</b>). <b>Transparencia</b>: solo en ciertos formatos como <b>PNG o TIFF</b> con <b>canal alfa</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Medio</th><th>Parámetros y formatos</th></tr>
+<tr><td><b>Sonido</b></td><td>Digitalización por <b>muestreo</b> y <b>cuantificación</b>. <b>Frecuencia de muestreo</b> (muestras por segundo, Hz; <b>44.100 Hz</b> en CD) y <b>resolución de cuantificación</b> (bits por muestra; <b>16 bits</b>)</td></tr>
+<tr><td><b>Sin compresión (PCM)</b></td><td><b>WAV</b> (Windows) y <b>AIFF</b> (Apple): calidad máxima, gran tamaño</td></tr>
+<tr><td><b>Compresión con pérdida</b></td><td><b>MP3, AAC, OGG</b>: eliminan frecuencias poco perceptibles; streaming</td></tr>
+<tr><td><b>Compresión sin pérdida</b></td><td><b>FLAC, ALAC</b> (Apple Lossless), <b>APE</b></td></tr>
+<tr><td><b>Vídeo</b></td><td><b>Fotogramas + sonido sincronizado</b>. <b>Resolución</b> (1920×1080 = Full HD), <b>fps</b> (<b>24</b> cine, <b>30</b> TV, <b>60</b> juegos), <b>códec</b>: <b>H.264</b> (común), <b>HEVC/H.265</b> (más compresión, más procesamiento), <b>VP9/AV1</b> (abiertos)</td></tr>
+<tr><td><b>Contenedores de vídeo</b></td><td>Agrupan vídeo, audio, subtítulos y metadatos: <b>MP4</b> (universal), <b>MKV</b> (flexible, abierto), <b>AVI</b> (antiguo, Microsoft), <b>MOV</b> (Apple, QuickTime)</td></tr>
+</table></div>
+<h3>2.4 Compresión y formatos</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Métodos de compresión</b></p>
+<div class="tw"><table><tr><th>Método</th><th>Tipo</th><th>Formatos asociados</th></tr>
+<tr><td><b>RLE</b> (Run-Length Encoding)</td><td><b>Sin pérdida</b></td><td>BMP, TIFF, PCX</td></tr>
+<tr><td><b>Huffman</b> (longitud variable)</td><td><b>Sin pérdida</b></td><td>PNG, GIF, TIFF</td></tr>
+<tr><td><b>LZW</b> (Lempel-Ziv-Welch, diccionario)</td><td><b>Sin pérdida</b></td><td>GIF, TIFF</td></tr>
+<tr><td><b>DCT</b> (transformada del coseno)</td><td><b>Con pérdida</b></td><td><b>JPEG</b></td></tr>
+<tr><td><b>Fractal</b></td><td>Con pérdida</td><td>Formatos experimentales</td></tr>
+<tr><td><b>Wavelet (DWT)</b></td><td>Con pérdida o híbrida</td><td><b>JPEG2000</b></td></tr>
+<tr><td><b>HEVC Intra / BPG</b> (basado en H.265)</td><td>Con pérdida</td><td><b>BPG</b> (Better Portable Graphics)</td></tr>
+<tr><td><b>Predictiva (intra-frame)</b></td><td>Sin pérdida o híbrida</td><td>JPEG-LS, CALIC, Lossless JPEG</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th></th><th><b>Con pérdida (lossy)</b></th><th><b>Sin pérdida (lossless)</b></th></tr>
+<tr><td><b>Idea</b></td><td><b>Elimina datos</b> de forma permanente (técnicas perceptivas)</td><td><b>Preserva todos los datos</b>; se recupera el original exacto</td></tr>
+<tr><td><b>Ratio</b></td><td><b>Muy alto</b>; <b>ajustable</b></td><td><b>Menor</b></td></tr>
+<tr><td><b>Uso</b></td><td>Multimedia</td><td><b>Documentos, bases de datos, imágenes técnicas</b></td></tr>
+<tr><td><b>Formatos</b></td><td><b>JPEG</b> (fotos; pierde calidad al editar), <b>MP3</b>, <b>AAC</b> (mejor que MP3 a igual tasa), <b>MP4</b> (contenedor H.264 + AAC), <b>WebP</b> (Google, admite transparencia), <b>OGG</b> (Vorbis)</td><td><b>PNG</b>, <b>FLAC</b>, <b>ALAC</b>, <b>ZIP</b>, <b>GZIP</b> (Unix/Linux, un archivo), <b>7Z</b> (alta compresión, cifrado AES), <b>TIFF</b> (con o sin compresión; escaneado profesional)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Formatos por tipo de archivo</th><th></th></tr>
+<tr><td><b>Imágenes</b>: JPEG, PNG, BMP, GIF, SVG (vectorial), TIFF, WebP</td></tr>
+<tr><td><b>Audio</b>: MP3, AAC, FLAC, ALAC, WAV y AIFF (sin compresión), OGG</td></tr>
+<tr><td><b>Vídeo</b>: MP4, MKV, AVI, MOV, WEBM (contenedores)</td></tr>
+<tr><td><b>Documentos</b>: PDF, DOCX, XLSX, TXT, HTML, EPUB</td></tr>
+<tr><td><b>Archivos</b>: ZIP, RAR, 7Z, GZIP, TAR</td></tr>
+</table></div>
+<h2 id="s2">3. Sistemas de información (SI)</h2>
+<ul>
+<li><b>SI</b>: conjunto organizado de <b>elementos humanos, tecnológicos y procedimentales</b> para <b>captar, almacenar, procesar, analizar y distribuir</b> información y apoyar la <b>toma de decisiones</b> y el control.</li>
+</ul>
+<div class="tw"><table><tr><th>Elemento</th><th>Contenido</th></tr>
+<tr><td><b>Datos</b></td><td>Materia prima: <b>veraces, actualizados y relevantes</b></td></tr>
+<tr><td><b>Procesos</b></td><td>Actividades o <b>reglas de negocio</b>: entrada, validación, transformación, cálculo, comparación, almacenamiento y salida</td></tr>
+<tr><td><b>Tecnología</b></td><td><b>Hardware</b> (servidores, equipos, red, sensores) y <b>software</b> (SO, bases de datos, aplicaciones)</td></tr>
+<tr><td><b>Comunicaciones</b></td><td>Conexión entre componentes: <b>LAN</b>, <b>Internet</b> o mixtas</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Tipo (por nivel jerárquico)</th><th>Finalidad</th><th>Usuarios</th></tr>
+<tr><td><b>TPS</b> (procesamiento de transacciones)</td><td>Tareas <b>rutinarias</b>: registros, nóminas, ventas</td><td><b>Personal operativo</b></td></tr>
+<tr><td><b>MIS</b> (información gerencial)</td><td><b>Informes periódicos</b> y resúmenes</td><td><b>Mandos intermedios</b></td></tr>
+<tr><td><b>DSS</b> (soporte a decisiones)</td><td>Decisiones <b>no estructuradas</b>, escenarios y modelos</td><td><b>Analistas, gerentes</b></td></tr>
+<tr><td><b>EIS</b> (información ejecutiva)</td><td><b>Indicadores clave</b> y visualización de alto nivel</td><td><b>Alta dirección</b></td></tr>
+</table></div>
+<ul>
+<li><b>Por tecnología</b>: <b>ERP</b> (gestión integrada de toda la organización), <b>BI</b> (análisis de grandes volúmenes), <b>KM</b> (gestión del conocimiento) y <b>sistemas expertos</b> (reglas lógicas e IA que simulan decisiones humanas).</li>
+</ul>
+<h3>3.1 Ciclo de vida</h3>
+<ul>
+<li><b>Modelos</b>: <b>cascada</b> (secuencial y lineal), <b>ágil</b> (iteraciones cortas e incrementales) y <b>espiral</b> (iterativo con <b>gestión de riesgos</b> en cada ciclo).</li>
+</ul>
+<div class="tw"><table><tr><th>Fase</th><th>Contenido</th></tr>
+<tr><td><b>1. Estudio preliminar y viabilidad</b></td><td>Necesidades; viabilidad <b>técnica, económica y organizativa</b>; alcance</td></tr>
+<tr><td><b>2. Análisis</b></td><td>Requisitos <b>funcionales y no funcionales</b></td></tr>
+<tr><td><b>3. Diseño</b></td><td><b>Lógico</b> (datos, procesos, reglas) y <b>físico</b> (plataformas, interfaces, BD, red)</td></tr>
+<tr><td><b>4. Implementación</b></td><td>Construcción o configuración, integración, manuales y <b>pruebas unitarias</b></td></tr>
+<tr><td><b>5. Pruebas</b></td><td>Verificar requisitos; documentar y corregir errores</td></tr>
+<tr><td><b>6. Despliegue</b></td><td>Producción, <b>migración de datos</b>, formación y soporte</td></tr>
+<tr><td><b>7. Mantenimiento</b></td><td><b>Correctivo</b> (errores), <b>adaptativo</b> (cambios legales o tecnológicos), <b>evolutivo</b> (nuevas funciones). <b>Fase más larga</b></td></tr>
+</table></div>
+<h2 id="s3">4. Arquitectura de ordenadores</h2>
+<ul>
+<li><b>Niveles</b>: <b>1. lógico o conceptual</b> (ISA, modos de direccionamiento, tipos de datos), <b>2. organizativo o microarquitectura</b> (registros, buses, cachés, unidades de ejecución), <b>3. físico o hardware</b> (circuitos, chips).</li>
+</ul>
+<h3>4.1 Arquitectura Von Neumann</h3>
+<ul>
+<li><b>Propuesta en 1945</b> por <b>John von Neumann</b> (con Mauchly y Eckert) en *First Draft of a Report on the EDVAC*; idea del <b>programa almacenado</b>: <b>instrucciones y datos en la misma memoria</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Bloque</th><th>Función</th></tr>
+<tr><td><b>Unidad de entrada</b></td><td>Introduce datos y órdenes (teclado, ratón, escáner)</td></tr>
+<tr><td><b>Unidad de salida</b></td><td>Resultados (monitor, impresora, altavoces)</td></tr>
+<tr><td><b>Memoria principal</b></td><td>Datos e instrucciones <b>temporales</b> durante la ejecución; accesible por la CPU; <b>sin distinción física</b> entre datos e instrucciones</td></tr>
+<tr><td><b>Unidad de control (CU)</b></td><td><b>Fetch, decode, execute</b>; gestiona memoria, E/S y sincronización</td></tr>
+<tr><td><b>ALU</b></td><td>Operaciones <b>aritméticas</b> (suma, resta, multiplicación, división) y <b>lógicas</b> (AND, OR, NOT, XOR)</td></tr>
+</table></div>
+<ul>
+<li>Se interconectan con <b>tres buses</b> (<b>datos, direcciones y control</b>) y un <b>reloj</b>.</li>
+</ul>
+<h3>4.2 CPU</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>CPU</b></p>
+<p>La <b>Unidad Central de Proceso</b> interpreta y ejecuta las <b>instrucciones contenidas en los programas</b> y coordina el resto de elementos (memoria y E/S). Sus subcomponentes principales son la <b>Unidad de Control (CU)</b> y la <b>Unidad Aritmético-Lógica (ALU)</b>.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Funciones de la Unidad de Control</b></p>
+<p><b>Interpretar</b> las instrucciones y determinar las operaciones · generar las <b>señales de control</b> para ALU, registros, memoria y E/S · <b>coordinar el flujo de datos</b> entre memoria, registros y E/S · gestionar <b>saltos, interrupciones y ciclos de reloj</b>. Es el «cerebro lógico»: <b>no calcula</b>, dirige.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>ALU</b></p>
+<p>Ejecuta las <b>operaciones matemáticas y lógicas</b> requeridas por las instrucciones. <b>Funciones</b>: aritméticas básicas (a veces <b>coma flotante</b>), <b>booleanas</b> (AND, OR, NOT, XOR), <b>comparaciones</b> (igual, mayor, menor) y <b>desplazamiento y rotación de bits</b> (criptografía, gráficos).</p>
+</div>
+<div class="tw"><table><tr><th>Registro</th><th>Función</th></tr>
+<tr><td><b>Contador de programa (PC)</b></td><td><b>Dirección de la próxima instrucción</b></td></tr>
+<tr><td><b>Registro de instrucciones (IR)</b></td><td><b>Instrucción actual</b> en decodificación/ejecución</td></tr>
+<tr><td><b>Acumulador</b></td><td><b>Resultados intermedios</b></td></tr>
+<tr><td><b>Propósito general</b></td><td>Datos o direcciones temporales</td></tr>
+<tr><td><b>Registro de estado (flags)</b></td><td>Bits de resultado: <b>cero, acarreo, signo, desbordamiento</b></td></tr>
+</table></div>
+<ul>
+<li><b>Reloj</b>: señal periódica que <b>sincroniza</b> la CPU; se mide en <b>Hz/GHz</b> (3 GHz = <b>3.000 millones de ciclos por segundo</b>).</li>
+<li><b>Ciclo básico</b>: <b>1. Fetch</b> (la CU obtiene la instrucción y la carga en el IR) → <b>2. Decode</b> (interpreta) → <b>3. Execute</b> (la ALU opera y se guarda el resultado).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>FLOPS</b></p>
+<p><b>FLOP</b> = *Floating Point Operation* (operación en <b>coma flotante</b>). <b>FLOPS</b> = operaciones en coma flotante <b>por segundo</b>: mide el rendimiento en tareas científicas, simulaciones, IA o gráficos 3D.</p>
+</div>
+<div class="tw"><table><tr><th>No son medida de potencia de cálculo</th><th>Por qué</th></tr>
+<tr><td><b>Gigabyte (GB)</b></td><td>Mide <b>capacidad</b> de almacenamiento (1 GB = 1024 MB)</td></tr>
+<tr><td><b>FPS</b></td><td>Imágenes por segundo (<b>rendimiento gráfico</b>)</td></tr>
+<tr><td><b>FSB</b> (Front Side Bus)</td><td>Bus CPU-chipset; afecta al rendimiento, <b>no es unidad de potencia</b></td></tr>
+</table></div>
+<h3>4.3 Memoria principal y jerarquía</h3>
+<ul>
+<li><b>RAM</b>: <b>acceso aleatorio</b>; <b>volátil</b> (se recarga en cada arranque); almacena instrucciones, variables y datos intermedios. El <b>Northbridge (puente norte)</b> gestiona las comunicaciones rápidas entre <b>CPU, RAM y GPU</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de RAM</b></p>
+<p><b>DRAM</b> (Dynamic RAM): <b>más lenta y económica</b>, <b>necesita refresco constante</b>; es la <b>RAM principal</b>. <b>SRAM</b> (Static RAM): <b>más rápida y cara</b>, <b>sin refresco</b>; se usa como <b>caché</b> dentro del procesador.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Jerarquía de memoria</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Velocidad</th><th>Capacidad</th><th>Coste por bit</th><th>Volatilidad</th><th>Ubicación</th></tr>
+<tr><td><b>Registros</b></td><td>Muy alta</td><td>Muy baja</td><td>Muy alto</td><td>Volátil</td><td><b>Dentro de la CPU</b></td></tr>
+<tr><td><b>Caché (L1, L2, L3)</b></td><td>Muy alta</td><td>Baja</td><td>Alto</td><td>Volátil</td><td>Interna/externa al procesador</td></tr>
+<tr><td><b>RAM</b></td><td>Alta</td><td>Media</td><td>Medio</td><td>Volátil</td><td><b>Placa base</b></td></tr>
+<tr><td><b>Almacenamiento secundario (HDD, SSD)</b></td><td>Baja</td><td>Alta</td><td>Bajo</td><td><b>No volátil</b></td><td>Discos internos</td></tr>
+<tr><td><b>Almacenamiento terciario (nube, cintas)</b></td><td>Muy baja</td><td>Muy alta</td><td>Muy bajo</td><td>No volátil</td><td>Remoto o externo</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Caché</b>: <b>L1</b> integrada en el núcleo (muy rápida y pequeña); <b>L2 y L3</b> más grandes y algo más lentas, pueden <b>compartirse entre núcleos</b>.</li>
+<li><b>Secundario</b>: <b>HDD</b> (mayor capacidad, más lentos) y <b>SSD</b> (sin partes móviles, rápidos y silenciosos). <b>Terciario</b>: pendrives, discos externos, nube, <b>cintas magnéticas</b>.</li>
+</ul>
+<h3>ROM</h3>
+<ul>
+<li><b>No volátil</b>, <b>solo lectura</b> (modificable solo con procesos especiales); contiene el <b>firmware</b>: <b>BIOS o UEFI</b> (arranque y configuración inicial), <b>POST</b> (Power-On Self Test) y configuración de dispositivos esenciales.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Variantes de ROM</b></p>
+<p><b>PROM</b>: programable <b>una sola vez</b> por el usuario. <b>EPROM</b>: borrable con <b>luz ultravioleta</b>, reprogramable. <b>EEPROM</b>: borrable <b>eléctricamente</b>; base de la memoria Flash. <b>Flash ROM</b>: reprogramable muchas veces; <b>BIOS modernas</b>.</p>
+</div>
+<h3>4.4 Buses</h3>
+<ul>
+<li><b>Bus</b>: conjunto de <b>líneas físicas</b> que transportan simultáneamente información binaria entre CPU, memoria, caché y E/S.</li>
+</ul>
+<div class="tw"><table><tr><th>Bus</th><th>Función</th><th>Sentido</th></tr>
+<tr><td><b>Datos</b></td><td>Transporta los <b>datos reales</b>; su <b>ancho</b> = bits por transferencia (32 bits = <b>4 bytes por ciclo</b>)</td><td><b>Bidireccional</b></td></tr>
+<tr><td><b>Direcciones</b></td><td>Indica <b>dónde</b> leer o escribir; <b>su tamaño limita la memoria direccionable</b></td><td>Generalmente <b>unidireccional</b> (CPU → dispositivos)</td></tr>
+<tr><td><b>Control</b></td><td><b>Señales de control y sincronización</b>: lectura, escritura, <b>interrupciones</b>, permiso de acceso, selección de dispositivos</td><td><b>Bidireccional</b> y complejo</td></tr>
+</table></div>
+<ul>
+<li><b>Características</b>: <b>ancho</b> (8, 16, 32, 64 bits), <b>frecuencia</b> (MHz/GHz; 100 MHz = 100 millones de operaciones/s) y <b>topología</b> (hoy buses <b>serie</b> de alta velocidad, p. ej. <b>PCI Express</b>).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Evolución de los buses</b></p>
+<p><b>ISA</b> (PCs antiguos) · <b>PCI / PCI-X / PCI Express (PCIe)</b> (tarjetas gráficas, red…) · <b>AGP</b> (antigua interfaz de tarjetas gráficas) · <b>USB</b> (conexión universal de periféricos) · <b>SATA / NVMe</b> (discos duros y SSD).</p>
+</div>
+<h3>4.5 Entrada/salida y periféricos</h3>
+<div class="tw"><table><tr><th>Clasificación</th><th>Ejemplos</th></tr>
+<tr><td><b>Entrada</b></td><td>Teclado, ratón, escáner, micrófono, webcam, lector de códigos, pantalla táctil</td></tr>
+<tr><td><b>Salida</b></td><td>Monitor, impresora, altavoces, proyectores, <b>braille display</b></td></tr>
+<tr><td><b>Mixtos</b></td><td>Disco duro, unidad USB, <b>tarjeta de red</b>, pantalla táctil, impresora multifunción</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Mecanismo de E/S</th><th>Funcionamiento</th></tr>
+<tr><td><b>E/S programada</b></td><td>La <b>CPU controla directamente</b> el periférico y <b>espera</b> a que esté listo (desperdicia tiempo)</td></tr>
+<tr><td><b>Por interrupciones</b></td><td>El periférico avisa con una <b>IRQ</b> (Interrupt Request); la CPU sigue con otras tareas</td></tr>
+<tr><td><b>DMA</b> (Direct Memory Access)</td><td>El periférico transfiere <b>directamente a memoria sin pasar por la CPU</b>; grandes volúmenes; la CPU solo configura el controlador</td></tr>
+</table></div>
+<ul>
+<li><b>Transmisión</b>: <b>paralelo</b> (varios bits a la vez por varias líneas) frente a <b>serie</b> (bit a bit por una línea; <b>menor coste, más fiable en distancias largas, más escalable y eficiente hoy</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Interfaz</th><th>Tipo</th><th>Uso</th><th>Estado</th></tr>
+<tr><td><b>IDE/PATA</b></td><td>Paralelo</td><td>Discos antiguos</td><td><b>Obsoleto</b></td></tr>
+<tr><td><b>SATA</b></td><td>Serie</td><td>HDD y SSD</td><td>Activo</td></tr>
+<tr><td><b>SCSI</b></td><td>Paralelo</td><td>Almacenamiento profesional</td><td>En desuso</td></tr>
+<tr><td><b>SAS</b></td><td>Serie</td><td>Discos de servidores</td><td>Activo</td></tr>
+<tr><td><b>M.2 SATA/NVMe</b></td><td>Serie</td><td>SSD de alto rendimiento y compactos</td><td>Activo</td></tr>
+<tr><td><b>U.2</b></td><td>Serie</td><td>SSD empresariales</td><td>Activo (servidor)</td></tr>
+<tr><td><b>USB (1.1 a 4.0)</b></td><td>Serie</td><td>Periféricos, almacenamiento, móviles</td><td>Activo</td></tr>
+<tr><td><b>Thunderbolt</b></td><td>Serie</td><td>Datos, vídeo, energía</td><td>Activo</td></tr>
+<tr><td><b>FireWire (IEEE 1394)</b></td><td>Serie</td><td>Vídeo digital, discos externos</td><td><b>Obsoleto</b></td></tr>
+<tr><td><b>eSATA</b></td><td>Serie</td><td>Discos externos</td><td>En desuso</td></tr>
+<tr><td><b>VGA</b></td><td>Paralelo (<b>analógico</b>)</td><td>Monitores antiguos</td><td><b>Obsoleto</b></td></tr>
+<tr><td><b>DVI</b></td><td>Paralelo (digital)</td><td>Vídeo digital</td><td>En desuso</td></tr>
+<tr><td><b>HDMI</b></td><td>Serie</td><td>Audio y vídeo digital</td><td>Activo</td></tr>
+<tr><td><b>DisplayPort</b></td><td>Serie</td><td>Vídeo de alta resolución</td><td>Activo</td></tr>
+<tr><td><b>PS/2</b></td><td>Serie</td><td>Teclado y ratón antiguos</td><td>En desuso</td></tr>
+<tr><td><b>RJ-45 (Ethernet)</b></td><td>Serie</td><td>Red LAN</td><td>Activo</td></tr>
+<tr><td><b>IEEE 1284</b></td><td>Paralelo</td><td>Impresoras antiguas</td><td><b>Obsoleto</b></td></tr>
+<tr><td><b>Jack 3,5 mm</b></td><td>Analógico</td><td>Audio</td><td>Activo (declina en móviles)</td></tr>
+<tr><td><b>SD / microSD</b></td><td>Serie</td><td>Almacenamiento móvil</td><td>Activo</td></tr>
+</table></div>
+<ul>
+<li><b>Controlador de dispositivo</b> (controlador de E/S): intermediario entre CPU y periférico; traduce órdenes del SO o del bus en señales para el periférico. El <b>driver</b> es el <b>software</b> que comunica el SO con el controlador físico (traduce «imprimir» en instrucciones).</li>
+</ul>
+<div class="tw"><table><tr><th>Periférico</th><th>Controlador</th></tr>
+<tr><td>Disco duro</td><td>Almacenamiento (<b>SATA, NVMe</b>)</td></tr>
+<tr><td>Tarjeta gráfica</td><td>Vídeo (<b>GPU, PCIe</b>)</td></tr>
+<tr><td>Teclado/ratón</td><td>Entrada (<b>USB, PS/2</b>)</td></tr>
+<tr><td>Tarjeta de red</td><td>Red (<b>Ethernet, Wi-Fi</b>)</td></tr>
+<tr><td>Impresora</td><td>Impresión (<b>USB, red</b>)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Conector</th><th>Fabricante</th><th>Uso</th><th>Estado</th></tr>
+<tr><td><b>Lightning</b></td><td><b>Apple</b></td><td>iPhone, iPad, AirPods</td><td>Activo, <b>reemplazado por USB-C</b></td></tr>
+<tr><td><b>USB-A</b></td><td>USB-IF</td><td>PCs, periféricos, cargadores</td><td>Activo, en retroceso</td></tr>
+<tr><td><b>USB-B</b></td><td>USB-IF</td><td>Impresoras, escáneres</td><td>En desuso progresivo</td></tr>
+<tr><td><b>Mini-B</b></td><td>USB-IF</td><td>Cámaras, MP3 antiguos</td><td>Obsoleto</td></tr>
+<tr><td><b>Micro-B</b></td><td>USB-IF</td><td>Móviles Android anteriores a USB-C</td><td>Obsoleto</td></tr>
+<tr><td><b>USB-C</b></td><td>USB-IF</td><td><b>Estándar moderno universal</b></td><td>Activo y en expansión</td></tr>
+<tr><td><b>Thunderbolt 3/4</b></td><td><b>Intel + Apple</b></td><td>Vídeo, datos, energía, docking; <b>compatible con USB-C</b></td><td>Activo</td></tr>
+<tr><td><b>HDMI</b></td><td>HDMI Licensing</td><td>Audio y vídeo HD</td><td>Activo</td></tr>
+<tr><td><b>DisplayPort</b></td><td><b>VESA</b></td><td>Monitores profesionales</td><td>Activo</td></tr>
+<tr><td><b>Ethernet (RJ-45)</b></td><td><b>IEEE 802.3</b></td><td>Red LAN</td><td>Activo</td></tr>
+<tr><td><b>Jack 3,5 / 2,5 / 6,35 mm</b></td><td>Estándar</td><td>Auriculares, comunicaciones, instrumentos</td><td>Activo</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Conectores</b></p>
+<p><b>USB-C</b> es el más versátil y en expansión (USB 3.x, <b>USB4</b>, <b>Thunderbolt 3/4</b>, carga rápida, vídeo con <b>Alt Mode</b>). <b>Lightning</b> (exclusivo de Apple) se sustituye por USB-C en iPhone <b>desde 2023</b> por mandato europeo. <b>FireWire, VGA, DVI y Mini/Micro USB</b> están en retirada.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Versiones USB</b></p>
+<div class="tw"><table><tr><th>Versión</th><th>Velocidad máxima</th><th>Observaciones</th></tr>
+<tr><td><b>USB 2.0</b></td><td><b>480 Mbps</b></td><td>Muy común en teclados y ratones</td></tr>
+<tr><td><b>USB 3.0</b></td><td><b>5 Gbps</b></td><td>Mismo conector que USB-A</td></tr>
+<tr><td><b>USB 3.1 Gen 2</b></td><td><b>10 Gbps</b></td><td>Conectores USB-A o USB-C</td></tr>
+<tr><td><b>USB 3.2 Gen 2x2</b></td><td><b>20 Gbps</b></td><td><b>Requiere USB-C</b></td></tr>
+<tr><td><b>USB4 / 4.0</b></td><td><b>40 Gbps</b></td><td>Basado en <b>Thunderbolt</b>, solo con USB-C</td></tr>
+</table></div>
+</div>
+<h3>4.6 Taxonomía de Flynn (1966)</h3>
+<ul>
+<li>Clasifica por <b>flujos de instrucciones</b> y <b>flujos de datos</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Taxonomía de Flynn</b></p>
+<div class="tw"><table><tr><th>Clase</th><th>Descripción</th><th>Ejemplo</th></tr>
+<tr><td><b>SISD</b> (Single Instruction, Single Data)</td><td><b>Una instrucción sobre un solo dato</b></td><td>Ordenadores tradicionales de un núcleo</td></tr>
+<tr><td><b>SIMD</b> (Single Instruction, Multiple Data)</td><td><b>Misma instrucción sobre múltiples datos</b>; paralelismo</td><td><b>GPU</b>, procesadores vectoriales</td></tr>
+<tr><td><b>MISD</b> (Multiple Instruction, Single Data)</td><td>Varias instrucciones sobre el mismo dato; <b>poco común</b></td><td>Sistemas redundantes o críticos (teóricos)</td></tr>
+<tr><td><b>MIMD</b> (Multiple Instruction, Multiple Data)</td><td>Varias instrucciones sobre distintos datos; <b>muy flexible</b></td><td><b>Multinúcleo, superordenadores, clusters</b></td></tr>
+</table></div>
+</div>
+<h3>4.7 CISC, RISC y Harvard</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>CISC</b></p>
+<p><b>Conjunto amplio y complejo de instrucciones</b> para tareas de alto nivel en una sola instrucción; puede requerir <b>varios ciclos de reloj</b>. Rasgos: instrucciones de <b>longitud variable</b>, <b>microprogramación</b>, <b>mayor compactación del código</b>, <b>menos instrucciones por programa</b> y <b>mayor complejidad del hardware</b>. Ejemplos: <b>x86/x86_64 de Intel y AMD</b>.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>RISC</b></p>
+<p><b>Conjunto reducido y sencillo</b>; cada instrucción se ejecuta normalmente en <b>un solo ciclo de reloj</b>. Rasgos: instrucciones de <b>longitud fija</b>, <b>más uso de registros</b>, <b>menos lógica de control</b> y <b>pipelining</b>. Ejemplos: <b>ARM</b> (smartphones, tablets, Raspberry Pi), <b>MIPS, SPARC, PowerPC</b> y <b>RISC-V</b> (arquitectura libre). Otros enfoques: <b>VLIW, EPIC</b>.</p>
+</div>
+<div class="tw"><table><tr><th></th><th><b>Von Neumann</b></th><th><b>Harvard</b></th></tr>
+<tr><td><b>Memoria</b></td><td><b>Única</b> para datos e instrucciones</td><td><b>Dos memorias independientes</b> (instrucciones y datos)</td></tr>
+<tr><td><b>Buses</b></td><td>Un solo canal</td><td><b>Dos buses separados</b></td></tr>
+<tr><td><b>Efecto</b></td><td>Posible cuello de botella</td><td><b>Acceso simultáneo</b> a instrucciones y datos; mejora el rendimiento en <b>sistemas embebidos y microcontroladores</b></td></tr>
+</table></div>
+<h2 id="s4">5. Componentes internos de los equipos microinformáticos</h2>
+<h3>5.1 Placa base y chipset</h3>
+<ul>
+<li><b>Placa base</b> (motherboard/mainboard): circuito impreso que conecta CPU, memoria, almacenamiento, tarjetas y periféricos.</li>
+<li><b>Funciones</b>: alojar la CPU (<b>socket</b>), módulos RAM (<b>slots DIMM</b>), almacenamiento (<b>SATA, NVMe, M.2</b>), puertos, ranuras <b>PCIe</b>, <b>alimentación</b>, <b>BIOS/UEFI</b> y supervisión de temperaturas, ventiladores y voltajes.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Componentes de la placa base</b></p>
+<div class="tw"><table><tr><th>Componente</th><th>Función</th></tr>
+<tr><td><b>Socket / zócalo del procesador</b></td><td>Aloja la CPU; debe ser compatible con el modelo</td></tr>
+<tr><td><b>Reloj (Clock)</b></td><td>Señal de sincronización</td></tr>
+<tr><td><b>Slots de RAM</b></td><td>Conectores de los módulos de memoria</td></tr>
+<tr><td><b>Chipset</b></td><td>Coordina CPU, RAM, almacenamiento y periféricos</td></tr>
+<tr><td><b>BIOS/UEFI</b></td><td>Firmware que inicializa el hardware y permite configurarlo</td></tr>
+<tr><td><b>Puertos de expansión</b></td><td>Ranuras <b>PCIe</b> (gráficas, red, sonido)</td></tr>
+<tr><td><b>Puertos de almacenamiento</b></td><td><b>SATA, M.2, U.2</b></td></tr>
+<tr><td><b>Conectores de alimentación</b></td><td>Distribuyen la energía de la fuente</td></tr>
+<tr><td><b>Puertos traseros</b></td><td>USB, HDMI, RJ45, audio</td></tr>
+<tr><td><b>Conectores internos</b></td><td>Ventiladores, botones, LEDs, audio delantero, sensores</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Chipset (PCH, Platform Controller Hub)</b>: circuitos intermediarios entre CPU y resto; el controlador de <b>memoria, PCIe y gráficos</b> suele ir <b>integrado en la CPU</b>. Gestiona <b>USB, SATA y NVMe, sonido, red, sensores</b> y puertos secundarios. Determina puertos, discos, <b>overclocking</b> y gráficos integrados; debe ser compatible con el <b>socket</b> y el tipo de <b>RAM</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Factor de forma</th><th>Tamaño</th><th>Uso</th></tr>
+<tr><td><b>ATX</b></td><td>30,5 × 24,4 cm</td><td>Sobremesa estándar</td></tr>
+<tr><td><b>Micro-ATX</b></td><td>24,4 × 24,4 cm</td><td>PCs compactos</td></tr>
+<tr><td><b>Mini-ITX</b></td><td>17 × 17 cm</td><td>Muy compactos, HTPC</td></tr>
+<tr><td><b>E-ATX</b></td><td>30,5 × 33 cm</td><td>Servidores y estaciones de trabajo</td></tr>
+</table></div>
+<h3>5.2 Microprocesador</h3>
+<div class="tw"><table><tr><th>Característica</th><th>Contenido</th></tr>
+<tr><td><b>Velocidad de reloj</b></td><td><b>GHz</b>; más no siempre es mejor si la arquitectura no acompaña</td></tr>
+<tr><td><b>Número de núcleos</b></td><td>Ver recuadro</td></tr>
+<tr><td><b>Caché</b></td><td><b>L1</b> (rápida y pequeña), <b>L2</b> (más grande), <b>L3</b> (compartida entre núcleos)</td></tr>
+<tr><td><b>Conjunto de instrucciones (ISA)</b></td><td><b>x86, x86_64, ARM</b>; afecta a compatibilidad con software y SO</td></tr>
+<tr><td><b>Hyper-Threading</b></td><td><b>Un núcleo físico ejecuta dos hilos lógicos</b> simultáneamente</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Núcleos</b></p>
+<p>Los procesadores modernos son <b>multinúcleo (multi-core)</b>: varias unidades de procesamiento en un mismo chip. Permiten la <b>ejecución simultánea de varios hilos</b> (procesamiento paralelo), mejorando la <b>multitarea y las tareas multihilo</b>.</p>
+</div>
+<ul>
+<li><b>Elementos internos</b>: <b>ALU</b>, <b>CU</b>, <b>registros</b>, <b>bus interno</b> y <b>caché</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Clasificación</th><th>Tipos</th></tr>
+<tr><td><b>Fabricante</b></td><td><b>Intel</b>: Core (i3, i5, i7, i9), Pentium, Celeron, <b>Xeon</b> (servidores) · <b>AMD</b>: <b>Ryzen</b>, Athlon, <b>Threadripper</b> (alto rendimiento), <b>EPYC</b> (servidores) · <b>ARM</b>: móviles y embebidos</td></tr>
+<tr><td><b>Núcleos</b></td><td><b>Single-core</b> (en desuso), <b>Dual-core</b>, <b>Quad-core</b> (mínimo estándar hoy), <b>Hexa-core y superiores</b> (6, 8, 12 o más)</td></tr>
+<tr><td><b>Uso</b></td><td><b>Desktop</b>, <b>móviles</b> (bajo consumo), <b>embebidos</b> (IoT, automoción), <b>servidores</b> (alto rendimiento y disponibilidad)</td></tr>
+</table></div>
+<h3>5.3 RAM y ROM</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de RAM</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>DRAM</b></td><td>La más común; <b>refresco</b> miles de veces por segundo; barata pero más lenta</td></tr>
+<tr><td><b>SRAM</b></td><td>Más rápida y cara; <b>sin refresco</b>; <b>caché de la CPU</b></td></tr>
+<tr><td><b>SDRAM</b></td><td><b>Sincronizada con el reloj</b> del sistema</td></tr>
+<tr><td><b>DDR</b> (Double Data Rate)</td><td>Transfiere datos <b>dos veces por ciclo</b>; actuales <b>DDR4 y DDR5</b></td></tr>
+<tr><td><b>ECC</b></td><td><b>Detecta y corrige errores</b>; servidores y estaciones críticas</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Características de la RAM</b>: acceso rápido y aleatorio, <b>temporal</b> (se borra al apagar), lectura y escritura, capacidad de <b>4 GB</b> a <b>más de 64 GB</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Formato</th><th>Descripción</th></tr>
+<tr><td><b>DIMM</b></td><td><b>Sobremesa</b>; contactos en ambos lados; ranuras verticales; DDR4: ~<b>133 mm</b>, <b>288 pines</b> (DDR3: 240), <b>1,2 V</b> (DDR5: <b>1,1 V</b>), 4-64 GB</td></tr>
+<tr><td><b>SO-DIMM</b></td><td><b>Portátiles, mini PCs, HTPC</b> y embebidos; ~<b>67 mm</b>, <b>260 pines</b> (DDR4; DDR3: 204), 1,2 V, 4-32 GB; ranuras horizontales o inclinadas</td></tr>
+<tr><td><b>RIMM</b></td><td>Módulos <b>Rambus</b> (obsoleto)</td></tr>
+<tr><td><b>LR-DIMM</b></td><td><b>Load Reduced</b>, servidores, mayor densidad</td></tr>
+<tr><td><b>ECC DIMM</b></td><td>Con corrección de errores</td></tr>
+<tr><td><b>RDIMM</b></td><td><b>Registered</b>: búfer intermedio para más estabilidad con mucha RAM</td></tr>
+</table></div>
+<div class="tw"><table><tr><th></th><th><b>RAM</b></th><th><b>ROM</b></th></tr>
+<tr><td><b>Volatilidad</b></td><td><b>Sí</b> (se borra al apagar)</td><td><b>No</b> (persistente)</td></tr>
+<tr><td><b>Capacidad</b></td><td>Alta (GB)</td><td>Muy baja (MB)</td></tr>
+<tr><td><b>Acceso</b></td><td>Lectura y escritura</td><td>Solo lectura o lectura limitada</td></tr>
+<tr><td><b>Función</b></td><td>Carga de programas y datos</td><td><b>Firmware</b></td></tr>
+<tr><td><b>Modificable</b></td><td>Siempre</td><td>Solo con herramientas especiales</td></tr>
+</table></div>
+<ul>
+<li><b>ROM (tipos)</b>: <b>ROM</b> (grabada en fábrica), <b>PROM</b> (una vez), <b>EPROM</b> (UV), <b>EEPROM</b> (eléctrica; base de Flash), <b>Flash ROM</b> (BIOS/UEFI modernas, actualizable por software).</li>
+<li><b>Función conjunta</b>: en el arranque la CPU accede a la <b>ROM</b> (POST, detección de hardware); luego el SO gestiona la <b>RAM</b>. Un fallo de RAM provoca <b>pantallazos azules, reinicios y pérdida de datos</b>.</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>ROM-CMOS</b></p>
+<p>La configuración básica (<b>orden de arranque, fecha y hora, parámetros del hardware</b>) se guarda en una pequeña memoria llamada <b>ROM-CMOS</b> (normalmente <b>&lt; 512 bytes</b>), modificable desde el menú de BIOS/UEFI. Se <b>resetea</b> si se retira la <b>pila de botón (CR2032)</b> unos minutos; si se corrompe, el equipo puede mostrar <b>errores de arranque o de reloj</b>.</p>
+</div>
+<h3>5.4 Almacenamiento</h3>
+<div class="tw"><table><tr><th>HDD (disco duro mecánico)</th><th>Contenido</th></tr>
+<tr><td><b>Componentes</b></td><td><b>Platos</b>, <b>cabezas</b> (una por cara), <b>actuador</b> (brazo), <b>eje</b>, <b>motor</b> (<b>5.400 o 7.200 RPM</b>) y <b>controlador</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Organización lógica del HDD</b></p>
+<p><b>Pista (track)</b>: circunferencia concéntrica en la cara del plato. <b>Sector</b>: unidad mínima de almacenamiento (<b>512 bytes o 4.096 bytes = 4 KB</b>). <b>Cilindro</b>: conjunto de pistas alineadas verticalmente en los distintos platos (acceso simultáneo con varias cabezas). <b>Clúster</b>: agrupación de sectores contiguos que el SO trata como unidad lógica; todo archivo ocupa <b>al menos un clúster</b>.</p>
+</div>
+<div class="tw"><table><tr><th></th><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td><b>HDD</b></td><td><b>Bajo coste por GB</b>, alta capacidad, duraderos</td><td><b>Lentos</b>, componentes mecánicos frágiles, sensibles a golpes y vibraciones</td></tr>
+<tr><td><b>SSD</b></td><td><b>Muy rápidos</b>, silenciosos y resistentes, menor consumo y calor</td><td><b>Mayor precio por GB</b>, vida limitada (ciclos de escritura), rendimiento variable</td></tr>
+</table></div>
+<ul>
+<li><b>Interfaces HDD</b>: <b>SATA</b> (hasta <b>6 Gbps</b>, SATA III), <b>IDE/PATA</b> (obsoleto), <b>SCSI/SAS</b> (servidores).</li>
+</ul>
+<div class="tw"><table><tr><th>Memoria flash del SSD</th><th>Velocidad</th><th>Durabilidad</th><th>Coste</th></tr>
+<tr><td><b>SLC</b> (Single Level Cell)</td><td>Muy alta</td><td>Muy alta</td><td>Alto</td></tr>
+<tr><td><b>MLC</b> (Multi Level Cell)</td><td>Alta</td><td>Alta</td><td>Medio</td></tr>
+<tr><td><b>TLC</b> (Triple Level Cell)</td><td>Media</td><td>Media</td><td>Bajo</td></tr>
+<tr><td><b>QLC</b> (Quad Level Cell)</td><td>Baja</td><td>Menor</td><td>Muy bajo</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Interfaces de SSD</b></p>
+<div class="tw"><table><tr><th>Interfaz</th><th>Descripción</th></tr>
+<tr><td><b>SATA III</b></td><td>Mismo conector que los HDD SATA; hasta <b>600 MB/s</b></td></tr>
+<tr><td><b>M.2 SATA</b></td><td>Formato compacto con conector M.2 pero <b>interfaz SATA</b>; <b>no más rápido</b> que SATA estándar</td></tr>
+<tr><td><b>M.2 NVMe (PCIe)</b></td><td>Bus <b>PCI Express</b>; hasta <b>7.000 MB/s o más</b></td></tr>
+<tr><td><b>U.2 (SFF-8639)</b></td><td><b>Servidores</b>; similar a NVMe pero con conector distinto</td></tr>
+<tr><td><b>PCIe (tarjetas AIC)</b></td><td>SSD en forma de tarjeta en ranura <b>PCIe x4 o superior</b>; máximo rendimiento</td></tr>
+<tr><td><b>SAS</b></td><td>Entornos profesionales; hasta <b>12 Gbps</b>, <b>dual-port</b>; servidores y cabinas</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Característica</th><th><b>HDD</b></th><th><b>SSD</b></th></tr>
+<tr><td><b>Tecnología</b></td><td>Mecánica (platos giratorios)</td><td>Electrónica (<b>memoria flash</b>)</td></tr>
+<tr><td><b>Velocidad</b></td><td><b>100-200 MB/s</b></td><td><b>500-7.000+ MB/s</b></td></tr>
+<tr><td><b>Capacidad</b></td><td>Hasta <b>20 TB</b></td><td>Hasta <b>4-8 TB</b> (más en servidores)</td></tr>
+<tr><td><b>Resistencia a golpes</b></td><td>Baja</td><td>Alta</td></tr>
+<tr><td><b>Consumo</b></td><td>Medio/alto</td><td>Bajo</td></tr>
+<tr><td><b>Precio por GB</b></td><td>Más bajo</td><td>Más alto</td></tr>
+<tr><td><b>Ruido</b></td><td>Sí</td><td>No</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Unidad óptica</th><th>Capacidad</th><th>Función</th></tr>
+<tr><td><b>CD-ROM</b></td><td>~<b>700 MB</b></td><td>Lectura de datos/audio</td></tr>
+<tr><td><b>CD-R / CD-RW</b></td><td>700 MB</td><td>Grabables / regrabables</td></tr>
+<tr><td><b>DVD-ROM</b></td><td>~<b>4,7 GB</b> (<b>8,5 GB</b> doble capa)</td><td>Vídeo, software, datos</td></tr>
+<tr><td><b>DVD-R / DVD+R / RW</b></td><td>4,7-8,5 GB</td><td>Grabables y regrabables</td></tr>
+<tr><td><b>Blu-ray (BD)</b></td><td><b>25-100 GB</b></td><td>Alta definición, backup</td></tr>
+</table></div>
+<ul>
+<li>Ópticas: <b>bajo coste</b> y compatibilidad multimedia, pero <b>lentas</b>, obsolescencia progresiva y capacidad limitada.</li>
+</ul>
+<h3>5.5 Tarjetas de expansión y fuente de alimentación</h3>
+<div class="tw"><table><tr><th>Tarjeta</th><th>Contenido</th></tr>
+<tr><td><b>Gráfica (GPU)</b></td><td>Procesa y genera la imagen. <b>Integradas</b> (en CPU o chipset, uso básico), <b>dedicadas</b> (ranura PCIe, memoria propia: gaming, vídeo, CAD, IA), <b>profesionales</b> (NVIDIA Quadro, AMD Radeon Pro). Claves: <b>GPU</b>, <b>VRAM</b> (GDDR5, GDDR6), salidas (HDMI, DisplayPort, DVI, VGA) y ventilación activa</td></tr>
+<tr><td><b>Sonido</b></td><td>Convierte señales <b>digitales ↔ analógicas</b> (altavoces, micrófonos); audio de 24 bits/192 kHz, multicanal (5.1, 7.1, Dolby Digital, DTS), conversores A/D y D/A</td></tr>
+<tr><td><b>Red (NIC)</b></td><td><b>Ethernet</b> (RJ45: 1, 2,5, 10 Gbps), <b>Wi-Fi</b> (Wi-Fi 5 = 802.11ac, <b>Wi-Fi 6 = 802.11ax</b>), <b>Bluetooth</b> (corto alcance), <b>fibra óptica (SFP+)</b></td></tr>
+<tr><td><b>Wi-Fi 2,4 GHz</b></td><td><b>Mayor alcance y penetración</b>, pero <b>menor velocidad</b> y <b>más interferencias</b></td></tr>
+<tr><td><b>Wi-Fi 5 GHz</b></td><td><b>Mayor velocidad</b>, menos congestión, pero <b>menor alcance y penetración</b></td></tr>
+<tr><td><b>Fuente de alimentación (PSU)</b></td><td>Convierte <b>corriente alterna (CA)</b> en <b>continua (CC)</b>. <b>Potencia</b> habitual <b>400-1000 W</b>; formatos <b>ATX, SFX, TFX</b>; certificación <b>80 PLUS</b> (White, Bronze, Silver, Gold, Platinum, Titanium)</td></tr>
+<tr><td><b>Conectores de la PSU</b></td><td><b>24 pines ATX</b> (placa base), <b>4/8 pines EPS</b> (CPU), <b>PCIe 6/8 pines</b> (gráficas), <b>SATA y Molex</b> (discos y periféricos)</td></tr>
+</table></div>
+<div class="pn"><a href="b1t9.html">← 1.9</a><a href="b2t2.html">2.2 →</a></div></main></div><script src="../app.js"></script></body></html>

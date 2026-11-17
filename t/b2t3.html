@@ -1,0 +1,286 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 2 · Tema 3 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Tipos Abstractos de Datos (TAD)</a><a href="#s1">2. Estructuras de datos</a><a href="#s2">3. Algoritmos</a><a href="#s3">4. Organizaciones de ficheros</a><a href="#s4">5. Formatos de información y ficheros</a></aside>
+<main class="doc" data-key="b2t3"><div class="crumb">Bloque 2 · Tema 3</div><h1>Tipos abstractos y estructuras de datos, organizaciones de ficheros, algoritmos y formatos</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (9)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque2_Tema3.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque2_Tema3.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Tipos Abstractos de Datos (TAD)</h2>
+<ul>
+<li><b>TAD</b>: modelo matemático que describe un <b>conjunto de datos y las operaciones válidas</b> sobre ellos, <b>independiente de su implementación</b>. Define <b>qué</b> se hace, no <b>cómo</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Características de un TAD</b></p>
+<p><b>Encapsulamiento</b> (datos y operaciones agrupados; implementación oculta) · <b>Interfaz definida</b> (operaciones permitidas: inserción, borrado, búsqueda) · <b>Independencia de implementación</b> (un mismo TAD con arrays, listas, punteros…) · <b>Consistencia lógica</b> (el comportamiento esperado se mantiene).</p>
+</div>
+<div class="tw"><table><tr><th>Ventaja</th><th>Idea</th></tr>
+<tr><td><b>Modularidad</b></td><td>Componentes independientes y reutilizables</td></tr>
+<tr><td><b>Mantenibilidad</b></td><td>Cambiar la implementación <b>no afecta</b> al resto si se mantiene la interfaz</td></tr>
+<tr><td><b>Reutilización</b></td><td>Un mismo TAD en varios programas</td></tr>
+<tr><td><b>Legibilidad</b></td><td>Se centra en la funcionalidad</td></tr>
+<tr><td><b>Verificación</b></td><td>Validar operaciones sin conocer detalles internos</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>TAD común</th><th>Descripción</th></tr>
+<tr><td><b>Lista</b></td><td>Colección <b>ordenada</b> (simple, doble, circular)</td></tr>
+<tr><td><b>Pila (Stack)</b></td><td><b>LIFO</b>; un solo extremo (<b>top</b>)</td></tr>
+<tr><td><b>Cola (Queue)</b></td><td><b>FIFO</b>; se inserta por un extremo y se elimina por el otro</td></tr>
+<tr><td><b>Árbol</b></td><td>Jerarquía de nodos (BST, AVL)</td></tr>
+<tr><td><b>Grafo</b></td><td>Nodos y aristas; dirigido o no, ponderado o no</td></tr>
+<tr><td><b>Conjunto (Set)</b></td><td>Elementos <b>sin duplicados</b></td></tr>
+<tr><td><b>Diccionario / tabla de símbolos</b></td><td>Pares <b>clave-valor</b></td></tr>
+</table></div>
+<ul>
+<li><b>Interfaz</b> = operaciones y su comportamiento; <b>implementación</b> = cómo se hacen (ej.: una pila con array o lista enlazada con la misma interfaz). <b>Abstracción</b>: «cajas negras», <b>menor acoplamiento</b>.</li>
+</ul>
+<h2 id="s1">2. Estructuras de datos</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Definición y clasificación general</b></p>
+<p><b>Estructura de datos</b>: forma de <b>organizar y almacenar datos</b> para usarlos de forma eficiente.</p>
+</div>
+<div class="tw"><table><tr><th>Tipo</th><th>Características</th><th>Ejemplos</th></tr>
+<tr><td><b>Estáticas</b></td><td><b>Tamaño fijo</b> (fijado en compilación); acceso rápido por índice; poco flexibles</td><td><b>Arrays (vectores), matrices</b></td></tr>
+<tr><td><b>Dinámicas</b></td><td>Tamaño variable en ejecución; uso eficiente de memoria</td><td><b>Listas enlazadas, pilas y colas dinámicas, árboles, grafos, tablas hash con encadenamiento</b></td></tr>
+<tr><td><b>Lineales</b></td><td>Elementos en secuencia</td><td>Listas, pilas, colas</td></tr>
+<tr><td><b>No lineales</b></td><td>Organización jerárquica o en red</td><td>Árboles, grafos</td></tr>
+<tr><td><b>Acceso directo</b></td><td>Localizan elementos mediante <b>claves</b></td><td>Tablas hash, diccionarios</td></tr>
+</table></div>
+<h3>2.2 Estructuras lineales</h3>
+<ul>
+<li>Cada elemento tiene <b>un único anterior y un único siguiente</b> (salvo primero y último).</li>
+</ul>
+<h3>Listas enlazadas</h3>
+<ul>
+<li>Estructura <b>dinámica</b> de <b>nodos</b> unidos por <b>punteros</b>: cada nodo = <b>dato + enlace</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Nodo</th><th>Rasgos</th></tr>
+<tr><td><b>Simple</b></td><td>Dato + puntero al <b>siguiente</b></td><td>Último apunta a <b>null/None</b>; recorrido <b>en un solo sentido</b>; inserción/eliminación rápida si se conoce el anterior</td></tr>
+<tr><td><b>Doble</b></td><td>Dato + puntero <b>anterior</b> + puntero <b>siguiente</b></td><td>Recorrido <b>en ambos sentidos</b>; facilita eliminar nodos intermedios; <b>más memoria</b> y lógica</td></tr>
+<tr><td><b>Circular</b></td><td>Último nodo apunta al <b>primero</b> (bucle cerrado)</td><td>Simple circular o doble circular; <b>sin null</b>; listas rotativas, calendarios</td></tr>
+</table></div>
+<h3>Pilas (Stacks)</h3>
+<ul>
+<li><b>LIFO</b> (Last In, First Out): operaciones en un único extremo, el <b>top</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de pila</th><th>Implementación</th></tr>
+<tr><td><b>Estática</b></td><td><b>Array</b> de tamaño fijo; si se llena → <b>desbordamiento (stack overflow)</b></td></tr>
+<tr><td><b>Dinámica</b></td><td><b>Lista enlazada</b>; sin límite salvo la memoria</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Operación</th><th>Función</th></tr>
+<tr><td><b>push(elemento)</b></td><td>Inserta en el tope</td></tr>
+<tr><td><b>pop()</b></td><td><b>Elimina y devuelve</b> el elemento del tope</td></tr>
+<tr><td><b>peek() / top()</b></td><td>Devuelve el tope <b>sin eliminarlo</b></td></tr>
+<tr><td><b>isEmpty()</b></td><td><code>True</code> si está vacía</td></tr>
+</table></div>
+<h3>Colas (Queues)</h3>
+<ul>
+<li><b>FIFO</b> (First In, First Out): se inserta por un extremo (<b>enqueue</b>) y se elimina por el otro (<b>dequeue</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Variante</th><th>Descripción</th></tr>
+<tr><td><b>Simple</b></td><td>Inserción por un extremo, eliminación por el otro; la más común</td></tr>
+<tr><td><b>Circular</b></td><td>Extremos unidos en ciclo lógico; <b>reaprovecha posiciones vacías</b> en arrays fijos</td></tr>
+<tr><td><b>Con prioridad</b></td><td>Cada elemento tiene prioridad; sale <b>el de mayor prioridad</b>; se implementa con <b>heaps</b> o listas ordenadas</td></tr>
+<tr><td><b>Doble cola (Deque)</b></td><td>Inserción y eliminación por <b>ambos extremos</b>; <b>input-restricted</b> (inserción en uno, eliminación en ambos) y <b>output-restricted</b> (eliminación en uno, inserción en ambos)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Operación</th><th>Función</th></tr>
+<tr><td><b>enqueue(e)</b></td><td>Inserta al final</td></tr>
+<tr><td><b>dequeue()</b></td><td>Elimina y devuelve el <b>más antiguo</b></td></tr>
+<tr><td><b>peek()</b></td><td>Primero sin eliminarlo</td></tr>
+<tr><td><b>isEmpty() / isFull()</b></td><td>Vacía / llena (colas de tamaño fijo, circulares)</td></tr>
+</table></div>
+<h3>2.3 Estructuras no lineales</h3>
+<h3>Árboles</h3>
+<ul>
+<li>Estructura <b>jerárquica</b> de nodos y aristas: una <b>raíz</b> y descendientes. Cada nodo tiene <b>un único padre</b> (salvo la raíz) y <b>cero o más hijos</b>.</li>
+<li><b>Altura</b> de un nodo: camino más largo hasta una hoja. <b>Profundidad</b>: niveles desde la raíz. <b>Nodo hoja</b>: sin hijos (terminal).</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de árbol</th><th>Características</th></tr>
+<tr><td><b>Binario</b></td><td><b>Máximo dos hijos</b> (izquierdo y derecho)</td></tr>
+<tr><td><b>BST</b> (búsqueda)</td><td>Subárbol <b>izquierdo &lt; nodo &lt; subárbol derecho</b></td></tr>
+<tr><td><b>AVL</b></td><td>BST <b>autoequilibrado</b>: diferencia de altura entre subárboles <b>≤ 1</b></td></tr>
+<tr><td><b>B</b></td><td>Búsqueda balanceado de orden <b>m</b>; <b>hasta m hijos</b>; datos en <b>nodos internos y hojas</b>; <b>hojas al mismo nivel</b></td></tr>
+<tr><td><b>B+</b></td><td>Variante del B: <b>datos solo en las hojas</b>, <b>enlazadas secuencialmente</b></td></tr>
+<tr><td><b>Trie</b> (prefijo)</td><td>Para <b>cadenas</b>: cada nodo = un <b>carácter</b>; camino raíz→hoja = una <b>palabra</b></td></tr>
+</table></div>
+<h3>Grafos</h3>
+<ul>
+<li><b>Vértices (nodos)</b> + <b>aristas (arcos)</b> que conectan pares de nodos. Modelan relaciones complejas (redes sociales, mapas, flujos de trabajo).</li>
+</ul>
+<div class="tw"><table><tr><th>Componente</th><th>Definición</th></tr>
+<tr><td><b>Vértice</b></td><td>Entidad (persona, ciudad, página web)</td></tr>
+<tr><td><b>Arista</b></td><td>Conexión entre dos vértices; puede tener <b>dirección y/o peso</b></td></tr>
+<tr><td><b>Grado</b></td><td>Nº de aristas que <b>inciden</b> en un vértice</td></tr>
+<tr><td><b>Camino</b></td><td>Secuencia de vértices conectados</td></tr>
+<tr><td><b>Ciclo</b></td><td>Camino <b>cerrado</b> en el que se repite un vértice</td></tr>
+<tr><td><b>Subgrafo</b></td><td>Parte de un grafo que es grafo por sí misma</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Tipo de grafo</th><th>Descripción</th></tr>
+<tr><td><b>Dirigido (dígrafo)</b></td><td>Aristas con <b>dirección</b>: pares ordenados (A → B)</td></tr>
+<tr><td><b>No dirigido</b></td><td>Aristas <b>bidireccionales</b>: pares no ordenados {A, B}</td></tr>
+<tr><td><b>Ponderado</b></td><td>Cada arista tiene un <b>peso</b> (distancia, coste, tiempo, capacidad)</td></tr>
+<tr><td><b>Conexo</b></td><td><b>Camino entre cualquier par</b> de vértices. En dirigidos: <b>fuertemente conexo</b> (camino en ambas direcciones) o <b>débilmente conexo</b> (si se ignora la dirección)</td></tr>
+<tr><td><b>Cíclico / acíclico</b></td><td>Con / sin ciclos. <b>DAG</b> = grafo dirigido acíclico (flujos sin bucles)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Representación</th><th>Características</th></tr>
+<tr><td><b>Matriz de adyacencia</b></td><td>Matriz cuadrada (i, j) = hay arista; <b>mucho espacio</b>, comprueba conexión en <b>O(1)</b></td></tr>
+<tr><td><b>Lista de adyacencia</b></td><td>Cada vértice con su lista de vecinos; <b>más eficiente en grafos dispersos</b></td></tr>
+</table></div>
+<h3>2.4 Estructuras de acceso directo</h3>
+<h3>Tablas hash</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tabla hash</b></p>
+<p>Estructura para <b>inserción, búsqueda y eliminación</b> muy eficientes, idealmente en <b>tiempo constante O(1)</b> en el caso promedio.</p>
+</div>
+<ul>
+<li>Una <b>función hash</b> transforma la <b>clave</b> en un <b>índice</b> del array: <b>índice = h(clave) % tamaño_tabla</b>. Para buscar o eliminar se aplica la misma función.</li>
+<li><b>Colisión</b>: dos claves distintas generan el <b>mismo índice</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Resolución de colisiones</th><th>Funcionamiento</th></tr>
+<tr><td><b>Encadenamiento (chaining)</b></td><td>Cada posición guarda una <b>lista enlazada</b> (o lista dinámica) con los elementos que comparten índice</td></tr>
+<tr><td><b>Direccionamiento abierto (hash abierto)</b></td><td>Todo en el array; si hay colisión se busca la <b>siguiente posición libre</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Estrategia de sondeo</th><th>Salto</th></tr>
+<tr><td><b>Lineal (linear probing)</b></td><td>Posiciones siguientes una a una: i+1, i+2…</td></tr>
+<tr><td><b>Cuadrático (quadratic probing)</b></td><td>Salto <b>cuadrático</b>: i+1², i+2²…</td></tr>
+<tr><td><b>Doble hash (double hashing)</b></td><td>Una <b>segunda función hash</b> calcula el salto</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Tabla hash</b></p>
+<p><b>Tamaño de la tabla</b>: conviene que sea un <b>número primo</b> para mejorar la dispersión. <b>Factor de carga</b> (elementos / tamaño): si es alto (<b>&gt; 0,7</b>), conviene <b>redimensionar</b> la tabla.</p>
+</div>
+<h3>Diccionarios</h3>
+<ul>
+<li>Pares <b>clave-valor</b> con <b>clave única</b>; generalización de un array con índices de cualquier tipo <b>hashable</b>. Operaciones: <code>diccionario[clave] = valor</code>, consulta, modificación (nuevo valor a la misma clave) y <code>del diccionario[clave]</code>.</li>
+</ul>
+<div class="tw"><table><tr><th>Implementación</th><th>Rasgos</th></tr>
+<tr><td><b>Tablas hash</b></td><td>La más común en lenguajes modernos por su rapidez</td></tr>
+<tr><td><b>Árboles balanceados</b> (rojo-negro, AVL)</td><td>Claves <b>ordenadas</b>: búsquedas por rango y recorridos ordenados</td></tr>
+<tr><td><b>Tries</b></td><td>Claves tipo cadena: <b>búsqueda por prefijo, autocompletado</b></td></tr>
+</table></div>
+<h2 id="s2">3. Algoritmos</h2>
+<ul>
+<li><b>Algoritmo</b>: conjunto <b>finito y ordenado</b> de instrucciones para resolver un problema.</li>
+</ul>
+<div class="tw"><table><tr><th>Característica</th><th>Idea</th></tr>
+<tr><td><b>Finitud</b></td><td>Termina tras un número determinado de pasos</td></tr>
+<tr><td><b>Definición precisa</b></td><td>Cada paso claramente definido</td></tr>
+<tr><td><b>Entrada</b></td><td><b>Cero o más</b> datos</td></tr>
+<tr><td><b>Salida</b></td><td><b>Al menos un</b> resultado</td></tr>
+<tr><td><b>Eficiencia</b></td><td>Mínimo de tiempo y recursos</td></tr>
+</table></div>
+<h3>3.1 Algoritmos de búsqueda</h3>
+<div class="tw"><table><tr><th>Búsqueda</th><th>Funcionamiento</th><th>Complejidad</th></tr>
+<tr><td><b>Lineal (secuencial)</b></td><td>Recorre uno a uno; <b>no requiere orden</b></td><td>Peor <b>O(n)</b>; mejor <b>O(1)</b></td></tr>
+<tr><td><b>Binaria</b></td><td>Requiere datos <b>ordenados</b>; compara con el elemento <b>central</b> y divide el rango en mitades</td><td>Peor y mejor caso <b>O(log n)</b></td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Complejidad temporal</b></p>
+<p>Mide el <b>tiempo en función del tamaño de la entrada (n)</b>; <b>no se mide en segundos</b>, sino en <b>número de operaciones fundamentales</b>, para comparar algoritmos con independencia del hardware o lenguaje. Sirve para evaluar eficiencia, comparar soluciones y prever cómo <b>escala</b> el algoritmo.</p>
+<div class="tw"><table><tr><th>Notación</th><th>Significado</th></tr>
+<tr><td><b>O(1)</b></td><td><b>Constante</b>: no depende del tamaño</td></tr>
+<tr><td><b>O(log n)</b></td><td>Logarítmica: <b>muy eficiente</b></td></tr>
+<tr><td><b>O(n)</b></td><td><b>Lineal</b></td></tr>
+<tr><td><b>O(n²)</b></td><td><b>Cuadrática</b></td></tr>
+</table></div>
+</div>
+<h3>Algoritmos de ordenación</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Burbuja (Bubble Sort)</b></p>
+<p><b>Compara elementos adyacentes</b> e intercambia si están desordenados; repite hasta ordenar toda la lista. Complejidad: <b>O(n²)</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Algoritmo</th><th>Idea</th><th>Complejidad</th></tr>
+<tr><td><b>Burbuja</b></td><td>Compara adyacentes e intercambia</td><td><b>O(n²)</b></td></tr>
+<tr><td><b>Inserción</b></td><td>Inserta cada elemento en su sitio dentro de la parte ya ordenada; muy eficiente en <b>listas pequeñas o casi ordenadas</b></td><td>Peor <b>O(n²)</b>; mejor (ordenada) <b>O(n)</b></td></tr>
+<tr><td><b>Selección</b></td><td>Busca el <b>menor</b> en cada pasada y lo coloca; <b>no es estable</b> (hay versiones estables)</td><td><b>O(n²)</b></td></tr>
+<tr><td><b>Quicksort</b></td><td><b>Divide y vencerás</b>: elige un <b>pivote</b>, separa menores y mayores y ordena recursivamente</td><td>Peor <b>O(n²)</b> (pivote mínimo/máximo); promedio <b>O(n log n)</b></td></tr>
+<tr><td><b>Mergesort</b></td><td><b>Divide y vencerás</b>: divide en mitades, ordena y <b>fusiona</b></td><td><b>O(n log n)</b> en <b>todos</b> los casos</td></tr>
+</table></div>
+<h3>3.2 Recursividad</h3>
+<ul>
+<li>Una <b>función se llama a sí misma</b> para resolver subproblemas más simples. Requisitos:</li>
+</ul>
+<div class="tw"><table><tr><th>Requisito</th><th>Función</th></tr>
+<tr><td><b>Caso base</b></td><td>Condición de <b>parada</b>; sin él, llamada infinita y <b>desbordamiento de pila</b></td></tr>
+<tr><td><b>Llamada recursiva</b></td><td>La función se llama con una <b>versión más sencilla</b> del problema</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>Directa</b></td><td>Se llama a sí misma explícitamente</td></tr>
+<tr><td><b>Indirecta</b></td><td>A llama a B, que vuelve a llamar a A (puede haber más de dos funciones)</td></tr>
+<tr><td><b>Lineal</b></td><td><b>Una sola</b> llamada por ejecución</td></tr>
+<tr><td><b>Múltiple</b></td><td><b>Más de una</b> llamada por ejecución → árbol de llamadas, crecimiento exponencial</td></tr>
+<tr><td><b>De cola (tail recursion)</b></td><td>La llamada recursiva es <b>la última operación</b> antes de retornar</td></tr>
+</table></div>
+<h3>3.3 Algoritmos sobre estructuras de datos</h3>
+<ul>
+<li><b>Inserción</b>: al principio, al final, en una posición concreta o según prioridad. <b>Eliminación</b>: por posición, por valor o por regla (LIFO, FIFO, prioridad). La estructura elegida condiciona el rendimiento.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Recorrido de árboles</b></p>
+<p>Los <b>árboles binarios</b> se recorren con tres estrategias clásicas, <b>recursivas o iterativas</b>. Complejidad en todos los casos: <b>O(n)</b>, con n = nº de nodos.</p>
+</div>
+<div class="tw"><table><tr><th>Recorrido</th><th>Orden</th><th>Utilidad</th><th>Ejemplo (árbol de la imagen)</th></tr>
+<tr><td><b>Inorden</b></td><td><b>izquierda → nodo → derecha</b></td><td>En un <b>BST</b> devuelve los elementos <b>ordenados</b></td><td>1-2-3-4-5-6-7</td></tr>
+<tr><td><b>Preorden</b></td><td><b>nodo → izquierda → derecha</b></td><td><b>Copiar o serializar</b> árboles; procesa el nodo antes que los hijos</td><td>4-2-1-3-6-5-7</td></tr>
+<tr><td><b>Postorden</b></td><td><b>izquierda → derecha → nodo</b></td><td><b>Liberar memoria</b> (eliminar nodos tras sus hijos)</td><td>1-3-2-5-7-6-4</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Recorrido de grafos</th><th>Estrategia</th><th>Implementación</th><th>Complejidad</th></tr>
+<tr><td><b>DFS</b> (profundidad)</td><td>Explora <b>lo más lejos posible</b> por cada rama antes de retroceder</td><td><b>Pila o recursión</b></td><td><b>O(V + E)</b></td></tr>
+<tr><td><b>BFS</b> (anchura)</td><td>Explora <b>todos los nodos de un nivel</b> antes de bajar</td><td><b>Cola</b></td><td><b>O(V + E)</b></td></tr>
+</table></div>
+<h2 id="s3">4. Organizaciones de ficheros</h2>
+<ul>
+<li><b>Fichero</b>: colección de datos en un medio secundario, identificada por un nombre, para guardar información <b>persistente</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Contenido</th></tr>
+<tr><td><b>De texto</b></td><td>Caracteres legibles: <code>.txt, .csv, .xml, .json</code></td></tr>
+<tr><td><b>Binarios</b></td><td>Formato binario, más eficientes pero ilegibles directamente: <code>.exe, .dat, .bin</code></td></tr>
+<tr><td><b>Estructurados</b></td><td>Formato definido por <b>registros y campos</b> (bases de datos, ficheros de configuración)</td></tr>
+</table></div>
+<h3>4.1 Modos de acceso</h3>
+<div class="tw"><table><tr><th>Acceso</th><th>Funcionamiento</th><th>Características</th></tr>
+<tr><td><b>Secuencial</b></td><td>Registros <b>uno a uno desde el principio</b>, en su orden físico (como una cinta de casete)</td><td>No se accede a un registro sin recorrer los anteriores; eficiente al procesar <b>todos</b> los datos; registros de <b>tamaño fijo</b> y estructura homogénea</td></tr>
+<tr><td><b>Directo o aleatorio (random access)</b></td><td>Acceso inmediato mediante <b>función de localización</b> basada en clave o posición</td><td>Posición fija o calculable; <b>posición = dirección_base + (nº_registro × tamaño_registro)</b>; requiere <b>longitud fija</b> o un índice</td></tr>
+<tr><td><b>Indexado</b></td><td><b>Estructuras de índices auxiliares</b> (como el índice de un libro): tablas, <b>árboles B o B+</b> o hash, con clave y posición física</td><td>Combina ventajas del secuencial y del aleatorio; <b>índices primarios y secundarios</b>; se busca primero en el índice (a veces <b>en memoria</b>)</td></tr>
+</table></div>
+<h3>4.2 Métodos de organización</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Organización secuencial</b></p>
+<p>Método <b>más básico y tradicional</b>: los registros se guardan <b>de forma consecutiva</b>, en el orden en que se generan o según una <b>clave primaria ordenada</b>. Para acceder a uno concreto hay que <b>leer desde el principio</b>: muy eficiente para procesar todo el fichero, <b>poco práctico para búsquedas puntuales</b>.</p>
+</div>
+<ul>
+<li>Registros normalmente de <b>tamaño fijo</b>; orden lógico por clave; el fichero <b>crece linealmente</b>; <b>no admite saltos</b>. Ejemplo: para hallar a María (003) hay que leer antes a Ana (001) y Luis (002).</li>
+</ul>
+<div class="tw"><table><tr><th>Método</th><th>Idea</th><th>Detalle</th></tr>
+<tr><td><b>Secuencial indexada</b></td><td>Datos <b>ordenados</b> por clave primaria <b>+ índice auxiliar</b> (tabla, árbol B/B+)</td><td>Combina orden secuencial y búsqueda rápida; <b>índice primario</b> y <b>secundarios</b>, varios niveles. Ej.: EMP-018 → el índice indica que está entre EMP-010 (900) y EMP-020 (1800)</td></tr>
+<tr><td><b>Directa o aleatoria</b></td><td>La posición se <b>calcula a partir de la clave</b> con una función determinista; sin recorrer ni indexar</td><td>Mejor con registros de <b>tamaño fijo</b>; puede necesitar gestión de colisiones. Ej.: ID 458 con registros de 100 B → posición = 100 × (458 − 1) = <b>45.700 bytes</b></td></tr>
+<tr><td><b>Dispersión (hashing)</b></td><td>Una <b>función hash</b> transforma la clave en una <b>dirección</b> del fichero</td><td>Claves numéricas, alfabéticas o mixtas; buena función = <b>distribución uniforme</b>; colisiones resueltas con <b>encadenamiento</b> o <b>direccionamiento abierto</b> (lineal, cuadrático, doble hashing). Ej.: hash("12345678A") → 145</td></tr>
+</table></div>
+<h2 id="s4">5. Formatos de información y ficheros</h2>
+<div class="tw"><table><tr><th>Categoría</th><th>Formatos</th></tr>
+<tr><td><b>Texto</b> (legibles)</td><td><b>TXT</b> (texto plano) · <b>CSV</b> (filas y columnas separadas por comas o <code>;</code>, exporta hojas de cálculo) · <b>JSON</b> (pares clave-valor, ligero, <b>APIs web</b>) · <b>XML</b> (etiquetas personalizadas, autodescriptivo, <b>más pesado que JSON</b>) · <b>YAML</b> (como JSON, más conciso; <b>Docker, Ansible</b>)</td></tr>
+<tr><td><b>Binarios</b></td><td><b>BIN</b> (datos sin estructura estándar: imágenes de disco, firmware) · <b>EXE</b> (ejecutable Windows) · <b>DAT</b> (datos genéricos según el programa)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Compresión de ficheros</b></p>
+<p>Reducen el tamaño para ahorrar espacio y facilitar la transferencia; pueden ser <b>con pérdida o sin pérdida</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Formato de compresión</th><th>Características</th></tr>
+<tr><td><b>ZIP</b></td><td>Muy extendido; <b>sin pérdida</b>; varios archivos y carpetas</td></tr>
+<tr><td><b>RAR</b></td><td>Similar a ZIP, a menudo <b>mejor compresión</b>; requiere <b>WinRAR</b></td></tr>
+<tr><td><b>GZIP</b></td><td>Archivos <b>individuales</b>; entornos <b>Unix/Linux</b></td></tr>
+<tr><td><b>TAR</b></td><td><b>Empaqueta</b> varios archivos <b>sin comprimir</b>; se combina con GZIP (<code>.tar.gz</code>)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Base de datos</th><th>Características</th></tr>
+<tr><td><b>MDB</b></td><td><b>Microsoft Access</b>; propietario (datos, consultas, formularios)</td></tr>
+<tr><td><b>DBF</b></td><td><b>dBASE</b>; fichero plano con estructura de tabla</td></tr>
+<tr><td><b>SQL</b></td><td>Texto con instrucciones SQL; <b>exportar/importar</b> BD</td></tr>
+<tr><td><b>SQLite</b> (<code>.sqlite</code>, <code>.db</code>)</td><td>BD ligera en <b>un solo archivo binario</b>; móviles y embebidas</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Multimedia y documentos</th><th>Características</th></tr>
+<tr><td><b>PDF</b></td><td>Multiplataforma, <b>conserva el diseño</b>; administración y publicaciones</td></tr>
+<tr><td><b>DOCX</b></td><td>Word, <b>XML comprimido</b></td></tr>
+<tr><td><b>JPG (JPEG)</b></td><td>Imagen <b>con pérdida</b>; buena relación calidad/tamaño</td></tr>
+<tr><td><b>PNG</b></td><td><b>Sin pérdida</b>, admite <b>transparencias</b>; gráficos web</td></tr>
+<tr><td><b>MP4</b></td><td><b>Contenedor</b> de vídeo y audio; streaming</td></tr>
+</table></div>
+<div class="pn"><a href="b2t2.html">← 2.2</a><a href="b2t4.html">2.4 →</a></div></main></div><script src="../app.js"></script></body></html>

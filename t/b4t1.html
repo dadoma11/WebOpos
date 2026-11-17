@@ -1,0 +1,407 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 1 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Administración de sistemas</a><a href="#s1">2. Software de base</a><a href="#s2">3. Gestión de usuarios y permisos</a><a href="#s3">4. Actualización del sistema operativo</a><a href="#s4">5. Mantenimiento del sistema operativo</a><a href="#s5">6. Reparación del sistema operativo</a><a href="#s6">7. Buenas prácticas de administración</a><a href="#s7">Anexo I. Comandos GNU/Linux</a><a href="#s8">Anexo II. Comandos Windows</a></aside>
+<main class="doc" data-key="b4t1"><div class="crumb">Bloque 4 · Tema 1</div><h1>Administración de sistemas operativos: software de base, usuarios, actualización, mantenimiento, MDM y comandos</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (11)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema1.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema1.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Administración de sistemas</h2>
+<ul>
+<li><b>Administrador de sistemas</b>: mantiene el <b>sistema operativo y el software de base</b> en condiciones óptimas.</li>
+</ul>
+<div class="tw"><table><tr><th>Función</th><th>Contenido</th></tr>
+<tr><td><b>Usuarios y permisos</b></td><td>Crear, modificar y eliminar cuentas; control de accesos; <b>políticas de contraseñas</b>; permisos sobre ficheros</td></tr>
+<tr><td><b>Supervisión del rendimiento</b></td><td>Monitorizar HW, red, SSOO, usuarios, seguridad</td></tr>
+<tr><td><b>Instalación y configuración</b></td><td>SO, <b>parches y actualizaciones</b>, software de base (drivers, herramientas)</td></tr>
+<tr><td><b>Mantenimiento preventivo y correctivo</b></td><td>Limpieza de logs, espacio en disco; resolver incidencias</td></tr>
+<tr><td><b>Seguridad</b></td><td><b>Cortafuegos, antivirus, auditorías de acceso, cifrado</b></td></tr>
+<tr><td><b>Automatización</b></td><td><b>Scripts</b>: copias de seguridad, limpiezas, informes</td></tr>
+<tr><td><b>Configuración y cambios</b></td><td>Documentar, probar antes de cambios importantes, <b>recuperar mediante respaldo</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Responsabilidad</th><th>Idea</th></tr>
+<tr><td><b>Disponibilidad</b></td><td>Sistemas operativos siempre; mínimo tiempo de inactividad</td></tr>
+<tr><td><b>Integridad</b></td><td>Proteger datos de pérdidas, corrupciones o accesos indebidos</td></tr>
+<tr><td><b>Confidencialidad</b></td><td>Acceso solo a autorizados, con control y registro</td></tr>
+<tr><td><b>Documentación y trazabilidad</b></td><td>Registro de configuraciones, intervenciones y cambios</td></tr>
+<tr><td><b>Cumplimiento normativo</b></td><td><b>ENS</b>, protección de datos</td></tr>
+<tr><td><b>Actualización continua</b></td><td>Tecnologías, amenazas y vulnerabilidades</td></tr>
+</table></div>
+<h2 id="s1">2. Software de base</h2>
+<ul>
+<li>Programas que permiten al SO <b>interactuar con el hardware</b> y preparan el entorno para el resto del software: <b>cargadores, SO, drivers, compiladores, interfaces de usuario, BIOS, gestores de arranque</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Componente</th><th>Descripción</th></tr>
+<tr><td><b>Cargador (loader)</b></td><td>Carga en <b>memoria</b> un programa ejecutable; puede ser parte del SO (<b>dynamic linker</b> en Linux)</td></tr>
+<tr><td><b>Compilador</b></td><td>Transforma código fuente de alto nivel en <b>código máquina o bytecode</b>. Fases: <b>análisis léxico y sintáctico, optimización, generación de código objeto/ejecutable</b>. Tradicionales (<b>GCC</b>) y <b>JIT</b> (Java, .NET: compilan en ejecución)</td></tr>
+<tr><td><b>Entorno de escritorio</b></td><td>Interfaz gráfica: gestor de ventanas, iconos, menús, widgets, explorador. <b>GNOME, KDE Plasma, XFCE</b> (Linux), Windows</td></tr>
+<tr><td><b>BIOS</b></td><td><b>Firmware en un chip de la placa base</b>; lo <b>primero que se ejecuta</b>: <b>POST</b> (Power-On Self Test), inicializa teclado/pantalla/discos, <b>busca dispositivo de arranque</b> (disco, USB, red) y le cede el control; configuración básica. Sustituida por <b>UEFI</b> (más funciones, discos grandes, <b>arranque seguro</b>)</td></tr>
+<tr><td><b>Bootloader</b></td><td>Toma el control tras BIOS/UEFI: <b>carga el kernel</b> y le transfiere el control. <b>GRUB, LILO, Windows Boot Manager (bootmgr.exe)</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Interfaces de usuario</b></p>
+<p><b>CLI</b> (Command Line Interface): comandos de texto; flexibilidad, rapidez y <b>automatización (scripts)</b>; <b>Bash, PowerShell, CMD</b>. <b>GUI</b> (Graphical User Interface): elementos visuales; intuitiva (Windows, escritorios Linux). <b>NUI</b> (Natural User Interface): <b>gestos, voz</b>; dispositivos táctiles, asistentes virtuales.</p>
+</div>
+<ul>
+<li><b>Hipervisores</b> (monitores de máquina virtual): ejecutan <b>varios SO simultáneamente</b> en una máquina física, cada uno virtualizado; consolidación de servidores, entornos de prueba y aislamiento.</li>
+</ul>
+<div class="tw"><table><tr><th></th><th><b>Tipo 1 (bare-metal)</b></th><th><b>Tipo 2 (hosted)</b></th></tr>
+<tr><td><b>Ejecución</b></td><td><b>Directamente sobre el hardware</b>; no requiere SO anfitrión</td><td>Como <b>aplicación sobre un SO</b> ya instalado</td></tr>
+<tr><td><b>Ventajas</b></td><td>Alto rendimiento, eficiencia, mejor aislamiento y seguridad</td><td>Fácil instalación y uso; pruebas o uso personal</td></tr>
+<tr><td><b>Ejemplos</b></td><td><b>VMware ESXi, Microsoft Hyper-V, Xen, KVM</b></td><td><b>VirtualBox, VMware Workstation, Parallels Desktop</b></td></tr>
+</table></div>
+<h2 id="s2">3. Gestión de usuarios y permisos</h2>
+<ul>
+<li><b>Cuenta de usuario</b>: información que identifica a una persona, sistema o servicio; <b>identidad única</b>, vinculada a perfiles y privilegios (roles): qué recursos usa, qué acciones realiza y <b>cuándo y cómo</b> accede.</li>
+</ul>
+<div class="tw"><table><tr><th>Buena práctica</th><th>Idea</th></tr>
+<tr><td><b>Control de contraseñas</b></td><td><b>Caducidad</b>, complejidad mínima, <b>bloqueo tras intentos fallidos</b> (fuerza bruta)</td></tr>
+<tr><td><b>Limitaciones de uso</b></td><td><b>Horarios</b>, sesión en un único dispositivo, <b>menor privilegio</b></td></tr>
+<tr><td><b>Seguimiento y auditoría</b></td><td><b>Logs</b> de acciones, accesos, intentos fallidos, cambios</td></tr>
+<tr><td><b>Ciclo de vida</b></td><td><b>Desactivar cuentas</b> inactivas o de empleados que ya no pertenecen</td></tr>
+</table></div>
+<ul>
+<li><b>Grupos (roles)</b>: agrupan cuentas con permisos comunes (en Windows, el grupo <b>Administradores</b> tiene acceso total). <b>Perfiles</b>: configuración personalizada de cada cuenta; <b>locales o móviles</b> (en dominio). <b>Control de acceso</b>: <b>ACLs, permisos y privilegios</b>, según identidad y grupo.</li>
+</ul>
+<h3>3.3 Permisos Unix/Linux: rwx</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Permisos rwx</b></p>
+<div class="tw"><table><tr><th>Permiso</th><th>En archivos</th><th>En directorios</th></tr>
+<tr><td><b>r (read)</b></td><td>Leer el contenido</td><td><b>Ver el contenido</b> (listar)</td></tr>
+<tr><td><b>w (write)</b></td><td>Modificar el archivo</td><td><b>Crear, renombrar o borrar</b> archivos dentro</td></tr>
+<tr><td><b>x (exec)</b></td><td><b>Ejecutar</b> (script o binario)</td><td><b>Acceder</b> al contenido (entrar con <code>cd</code>)</td></tr>
+</table></div>
+<p>Se aplican por separado a <b>tres grupos</b>: <b>usuario (user, propietario)</b>, <b>grupo (group)</b> y <b>otros (others)</b>. <code>ls -l</code> muestra los permisos; p. ej. <b>rwx</b> = propietario, <b>r-x</b> = grupo (lee y ejecuta, no escribe), <b>--x</b> = otros (solo ejecutan).</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Notación octal</b></p>
+<p>Cada grupo de 3 letras se codifica en <b>octal</b> (los 1 binarios marcan el permiso).</p>
+<div class="tw"><table><tr><th>Octal</th><th>Binario</th><th>Permisos</th></tr>
+<tr><td><b>0</b></td><td>000</td><td>---</td></tr>
+<tr><td><b>1</b></td><td>001</td><td>--x</td></tr>
+<tr><td><b>2</b></td><td>010</td><td>-w-</td></tr>
+<tr><td><b>3</b></td><td>011</td><td>-wx</td></tr>
+<tr><td><b>4</b></td><td>100</td><td>r--</td></tr>
+<tr><td><b>5</b></td><td>101</td><td>r-x</td></tr>
+<tr><td><b>6</b></td><td>110</td><td>rw-</td></tr>
+<tr><td><b>7</b></td><td>111</td><td>rwx</td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Comando chmod</b></p>
+<p>Modifica los permisos. Sintaxis: <b><code>chmod [opciones] permisos archivo</code></b>. <b>Modo simbólico</b>: <code>chmod u+x archivo</code> (<b>añade ejecución al usuario</b>), <code>chmod g-w archivo</code> (<b>quita escritura al grupo</b>), <code>chmod o=r archivo</code> (<b>deja solo lectura para otros</b>). <b>Modo numérico</b>: <code>chmod 644 fichero.txt</code> → <b>lectura y escritura al propietario, solo lectura al grupo y a otros</b>.</p>
+</div>
+<h3>3.4 Parámetros de creación de usuario en Active Directory</h3>
+<div class="tw"><table><tr><th>Parámetro</th><th>Descripción</th></tr>
+<tr><td><b>First Name / Initials / Last Name</b></td><td>Nombre, inicial del segundo nombre, apellidos</td></tr>
+<tr><td><b>Display Name</b></td><td>Nombre completo mostrado en el directorio</td></tr>
+<tr><td><b>Username / User logon name</b></td><td><b>Nombre de inicio de sesión</b></td></tr>
+<tr><td><b>Password</b></td><td>Contraseña inicial</td></tr>
+<tr><td><b>Location</b></td><td>Ubicación física o departamento</td></tr>
+<tr><td><b>Description</b></td><td>Comentario (rol, finalidad)</td></tr>
+<tr><td><b>Logon hours</b></td><td><b>Horario</b> en que puede iniciar sesión en el dominio</td></tr>
+</table></div>
+<h2 id="s3">4. Actualización del sistema operativo</h2>
+<ul>
+<li>Corrige errores, cierra vulnerabilidades o introduce mejoras; también puede ser <b>actualizar el hardware</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de actualización</th><th>Descripción</th></tr>
+<tr><td><b>Parches de seguridad</b></td><td>Corrigen <b>vulnerabilidades</b>; críticos, aplicar cuanto antes</td></tr>
+<tr><td><b>Corrección (bugfix)</b></td><td>Resuelven errores sin nuevas funcionalidades</td></tr>
+<tr><td><b>Funcionalidad / versiones mayores</b></td><td>Nuevas características o cambios de interfaz</td></tr>
+<tr><td><b>Acumulativas</b></td><td>Varios parches y mejoras en un solo paquete</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Plataforma</th><th>Cómo se actualiza</th></tr>
+<tr><td><b>Windows</b></td><td><b>Windows Update</b>: buscar, descargar e instalar parches y drivers; <b>programar fuera del horario laboral</b>; en empresas, <b>WSUS</b> (Windows Server Update Services) o <b>Intune</b></td></tr>
+<tr><td><b>Linux Debian/Ubuntu</b></td><td><b>apt, apt-get, synaptic, update-manager</b></td></tr>
+<tr><td><b>Linux Red Hat, CentOS, Fedora</b></td><td><b>yum</b> (sustituido por <b>dnf</b>)</td></tr>
+<tr><td><b>Linux openSUSE / SLE</b></td><td><b>zypper</b></td></tr>
+<tr><td><b>iOS</b></td><td><b>OTA</b> (Over-The-Air) o <b>iTunes/Finder</b>; descarga automática y notificación push</td></tr>
+<tr><td><b>Android</b></td><td><b>OTA</b>; depende del <b>fabricante</b>; <b>Project Treble</b> y modularización (WebView, Google Play) para actualizaciones ágiles</td></tr>
+</table></div>
+<ul>
+<li>En Linux las actualizaciones pueden incluir el <b>kernel</b> y exigir <b>reinicio</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Herramientas de actualización (cuadro resumen)</b></p>
+<div class="tw"><table><tr><th>Plataforma</th><th>Herramienta</th><th>Descripción</th></tr>
+<tr><td><b>Windows</b></td><td><b>Windows Update</b></td><td>Gestión de actualizaciones del SO y drivers</td></tr>
+<tr><td><b>Linux (Debian/Ubuntu)</b></td><td><b>apt / apt-get</b></td><td>Gestor basado en <b>APT</b></td></tr>
+<tr><td><b>Linux (RHEL/Fedora)</b></td><td><b>yum / dnf</b></td><td>Gestor basado en <b>RPM</b></td></tr>
+<tr><td><b>Linux (openSUSE)</b></td><td><b>zypper</b></td><td>Gestor basado en <b>SUSE</b></td></tr>
+<tr><td><b>iOS y Android</b></td><td><b>OTA</b></td><td>Actualización desde el propio dispositivo</td></tr>
+</table></div>
+</div>
+<h2 id="s4">5. Mantenimiento del sistema operativo</h2>
+<div class="tw"><table><tr><th>Tipo de mantenimiento</th><th>Descripción</th></tr>
+<tr><td><b>Preventivo</b></td><td><b>Periódico y sistemático</b>, antes de que ocurran fallos: limpieza, logs, actualizaciones, verificar backups</td></tr>
+<tr><td><b>Correctivo</b></td><td><b>Tras detectar</b> un fallo; restablecer cuanto antes</td></tr>
+<tr><td><b>Predictivo</b></td><td><b>Monitorización continua</b>; detecta patrones que indican fallos futuros</td></tr>
+<tr><td><b>Adaptativo</b></td><td>Adaptar el sistema a <b>cambios del entorno</b> (políticas, requisitos, infraestructuras)</td></tr>
+<tr><td><b>Perfectivo</b></td><td><b>Incorporar o modificar funcionalidades</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Métricas de fallo y recuperación</b></p>
+<div class="tw"><table><tr><th>Sigla</th><th>Significado</th><th>Descripción</th></tr>
+<tr><td><b>MTTR</b></td><td>Mean Time To Recovery</td><td>Tiempo medio para <b>reparar</b> tras un fallo</td></tr>
+<tr><td><b>MTBF</b></td><td>Mean Time Between Failures</td><td>Tiempo medio <b>entre dos fallos consecutivos</b>; mide la <b>fiabilidad</b></td></tr>
+<tr><td><b>MTTF</b></td><td>Mean Time To Failure</td><td>Tiempo medio <b>hasta el primer fallo</b>; sistemas <b>no reparables</b></td></tr>
+<tr><td><b>MTTD</b></td><td>Mean Time To Detect</td><td>Tiempo para <b>detectar</b> un problema</td></tr>
+<tr><td><b>MTTA</b></td><td>Mean Time To Acknowledge</td><td>Tiempo hasta <b>empezar a trabajar</b> en el problema</td></tr>
+<tr><td><b>RTO</b></td><td>Recovery Time Objective</td><td><b>Tiempo máximo tolerado</b> para recuperar el sistema</td></tr>
+<tr><td><b>RPO</b></td><td>Recovery Point Objective</td><td><b>Cantidad máxima de datos</b> que se pueden perder</td></tr>
+</table></div>
+<p>Fundamentales para los <b>SLA</b> y la continuidad de negocio.</p>
+</div>
+<ul>
+<li><b>Tareas periódicas</b>: <b>limpieza</b> (temporales, logs), <b>revisión de registros</b>, <b>actualización</b> de software, <b>monitorización</b> de CPU/memoria/disco/red, <b>copias de seguridad</b> (verificar y probar la recuperación), <b>control de usuarios</b> (cuentas inactivas, permisos).</li>
+<li><b>Gestión de incidentes</b>: plataformas <b>ITSM (IT Service Management)</b> o <b>ticketing</b>, para los <b>CAU</b> (Centros de Atención de Usuarios): seguimiento, tiempos de respuesta, <b>base de conocimiento</b>, <b>escalado</b>. El <b>ticket</b> recoge la información del incidente y <b>todas las acciones</b> de los técnicos.</li>
+</ul>
+<div class="tw"><table><tr><th>Herramienta</th><th>Notas</th></tr>
+<tr><td><b>BMC Helix</b></td><td>Versión moderna en la nube de <b>BMC Remedy</b>; web, móvil y correo; IA</td></tr>
+<tr><td><b>JIRA Service Management</b></td><td><b>Atlassian</b>; también gestión de proyectos</td></tr>
+<tr><td><b>Service Manager, ServiceNow, Zendesk, SolarWinds Service Desk</b></td><td>Comerciales</td></tr>
+<tr><td><b>GLPI</b></td><td>Open source: incidencias, <b>inventario y CMDB</b></td></tr>
+<tr><td><b>OTRS</b></td><td>Sistema de tickets configurable</td></tr>
+<tr><td><b>Request Tracker (RT)</b></td><td>Seguimiento de incidencias</td></tr>
+<tr><td><b>Zammad</b></td><td>Interfaz moderna, <b>multicanal</b> (email, chat, redes)</td></tr>
+</table></div>
+<h2 id="s5">6. Reparación del sistema operativo</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Herramientas de diagnóstico y recuperación</b></p>
+<p>Utilidades para detectar y corregir problemas <b>sin reinstalar</b>.</p>
+<p><b>Windows</b>: <b>chkdsk</b> (errores del sistema de archivos) · <b>SFC</b> (System File Checker: verifica y repara archivos del sistema) · <b>DISM</b> (Deployment Image Servicing and Management: repara imágenes del sistema y entornos de recuperación) · herramientas gráficas (diagnóstico de memoria, solucionadores).</p>
+<p><b>Linux</b>: <b>fsck</b> (comprueba y repara sistemas de archivos) · <b>dmesg</b> (mensajes del kernel; fallos de hardware o arranque) · <b>Live USB + chroot</b> (reparar particiones, <b>reinstalar GRUB</b>, restaurar configuraciones).</p>
+</div>
+<div class="tw"><table><tr><th>Modo de arranque</th><th>Descripción</th></tr>
+<tr><td><b>Modo seguro (Safe Mode)</b></td><td><b>Windows</b>; <b>mínimo de controladores y servicios</b>; desinstalar software problemático, diagnóstico</td></tr>
+<tr><td><b>Modo recuperación</b></td><td><b>Windows y Linux</b>; restauración y acceso a la línea de comandos</td></tr>
+<tr><td><b>Live USB / Live CD</b></td><td>Ejecuta el SO <b>sin instalar nada</b>; acceder a discos, copiar archivos, reparar particiones, reinstalar el gestor de arranque o el sistema</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Reinstalación</th><th>Descripción</th></tr>
+<tr><td><b>Conservando archivos (recuperación)</b></td><td>Sin borrar documentos personales; restaura archivos del sistema</td></tr>
+<tr><td><b>Completa</b></td><td><b>Formatea</b> la unidad; requiere <b>copia previa</b> de datos, drivers y aplicaciones</td></tr>
+</table></div>
+<ul>
+<li>Siempre: <b>copias previas</b>, medios de instalación (ISO, USB) y documentación de la configuración original.</li>
+</ul>
+<h2 id="s6">7. Buenas prácticas de administración</h2>
+<ul>
+<li><b>Registro de cambios (change log)</b>: constancia de instalaciones, actualizaciones y cambios de configuración; facilita incidencias y <b>trazabilidad</b> en entornos auditables.</li>
+</ul>
+<div class="tw"><table><tr><th>Monitorización</th><th>Descripción</th></tr>
+<tr><td><b>Nagios</b></td><td>Muy extendida: servicios, servidores, redes y aplicaciones</td></tr>
+<tr><td><b>Zabbix</b></td><td>Recogida de datos, alertas y paneles</td></tr>
+<tr><td><b>Prometheus + Grafana</b></td><td>Monitorización y visualización moderna en tiempo real</td></tr>
+<tr><td><b>Cacti</b></td><td>Monitorización de <b>red</b> con gráficos <b>RRD</b></td></tr>
+</table></div>
+<ul>
+<li>Genera <b>alarmas automáticas</b> cuando los indicadores son anómalos.</li>
+<li><b>Seguridad en la administración</b>: <b>cuentas separadas</b> para administración y uso personal · <b>menor privilegio</b> · <b>MFA</b> · cifrado de comunicaciones remotas (<b>SSH, VPN</b>) · control de sesiones y <b>desconexión por inactividad</b>. La mayoría de ataques utilizan al <b>usuario interno</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>MDM y EMM</b></p>
+<p><b>MDM (Mobile Device Management)</b>: gestiona dispositivos móviles (teléfonos, tablets, portátiles): <b>aplicar políticas de seguridad, configurar remotamente, localizar y borrar</b> dispositivos perdidos o robados. <b>EMM (Enterprise Mobility Management)</b>: enfoque <b>más amplio</b> que incluye MDM + <b>MAM</b> (Mobile Application Management: apps permitidas) + <b>MIM</b> (Mobile Information Management: apps que acceden a datos corporativos).</p>
+</div>
+<ul>
+<li>Herramientas MDM/EMM: <b>Microsoft Intune, VMware Workspace ONE, AirWatch, IBM MaaS360, Jamf</b> (dispositivos <b>Apple</b>), <b>Kaspersky EMM</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Modelos de gestión de dispositivos</b></p>
+<div class="tw"><table><tr><th>Modelo</th><th>Significado</th><th>Descripción</th></tr>
+<tr><td><b>BYOD</b></td><td>Bring Your Own Device</td><td>El empleado usa <b>su propio dispositivo</b>; flexible, pero con <b>riesgos de seguridad y privacidad</b></td></tr>
+<tr><td><b>CYOD</b></td><td>Choose Your Own Device</td><td>El empleado <b>elige de una lista aprobada</b> por la organización; control y soporte de la empresa</td></tr>
+<tr><td><b>COPE</b></td><td>Corporate Owned, Personally Enabled</td><td><b>De la empresa</b>, pero el empleado puede usarlo <b>también para fines personales</b>; equilibrado</td></tr>
+<tr><td><b>COBO</b></td><td>Corporate Owned, Business Only</td><td><b>De la empresa y solo uso laboral</b>; el <b>más restrictivo</b> (administración pública, sanidad, fuerzas de seguridad)</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>BYOD y CYOD</b>: políticas de control <b>parciales</b>, sin invadir la privacidad. <b>COPE y COBO</b>: <b>control total</b> (borrado remoto, configuración completa, control de aplicaciones).</li>
+</ul>
+<h2 id="s7">Anexo I. Comandos GNU/Linux</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Información del sistema</b></p>
+<p>Permiten consultar características del sistema, dispositivos, memoria e información clave para diagnóstico o mantenimiento.</p>
+</div>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>arch / uname -m</b></td><td>Arquitectura de la CPU (x86_64, i686)</td></tr>
+<tr><td><b>uname -r</b></td><td>Versión del <b>kernel</b></td></tr>
+<tr><td><b>uname -a</b></td><td>Información completa del kernel y arquitectura</td></tr>
+<tr><td><b>dmidecode</b></td><td>Información del <b>hardware desde la BIOS</b> (modelo, nº de serie, memoria)</td></tr>
+<tr><td><b>hdparm -I /dev/sdX</b></td><td>Información detallada del <b>disco duro</b></td></tr>
+<tr><td><b>cat /proc/cpuinfo</b></td><td>Detalles del <b>procesador</b></td></tr>
+<tr><td><b>cat /proc/meminfo</b></td><td><b>Memoria</b> disponible, usada, caché, buffers</td></tr>
+<tr><td><b>cat /proc/interrupts</b></td><td><b>Interrupciones</b> gestionadas por la CPU</td></tr>
+<tr><td><b>cat /proc/version</b></td><td>Versión del kernel y del compilador</td></tr>
+<tr><td><b>free -h</b></td><td>Uso de <b>RAM y swap</b> legible</td></tr>
+<tr><td><b>vmstat</b></td><td>Estadísticas: procesos, memoria, paginación, E/S, interrupciones</td></tr>
+<tr><td><b>top / htop</b></td><td>Procesos y consumo <b>en tiempo real</b> (htop más visual, requiere instalación)</td></tr>
+<tr><td><b>lspci / lsusb</b></td><td>Dispositivos <b>PCI / USB</b></td></tr>
+<tr><td><b>date</b></td><td>Muestra o ajusta fecha y hora</td></tr>
+<tr><td><b>cat /etc/os-release</b></td><td>Distribución y versión</td></tr>
+<tr><td><b>lsb_release -a</b></td><td>Información detallada de la distribución</td></tr>
+<tr><td><b>hostnamectl</b></td><td>Datos del sistema, kernel y nombre del SO</td></tr>
+</table></div>
+<h3>Archivos y directorios</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>cd</b></td><td>Cambia de directorio; <code>..</code> sube un nivel, <code>../..</code> dos, <code>-</code> vuelve al anterior</td></tr>
+<tr><td><b>pwd</b></td><td>Ruta completa del directorio actual</td></tr>
+<tr><td><b>ls / ls -F / ls -l</b></td><td>Lista contenido; <code>-F</code> marca el tipo (<code>/</code> directorios, <code>*</code> ejecutables); <code>-l</code> detalle con permisos, propietario, tamaño y fecha</td></tr>
+<tr><td><b>tree</b></td><td>Árbol jerárquico</td></tr>
+<tr><td><b>mkdir / rmdir / rm</b></td><td>Crea directorios / elimina <b>directorios vacíos</b> / elimina archivos</td></tr>
+<tr><td><b>cp / cp -a</b></td><td>Copia; <code>-a</code> <b>preserva atributos</b> (propietario, permisos, fechas)</td></tr>
+<tr><td><b>ln</b></td><td>Enlaces <b>físicos o simbólicos</b></td></tr>
+<tr><td><b>touch</b></td><td>Crea archivos vacíos o actualiza la fecha</td></tr>
+<tr><td><b>file</b></td><td>Tipo de archivo</td></tr>
+<tr><td><b>iconv</b></td><td>Convierte <b>codificaciones</b> (UTF-8, ISO-8859-1)</td></tr>
+<tr><td><b>find</b></td><td>Busca por nombre, tamaño, fecha, permisos; <code>find /home/user1 -name</code></td></tr>
+<tr><td><b>whereis</b></td><td>Ruta de un ejecutable y su documentación</td></tr>
+<tr><td><b>mount / umount</b></td><td>Monta / desmonta sistemas de archivos</td></tr>
+<tr><td><b>fuser -km</b></td><td>Finaliza procesos que usan un sistema de archivos (para poder desmontarlo)</td></tr>
+</table></div>
+<h3>Usuarios y grupos</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>groupadd / groupdel / groupmod</b></td><td>Crea / elimina / modifica grupos (<code>-n</code> renombrar, <code>-g</code> GID)</td></tr>
+<tr><td><b>useradd</b></td><td>Crea usuario: <code>-m</code> crea el home, <code>-s</code> shell, <code>-g</code> grupo principal, <code>-G</code> secundarios, <code>-d</code> ruta del home</td></tr>
+<tr><td><b>userdel</b></td><td>Elimina usuario; <b><code>-r</code> borra también el directorio personal</b></td></tr>
+<tr><td><b>usermod</b></td><td>Modifica: <code>-l</code> nombre, <code>-s</code> shell, <code>-g</code> grupo, <code>-G</code> añadir a grupos, <code>-d -m</code> home</td></tr>
+<tr><td><b>passwd</b></td><td>Cambia contraseña (solo <b>root</b> la de otros)</td></tr>
+<tr><td><b>pwck / grpck</b></td><td>Verifican <code>/etc/passwd</code> / <code>/etc/group</code></td></tr>
+<tr><td><b>chage</b></td><td><b>Caducidad de contraseñas</b> (días de validez, aviso, inactividad)</td></tr>
+<tr><td><b>newgrp</b></td><td>Cambia temporalmente el grupo principal en la sesión</td></tr>
+</table></div>
+<h3>Red</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>ifconfig</b></td><td>Interfaces de red (en desuso a favor de <b>ip</b>)</td></tr>
+<tr><td><b>ifup / ifdown</b></td><td>Activa / desactiva una interfaz</td></tr>
+<tr><td><b>dhclient</b></td><td>Solicita IP dinámica por <b>DHCP</b></td></tr>
+<tr><td><b>route -n / route add</b></td><td>Muestra la tabla de enrutamiento / añade ruta estática</td></tr>
+<tr><td><b>hostname</b></td><td>Muestra o cambia el nombre del equipo</td></tr>
+<tr><td><b>host / nslookup</b></td><td>Consultas <b>DNS</b> (nslookup más detallado)</td></tr>
+<tr><td><b>ip link show</b></td><td>Interfaces (estado, tipo, MAC)</td></tr>
+<tr><td><b>mii-tool / ethtool</b></td><td>Estado y parámetros de interfaces Ethernet (velocidad, duplex)</td></tr>
+<tr><td><b>netstat / ss</b></td><td>Estadísticas, conexiones y puertos (<b>ss</b> = reemplazo moderno)</td></tr>
+<tr><td><b>netstat -tuln / ss -tuln</b></td><td>Puertos <b>TCP (-t) y UDP (-u) en escucha (-l)</b>, sin resolver nombres (-n)</td></tr>
+<tr><td><b>tcpdump</b></td><td><b>Captura tráfico</b> en tiempo real</td></tr>
+<tr><td><b>iwlist / iwconfig</b></td><td>Redes inalámbricas / configurar interfaces inalámbricas</td></tr>
+<tr><td><b>whois</b></td><td>Consultas WHOIS (dominios e IP)</td></tr>
+<tr><td><b>nbtscan / nmblookup / smbclient</b></td><td>Equipos <b>NetBIOS</b> / resolver nombres NetBIOS / cliente de recursos compartidos <b>Samba</b></td></tr>
+<tr><td><b>iptables</b></td><td><b>Cortafuegos</b> del kernel: <code>-L</code> listar, <code>-A</code> añadir, <code>-D</code> eliminar, <code>-P</code> política por defecto, <code>-F</code> vaciar, <code>-I</code> insertar</td></tr>
+<tr><td><b>lsof -i</b></td><td>Archivos abiertos relacionados con conexiones de red</td></tr>
+<tr><td><b>nmap &lt;IP&gt;</b></td><td>Escanea <b>puertos abiertos</b>; <code>nmap -sT localhost</code> escaneo TCP local</td></tr>
+<tr><td><b>fuser -n tcp &lt;puerto&gt;</b></td><td>Proceso que usa un puerto TCP</td></tr>
+</table></div>
+<h3>Archivos comprimidos</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>gzip / gunzip</b></td><td>Comprime / descomprime <b>.gz</b></td></tr>
+<tr><td><b>bzip2 / bunzip2</b></td><td><b>.bz2</b></td></tr>
+<tr><td><b>zip / zip -r / unzip</b></td><td>.zip; <b>-r recursivo</b></td></tr>
+<tr><td><b>rar a / rar x / unrar x</b></td><td>Crea / extrae .rar</td></tr>
+<tr><td><b>tar -cvf / -tf / -xvf</b></td><td><b>Crea / lista / extrae</b> .tar (sin comprimir)</td></tr>
+<tr><td><b>tar -cvfj / -xvfj</b></td><td>.tar.<b>bz2</b></td></tr>
+<tr><td><b>tar -cvfz / -xvfz</b></td><td>.tar.<b>gz</b> (también <code>tar -czf</code> / <code>-xzf</code>)</td></tr>
+</table></div>
+<h3>Procesos y servicios</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>ps</b> (<code>aux</code> = todos)</td><td>Procesos en ejecución</td></tr>
+<tr><td><b>top / htop</b></td><td>Uso de CPU y memoria en tiempo real</td></tr>
+<tr><td><b>pidof</b></td><td><b>PID</b> de un programa</td></tr>
+<tr><td><b>kill / killall</b></td><td>Envía señal por <b>PID</b> / termina todos los procesos por <b>nombre</b></td></tr>
+<tr><td><b>nice / renice</b></td><td>Ejecuta con una prioridad / <b>cambia la prioridad</b> de uno en ejecución</td></tr>
+<tr><td><b>jobs / fg / bg</b></td><td>Trabajos en segundo plano / traer a <b>primer plano</b> / enviar suspendido a <b>segundo plano</b></td></tr>
+<tr><td><b>systemctl</b></td><td>Gestiona servicios con <b>systemd</b> (iniciar, detener, reiniciar, habilitar)</td></tr>
+<tr><td><b>service</b></td><td>Forma tradicional</td></tr>
+<tr><td><b>journalctl</b></td><td>Registros de systemd</td></tr>
+<tr><td><b>crontab (-e)</b></td><td>Tareas <b>periódicas</b> con cron; <code>-e</code> edita la tabla del usuario</td></tr>
+<tr><td><b>at</b></td><td>Tarea <b>una única vez</b> en fecha/hora concreta</td></tr>
+<tr><td><b>uptime</b></td><td>Tiempo que lleva el sistema funcionando</td></tr>
+<tr><td><b>init 1</b></td><td>Cambia el <b>nivel de ejecución</b> (aquí, al 1)</td></tr>
+<tr><td><b>watch</b></td><td>Repite un comando a intervalos (monitorización)</td></tr>
+</table></div>
+<h3>Copias de seguridad y sincronización</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>cp</b></td><td>Copias rápidas, sin versiones ni compresión</td></tr>
+<tr><td><b>rsync (-av / -e ssh)</b></td><td><b>Sincroniza</b> local o remoto; <b>incremental</b>; permisos, exclusiones, compresión; <code>-a</code> preserva atributos, <code>-v</code> detallado; <code>-e ssh</code> por <b>SSH</b></td></tr>
+<tr><td><b>scp</b></td><td>Copia entre máquinas por <b>SSH</b></td></tr>
+<tr><td><b>tar -cvf / -czf</b></td><td>Empaquetar / empaquetar y comprimir (.tar.gz)</td></tr>
+<tr><td><b>dd</b></td><td>Copia <b>bit a bit</b> de discos o particiones; clonado</td></tr>
+<tr><td><b>cpio</b></td><td>Empaqueta desde una lista (resultado de find)</td></tr>
+<tr><td><b>cron</b></td><td>Backups programados</td></tr>
+<tr><td><b>rsnapshot</b></td><td>Backups automáticos basados en <b>rsync</b></td></tr>
+<tr><td><b>borg</b></td><td>Backup <b>deduplicado y comprimido</b></td></tr>
+<tr><td><b>duplicity</b></td><td>Backups <b>cifrados y comprimidos</b>, almacenamiento remoto</td></tr>
+</table></div>
+<h3>Actualización del sistema</h3>
+<div class="tw"><table><tr><th>Gestor</th><th>Comandos</th></tr>
+<tr><td><b>apt</b></td><td><code>update</code> (actualiza la <b>lista</b>), <code>upgrade</code> (instala actualizaciones), <code>install</code>, <code>remove</code> (conserva configuración), <code>purge</code> (<b>elimina también configuración</b>), <code>autoremove</code> (dependencias sin uso), <code>search</code></td></tr>
+<tr><td><b>dpkg</b></td><td><code>-i</code> instala .deb, <code>-r</code> elimina, <code>-l</code> lista instalados, <code>-s</code> info, <code>-L</code> archivos que instala</td></tr>
+<tr><td><b>yum</b></td><td><code>update</code>, <code>install</code>, <code>remove</code>, <code>list installed</code>, <code>search</code>, <code>info</code></td></tr>
+<tr><td><b>rpm</b></td><td><code>-ivh</code> instala .rpm, <code>-e</code> elimina, <code>-q</code> consulta, <code>-qa</code> todos los instalados, <code>-ql</code> archivos</td></tr>
+</table></div>
+<h3>Texto y contenido de ficheros</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>cat / tac</b></td><td>Muestra el contenido / en <b>orden inverso</b></td></tr>
+<tr><td><b>more / less</b></td><td>Página a página (<b>less</b> con navegación y búsqueda)</td></tr>
+<tr><td><b>head / tail</b></td><td><b>Primeras / últimas 10 líneas</b> por defecto; <code>-n</code> número; <b><code>tail -f</code></b> logs en tiempo real</td></tr>
+<tr><td><b>grep</b></td><td>Busca líneas con un texto o patrón; <code>-i</code> sin distinguir mayúsculas, <code>-r</code> recursivo, <code>-n</code> muestra línea</td></tr>
+<tr><td><b>egrep</b></td><td>Expresiones regulares extendidas</td></tr>
+<tr><td><b>sed</b></td><td>Editor de flujo: <code>sed 's/viejo/nuevo/g' archivo</code></td></tr>
+<tr><td><b>awk</b></td><td>Procesamiento por campos: <code>awk '{print $1}' archivo</code></td></tr>
+</table></div>
+<ul>
+<li><b>Tuberías y redirección</b>: la <b>tubería</b> encadena comandos; <b><code>&gt;</code> sobrescribe</b>, <b><code>&gt;&gt;</code> añade</b>. Ejemplo: <code>cat file1 file2</code> canalizado a <code>grep "error"</code> y redirigido con <code>&gt;</code> a <code>errores.txt</code>. <code>ps -ef</code> canalizado a <code>grep $USER</code> lista los procesos del usuario.</li>
+</ul>
+<h2 id="s8">Anexo II. Comandos Windows</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Consola de Windows</b></p>
+<p>Comandos que todo técnico debe dominar en la <b>línea de comandos de Windows</b>, sobre todo sin interfaz gráfica o con automatización.</p>
+</div>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>cls</b></td><td>Limpia la pantalla</td></tr>
+<tr><td><b>exit</b></td><td>Cierra la ventana</td></tr>
+<tr><td><b>help</b></td><td>Lista de comandos; <code>help &lt;comando&gt;</code></td></tr>
+<tr><td><b>cd / dir</b></td><td>Cambia de directorio (<code>cd ..</code> sube) / lista</td></tr>
+<tr><td><b>copy / move / del / rename</b></td><td>Copiar / mover / eliminar archivos (<b>no borra directorios</b>) / renombrar</td></tr>
+<tr><td><b>robocopy</b></td><td>Copia con <b>más control</b>: reintentos, exclusiones; backups y sincronización</td></tr>
+<tr><td><b>format</b></td><td>Da formato a un volumen, <b>borrando su contenido</b></td></tr>
+<tr><td><b>md / mkdir</b></td><td>Crea directorio</td></tr>
+<tr><td><b>tree</b></td><td>Estructura de directorios en árbol</td></tr>
+<tr><td><b>type</b></td><td>Muestra un archivo de texto</td></tr>
+</table></div>
+<h3>PowerShell</h3>
+<ul>
+<li><b>Intérprete de comandos y lenguaje de scripting de Microsoft</b> para <b>automatizar la administración</b>; Windows (PowerShell 5.x) y multiplataforma (<b>PowerShell Core</b>: Linux y macOS). Clave con <b>Active Directory</b>, servicios de red y políticas. Comandos tipo <b>cmdlet</b> Verbo-Sustantivo.</li>
+</ul>
+<div class="tw"><table><tr><th>Cmdlet</th><th>Descripción</th></tr>
+<tr><td><b>Get-Command</b></td><td>Lista de comandos (cmdlets, funciones, scripts, alias)</td></tr>
+<tr><td><b>Get-Help</b></td><td>Ayuda; <code>-Online</code></td></tr>
+<tr><td><b>Get-Process / Stop-Process</b></td><td>Procesos / finalizar (nombre o ID)</td></tr>
+<tr><td><b>Get-Service / Start-Service / Stop-Service</b></td><td>Servicios</td></tr>
+<tr><td><b>Set-ExecutionPolicy</b></td><td><b>Política de ejecución de scripts</b> (Restricted, RemoteSigned)</td></tr>
+<tr><td><b>Get-History</b></td><td>Historial de la sesión</td></tr>
+<tr><td><b>Get-Item / Set-Item</b></td><td>Información / modificar elementos</td></tr>
+<tr><td><b>Get-Content / Set-Content / Add-Content</b></td><td>Mostrar (como type o cat) / <b>reemplazar</b> / <b>añadir al final</b></td></tr>
+<tr><td><b>Copy-Item / Move-Item / Remove-Item / New-Item</b></td><td>Copiar / mover / eliminar / crear</td></tr>
+<tr><td><b>Clear-Host</b></td><td>Limpia pantalla (como cls)</td></tr>
+<tr><td><b>Get-Date</b></td><td>Fecha y hora</td></tr>
+</table></div>
+<h3>Comandos NET</h3>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>net accounts</b></td><td><b>Políticas de cuentas</b> (caducidad, bloqueo tras intentos fallidos)</td></tr>
+<tr><td><b>net user</b></td><td>Cuentas de usuario <b>locales</b></td></tr>
+<tr><td><b>net localgroup</b></td><td>Grupos locales (<code>net localgroup Administradores</code>)</td></tr>
+<tr><td><b>net group</b></td><td>Grupos de <b>dominio</b> (solo con Active Directory)</td></tr>
+<tr><td><b>net computer</b></td><td>Agrega o elimina equipos de un dominio</td></tr>
+<tr><td><b>net logon</b></td><td>Información de inicio de sesión</td></tr>
+<tr><td><b>net config</b></td><td>Configuración de red del servidor o servicios</td></tr>
+<tr><td><b>net file / net session</b></td><td>Archivos abiertos en recursos compartidos / sesiones abiertas (y cerrarlas)</td></tr>
+<tr><td><b>net share</b></td><td>Recursos compartidos</td></tr>
+<tr><td><b>net view</b></td><td>Equipos o recursos de la red</td></tr>
+<tr><td><b>net send</b></td><td>Mensajes entre equipos</td></tr>
+<tr><td><b>net time</b></td><td>Hora / sincronizar con servidor</td></tr>
+<tr><td><b>net use</b></td><td>Conecta o desconecta <b>unidades de red</b> o impresoras</td></tr>
+<tr><td><b>net start / stop / pause / continue</b></td><td>Iniciar (sin nombre: lista servicios en ejecución) / detener / pausar / reanudar servicios</td></tr>
+<tr><td><b>net statistics</b></td><td>Estadísticas del sistema</td></tr>
+<tr><td><b>net help / net helpmsg &lt;código&gt;</b></td><td>Ayuda / significado de un <b>código de error</b></td></tr>
+</table></div>
+<div class="pn"><a href="b3t9.html">← 3.9</a><a href="b4t2.html">4.2 →</a></div></main></div><script src="../app.js"></script></body></html>

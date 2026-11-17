@@ -1,0 +1,214 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 2 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Administración de bases de datos</a><a href="#s1">2. Sistemas de almacenamiento</a><a href="#s2">3. Políticas, sistemas y procedimientos de backup</a><a href="#s3">4. Backup de sistemas físicos y virtuales</a><a href="#s4">5. Virtualización de sistemas</a><a href="#s5">6. Virtualización de puestos de usuario</a></aside>
+<main class="doc" data-key="b4t2"><div class="crumb">Bloque 4 · Tema 2</div><h1>Administración de bases de datos, almacenamiento (SAN/NAS/DAS/RAID), backup y virtualización</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (10)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema2.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema2.pdf">PDF móvil</a><a class="chip pr" href="../practicas.html#raid">🧪 Prácticas relacionadas</a></div>
+<h2 id="s0">1. Administración de bases de datos</h2>
+<ul>
+<li><b>DBA (Administrador de Bases de Datos)</b>: responsable de <b>instalar, configurar, mantener y supervisar el SGBD</b> (Oracle, SQL Server, PostgreSQL, MySQL) y de garantizar <b>rendimiento, seguridad e integridad</b>. Conoce además las políticas de la organización: <b>los datos son uno de sus activos más importantes</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Función del DBA</th><th>Contenido</th></tr>
+<tr><td><b>Instalación y configuración</b></td><td>SGBD y componentes</td></tr>
+<tr><td><b>Creación y diseño de BD</b></td><td>Estructuras, esquemas, relaciones entre tablas</td></tr>
+<tr><td><b>Usuarios y accesos</b></td><td>Políticas de seguridad y permisos</td></tr>
+<tr><td><b>Rendimiento</b></td><td>Ajustar parámetros, <b>optimizar consultas</b>, monitorizar recursos</td></tr>
+<tr><td><b>Mantenimiento y actualización</b></td><td>Software y BD</td></tr>
+<tr><td><b>Backup y recuperación</b></td><td>Ante fallos o pérdidas</td></tr>
+<tr><td><b>Disponibilidad</b></td><td>Minimizar el tiempo de inactividad</td></tr>
+<tr><td><b>Integridad</b></td><td>Normas y mecanismos para que los datos sean <b>correctos, coherentes y fiables</b>; <b>reglas y restricciones</b></td></tr>
+<tr><td><b>Documentación</b></td><td>BD y relaciones; colaborar con otros equipos y reaccionar rápido ante incidencias</td></tr>
+</table></div>
+<h2 id="s1">2. Sistemas de almacenamiento</h2>
+<div class="tw"><table><tr><th>Criterio</th><th>Clasificación</th></tr>
+<tr><td><b>Ubicación</b></td><td><b>Local</b> (conectado a un equipo) · <b>En red</b> (acceso compartido)</td></tr>
+<tr><td><b>Tecnología</b></td><td><b>HDD</b>: mayor capacidad y menor coste, más lentos · <b>SSD</b>: más rápidos y fiables, más caros · <b>Cintas magnéticas</b>: backup, bajo coste y durabilidad</td></tr>
+<tr><td><b>Estructura</b></td><td><b>DAS, NAS, SAN</b></td></tr>
+</table></div>
+<ul>
+<li><b>Cabina de almacenamiento</b>: dispositivo dedicado con <b>múltiples discos (SAS, SATA, SSD) y una controladora</b> que los agrupa presentándolos como uno solo; gestión <b>centralizada</b>, redundancia, rendimiento, flexibilidad y acceso compartido.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>SAN (Storage Area Network)</b></p>
+<p><b>Red propia de almacenamiento, de alta velocidad e independiente de las redes TCP/IP</b>: el tráfico queda <b>totalmente separado del tráfico de usuario</b>. Conecta servidores y dispositivos de almacenamiento y ofrece acceso <b>a nivel de bloque</b>: los servidores ven el almacenamiento remoto <b>como discos locales</b>.</p>
+</div>
+<ul>
+<li><b>Características de SAN</b>: <b>alta velocidad y baja latencia</b>, mayor rendimiento y tolerancia a fallos que NAS; suele usar <b>fibra óptica</b>; <b>coste elevado</b> y administración compleja; alta escalabilidad y disponibilidad; ideal para entornos <b>críticos (bases de datos, virtualización)</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Componente de una SAN</th><th>Función</th></tr>
+<tr><td><b>Hosts (servidores)</b></td><td>Acceden al almacenamiento por la red SAN</td></tr>
+<tr><td><b>HBA (Host Bus Adapter)</b></td><td><b>Tarjetas</b> que conectan los servidores a la SAN</td></tr>
+<tr><td><b>Switches SAN</b></td><td>Interconectan todos los elementos</td></tr>
+<tr><td><b>Cabinas de almacenamiento</b></td><td>Contienen los discos (SSD, SAS…), con configuraciones <b>RAID</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Protocolo SAN</th><th>Descripción</th></tr>
+<tr><td><b>Fibre Channel</b></td><td><b>El más utilizado</b></td></tr>
+<tr><td><b>iSCSI</b></td><td><b>Comandos SCSI sobre Ethernet/IP</b>; más económico</td></tr>
+<tr><td><b>FCoE</b></td><td><b>Fibre Channel over Ethernet</b>: encapsula tramas FC sobre Ethernet</td></tr>
+<tr><td><b>NVMe-oF</b></td><td>Acceso al almacenamiento vía <b>PCIe</b>; máximo rendimiento en nueva generación</td></tr>
+</table></div>
+<ul>
+<li><b>NAS (Network Attached Storage)</b>: dispositivo de almacenamiento en red con <b>acceso a archivos compartidos por TCP/IP</b>; opera <b>a nivel de archivo</b> (no de bloque). Fácil de configurar, multiusuario en red local, ideal para documentos y copias; <b>menor rendimiento que SAN</b> con mucho tráfico o BD. Protocolos: <b>NFS</b> (Unix/Linux) y <b>SMB/CIFS</b> (Windows).</li>
+<li><b>DAS (Direct Attached Storage)</b>: conectado <b>directamente a un servidor</b> (SATA, SAS, USB); el más <b>simple y económico</b>; <b>no escalable ni compartido</b> (islas de almacenamiento); servidores individuales o almacenamiento local.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Comparativa SAN, NAS y DAS</b></p>
+<div class="tw"><table><tr><th>Característica</th><th><b>SAN</b></th><th><b>NAS</b></th><th><b>DAS</b></th></tr>
+<tr><td><b>Nivel de acceso</b></td><td><b>Bloques</b></td><td><b>Archivos</b></td><td><b>Bloques</b></td></tr>
+<tr><td><b>Conectividad</b></td><td>Fibre Channel, iSCSI, FCoE</td><td>Ethernet (NFS, SMB)</td><td>SATA, SAS</td></tr>
+<tr><td><b>Escalabilidad</b></td><td>Alta</td><td>Media</td><td>Baja</td></tr>
+<tr><td><b>Rendimiento</b></td><td>Muy alto</td><td>Medio</td><td>Alto</td></tr>
+<tr><td><b>Compartido</b></td><td>Sí</td><td>Sí</td><td><b>No</b></td></tr>
+<tr><td><b>Coste</b></td><td>Alto</td><td>Medio</td><td>Bajo</td></tr>
+<tr><td><b>Administración</b></td><td>Compleja</td><td>Sencilla</td><td>Muy sencilla</td></tr>
+<tr><td><b>Uso habitual</b></td><td>Bases de datos, VMs</td><td>Archivos compartidos</td><td>Almacenamiento local</td></tr>
+</table></div>
+<p>No son excluyentes: pueden <b>convivir y complementarse</b>.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>RAID</b></p>
+<p><b>Redundant Array of Independent Disks</b>: combina varios discos en <b>una única unidad lógica</b> para mejorar el <b>rendimiento o la tolerancia a fallos</b>. Objetivo: <b>minimizar la pérdida de información</b>.</p>
+<div class="tw"><table><tr><th>Nivel</th><th>Discos mínimos</th><th>Tolerancia a fallos</th><th>Espacio útil</th><th>Características</th></tr>
+<tr><td><b>RAID 0</b></td><td>2</td><td><b>Ninguna</b></td><td>100 %</td><td><b>Disk Striping</b>; sin redundancia: si falla un disco, <b>se pierde todo</b></td></tr>
+<tr><td><b>RAID 1</b></td><td>2</td><td>1 disco</td><td><b>50 % (N/2)</b></td><td><b>Disk Mirroring</b>: duplica los datos</td></tr>
+<tr><td><b>RAID 2</b></td><td>3+</td><td></td><td></td><td>Códigos <b>Hamming</b>; no se usa</td></tr>
+<tr><td><b>RAID 3</b></td><td>3+</td><td>1 disco</td><td>(N-1)/N</td><td>Un disco de <b>paridad</b>, a nivel de <b>byte</b></td></tr>
+<tr><td><b>RAID 4</b></td><td>3+</td><td>1 disco</td><td>(N-1)/N</td><td>Paridad en <b>un único disco</b>: <b>cuello de botella</b></td></tr>
+<tr><td><b>RAID 5</b></td><td>3+</td><td>1 disco</td><td>(N-1)/N</td><td><b>Paridad distribuida</b>; equilibrio rendimiento/redundancia</td></tr>
+<tr><td><b>RAID 6</b></td><td><b>4+</b></td><td><b>2 discos</b></td><td>(N-2)/N</td><td><b>Doble paridad</b>; más seguridad, menos rendimiento</td></tr>
+<tr><td><b>RAID 10</b></td><td>Par (≥4)</td><td>Hasta 1 por par</td><td>N/2</td><td><b>RAID 1 + 0</b>; costoso pero muy eficiente; sin paridad</td></tr>
+<tr><td><b>RAID 01</b></td><td>4+</td><td>1 disco por grupo</td><td>N/2</td><td>Menos tolerante que RAID 10 ante fallos múltiples</td></tr>
+<tr><td><b>RAID 50</b></td><td>Par (≥6)</td><td>1 disco por grupo RAID 5</td><td>(N-2)/N</td><td><b>RAID 5 + 0</b>; paridad distribuida</td></tr>
+</table></div>
+<p>RAID 2, 3 y 4 están en desuso, pero su conocimiento es útil en el contexto teórico de la oposición.</p>
+</div>
+<h2 id="s2">3. Políticas, sistemas y procedimientos de backup</h2>
+<ul>
+<li><b>Backup</b>: esencial ante fallos de hardware, errores humanos, ciberataques y desastres. Implica asegurar <b>integridad, disponibilidad y capacidad de recuperación</b>. Una <b>política de backup</b> define <b>qué datos, con qué frecuencia, con qué técnicas, dónde se almacenan y cuánto tiempo se conservan</b>; procedimientos de restauración, pruebas periódicas y seguridad.</li>
+<li>Forma parte del <b>DRP (Plan de Recuperación ante Desastres)</b>, que recupera las infraestructuras tecnológicas críticas; el DRP forma parte del <b>BCP (Plan de Continuidad del Negocio)</b>, más amplio que lo tecnológico.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de backup</b></p>
+<p>Según la <b>cantidad de datos</b> que se recogen y <b>desde qué momento</b>. <b>No son excluyentes</b>: pueden combinarse para optimizar espacio y coste sin perder el objetivo, que es <b>facilitar la restauración</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Tipo</th><th>Qué copia</th><th>Restauración</th><th>Características</th></tr>
+<tr><td><b>Completo</b></td><td><b>Todos los datos</b></td><td><b>Directa</b>, sin depender de otras copias</td><td>Más <b>fiable y sencillo</b>, pero <b>más tiempo, recursos y espacio</b>; se hace periódicamente (p. ej. semanal)</td></tr>
+<tr><td><b>Incremental</b></td><td>Solo lo <b>cambiado desde la última copia (completa o incremental)</b></td><td>Último <b>completo + todas las incrementales</b></td><td><b>Más rápido y ocupa menos</b>; restauración <b>lenta y compleja</b></td></tr>
+<tr><td><b>Diferencial</b></td><td>Todo lo <b>cambiado desde el último completo</b></td><td>Último <b>completo + última diferencial</b></td><td>Tamaño <b>crece cada día</b>; <b>equilibrio</b> entre velocidad de copia y recuperación</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Snapshots</b></p>
+<p><b>No son copias de seguridad tradicionales</b>, sino <b>capturas del estado</b> de un sistema o volumen en un momento concreto (disco, máquina virtual, sistema de archivos). <b>No se copian los datos, sino los punteros a los bloques.</b> Se hacen en segundos y se restauran de inmediato (entornos virtualizados, sistemas críticos). <b>No sustituyen a un backup completo</b>: dependen del mismo medio; si este falla, se pierden también. Técnica <b>complementaria</b>.</p>
+</div>
+<ul>
+<li><b>Políticas de backup</b>: datos y su importancia · tipos y periodicidad · <b>tiempos de recuperación</b> · recursos de almacenamiento · tecnologías · ubicación · objetivos <b>RPO y RTO</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Estrategias de backup</b></p>
+<p>Definen <b>cómo se combinan los tipos de copia a lo largo del tiempo</b> y cuándo se ejecutan, equilibrando eficiencia, seguridad y recuperación; se adaptan según <b>RTO</b>, <b>RPO</b>, frecuencia de cambios y recursos.</p>
+</div>
+<div class="tw"><table><tr><th>Estrategia</th><th>Descripción</th></tr>
+<tr><td><b>3-2-1</b></td><td><b>3 copias</b> de los datos: <b>2 en distintos dispositivos o soportes</b> y <b>1 off-site</b> (centro remoto o nube). Ej.: NAS local + disco externo + copia cifrada en Azure o Amazon S3</td></tr>
+<tr><td><b>Abuelo–Padre–Hijo</b></td><td>Rotación en <b>3 niveles</b>: <b>hijo diario</b>, <b>padre semanal</b>, <b>abuelo mensual</b>. Típico: hijo incremental, padre diferencial, abuelo completo. Versiones a corto, medio y largo plazo; entornos administrativos o financieros (nóminas, contratos)</td></tr>
+<tr><td><b>Torre de Hanoi</b></td><td>Rotación con <b>patrón matemático</b> que decide qué copias conservar; <b>minimiza los soportes</b> conservando versiones históricas espaciadas; archivos documentales, bibliotecas digitales</td></tr>
+<tr><td><b>Backup continuo (CDP)</b></td><td><b>Continuous Data Protection</b>: captura cambios <b>en tiempo real o intervalos muy cortos</b>; entornos críticos; exige más red y almacenamiento</td></tr>
+<tr><td><b>Por niveles (tiered)</b></td><td>Políticas distintas <b>según la importancia</b> de los datos (críticos: completo diario + réplica en tiempo real; menos sensibles: incrementales semanales); ministerios, universidades</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Medio de almacenamiento</th><th>Características</th></tr>
+<tr><td><b>HDD y SSD</b></td><td>Copias locales o en red; accesos rápidos; restauraciones rápidas</td></tr>
+<tr><td><b>Cintas magnéticas</b></td><td><b>Largo plazo</b>; bajo coste por GB, gran capacidad, <b>más de 30 años</b> de durabilidad; archivo y requisitos legales</td></tr>
+<tr><td><b>NAS y SAN</b></td><td>Centralizar backups, <b>RAID</b>, accesos controlados, replicación remota</td></tr>
+<tr><td><b>Nube</b></td><td>Copias <b>off-site</b>, replicación geográfica, escalable y de pago por uso; posibles costes ocultos de acceso o recuperación</td></tr>
+</table></div>
+<ul>
+<li><b>Seguridad en backups</b>: protegerlos <b>en transferencia y en almacenamiento</b>: <b>cifrado (AES-256)</b>, <b>control de acceso basado en roles</b>, auditoría y <b>separación lógica o física</b> de los sistemas; en la nube, verificar cifrado, cumplimiento y disponibilidad del proveedor.</li>
+</ul>
+<div class="tw"><table><tr><th>Herramienta de backup</th><th>Características</th></tr>
+<tr><td><b>Veeam Backup &amp; Replication</b></td><td>Entornos <b>virtualizados</b>; recuperación granular</td></tr>
+<tr><td><b>Acronis Cyber Backup</b></td><td>Local y nube; antimalware integrado</td></tr>
+<tr><td><b>Veritas NetBackup</b></td><td>Empresarial; múltiples plataformas y BD</td></tr>
+<tr><td><b>Bacula / Bareos</b></td><td><b>Software libre</b>, entornos mixtos</td></tr>
+<tr><td><b>Duplicati</b></td><td>Gratuito, multiplataforma, cifrado, varios destinos cloud</td></tr>
+<tr><td><b>rsnapshot</b></td><td>Basado en <b>rsync</b>; Linux</td></tr>
+</table></div>
+<h2 id="s3">4. Backup de sistemas físicos y virtuales</h2>
+<div class="tw"><table><tr><th>Nivel de backup en sistemas <b>físicos</b></th><th>Descripción</th></tr>
+<tr><td><b>De archivos</b></td><td>Solo los datos seleccionados; <b>el más común y flexible</b>; no incluye el SO</td></tr>
+<tr><td><b>De imagen o disco</b></td><td>Imagen completa: <b>SO, aplicaciones y configuración</b>; restaura el sistema completo</td></tr>
+<tr><td><b>De partición</b></td><td>Sectores concretos del disco; restauraciones parciales o migraciones</td></tr>
+</table></div>
+<ul>
+<li>Herramientas: <b>wbadmin</b> (Windows), <b>dd / rsync</b> (Linux) o soluciones comerciales con consola central. Retos: <b>tiempos de inactividad</b> (si no se usan técnicas en caliente) y menor flexibilidad sin infraestructura redundante.</li>
+</ul>
+<div class="tw"><table><tr><th>Enfoque en sistemas <b>virtuales</b> (VMware vSphere, Hyper-V, KVM, Proxmox)</th><th>Descripción</th></tr>
+<tr><td><b>Guest-based</b> (desde dentro de la VM)</td><td><b>Agente en cada VM</b>; flexible y detallado, pero más recursos y mantenimiento individual</td></tr>
+<tr><td><b>Host-based</b> (a nivel de hipervisor)</td><td>Desde la capa de virtualización, <b>sin agentes</b>; <b>copias en caliente, snapshots consistentes</b>, restauraciones completas o granulares</td></tr>
+<tr><td><b>Snapshots de VM</b></td><td>Muy rápidos; pueden convertirse en copias completas o incrementales; <b>no sustituyen un backup fuera del entorno de virtualización</b></td></tr>
+</table></div>
+<ul>
+<li>Herramientas: <b>Veeam, Nakivo, Altaro</b> o específicas del hipervisor.</li>
+</ul>
+<h2 id="s4">5. Virtualización de sistemas</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Virtualización</b></p>
+<p>Tecnología que <b>abstrae los recursos físicos</b> de un sistema, creando <b>entornos lógicos independientes</b> que funcionan como máquinas reales. Una <b>capa de software (hipervisor o gestor de virtualización)</b> simula recursos hardware (CPU, memoria, almacenamiento, red) y permite que <b>varios SO o aplicaciones se ejecuten aislados en un mismo equipo físico</b>. Optimiza el consumo de recursos.</p>
+</div>
+<div class="tw"><table><tr><th>Ventaja</th><th>Descripción</th></tr>
+<tr><td><b>Reducción de costes</b></td><td>Menos hardware, ahorro energético y de espacio</td></tr>
+<tr><td><b>Mayor aprovechamiento</b></td><td>Optimiza el uso de recursos</td></tr>
+<tr><td><b>Aislamiento</b></td><td>Las VM son independientes</td></tr>
+<tr><td><b>Escalabilidad y flexibilidad</b></td><td>Crear, eliminar o migrar entornos rápidamente</td></tr>
+<tr><td><b>Recuperación ante fallos</b></td><td>Replicación, snapshots</td></tr>
+<tr><td><b>Consolidación</b></td><td>Varios servicios en menos máquinas físicas</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Tipo de virtualización</th><th>Descripción</th><th>Ejemplos</th></tr>
+<tr><td><b>De almacenamiento</b></td><td>Varios dispositivos como <b>un único recurso lógico</b></td><td>SAN, NAS, SDS</td></tr>
+<tr><td><b>A nivel de SO</b></td><td>Instancias aisladas que <b>comparten el mismo kernel</b></td><td><b>Contenedores (Docker, LXC)</b></td></tr>
+<tr><td><b>De aplicación</b></td><td>Aplicaciones aisladas del SO</td><td><b>Citrix, Microsoft App-V</b></td></tr>
+<tr><td><b>De servidor</b></td><td>Varios SO sobre el mismo hardware</td><td><b>VMware ESXi, Hyper-V, KVM</b></td></tr>
+</table></div>
+<ul>
+<li><b>Máquina virtual (VM)</b>: emulación de un sistema sobre un hipervisor, con <b>su propio SO, aplicaciones, disco virtual y configuración</b>. <b>Aisladas, portables</b> (se mueven de un host a otro), <b>gestionables</b> (snapshots, clonación, restauración).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Herramientas de virtualización</b></p>
+<div class="tw"><table><tr><th>Herramienta</th><th>Tipo</th><th>Características</th></tr>
+<tr><td><b>VMware vSphere/ESXi</b></td><td>Servidor</td><td>Empresarial, alta disponibilidad, <b>vMotion</b></td></tr>
+<tr><td><b>Microsoft Hyper-V</b></td><td>Servidor</td><td>Integrado en <b>Windows Server</b>; compatible con <b>VDI</b></td></tr>
+<tr><td><b>KVM</b></td><td>Servidor (Linux)</td><td><b>Kernel-based</b>, código abierto, alta eficiencia</td></tr>
+<tr><td><b>Proxmox VE</b></td><td>Servidor / contenedores</td><td><b>VMs y LXC</b>; interfaz web; pymes</td></tr>
+<tr><td><b>VirtualBox</b></td><td>Escritorio / pruebas</td><td>Gratuito, multiplataforma</td></tr>
+<tr><td><b>Docker</b></td><td>Contenedores</td><td>Muy ligero; <b>microservicios y CI/CD</b></td></tr>
+<tr><td><b>PowerVM (IBM)</b></td><td>Servidor</td><td><b>Particiones lógicas (LPARs)</b>, <b>micro-particionamiento</b>, <b>Live Partition Mobility</b>, <b>Virtual I/O Server (VIOS)</b></td></tr>
+<tr><td><b>Citrix Virtual Apps &amp; Desktops</b></td><td>Escritorios virtuales / aplicaciones</td><td>Potente en <b>VDI</b> y virtualización de apps</td></tr>
+</table></div>
+</div>
+<h2 id="s5">6. Virtualización de puestos de usuario</h2>
+<ul>
+<li><b>Desacopla el entorno de trabajo (escritorio, aplicaciones y datos) del dispositivo físico</b>: acceso desde distintas ubicaciones y dispositivos.</li>
+</ul>
+<div class="tw"><table><tr><th>Ventaja</th><th>Descripción</th></tr>
+<tr><td><b>Centralización</b></td><td>Entornos gestionados desde un servidor o datacenter</td></tr>
+<tr><td><b>Seguridad</b></td><td>Los datos <b>no se almacenan en el cliente</b></td></tr>
+<tr><td><b>Movilidad</b></td><td>Conexión desde cualquier lugar y dispositivo</td></tr>
+<tr><td><b>Mantenimiento</b></td><td>Actualizaciones en un único punto</td></tr>
+<tr><td><b>Reducción de costes</b></td><td><b>Reutilizar equipos antiguos</b> como terminales ligeros</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Virtualización de aplicaciones sin estado</b></p>
+<p>Ejecuta <b>aplicaciones en un entorno centralizado, sin instalarlas en el equipo del usuario</b>, <b>bajo demanda y de forma aislada</b>. <b>Sin estado</b>: <b>no se guarda información específica del usuario entre sesiones</b>; cada ejecución es independiente y los datos están en ubicaciones comunes (carpetas de red, nube).</p>
+</div>
+<ul>
+<li><b>RDS (Servicios de Escritorio Remoto)</b>: plataforma centralizada que administra aplicaciones y escritorios remotos <b>Windows</b>. <b>RDP (Remote Desktop Protocol)</b>: el <b>protocolo</b> de la conexión.</li>
+<li><b>Características</b>: rápida puesta en marcha, gran escalabilidad, mínimo consumo en el cliente, aislamiento. <b>Ejemplos</b>: <b>Citrix Virtual Apps</b>, <b>Microsoft App-V</b>, <b>RemoteApp</b> (vía RDP en Windows Server). Ideal para aplicaciones estándar (ofimática, navegadores, CRM).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Virtualización de escritorios con estado</b></p>
+<p>Cada usuario tiene un <b>entorno de escritorio personalizado, persistente y guardado entre sesiones</b>: como un PC propio, pero es <b>una máquina virtual en un servidor</b>. Se conservan configuración, accesos directos, historial, fondo y archivos personales. <b>En RDS se virtualizan aplicaciones; en VDI se virtualiza a nivel de sistema operativo.</b></p>
+</div>
+<ul>
+<li><b>VDI (Virtual Desktop Infrastructure)</b>: escritorios virtuales persistentes; <b>VMware Horizon</b> con escritorios dedicados. Entorno personalizable, <b>más almacenamiento y gestión</b>, ideal para puestos fijos o necesidades específicas; cada escritorio consume más recursos y necesita <b>backup y recuperación individualizados</b>.</li>
+</ul>
+<div class="pn"><a href="b4t1.html">← 4.1</a><a href="b4t3.html">4.3 →</a></div></main></div><script src="../app.js"></script></body></html>

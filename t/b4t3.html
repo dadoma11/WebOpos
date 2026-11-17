@@ -1,0 +1,191 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 3 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Servidores de correo y sus protocolos</a><a href="#s1">2. Contenedores y microservicios</a></aside>
+<main class="doc" data-key="b4t3"><div class="crumb">Bloque 4 · Tema 3</div><h1>Servidores de correo y sus protocolos; contenedores y microservicios</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (8)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema3.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema3.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Servidores de correo y sus protocolos</h2>
+<h3>1.1 Servidores de correo electrónico</h3>
+<ul>
+<li><b>Servidor de correo</b>: sistema que <b>envía, recibe, almacena y reenvía</b> mensajes entre usuarios (Internet o red corporativa). Según el <b>CCN</b>, debe ubicarse en la <b>zona desmilitarizada (DMZ)</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Agente</th><th>Nombre</th><th>Función</th></tr>
+<tr><td><b>MTA</b></td><td>Mail Transfer Agent</td><td><b>Agente de transferencia</b>, reside en el servidor: envía del servidor del remitente al del destinatario o actúa de intermediario entre MTA. <b>Postfix, Sendmail, Exim, Microsoft Exchange Transport</b>. Puertos <b>25 y 587</b></td></tr>
+<tr><td><b>MUA</b></td><td>Mail User Agent</td><td><b>Programa del usuario final</b> para redactar, enviar, leer y organizar: <b>Outlook, Thunderbird</b>, apps móviles, web</td></tr>
+<tr><td><b>MDA</b></td><td>Mail Delivery Agent</td><td><b>Entrega</b> el correo al <b>buzón</b> del usuario; lo usan los MTA</td></tr>
+<tr><td><b>MSA</b></td><td>Mail Submission Agent</td><td><b>Agente de registro</b>: en servicios con mucha carga, mejora la eficiencia dividiendo el trabajo de los MTA (p. ej. direccionamiento)</td></tr>
+<tr><td><b>MAA</b></td><td>Mail Access Agent</td><td><b>Recupera el buzón</b> del servidor: <b>IMAP y POP</b></td></tr>
+</table></div>
+<ul>
+<li><b>Intercambio de correos</b>: (1) el usuario redacta en su <b>MUA</b> → (2) el MUA lo transmite al <b>MTA de salida por SMTP</b> → (3) el MTA del remitente busca por <b>DNS</b> el MTA del dominio destinatario → (4) se transfiere al MTA del destinatario → (5) este lo entrega en el buzón (<b>MDA</b>) → (6) el destinatario accede con su MUA por <b>IMAP o POP3</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Función del administrador de correo</th><th>Contenido</th></tr>
+<tr><td><b>Configuración del servidor</b></td><td>MTA (Postfix, Exchange): dominio, alias, límites de tamaño</td></tr>
+<tr><td><b>Usuarios y buzones</b></td><td>Altas, bajas, modificaciones, <b>cuotas</b></td></tr>
+<tr><td><b>Seguridad</b></td><td>Contra spam, <b>phishing</b>, malware; <b>SPF, DKIM, DMARC y TLS</b></td></tr>
+<tr><td><b>Supervisión y monitorización</b></td><td>Estado, recursos, entrega, errores y <b>logs</b></td></tr>
+<tr><td><b>Backup y recuperación</b></td><td>Copias de buzones</td></tr>
+<tr><td><b>Soporte a usuarios</b></td><td>Acceso, configuración de clientes, reglas de filtrado</td></tr>
+<tr><td><b>Actualizaciones</b></td><td>Parches de seguridad</td></tr>
+</table></div>
+<h3>1.2 Protocolos de correo</h3>
+<ul>
+<li><b>SMTP</b>: envío · <b>POP3 e IMAP</b>: recepción y gestión por el usuario · <b>Exchange ActiveSync</b>: protocolo <b>propietario de Microsoft</b> de sincronización en móviles.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>SMTP</b></p>
+<p><b>Simple Mail Transfer Protocol</b>: protocolo estándar de <b>envío</b>, modelo cliente-servidor; entre clientes y servidores y <b>entre servidores</b>. Puerto <b>TCP 25</b> (o <b>587</b> para envío autenticado). <b>No permite recuperar mensajes</b> del servidor (a diferencia de POP3/IMAP). Definido en las <b>RFC 821, 822 y 5321</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Orden SMTP</th><th>Descripción</th></tr>
+<tr><td><b>HELO</b></td><td>Identifica al cliente; inicio de la conexión</td></tr>
+<tr><td><b>MAIL FROM</b></td><td><b>Remitente</b></td></tr>
+<tr><td><b>RCPT TO</b></td><td><b>Destinatario</b> (puede repetirse)</td></tr>
+<tr><td><b>DATA</b></td><td>Comienzo del mensaje; <b>finaliza con una línea con un punto</b></td></tr>
+<tr><td><b>QUIT</b></td><td>Termina la sesión</td></tr>
+<tr><td><b>SEND</b></td><td>Entrega directamente al <b>buzón</b> del destinatario</td></tr>
+<tr><td><b>SAML</b></td><td>Como SEND, pero entrega <b>y reenvía</b></td></tr>
+<tr><td><b>SOML</b></td><td>Envía al buzón <b>o</b> lo reenvía, según disponibilidad</td></tr>
+<tr><td><b>VRFY</b></td><td><b>Verifica</b> si existe una dirección</td></tr>
+<tr><td><b>HELP</b></td><td>Ayuda sobre los comandos</td></tr>
+<tr><td><b>TURN</b></td><td>Invierte roles cliente/servidor (<b>obsoleto</b> por seguridad)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Código de respuesta SMTP</th><th>Significado</th></tr>
+<tr><td><b>2XX</b></td><td><b>Éxito</b></td></tr>
+<tr><td><b>3XX</b></td><td><b>Acción pendiente</b>: orden aceptada, se requiere más información</td></tr>
+<tr><td><b>4XX</b></td><td><b>Error temporal</b>: puede reintentarse</td></tr>
+<tr><td><b>5XX</b></td><td><b>Error permanente</b></td></tr>
+</table></div>
+<ul>
+<li><b>SPF (Sender Policy Framework)</b>: evita la falsificación de remitentes; <b>identifica los servidores SMTP autorizados mediante el DNS</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>POP3</b></p>
+<p>Protocolo cliente-servidor de <b>recepción</b>, especificado en la <b>RFC 1939</b>. <b>Descarga los mensajes del servidor al cliente y los elimina</b> (configurable para conservar copias). Puerto <b>TCP 110</b> (<b>995</b> con SSL/TLS).</p>
+</div>
+<div class="tw"><table><tr><th>Orden POP3</th><th>Descripción</th></tr>
+<tr><td><b>USER / PASS</b></td><td>Usuario / contraseña</td></tr>
+<tr><td><b>STAT</b></td><td>Número de mensajes y tamaño total</td></tr>
+<tr><td><b>LIST</b></td><td>Lista mensajes y tamaño</td></tr>
+<tr><td><b>RETR</b></td><td><b>Recupera</b> un mensaje</td></tr>
+<tr><td><b>TOP</b></td><td>Cabeceras y primeras líneas</td></tr>
+<tr><td><b>DELE</b></td><td><b>Marca</b> un mensaje para eliminar</td></tr>
+<tr><td><b>RSET</b></td><td>Cancela las eliminaciones marcadas</td></tr>
+<tr><td><b>UIDL</b></td><td><b>Identificador único</b> de cada mensaje</td></tr>
+<tr><td><b>QUIT</b></td><td>Termina la sesión y <b>elimina</b> los marcados</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>IMAP</b></p>
+<p><b>Internet Message Access Protocol</b>: permite <b>acceder a los mensajes en el servidor sin descargarlos</b>; los mantiene en el servidor y <b>sincroniza varios dispositivos</b>. Puerto <b>TCP 143</b> (<b>993</b> con SSL/TLS). Versión actual: <b>4</b>.</p>
+</div>
+<ul>
+<li><b>Ventajas de IMAP</b>: sincronización en tiempo real, <b>carpetas en el servidor</b>, <b>búsqueda en el servidor</b>, descarga parcial (cabeceras o adjuntos concretos).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Exchange ActiveSync (EAS)</b></p>
+<p>Protocolo <b>propietario de Microsoft</b>, basado en <b>HTTP y XML</b>, para sincronizar <b>correo, calendarios, contactos, tareas y notas</b>. Optimizado para <b>móviles</b> y entornos con <b>Microsoft Exchange</b>. <b>No permite buzones compartidos ni acceso delegado</b>; sí <b>borrado remoto</b> y <b>cifrado SSL</b> entre móvil y servidor.</p>
+</div>
+<ul>
+<li><b>Ventajas de EAS frente a IMAP/POP3</b>: integra calendarios y tareas; sincroniza rápido en ambos sentidos; mejor integración con móviles y Outlook.</li>
+</ul>
+<div class="tw"><table><tr><th></th><th><b>IMAP</b></th><th><b>POP3</b></th></tr>
+<tr><td><b>Funcionamiento</b></td><td>Accede y gestiona el correo <b>en el servidor</b></td><td><b>Descarga</b> al dispositivo local</td></tr>
+<tr><td><b>Almacenamiento</b></td><td>Los mensajes <b>permanecen en el servidor</b></td><td>Se <b>eliminan del servidor</b> tras descargarse (por defecto)</td></tr>
+<tr><td><b>Sincronización</b></td><td><b>Sí</b>, varios dispositivos</td><td><b>No</b>; un único dispositivo</td></tr>
+<tr><td><b>Carpetas</b></td><td>Crear, renombrar y eliminar en el servidor</td><td><b>No</b>; solo bandeja de entrada</td></tr>
+<tr><td><b>Sin conexión</b></td><td>Parcial (si se descarga el contenido)</td><td><b>Sí</b>, una vez descargado</td></tr>
+<tr><td><b>Espacio</b></td><td>En el <b>servidor</b></td><td>En el <b>dispositivo</b></td></tr>
+<tr><td><b>Complejidad</b></td><td>Más complejo, más funcionalidades</td><td>Más simple</td></tr>
+<tr><td><b>Datos</b></td><td>Mayor consumo</td><td><b>Menor</b> consumo</td></tr>
+<tr><td><b>Ideal para</b></td><td>Entornos colaborativos o profesionales</td><td>Conexiones lentas, uso básico</td></tr>
+</table></div>
+<h2 id="s1">2. Contenedores y microservicios</h2>
+<h3>2.1 Arquitectura de microservicios</h3>
+<ul>
+<li>Dividir la aplicación en <b>módulos pequeños, independientes y especializados</b>, cada uno con una función concreta y ejecución autónoma. Frente al <b>monolito</b> (todo en un bloque), cada módulo se <b>desarrolla, despliega y escala de forma independiente</b>; escalabilidad horizontal. Ej. comercio electrónico: microservicios de <b>productos, usuarios, pagos y envíos</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Característica</th><th>Descripción</th></tr>
+<tr><td><b>Independencia funcional</b></td><td>Una única funcionalidad por servicio</td></tr>
+<tr><td><b>Desarrollo desacoplado</b></td><td>Equipos en paralelo sin interferencias</td></tr>
+<tr><td><b>Escalado selectivo</b></td><td>Solo los servicios exigentes</td></tr>
+<tr><td><b>Despliegue autónomo</b></td><td>Nueva versión sin afectar al resto</td></tr>
+<tr><td><b>Resistencia a fallos</b></td><td>Si uno falla, el resto sigue</td></tr>
+<tr><td><b>Comunicación por APIs</b></td><td><b>HTTP/REST, gRPC o eventos</b></td></tr>
+<tr><td><b>Persistencia propia</b></td><td>Cada servicio con su BD</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td><b>Escalabilidad</b> por servicio</td><td><b>Complejidad operativa</b> (más infraestructura y herramientas)</td></tr>
+<tr><td>Tamaño reducido, fácil administración</td><td><b>Pruebas integradas</b> más difíciles</td></tr>
+<tr><td>Implementación independiente y <b>despliegues autónomos</b></td><td><b>Consistencia de datos</b> (sincronización)</td></tr>
+<tr><td><b>Mantenimiento</b> más localizado</td><td><b>Sobrecarga de red</b> y latencia</td></tr>
+<tr><td><b>Tecnologías diversas</b> por servicio</td><td><b>Curva de aprendizaje</b> inicial</td></tr>
+<tr><td><b>Resiliencia</b></td><td><b>Gestión distribuida de errores y logs</b> (herramientas específicas)</td></tr>
+<tr><td>Despliegue sencillo con contenedores</td><td></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Comunicación entre microservicios</th><th>Descripción</th></tr>
+<tr><td><b>Síncrona</b></td><td>A solicita a B y <b>espera la respuesta</b>; simple e intuitiva, pero si falla la comunicación el proceso se para; <b>HTTP/REST o gRPC</b> (ej. «pedidos» consulta a «usuarios»)</td></tr>
+<tr><td><b>Asíncrona</b></td><td>A envía un mensaje a una <b>cola o sistema de mensajería</b> (<b>RabbitMQ, Apache Kafka</b>; protocolo <b>AMQP – Advanced Message Queuing Protocol</b>) y <b>no espera respuesta</b>; más <b>desacoplada y resiliente</b>, más compleja (ej. evento a «PedidosConfirmados» procesado por «envíos» y «facturación»)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Orquestación y coreografía</b></p>
+<p><b>Orquestación</b>: <b>un servicio central coordina</b> el proceso (como un director de orquesta); define el flujo completo, el orden y controla errores. <b>Centraliza la lógica</b>, fácil de supervisar y mantener, pero introduce un <b>punto único de fallo</b>. <b>Coreografía</b>: <b>no hay coordinador central</b>; cada servicio <b>reacciona a eventos</b> de otros («baile» colaborativo); la lógica se distribuye; <b>más difícil de desarrollar, seguir y depurar</b>; basada en intercambio de mensajes; <b>se adapta mejor a microservicios</b>.</p>
+</div>
+<h3>2.2 Contenedores</h3>
+<ul>
+<li><b>Contenedor</b>: unidad ejecutable que <b>empaqueta la aplicación y todo su entorno</b> (bibliotecas, dependencias, configuración) para ejecutarse igual en cualquier SO o infraestructura. <b>Virtualización a nivel de sistema operativo</b>, con <b>muy poca sobrecarga</b>.</li>
+</ul>
+<div class="tw"><table><tr><th></th><th><b>Contenedor</b></th><th><b>Máquina virtual</b></th></tr>
+<tr><td><b>SO</b></td><td><b>Comparte el kernel del host</b></td><td><b>Incluye su propio SO</b></td></tr>
+<tr><td><b>Aislamiento</b></td><td>A nivel de <b>procesos y red</b></td><td><b>Completo</b> (hardware virtualizado)</td></tr>
+<tr><td><b>Tamaño</b></td><td>Ligero (decenas o cientos de <b>MB</b>)</td><td>Pesado (varios <b>GB</b>)</td></tr>
+<tr><td><b>Arranque</b></td><td>Muy rápido (<b>segundos</b>)</td><td>Más lento (<b>minutos</b>)</td></tr>
+<tr><td><b>Rendimiento</b></td><td>Cercano al <b>nativo</b></td><td>Menor (sobrecarga)</td></tr>
+<tr><td><b>Uso ideal</b></td><td><b>Microservicios, CI/CD</b>, despliegue rápido</td><td>Aislamiento total o SO propio</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Componente</th><th>Descripción</th></tr>
+<tr><td><b>Imagen</b></td><td><b>Plantilla de solo lectura</b> con todo lo necesario (código, librerías, variables); normalmente desde un <b>Dockerfile</b></td></tr>
+<tr><td><b>Contenedor</b></td><td><b>Instancia en ejecución</b> de una imagen: sistema de archivos, red y procesos propios</td></tr>
+<tr><td><b>Motor (Container Runtime)</b></td><td>Gestiona imágenes y contenedores: <b>Docker Engine, containerd, CRI-O, Podman</b></td></tr>
+<tr><td><b>Registro (Registry)</b></td><td>Repositorio central de imágenes: <b>Docker Hub, GitHub Container Registry, Harbor</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td>Uso eficiente de recursos, arranque rápido, rendimiento cercano al nativo</td><td><b>Menor aislamiento que una VM</b>: un fallo del kernel puede tumbarlos todos</td></tr>
+<tr><td><b>Portabilidad</b> entre entornos</td><td>Gestión adicional en producción</td></tr>
+<tr><td>Simplifican <b>CI/CD</b></td><td><b>Persistencia de datos</b> por separado</td></tr>
+<tr><td>Escalabilidad sencilla con orquestadores</td><td>Herramientas complementarias de despliegue y seguridad</td></tr>
+</table></div>
+<h3>2.3 Plataformas de contenedores y microservicios</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Plataformas</b></p>
+<p>Facilitan la <b>gestión, despliegue y orquestación</b> de contenedores en entornos complejos o de producción, sobre todo con microservicios.</p>
+</div>
+<div class="tw"><table><tr><th>Plataforma</th><th>Características</th></tr>
+<tr><td><b>Docker</b></td><td>Motor de contenedores <b>más usado</b>, open source; imágenes con <b>Dockerfile</b>; <code>docker run</code> y <b>docker-compose</b> para varios servicios; desarrollo, pruebas y producción pequeña</td></tr>
+<tr><td><b>Kubernetes (K8s)</b></td><td><b>Orquestación</b> de contenedores open source, desarrollada por <b>Google</b>: despliegues, escalado, balanceo de carga, monitorización y recuperación</td></tr>
+<tr><td><b>OpenShift</b></td><td><b>PaaS empresarial basada en Kubernetes</b>, mantenida por <b>Red Hat</b>; consolas web, CI/CD, seguridad y autenticación integrada; plantillas e integración con <b>Jenkins, Git, S2I (source-to-image)</b></td></tr>
+<tr><td><b>Rancher</b></td><td><b>Gestión centralizada de múltiples clústeres Kubernetes</b> desde una consola; híbridos o multinube; compatible con <b>EKS (Amazon), AKS (Azure), GKE (Google), OpenShift</b></td></tr>
+<tr><td><b>Apache Mesos</b></td><td><b>Gestor de recursos distribuido</b> open source; orquesta contenedores a gran escala con <b>Chronos, Marathon o Aurora</b>; en declive frente a Kubernetes; alto rendimiento y Big Data</td></tr>
+<tr><td><b>Podman</b></td><td>Alternativa a Docker de <b>Red Hat</b>; compatible con imágenes Docker, <b>sin daemon</b>, <b>rootless</b>; Linux</td></tr>
+<tr><td><b>Nomad (HashiCorp)</b></td><td>Ligera; orquesta contenedores <b>y aplicaciones no contenedorizadas</b>; se integra con <b>Vault y Consul</b></td></tr>
+<tr><td><b>containerd, CRI-O</b></td><td>Motores de contenedores</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Objetos de Kubernetes</b></p>
+<p>Unidades fundamentales que describen el <b>estado deseado</b> del sistema: qué aplicaciones se ejecutan, qué recursos hay y cómo deben comportarse. Cada objeto es una <b>representación declarativa</b> del estado del clúster.</p>
+<div class="tw"><table><tr><th>Objeto</th><th>Campos principales</th><th>Descripción</th></tr>
+<tr><td><b>Pod</b></td><td>apiVersion, kind, metadata, spec</td><td>Contenedores que se ejecutan <b>juntos</b> (contenedores, volúmenes, puertos)</td></tr>
+<tr><td><b>ReplicaSet</b></td><td>apiVersion, kind, metadata, spec</td><td>Asegura <b>un número deseado de Pods</b> (réplicas y plantilla <code>template</code>)</td></tr>
+<tr><td><b>Deployment</b></td><td>apiVersion, kind, metadata, spec</td><td><b>Despliegues y actualizaciones</b>; réplicas y template</td></tr>
+<tr><td><b>Service</b></td><td>apiVersion, kind, metadata, spec</td><td><b>Expone un conjunto de Pods</b>; tipo (<b>ClusterIP, NodePort</b>), puertos, selector</td></tr>
+<tr><td><b>ConfigMap</b></td><td>apiVersion, kind, metadata, <b>data</b></td><td><b>Configuraciones externas</b> en clave-valor</td></tr>
+<tr><td><b>Secret</b></td><td>apiVersion, kind, metadata, <b>data</b></td><td>Como ConfigMap, pero <b>cifrado/base64</b>: contraseñas, tokens, certificados</td></tr>
+<tr><td><b>Namespace</b></td><td>apiVersion, kind, metadata</td><td><b>Espacios lógicos</b> del clúster (proyectos, equipos, entornos)</td></tr>
+<tr><td><b>Ingress</b></td><td>apiVersion, kind, metadata, spec</td><td><b>Acceso HTTP/HTTPS desde el exterior</b>; backend y reglas de enrutamiento</td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Campos de un manifiesto de Kubernetes</b></p>
+<p>Escritos normalmente en <b>YAML o JSON</b>. <b>apiVersion</b>: versión de la API de Kubernetes con que se interpreta el objeto. <b>Kind</b>: tipo de objeto. <b>Metadata</b>: información que lo identifica y organiza (<b>name, namespace, labels, annotations</b>). <b>Spec</b>: <b>estado deseado</b> del objeto; su contenido varía según el tipo.</p>
+</div>
+<div class="pn"><a href="b4t2.html">← 4.2</a><a href="b4t4.html">4.4 →</a></div></main></div><script src="../app.js"></script></body></html>

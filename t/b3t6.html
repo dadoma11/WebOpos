@@ -1,0 +1,343 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 3 · Tema 6 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Sistemas distribuidos</a><a href="#s1">2. Modelo cliente/servidor</a><a href="#s2">3. Arquitectura en capas y multicapas</a><a href="#s3">4. Componentes y operación del sistema</a><a href="#s4">5. Arquitecturas de servicios web</a><a href="#s5">6. Protocolos asociados a servicios web</a><a href="#s6">7. Seguridad en sistemas distribuidos</a><a href="#s7">8. Tendencias actuales</a></aside>
+<main class="doc" data-key="b3t6"><div class="crumb">Bloque 3 · Tema 6</div><h1>Arquitecturas cliente/servidor y multicapas. Servicios web y protocolos</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (11)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema6.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema6.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Sistemas distribuidos</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Sistema distribuido</b></p>
+<p>Conjunto de <b>componentes software que se ejecutan en distintos equipos o entornos físicos pero cooperan</b> para dar una funcionalidad unificada al usuario. Módulos <b>desacoplados</b> que se comunican por <b>redes, servicios o protocolos estándar</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Objetivo</th><th>Idea</th></tr>
+<tr><td><b>Escalabilidad</b></td><td>Aumentar capacidad <b>añadiendo nodos o recursos</b></td></tr>
+<tr><td><b>Disponibilidad</b></td><td>Sigue funcionando aunque <b>fallen componentes</b></td></tr>
+<tr><td><b>Mantenibilidad</b></td><td>Desplegar, actualizar o sustituir partes sin afectar al conjunto</td></tr>
+<tr><td><b>Desempeño</b></td><td><b>Paralelismo y balanceo de carga</b></td></tr>
+<tr><td><b>Desacoplamiento funcional</b></td><td>Responsabilidades separadas en capas o servicios</td></tr>
+</table></div>
+<ul>
+<li><b>Ejemplos</b>: portales de atención ciudadana, <b>ERP</b>, comercio electrónico (microservicios), servicios sanitarios, apps móviles que consumen <b>APIs REST</b> en la nube.</li>
+</ul>
+<h3>1.1 Características clave</h3>
+<div class="tw"><table><tr><th>Característica</th><th>Descripción</th></tr>
+<tr><td><b>Escalabilidad</b></td><td>Rendimiento proporcional a los recursos añadidos. <b>Horizontal (scale-out)</b>: más máquinas · <b>Vertical (scale-up)</b>: más recursos en un nodo</td></tr>
+<tr><td><b>Transparencia</b></td><td><b>De acceso</b> (remoto como local) · <b>de ubicación</b> (no hace falta saber dónde está) · <b>de concurrencia</b> (acceso compartido sin interferencias) · <b>de replicación</b> · <b>de fallos</b> · <b>de movilidad</b> (cambian de lugar sin afectar)</td></tr>
+<tr><td><b>Concurrencia</b></td><td>Múltiples procesos/usuarios simultáneos; requiere <b>sincronización y consistencia</b></td></tr>
+<tr><td><b>Tolerancia a fallos</b></td><td><b>Redundancia, replicación y reconfiguración automática</b></td></tr>
+<tr><td><b>Independencia de heterogeneidad</b></td><td>Distintos SO, hardware, lenguajes, redes; <b>protocolos estándar (HTTP, gRPC, SOAP)</b> y APIs</td></tr>
+<tr><td><b>Compartición de recursos</b></td><td>Archivos, BD, servicios; control de permisos y sincronización</td></tr>
+</table></div>
+<h2 id="s1">2. Modelo cliente/servidor</h2>
+<ul>
+<li>Una o varias aplicaciones <b>cliente envían peticiones</b> a un <b>servidor</b> que las procesa y responde. Características: <b>separación lógica de funciones</b>, <b>comunicación en red (TCP/IP, HTTP)</b>, <b>multicliente</b>, <b>centralización del servicio</b>, <b>escalabilidad horizontal</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de cliente</th><th>Característica</th><th>Ejemplo</th></tr>
+<tr><td><b>Ligero (thin)</b></td><td><b>Solo interfaz de usuario</b>; lógica y datos en el servidor</td><td>Navegador web</td></tr>
+<tr><td><b>Pesado (thick)</b></td><td><b>Parte o toda la lógica de negocio</b>; menos comunicación pero <b>más difícil de actualizar</b></td><td>Aplicación de escritorio con acceso directo a BD</td></tr>
+<tr><td><b>Híbrido</b></td><td>Lógica local y <b>delega lo pesado</b> al servidor</td><td>Apps móviles, JavaScript + API REST</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Combinaciones cliente/servidor</b></p>
+<div class="tw"><table><tr><th>Arquitectura</th><th>Descripción</th><th>Capas</th></tr>
+<tr><td><b>Cliente fino – Servidor grueso</b></td><td>Cliente solo interfaz; servidor lógica y datos</td><td><b>2</b></td></tr>
+<tr><td><b>Cliente pesado – Servidor ligero</b></td><td>Cliente con lógica, conecta <b>directamente a la BD</b></td><td><b>2</b></td></tr>
+<tr><td><b>Cliente híbrido – Servidor intermedio</b></td><td>Parte de la lógica en cliente (validaciones); servidor intermedio actúa como <b>API</b></td><td><b>3 o más</b></td></tr>
+<tr><td><b>Cliente web – Backend – BD</b></td><td>Arquitectura clásica: presentación, lógica, persistencia</td><td><b>3</b></td></tr>
+<tr><td><b>Cliente móvil – API Gateway – Microservicios</b></td><td>Moderna; capa de orquestación</td><td><b>n (multicapa)</b></td></tr>
+<tr><td><b>Cliente SPA – API REST – Servicios</b></td><td>Presentación en el navegador; lógica y datos por APIs REST</td><td><b>3 (desacopladas)</b></td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Comunicación</th><th>Descripción</th></tr>
+<tr><td><b>Síncrona</b></td><td>El cliente <b>espera</b> la respuesta</td></tr>
+<tr><td><b>Asíncrona</b></td><td>El cliente <b>continúa</b> hasta recibir la respuesta</td></tr>
+<tr><td><b>HTTP/HTTPS</b></td><td>Apps web y móviles</td></tr>
+<tr><td><b>TCP/IP</b></td><td>Conexiones persistentes y eficientes</td></tr>
+<tr><td><b>Sockets</b></td><td>Nivel de transporte, conexión directa</td></tr>
+<tr><td><b>RPC</b></td><td>El cliente invoca funciones que se ejecutan en el servidor</td></tr>
+<tr><td><b>Servicios web (SOAP/REST)</b></td><td>Mensajes estructurados en <b>XML o JSON</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Entorno</th><th>Cliente</th><th>Servidor</th></tr>
+<tr><td><b>Aplicación web</b></td><td>Navegador (HTML + JS)</td><td>Servidor web + backend (ASP.NET, Java EE)</td></tr>
+<tr><td><b>App móvil</b></td><td>App nativa (Android/iOS)</td><td>API RESTful en la nube</td></tr>
+<tr><td><b>Escritorio</b></td><td>Programa Windows/Linux/macOS</td><td>Servidor de BD o lógica remota</td></tr>
+<tr><td><b>Gestión documental</b></td><td>Cliente web o escritorio</td><td>Servidor de contenidos (<b>ECM, Alfresco</b>)</td></tr>
+</table></div>
+<h2 id="s2">3. Arquitectura en capas y multicapas</h2>
+<ul>
+<li>Divide la aplicación en niveles con responsabilidad concreta. <b>Cada capa solo se comunica con la adyacente</b> → menos acoplamiento y más mantenibilidad. Separa interfaz, lógica y datos; promueve <b>reutilización</b>; facilita escalabilidad y pruebas.</li>
+</ul>
+<div class="tw"><table><tr><th>Arquitectura</th><th>Descripción</th></tr>
+<tr><td><b>2 capas (cliente/servidor)</b></td><td><b>Cliente</b>: interfaz (y parte de la lógica) · <b>Servidor</b>: BD y acceso a datos. Comunicación <b>directa cliente–BD</b>; rápida de implementar pero <b>difícil de escalar y mantener</b></td></tr>
+<tr><td><b>3 capas</b></td><td><b>Presentación (UI)</b> · <b>Lógica de negocio (BL)</b> · <b>Acceso a datos (DAL)</b></td></tr>
+<tr><td><b>n capas</b></td><td>Más niveles (servicios, integración, seguridad, caché); capas en <b>servidores distintos</b></td></tr>
+<tr><td><b>Microservicios</b></td><td>Módulos <b>autónomos</b> que se comunican por APIs (<b>REST, gRPC, mensajería</b>); cada uno con <b>su propia BD</b> y tecnología; <b>despliegue independiente, resiliencia, escalabilidad granular</b></td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Frontend y backend</b></p>
+<p><b>Frontend (cliente)</b>: parte con la que <b>interactúa el usuario</b>; se ejecuta en el dispositivo cliente (navegador, móvil, escritorio); interfaz de usuario (HTML, CSS, JavaScript). <b>Backend (servidor)</b>: se ejecuta en el servidor; <b>lógica de negocio, acceso a datos y procesamiento de peticiones</b> (API REST en Java, .NET o Python). Se comunican por <b>HTTP/HTTPS</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Ventaja de 3 capas</th><th>Descripción</th></tr>
+<tr><td><b>Separa responsabilidades</b></td><td>Cada capa se especializa</td></tr>
+<tr><td><b>Mantenibilidad y trabajo colaborativo</b></td><td>Equipos distintos por capa</td></tr>
+<tr><td><b>Escalabilidad</b></td><td>Despliegue y escalado independientes</td></tr>
+<tr><td><b>Reutilización</b></td><td>Una misma API sirve a web, móvil y escritorio</td></tr>
+</table></div>
+<ul>
+<li>Los microservicios se localizan por un nombre único (URL) mediante <b>descubrimiento de servicios</b>: <b>Service Registry</b> (<b>Eureka, Consul</b>).</li>
+</ul>
+<h2 id="s3">4. Componentes y operación del sistema</h2>
+<h3>4.1 Servidor web de aplicaciones</h3>
+<ul>
+<li><b>Servidor de aplicaciones</b>: entorno de ejecución que gestiona <b>lógica de negocio, comunicación cliente–servidor e integración con BD</b>. Se diferencia del <b>servidor web</b>, que solo atiende HTTP y entrega <b>contenido estático</b>; el de aplicaciones procesa lógica compleja, <b>sesiones y conexiones de BD</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tecnología</th><th>Descripción</th></tr>
+<tr><td><b>Servidor HTTP/SSL (TLS)</b></td><td>Recibe peticiones HTTP y responde HTML/JSON. <b>TLS</b> (hoy el estándar; se sigue diciendo SSL) <b>cifra</b> la comunicación y protege de <b>Man-in-the-Middle</b>. Servidores: <b>Apache HTTP Server</b> (open source, Linux), <b>Nginx</b> (alta concurrencia y balanceo), <b>Microsoft IIS</b> (Windows Server)</td></tr>
+<tr><td><b>Servlets</b></td><td>Clase Java que <b>extiende el servidor de aplicaciones</b>: procesa peticiones HTTP y genera respuestas dinámicas (HTML, JSON, XML); como un applet, <b>pero en el servidor</b>. Contenedores: <b>Tomcat, WildFly, GlassFish</b></td></tr>
+<tr><td><b>Páginas dinámicas</b></td><td><b>HTML estático + código embebido</b> (JavaScript en cliente; PHP en servidor)</td></tr>
+<tr><td><b>JSP</b></td><td>Java EE; código Java dentro de HTML; <b>se compila a servlet</b> antes de ejecutarse</td></tr>
+<tr><td><b>ASP</b></td><td>De <b>Microsoft</b> para <b>IIS</b>; scripts <b>VBScript o JavaScript</b>; <b>interpretado, no compilado</b></td></tr>
+<tr><td><b>Intérpretes de scripting</b></td><td><b>PHP</b> (Apache/Nginx), <b>Python</b> (Django, Flask), <b>Node.js</b> (JavaScript en servidor, tiempo real)</td></tr>
+<tr><td><b>Frameworks de lógica de negocio</b></td><td><b>Spring</b> (inyección de componentes, <b>REST con Spring Boot</b>, <b>JPA/Hibernate</b>), <b>Django</b> (Python), <b>Express.js</b> (Node.js), <b>Laravel</b> (PHP), <b>ASP.NET Core</b> (C#)</td></tr>
+</table></div>
+<ul>
+<li><b>Flujo de un servlet</b>: cliente envía petición HTTP → servidor la pasa al servlet adecuado → este la procesa (BD u otros recursos) → genera respuesta dinámica y la envía.</li>
+</ul>
+<h3>4.2 Patrones comunes</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Patrón DAO</b></p>
+<p><b>Data Access Object</b>: patrón de diseño <b>estructural</b> que <b>aísla la lógica de acceso a datos</b> del resto de la aplicación, en especial de la lógica de negocio. Muy usado en la <b>capa de acceso a datos</b> (Java EE, Spring, .NET).</p>
+</div>
+<ul>
+<li><b>Funciones</b>: encapsular todas las operaciones sobre la BD (consultas, inserciones, actualizaciones, eliminaciones); interfaz <b>independiente de la tecnología de persistencia</b> (JDBC, JPA, Hibernate, ADO.NET); cambios de BD limitados a una clase DAO; <b>responsabilidad única</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Ventaja DAO</th><th>Descripción</th></tr>
+<tr><td><b>Modularidad</b></td><td>Cambios de BD no afectan a la lógica de negocio</td></tr>
+<tr><td><b>Reutilización</b></td><td>Varios servicios usan los mismos DAO</td></tr>
+<tr><td><b>Testabilidad</b></td><td>Se sustituye por <b>mocks o stubs</b></td></tr>
+<tr><td><b>Mantenibilidad</b></td><td>Código mejor organizado</td></tr>
+</table></div>
+<h3>MVC (Modelo-Vista-Controlador)</h3>
+<div class="tw"><table><tr><th>Componente</th><th>Responsabilidad</th></tr>
+<tr><td><b>Modelo</b></td><td><b>Datos y lógica de negocio</b>: acceso a BD, validaciones, reglas; <b>independiente de la presentación</b></td></tr>
+<tr><td><b>Vista</b></td><td>Interfaz visible (HTML, CSS, plantillas); <b>sin lógica de negocio</b></td></tr>
+<tr><td><b>Controlador</b></td><td><b>Intermediario</b>: recibe las entradas del usuario, las interpreta, <b>invoca al modelo y selecciona la vista</b></td></tr>
+</table></div>
+<ul>
+<li><b>Flujo</b>: usuario envía petición → <b>controlador</b> la recibe y valida → llama al <b>modelo</b> → este devuelve datos → controlador elige la <b>vista</b> y le pasa los datos → la vista genera la respuesta al navegador.</li>
+<li><b>Servidor</b>: <b>Spring MVC, ASP.NET MVC, Django, Laravel</b>. <b>Cliente</b>: <b>Angular, React (Flux/Redux), Vue.js</b>.</li>
+</ul>
+<h3>4.4 Monitorización y rendimiento</h3>
+<ul>
+<li>Detectar problemas, optimizar recursos y garantizar <b>SLA</b> (acuerdos de nivel de servicio).</li>
+</ul>
+<div class="tw"><table><tr><th>Área a monitorizar</th><th>Herramientas</th></tr>
+<tr><td><b>CPU, memoria, disco</b>; <b>usuarios concurrentes</b>; <b>tiempos de respuesta y latencia</b>; <b>errores y excepciones</b></td><td><b>Prometheus + Grafana</b> (métricas y dashboards) · <b>Elastic + Kibana</b> (logs) · <b>Application Insights (Azure), New Relic, Dynatrace</b> (<b>APM</b>, Application Performance Monitoring)</td></tr>
+</table></div>
+<h2 id="s4">5. Arquitecturas de servicios web</h2>
+<h3>5.1 Servicios web</h3>
+<ul>
+<li>Funcionalidad <b>accesible remotamente</b> (HTTP/HTTPS) entre sistemas heterogéneos; <b>independientes de plataforma, modulares y reutilizables</b>. Basados en estándares abiertos (<b>XML, JSON, HTTP, SOAP, REST</b>); públicos, privados o internos; base de <b>SOA</b> y microservicios.</li>
+</ul>
+<h3>5.2 SOA (Service-Oriented Architecture)</h3>
+<ul>
+<li>Organiza el sistema en <b>servicios autónomos, reutilizables e interoperables</b> con interfaz pública y comunicación por mensajes (XML/SOAP). Integra sistemas heredados; fuerte relación con <b>WSDL y UDDI</b>. Caso en la Administración: <b>Plataforma de Intermediación de Datos (PID)</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Componentes de SOA</b></p>
+<div class="tw"><table><tr><th>Componente</th><th>Función</th></tr>
+<tr><td><b>Servicio</b></td><td>Unidad funcional <b>autocontenida</b> que realiza una tarea</td></tr>
+<tr><td><b>Proveedor de servicios</b></td><td>Desarrolla, <b>publica</b> y mantiene el servicio</td></tr>
+<tr><td><b>Consumidor de servicios</b></td><td>Aplicación que <b>invoca</b> el servicio</td></tr>
+<tr><td><b>Registro de servicios</b></td><td>Repositorio para <b>publicar, descubrir y consultar</b> metadatos; <b>desacopla</b> proveedor y consumidor</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Flujo</b>: el proveedor registra el servicio (<b>WSDL</b>) → el consumidor consulta el registro, lo encuentra y lo consume con un mensaje estándar → el servicio responde o ejecuta la operación.</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>SOA</b></p>
+<p>SOA se implementa con servicios en el <b>backend</b> (SOAP, REST, WSDL). Los servicios son <b>débilmente acoplados</b> (flexibilidad y reutilización). La definición formal de los servicios se hace con <b>WSDL (XML)</b>.</p>
+</div>
+<h3>5.3 SOAP</h3>
+<ul>
+<li><b>Simple Object Access Protocol</b>: protocolo de <b>mensajería estándar</b> para intercambio estructurado entre aplicaciones, normalmente sobre <b>HTTP/HTTPS</b> (también <b>SMTP, JMS</b>). Adoptado por el <b>W3C</b>; <b>SOAP 1.2</b> publicado como estándar <b>ISO/IEC</b> (ISO/IEC 20022-1:2004). Muy usado en entornos empresariales y gubernamentales (seguridad, transacciones, interoperabilidad, comunicación fiable).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Estructura de un mensaje SOAP</b></p>
+<p>Documento <b>XML bien formado</b> con elemento raíz <b><code>&lt;soap:Envelope&gt;</code></b>. <b>Envelope</b>: contenedor principal. <b>Header</b> (<b>opcional</b>): tokens de seguridad, metadatos, identificadores de transacción. <b>Body</b>: datos de la solicitud o respuesta (invocaciones a métodos y parámetros).</p>
+</div>
+<div class="tw"><table><tr><th>Componente SOAP</th><th>Función</th></tr>
+<tr><td><b>WSDL</b></td><td>Lenguaje XML que <b>describe la interfaz</b> del servicio: métodos, tipos, ubicación y protocolos</td></tr>
+<tr><td><b>UDDI</b></td><td>Registrar y <b>descubrir</b> servicios web; hoy <b>en desuso</b></td></tr>
+<tr><td><b>XML Schema (XSD)</b></td><td>Estructura y tipos de datos de los mensajes; garantiza su validez</td></tr>
+<tr><td><b>WS-Security</b></td><td>Especificación <b>WS-(familia de estándares)</b> para <b>firmar, cifrar y autenticar</b> mensajes SOAP; garantiza <b>integridad, autenticación y confidencialidad</b> (muy usada en la Administración)</td></tr>
+</table></div>
+<ul>
+<li><b>WS-Security</b>: <b>firma digital XML (XML-Signature)</b>, <b>cifrado (XML-Encryption)</b>, <b>tokens de seguridad (X.509, SAML)</b>, protección de cabeceras y cuerpo. <b>SAML</b>: intercambio de autenticación/autorización, sobre todo en <b>SSO</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Estándares WS-* de seguridad</b></p>
+<div class="tw"><table><tr><th>Estándar</th><th>Función principal</th><th>Resumen</th></tr>
+<tr><td><b>WS-Security</b></td><td>Seguridad a <b>nivel de mensaje SOAP</b></td><td>Firmar, cifrar y adjuntar tokens (usuario, SAML)</td></tr>
+<tr><td><b>WS-SecureConversation</b></td><td><b>Contexto de seguridad compartido</b></td><td>Reutiliza claves y reduce coste criptográfico en intercambios largos</td></tr>
+<tr><td><b>WS-Trust</b></td><td>Emitir, renovar y validar <b>tokens</b></td><td><b>Security Token Service (STS)</b></td></tr>
+<tr><td><b>WS-Federation</b></td><td><b>Federar identidades</b> entre dominios</td><td>Facilita <b>SSO</b> (federación de confianza)</td></tr>
+<tr><td><b>WS-Policy</b></td><td>Describir <b>requisitos y capacidades</b> de seguridad</td><td>Ej. exigir firmas digitales o un tipo de token</td></tr>
+<tr><td><b>WS-Addressing</b></td><td>Metadatos de <b>direccionamiento</b> en mensajes</td><td><b>No es de seguridad</b>; clave en mensajes con varios saltos</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Regla mnemotécnica</b>: Security = seguridad básica · SecureConversation = conversación segura (contexto compartido) · Trust = confianza (tokens) · Federation = identidad federada entre dominios · Policy = reglas del juego.</li>
+<li><b>Apache Axis2</b>: motor de servicios web <b>open source de Apache</b> (evolución de Axis 1.x) para <b>construir y consumir servicios SOAP</b> (y algo de REST); soporta SOAP, WSDL, WS-Security, WS-ReliableMessaging; <b>APIs para Java y C</b>; crea servicios desde <b>POJO o WSDL</b>; modelo <b>modular</b>; contenedor ligero <b>axis2.war</b>.</li>
+</ul>
+<h3>5.4 REST</h3>
+<ul>
+<li><b>Representational State Transfer</b>: <b>estilo de arquitectura</b> de <b>Roy Fielding (tesis doctoral, 2000)</b>; restricciones para servicios web simples, escalables y modulares usando los <b>métodos estándar de HTTP</b>. <b>Todo es un recurso</b> identificado por una <b>URI</b> (<code>https://api.ejemplo.com/usuarios/123</code>).</li>
+</ul>
+<div class="tw"><table><tr><th>Principio REST</th><th>Descripción</th></tr>
+<tr><td><b>Identificación de recursos</b></td><td>URI única por recurso (<code>/api/clientes/123</code>)</td></tr>
+<tr><td><b>Métodos HTTP estándar</b></td><td><b>GET</b> obtener · <b>POST</b> crear · <b>PUT</b> actualizar · <b>DELETE</b> eliminar</td></tr>
+<tr><td><b>Stateless</b></td><td>Cada petición lleva <b>toda la información</b>; el servidor <b>no guarda estado de sesión</b> (facilita escalar)</td></tr>
+<tr><td><b>Representación ligera</b></td><td><b>JSON</b> (preferido) o XML/YAML</td></tr>
+<tr><td><b>Versionado</b></td><td>Versión en URI o cabecera (<code>/api/v1/clientes</code>)</td></tr>
+<tr><td><b>Documentación</b></td><td><b>Swagger/OpenAPI</b>, Postman, Redoc, RAML</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Código HTTP</th><th>Significado</th></tr>
+<tr><td><b>200 OK</b></td><td>Solicitud exitosa</td></tr>
+<tr><td><b>201 Created</b></td><td>Recurso creado</td></tr>
+<tr><td><b>204 No Content</b></td><td>Eliminación exitosa</td></tr>
+<tr><td><b>400 Bad Request</b></td><td>Petición mal formada</td></tr>
+<tr><td><b>401 Unauthorized</b></td><td>Autenticación fallida</td></tr>
+<tr><td><b>404 Not Found</b></td><td>Recurso no encontrado</td></tr>
+<tr><td><b>500 Internal Server Error</b></td><td>Error en el servidor</td></tr>
+</table></div>
+<div class="tw"><table><tr><th></th><th><b>SOAP</b></th><th><b>REST</b></th></tr>
+<tr><td><b>Naturaleza</b></td><td><b>Protocolo</b> (basado en XML)</td><td><b>Arquitectura</b> (basada en HTTP)</td></tr>
+<tr><td><b>Formato</b></td><td><b>XML</b></td><td><b>JSON</b> (más habitual) o XML</td></tr>
+<tr><td><b>Transporte</b></td><td>No limitado (HTTP, SMTP…)</td><td><b>HTTP</b></td></tr>
+<tr><td><b>Estado</b></td><td>Stateful o stateless</td><td><b>Stateless</b></td></tr>
+<tr><td><b>Seguridad</b></td><td><b>WS-Security</b></td><td><b>HTTPS + tokens (OAuth, JWT)</b></td></tr>
+<tr><td><b>Complejidad</b></td><td>Más complejo</td><td>Más sencillo y ligero</td></tr>
+<tr><td><b>Uso</b></td><td>Entornos empresariales, transacciones</td><td>APIs web, microservicios, móviles</td></tr>
+</table></div>
+<h3>5.5 Microservicios</h3>
+<div class="tw"><table><tr><th>Aspecto</th><th>SOA (servicios web tradicionales)</th><th>Microservicios</th></tr>
+<tr><td><b>Granularidad</b></td><td>Servicios más grandes</td><td><b>Pequeños y especializados</b></td></tr>
+<tr><td><b>Tecnología</b></td><td><b>SOAP/XML</b></td><td><b>REST/JSON, gRPC</b></td></tr>
+<tr><td><b>Gestión y despliegue</b></td><td><b>Centralizado</b></td><td><b>Independiente por servicio</b></td></tr>
+<tr><td><b>Escalabilidad</b></td><td>Global</td><td><b>Por componente</b></td></tr>
+<tr><td><b>Comunicación</b></td><td>Normalmente síncrona</td><td>Síncrona o asíncrona</td></tr>
+<tr><td><b>Dependencias</b></td><td>Acopladas</td><td><b>Desacopladas</b>, orientadas a APIs</td></tr>
+</table></div>
+<h3>5.6 Herramientas para documentar servicios web</h3>
+<div class="tw"><table><tr><th>Servicio</th><th>Herramienta</th><th>Descripción</th></tr>
+<tr><td><b>REST</b></td><td><b>OpenAPI / Swagger</b></td><td>Especificación estándar; documentación interactiva y generación de clientes/servidores</td></tr>
+<tr><td></td><td><b>RAML</b></td><td>Basado en <b>YAML</b></td></tr>
+<tr><td></td><td><b>API Blueprint</b></td><td>Legibilidad humana</td></tr>
+<tr><td></td><td><b>Postman</b></td><td>Pruebas y documentación automática</td></tr>
+<tr><td></td><td><b>Redoc</b></td><td>Visualizador de OpenAPI</td></tr>
+<tr><td><b>SOAP</b></td><td><b>WSDL</b></td><td>Lenguaje XML estándar que describe el servicio</td></tr>
+<tr><td></td><td><b>XSD</b></td><td>Tipos de datos usados en el WSDL</td></tr>
+<tr><td></td><td><b>WSIL</b> (IBM y Microsoft)</td><td>Publicar y descubrir servicios de un servidor/dominio; <b>documento XML con las ubicaciones de los WSDL</b>; alternativa <b>más ligera que UDDI</b></td></tr>
+</table></div>
+<h2 id="s5">6. Protocolos asociados a servicios web</h2>
+<h3>6.1 HTTP y HTTPS</h3>
+<ul>
+<li><b>HTTP</b>: principal protocolo de transporte; modelo cliente/servidor; <b>stateless</b>; métodos <b>GET, POST, PUT, DELETE, PATCH</b>; puertos <b>80 (HTTP) y 443 (HTTPS)</b>. <b>HTTPS</b>: añade cifrado <b>TLS</b> (confidencialidad e integridad).</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>CORS</b></p>
+<p><b>Cross-Origin Resource Sharing</b>: mecanismo que <b>permite o restringe peticiones HTTP de origen cruzado</b> hechas desde scripts del navegador (<code>fetch()</code>, <code>XMLHttpRequest</code>). Si el frontend está en un dominio distinto al backend, el navegador <b>bloquea por defecto</b>; el <b>backend</b> debe configurar <b>cabeceras CORS</b> indicando qué orígenes se permiten.</p>
+</div>
+<h3>6.2 XML, JSON y YAML</h3>
+<div class="tw"><table><tr><th>Formato</th><th>Características</th></tr>
+<tr><td><b>XML</b></td><td>Tradicional en <b>SOAP</b>; autodescriptivo, etiquetas jerárquicas; <b>verboso y rígido</b>, muy estructurado</td></tr>
+<tr><td><b>JSON</b></td><td><b>Más ligero</b>, ideal para <b>REST</b>; pares <b>clave-valor</b>; rápido de procesar</td></tr>
+<tr><td><b>YAML</b></td><td>Similar a JSON pero <b>más legible</b>; usado en <b>configuración (Docker, Kubernetes)</b>; poco usado en servicios en tiempo real</td></tr>
+</table></div>
+<h3>6.3 WSDL</h3>
+<ul>
+<li>Lenguaje <b>XML</b> que describe la <b>interfaz pública de un servicio SOAP</b>: operaciones, formato y tipo de mensajes, protocolos y ubicaciones.</li>
+</ul>
+<div class="tw"><table><tr><th>Operación WSDL</th><th>Descripción</th></tr>
+<tr><td><b>one-way</b></td><td>Cliente envía mensaje; el servicio <b>no responde</b></td></tr>
+<tr><td><b>request-response</b></td><td>Cliente envía y <b>espera respuesta</b></td></tr>
+<tr><td><b>solicit-response</b></td><td><b>Servicio envía</b> y espera respuesta del cliente</td></tr>
+<tr><td><b>notification</b></td><td>Servicio envía al cliente <b>sin esperar respuesta</b></td></tr>
+</table></div>
+<h3>6.4 UDDI</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>UDDI</b></p>
+<p><b>Universal Description, Discovery and Integration</b>: estándar propuesto para el <b>registro y descubrimiento de servicios web en entornos SOA</b>. Funciona como un <b>«directorio telefónico»</b> de servicios. Hoy <b>prácticamente en desuso</b>; sustituido por portales, catálogos de API o <b>Swagger/OpenAPI</b> para REST.</p>
+</div>
+<h3>6.5 Repaso SOAP y REST</h3>
+<div class="tw"><table><tr><th><b>SOAP</b></th><th><b>REST</b></th></tr>
+<tr><td>Basado en <b>XML</b>, rígido y estructurado</td><td>Basado en <b>HTTP</b> estándar, ligero y flexible</td></tr>
+<tr><td>Soporta <b>seguridad, transacciones, mensajería asíncrona</b></td><td>JSON o XML; <b>verbos HTTP</b> como operación</td></tr>
+<tr><td>Requiere <b>WSDL</b></td><td>Se describe con <b>OpenAPI (Swagger)</b></td></tr>
+</table></div>
+<h3>6.6 gRPC y alternativas</h3>
+<ul>
+<li><b>gRPC (Google Remote Procedure Call)</b>: alto rendimiento; usa <b>Protocol Buffers (protobuf)</b> en lugar de XML/JSON; comunicación <b>síncrona y asíncrona</b>; <b>streaming bidireccional</b>; más rápido que REST en muchas operaciones.</li>
+</ul>
+<div class="tw"><table><tr><th>Alternativa</th><th>Característica</th></tr>
+<tr><td><b>GraphQL</b></td><td>El cliente define <b>exactamente qué datos quiere</b></td></tr>
+<tr><td><b>WebSockets</b></td><td>Comunicación <b>bidireccional y persistente</b> (tiempo real)</td></tr>
+<tr><td><b>Server-Sent Events (SSE)</b></td><td>Envío <b>unidireccional y continuo</b> servidor → cliente</td></tr>
+</table></div>
+<h2 id="s6">7. Seguridad en sistemas distribuidos</h2>
+<ul>
+<li>Debe garantizar <b>confidencialidad, integridad, autenticación, autorización y disponibilidad</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Concepto</th><th>Descripción</th></tr>
+<tr><td><b>Autenticación</b></td><td><b>Verificar la identidad</b> (usuario/contraseña, certificados digitales, tokens)</td></tr>
+<tr><td><b>Autorización</b></td><td><b>Permisos</b> tras autenticar: <b>RBAC</b> (roles), <b>ABAC</b> (atributos), <b>ACLs</b> (listas de control de acceso)</td></tr>
+<tr><td><b>HTTPS</b></td><td>HTTP seguro con cifrado</td></tr>
+<tr><td><b>TLS</b></td><td>Protocolo actual (<b>SSL obsoleto</b>): <b>cifrado</b>, <b>autenticación del servidor</b> (y opcionalmente del cliente), <b>integridad</b></td></tr>
+<tr><td><b>Certificados digitales</b></td><td>Emitidos por <b>Autoridades de Certificación (CA)</b>: verifican la identidad del servidor y establecen conexión cifrada basada en confianza</td></tr>
+<tr><td><b>API Keys</b></td><td>Claves <b>estáticas</b> que identifican/autorizan al cliente; sencillas, pero menos seguras sin HTTPS</td></tr>
+<tr><td><b>OAuth2</b></td><td>Protocolo estándar de <b>delegación de autorización</b>: acceso limitado a recursos de otro <b>sin compartir credenciales</b>; <b>Access Tokens</b> con permisos y duración limitados</td></tr>
+<tr><td><b>JWT (JSON Web Token)</b></td><td>Token compacto basado en JSON; <b>3 partes en base64: header, payload y firma</b>; se usa con OAuth2; <b>autocontenido</b> (incluye usuario y permisos)</td></tr>
+</table></div>
+<h2 id="s7">8. Tendencias actuales</h2>
+<div class="tw"><table><tr><th>Tendencia</th><th>Descripción</th></tr>
+<tr><td><b>Microservicios</b></td><td>Servicios pequeños e independientes con APIs ligeras (<b>REST o gRPC</b>); despliegue independiente, escalado individual, <b>aislamiento de fallos</b>, <b>poliglotismo</b>; facilita <b>DevOps</b> y despliegue continuo; reduce acoplamiento entre equipos</td></tr>
+<tr><td><b>Serverless / FaaS</b></td><td>Se suben <b>funciones</b> que responden a eventos (HTTP, colas, temporizadores) <b>sin gestionar servidores</b>; el proveedor (<b>Azure Functions, AWS Lambda, Google Cloud Functions</b>) gestiona la infraestructura; <b>se paga solo por ejecución</b>, escalado automático</td></tr>
+<tr><td><b>Contenedores</b></td><td>Entornos ligeros y portables con la aplicación y todas sus dependencias; <b>comparten el kernel del SO host</b> (más eficientes y rápidos de arrancar que las máquinas virtuales)</td></tr>
+<tr><td><b>Service Fabric</b></td><td>Plataforma de <b>Microsoft</b> para orquestar microservicios/contenedores en un <b>clúster de nodos</b>: monitoriza, escala, gestiona ciclo de vida, versionado, recuperación y <b>actualizaciones sin interrupción</b></td></tr>
+</table></div>
+<h3>8.3.1 Docker</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Docker</b></p>
+<p>Plataforma <b>de código abierto</b> para <b>crear, empaquetar y desplegar aplicaciones en contenedores</b> de forma automatizada. Un <b>contenedor</b> es una <b>instancia de una imagen</b> (paquete <b>inmutable</b> con código, dependencias, configuración y entorno de ejecución).</p>
+</div>
+<ul>
+<li><b>Ventajas</b>: automatiza empaquetado y despliegue; <b>portabilidad</b> entre entornos; integración con <b>CI/CD</b>; aísla procesos (seguridad); compatible con <b>Kubernetes, Docker Swarm, OpenShift</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Herramienta Docker</th><th>Función</th></tr>
+<tr><td><b>Dockerfile</b></td><td>Texto con instrucciones para construir una imagen</td></tr>
+<tr><td><b>docker build</b></td><td>Genera la imagen desde el Dockerfile</td></tr>
+<tr><td><b>docker run</b></td><td>Ejecuta un contenedor desde una imagen</td></tr>
+<tr><td><b>docker-compose</b></td><td>Define y ejecuta <b>varios contenedores</b> con un archivo <b>YAML</b></td></tr>
+</table></div>
+<h3>8.3.2 Kubernetes (K8s)</h3>
+<ul>
+<li><b>Orquestador de contenedores</b> creado por <b>Google</b>, mantenido por la <b>CNCF</b> (Cloud Native Computing Foundation). Despliegue, escalado, monitorización y recuperación a gran escala.</li>
+<li><b>Funciones</b>: <b>balanceo de carga</b>, <b>escalado horizontal automático</b>, <b>autorreparación (auto-healing)</b>, configuración y secretos (<b>ConfigMaps y Secrets</b>), <b>rolling updates y rollbacks</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Objeto K8s</th><th>Descripción</th></tr>
+<tr><td><b>Pod</b></td><td><b>Unidad mínima de ejecución</b>; uno o más contenedores que comparten red y almacenamiento</td></tr>
+<tr><td><b>Service</b></td><td>Expone uno o varios Pods como <b>único punto de acceso de red</b></td></tr>
+<tr><td><b>Deployment</b></td><td>Controla el <b>ciclo de vida</b> de los Pods (creación, escalado, actualización)</td></tr>
+<tr><td><b>Volume</b></td><td>Almacenamiento <b>persistente</b></td></tr>
+<tr><td><b>Namespace</b></td><td><b>Aísla recursos</b> dentro de un clúster (entornos o equipos)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ecosistema</th><th>Función</th></tr>
+<tr><td><b>Helm</b></td><td>Gestor de paquetes (plantillas YAML llamadas <b>charts</b>)</td></tr>
+<tr><td><b>Minikube</b></td><td>Entorno local de un solo nodo</td></tr>
+<tr><td><b>kubectl</b></td><td>Línea de comandos para interactuar con el clúster</td></tr>
+</table></div>
+<div class="pn"><a href="b3t5.html">← 3.5</a><a href="b3t7.html">3.7 →</a></div></main></div><script src="../app.js"></script></body></html>

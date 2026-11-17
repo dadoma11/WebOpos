@@ -1,0 +1,698 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 5 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Conceptos de seguridad en sistemas de información</a><a href="#s1">2. Seguridad física</a><a href="#s2">3. Seguridad lógica</a><a href="#s3">4. Amenazas y vulnerabilidades</a><a href="#s4">5. Técnicas criptográficas y protocolos seguros</a><a href="#s5">6. Mecanismos de firma digital</a><a href="#s6">7. Infraestructura física de un CPD: acondicionamiento y equipamiento</a><a href="#s7">8. Sistemas de gestión de incidencias</a><a href="#s8">9. Control remoto de puestos de usuario</a></aside>
+<main class="doc" data-key="b4t5"><div class="crumb">Bloque 4 · Tema 5</div><h1>Seguridad en sistemas de información, criptografía, firma digital, CPD, incidencias y control remoto</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (18)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema5.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema5.pdf">PDF móvil</a><a class="chip pr" href="../practicas.html#hash">🧪 Prácticas relacionadas</a></div>
+<h2 id="s0">1. Conceptos de seguridad en sistemas de información</h2>
+<ul>
+<li>Ligados a la <b>categorización del sistema</b> según el <b>RD 311/2022 (ENS)</b>, que desarrolla el <b>art. 156 de la Ley 40/2015</b> (Régimen Jurídico del Sector Público).</li>
+</ul>
+<h3>1.1 Conceptos relacionados con la seguridad de la información (MAGERIT)</h3>
+<ul>
+<li><b>MAGERIT</b>: Metodología de Análisis y Gestión de Riesgos de los Sistemas de Información.</li>
+</ul>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición</th><th>Ejemplos</th></tr>
+<tr><td><b>Activo</b></td><td>Elemento con <b>valor</b> para la organización que debe protegerse; cada uno con distinta <b>criticidad</b></td><td>Datos, equipos, redes, aplicaciones, recursos humanos</td></tr>
+<tr><td><b>Amenaza</b></td><td><b>Circunstancia o evento</b> que puede originar un incidente y causar daños</td><td>Origen <b>natural</b> (terremoto), <b>técnico</b> (fallo eléctrico/SW), <b>personas</b> (accidental o intencionada), <b>defectos del sistema</b> (vulnerabilidad)</td></tr>
+<tr><td><b>Vulnerabilidad</b></td><td><b>Debilidad</b> que una amenaza puede explotar</td><td>SO sin actualizar, bugs, contraseñas débiles</td></tr>
+<tr><td><b>Salvaguarda</b></td><td><b>Contramedida</b> que reduce o elimina el daño de las amenazas</td><td>Antivirus, formación, firewalls</td></tr>
+<tr><td><b>Impacto</b></td><td><b>Medida del daño</b> si una amenaza se materializa</td><td>Económico, legal, de imagen</td></tr>
+<tr><td><b>Riesgo</b></td><td><b>Probabilidad de daño</b> sobre un activo; grado de exposición ante una amenaza</td><td>Análisis y gestión de riesgos: principio básico del ENS (<b>art. 5</b>); la seguridad debe basarse en el riesgo (<b>art. 7</b>)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Resumen de conceptos</b></p>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición breve</th></tr>
+<tr><td><b>Activo</b></td><td>Elemento valioso que se debe proteger</td></tr>
+<tr><td><b>Amenaza</b></td><td>Evento que puede dañar un activo</td></tr>
+<tr><td><b>Vulnerabilidad</b></td><td>Debilidad que puede ser explotada por una amenaza</td></tr>
+<tr><td><b>Salvaguarda</b></td><td>Medida o acción para proteger los activos</td></tr>
+<tr><td><b>Impacto</b></td><td>Daño que produce la materialización de una amenaza</td></tr>
+<tr><td><b>Riesgo</b></td><td>Probabilidad de impacto</td></tr>
+</table></div>
+</div>
+<h3>1.2 Dimensiones de la seguridad: ACIDT</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Dimensiones ACIDT</b></p>
+<div class="tw"><table><tr><th>Dimensión</th><th>Definición</th><th>Ejemplo de medida</th></tr>
+<tr><td><b>A</b>utenticidad</td><td>Los datos o usuarios <b>son quienes dicen ser</b></td><td>Verificar la <b>firma digital</b></td></tr>
+<tr><td><b>C</b>onfidencialidad</td><td>Acceso <b>sólo a autorizados</b></td><td><b>Cifrar</b> un correo</td></tr>
+<tr><td><b>I</b>ntegridad</td><td>La información <b>no se altera</b> de forma no autorizada</td><td>Comparar <b>suma de comprobación o hash</b></td></tr>
+<tr><td><b>D</b>isponibilidad</td><td>Información <b>accesible cuando se necesita</b></td><td><b>Sistemas de respaldo</b> ante caídas</td></tr>
+<tr><td><b>T</b>razabilidad</td><td>Identificar <b>quién accedió</b> o realizó acciones</td><td><b>Registros de auditoría</b> de acceso a BBDD</td></tr>
+</table></div>
+</div>
+<h3>1.3 ISO 27001</h3>
+<ul>
+<li><b>ISO/IEC 27001</b>: estándar internacional más importante para la gestión de la seguridad de la información. Requisitos para establecer, implementar, mantener y mejorar un <b>SGSI</b> (Sistema de Gestión de Seguridad de la Información). Protege <b>confidencialidad, integridad y disponibilidad</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Elemento</th><th>Contenido</th></tr>
+<tr><td><b>Análisis y gestión de riesgos</b></td><td>Identificar y tratar los riesgos</td></tr>
+<tr><td><b>Política de seguridad</b></td><td>Directrices para proteger los activos</td></tr>
+<tr><td><b>Controles de seguridad</b></td><td>Catálogo del <b>Anexo A</b> de la norma</td></tr>
+<tr><td><b>Mejora continua</b></td><td>Ciclo <b>PDCA</b> (Plan-Do-Check-Act)</td></tr>
+</table></div>
+<h3>1.4 Guías CCN-STIC</h3>
+<ul>
+<li>Elaboradas por el <b>Centro Criptológico Nacional (CCN)</b>: normas, instrucciones y buenas prácticas para la seguridad de los SI en las AAPP. Sirven para <b>aplicar el ENS</b>, gestionar riesgos y lograr un nivel de seguridad <b>homogéneo</b>. Muchas son de acceso libre; algunas <b>restringidas</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Serie</th><th>Contenido principal</th></tr>
+<tr><td><b>000</b></td><td>Políticas de seguridad</td></tr>
+<tr><td><b>100</b></td><td>Procedimientos generales</td></tr>
+<tr><td><b>200</b></td><td>Normas específicas</td></tr>
+<tr><td><b>300</b></td><td>Instrucciones técnicas de seguridad</td></tr>
+<tr><td><b>400</b></td><td>Guías generales de buenas prácticas</td></tr>
+<tr><td><b>500</b></td><td>Seguridad en entornos <b>Windows</b></td></tr>
+<tr><td><b>600</b></td><td>Seguridad en otros entornos (<b>Linux</b>, redes, etc.)</td></tr>
+<tr><td><b>800</b></td><td><b>Implementación del ENS</b></td></tr>
+<tr><td><b>900</b></td><td>Informes técnicos</td></tr>
+<tr><td><b>1000</b></td><td>Procedimientos de empleo seguro</td></tr>
+<tr><td><b>2000</b></td><td>Organismo de certificación</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Serie 800: adecuación y cumplimiento del ENS</b></p>
+<div class="tw"><table><tr><th>Guía</th><th>Contenido</th></tr>
+<tr><td><b>CCN-STIC 802</b></td><td><b>Auditoría</b> del ENS</td></tr>
+<tr><td><b>CCN-STIC 803</b></td><td><b>Valoración</b> de sistemas</td></tr>
+<tr><td><b>CCN-STIC 804</b></td><td><b>Implantación</b> del ENS</td></tr>
+<tr><td><b>CCN-STIC 805</b></td><td>Elaboración de la <b>política de seguridad</b></td></tr>
+<tr><td><b>CCN-STIC 815</b></td><td><b>Métricas e indicadores</b> de seguridad</td></tr>
+</table></div>
+</div>
+<h3>1.5 Herramientas de apoyo del CCN</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Herramientas del CCN</b></p>
+<p>El CCN pone a disposición de entidades públicas y organismos estratégicos herramientas que ayudan en la <b>gestión de la ciberseguridad</b> y en la <b>adecuación al ENS</b>:</p>
+<div class="tw"><table><tr><th>Herramienta</th><th>Descripción</th></tr>
+<tr><td><b>PILAR</b></td><td><b>Análisis y gestión de riesgos</b>, basada en <b>MAGERIT e ISO 27005</b>; identifica activos, amenazas y calcula <b>riesgos residuales</b></td></tr>
+<tr><td><b>INES</b></td><td>Evalúa el <b>estado de la seguridad</b> de las AAPP; cumplimiento y seguimiento del ENS con <b>cuadros de mando</b></td></tr>
+<tr><td><b>CLARA</b></td><td>Analiza automáticamente el <b>cumplimiento del ENS en sistemas Windows</b>; informes técnicos, de red y ejecutivos</td></tr>
+<tr><td><b>LUCIA</b></td><td>Gestión <b>federada de tickets</b></td></tr>
+<tr><td><b>REYES</b></td><td><b>Intercambio de información de ciberamenazas</b></td></tr>
+<tr><td><b>AMPARO</b></td><td><b>Implantación</b> de seguridad y conformidad del ENS</td></tr>
+<tr><td><b>CLAUDIA</b></td><td>Detecta <b>amenazas complejas en el puesto de usuario</b></td></tr>
+</table></div>
+</div>
+<h3>1.6 El COCS de la AGE</h3>
+<ul>
+<li><b>COCS-AGE</b> (Centro de Operaciones de Ciberseguridad de la AGE): infraestructura con <b>servicios horizontales de prevención, detección, respuesta y recuperación</b> ante incidentes. Lo desarrolla la <b>Agencia Española de Administración Digital (antigua SGAD)</b> en colaboración con el <b>CCN</b>.</li>
+<li>Finalidad: protección <b>continua</b>, <b>respuesta centralizada</b> a incidentes críticos, compartir información sobre vulnerabilidades y amenazas, apoyo técnico; optimiza recursos y costes.</li>
+<li>Marco: <b>medida 9</b> del Plan de Digitalización de las AAPP 2021-2025 · <b>medida 17</b> de España Digital 2026 · Estrategia Nacional de Ciberseguridad.</li>
+</ul>
+<h2 id="s1">2. Seguridad física</h2>
+<h3>2.1 Concepto</h3>
+<ul>
+<li>Medidas para proteger los <b>recursos físicos</b> (personas, instalaciones, hardware, cableado, dispositivos de red) frente a amenazas que causan daños materiales, interrupciones o pérdida de datos. Evita <b>accesos no autorizados, daños, robos, sabotajes o desastres</b>.</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Sin seguridad física no hay seguridad</b></p>
+<p>Aunque se presta más atención a la seguridad lógica (contraseñas, firewalls), <b>sin seguridad física adecuada los sistemas son vulnerables</b> y cualquier medida lógica puede ser insuficiente.</p>
+</div>
+<h3>2.2 Medidas de seguridad física (ENS e ISO 27001)</h3>
+<div class="tw"><table><tr><th>Medida</th><th>Contenido</th></tr>
+<tr><td><b>Control de acceso físico</b></td><td>Zonas críticas sólo a personal autorizado: <b>tarjetas, biometría, llaves</b></td></tr>
+<tr><td><b>Protección perimetral</b></td><td>Seguridad, <b>barreras</b>, puertas reforzadas, <b>tornos</b>, videovigilancia</td></tr>
+<tr><td><b>Detección y extinción de incendios</b></td><td>Detectores de humo, <b>rociadores</b>, extintores adecuados</td></tr>
+<tr><td><b>SAI y grupos electrógenos</b></td><td>Protegen de cortes eléctricos y permiten <b>apagado controlado</b></td></tr>
+<tr><td><b>Evacuación y emergencias</b></td><td>Rutas señalizadas, <b>simulacros</b>, formación</td></tr>
+<tr><td><b>Monitorización y alarmas</b></td><td>Vigilancia <b>24/7</b>, alarmas conectadas a emergencias</td></tr>
+<tr><td><b>Fenómenos ambientales</b></td><td>Control de <b>temperatura, humedad, polvo, vibraciones</b>; terremotos, inundaciones, explosiones</td></tr>
+<tr><td><b>Mantenimiento del equipamiento</b></td><td>Garantiza <b>disponibilidad e integridad</b></td></tr>
+<tr><td><b>Dimensionado de infraestructuras</b></td><td>Comunicaciones y alimentación con <b>redundancia</b>, protección y <b>etiquetado de cableado</b></td></tr>
+</table></div>
+<h3>2.3 Seguridad del equipamiento</h3>
+<div class="tw"><table><tr><th>Riesgo / amenaza</th><th>Descripción</th><th>Ejemplo</th></tr>
+<tr><td><b>Desastres naturales</b></td><td>Inundaciones, incendios, terremotos, tormentas eléctricas</td><td>Inundación del <b>CPD</b> por fallo de drenaje</td></tr>
+<tr><td><b>Acceso físico de atacantes</b></td><td><b>Robo, manipulación o sabotaje</b> de servidores y dispositivos</td><td>Robo de un servidor con BBDD sensibles</td></tr>
+<tr><td><b>Sniffing de cableado y equipos</b></td><td>Interceptar datos en el <b>cableado</b> o puntos de conexión</td><td>Dispositivo <b>"tap"</b> en una LAN</td></tr>
+<tr><td><b>Ataques por electromagnetismo</b></td><td><b>Pulsos electromagnéticos (EMP)</b> que dañan equipos (<b>ataques TEMPEST</b>)</td><td>Generador EMP que deja inoperativo un CPD</td></tr>
+</table></div>
+<h2 id="s2">3. Seguridad lógica</h2>
+<ul>
+<li>Protege <b>sistemas de información y datos</b> frente a accesos no autorizados, modificaciones, destrucción o robo, para garantizar <b>integridad, disponibilidad, confidencialidad, autenticidad y trazabilidad</b>. Mientras la <b>física</b> protege el equipamiento material, la <b>lógica</b> protege <b>aplicaciones, SO, bases de datos y comunicaciones</b>.</li>
+</ul>
+<h3>3.2 Medidas de seguridad lógica (ENS e ISO 27001)</h3>
+<div class="tw"><table><tr><th>Área</th><th>Medida</th><th>Descripción</th></tr>
+<tr><td><b>Autenticación</b></td><td>Autenticación <b>fuerte</b></td><td>Contraseñas robustas, <b>2FA</b>, <b>biometría</b></td></tr>
+<tr><td><b>Control de accesos</b></td><td>Permisos y privilegios</td><td>Sólo la información <b>necesaria</b></td></tr>
+<tr><td><b>Cifrado</b></td><td><b>En tránsito y en reposo</b></td><td>Proteger datos en redes y almacenados</td></tr>
+<tr><td><b>Seguridad en redes</b></td><td><b>Firewalls, IDS/IPS y VPN</b></td><td>Monitorizar, controlar y cifrar comunicaciones</td></tr>
+<tr><td><b>Actualizaciones y parches</b></td><td>Políticas preventivas y de control</td><td>Corregir fallos</td></tr>
+<tr><td><b>Monitorización y registros</b></td><td>Auditoría de eventos y <b>logs</b></td><td>Detectar accesos sospechosos</td></tr>
+<tr><td><b>Protección contra malware</b></td><td>Antivirus, antimalware, <b>anti-ransomware</b></td><td>Prevenir, detectar y eliminar</td></tr>
+<tr><td><b>Copias de seguridad</b></td><td><b>Backup periódico</b></td><td>Disponibilidad ante incidentes</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Aspecto</th><th>Seguridad física</th><th>Seguridad lógica</th></tr>
+<tr><td><b>Definición</b></td><td>Protege <b>recursos materiales e infraestructuras</b></td><td>Protege <b>sistemas, datos y comunicaciones</b></td></tr>
+<tr><td><b>Objetivo</b></td><td>Evitar daños, robos o sabotajes a activos físicos</td><td>Evitar accesos no autorizados o manipulación de información</td></tr>
+<tr><td><b>Medidas</b></td><td>Control de acceso físico, alarmas, videovigilancia, control ambiental</td><td>Contraseñas fuertes, cifrado, firewalls, control de acceso lógico</td></tr>
+<tr><td><b>Amenazas</b></td><td>Robos, incendios, inundaciones, accesos físicos</td><td>Virus, ataques de red, phishing, accesos lógicos indebidos</td></tr>
+</table></div>
+<h2 id="s3">4. Amenazas y vulnerabilidades</h2>
+<ul>
+<li>La amenaza <b>por sí sola no causa daño</b>: para materializarse necesita <b>encontrar una vulnerabilidad</b> que explotar.</li>
+</ul>
+<h3>4.1 Tipos de ataques</h3>
+<h3>4.1.1 Clasificación según CCN-STIC 817 (Gestión de ciberincidentes)</h3>
+<ul>
+<li>Se clasifican por el <b>vector de ataque</b> (forma en que el atacante accede al activo).</li>
+</ul>
+<div class="tw"><table><tr><th>Vector de ataque</th><th>Concepto</th><th>Tipos de ciberincidente</th></tr>
+<tr><td><b>Código dañino</b></td><td>Software para <b>infiltrarse o dañar</b> un equipo sin conocimiento del responsable</td><td><b>Virus, gusanos, troyano, spyware, rogue, adware, exploit, rootkit, ransomware, RAT, APT</b></td></tr>
+<tr><td><b>Disponibilidad</b></td><td>Poner <b>fuera de servicio</b> los sistemas</td><td><b>DoS y DDoS</b>, fallo (HW/SW), error humano, sabotaje</td></tr>
+<tr><td><b>Obtención de información</b></td><td>Recabar información para ataques más sofisticados</td><td><b>Scanning</b> (identificación de vulnerabilidades), <b>sniffing</b>, <b>ingeniería social</b>, <b>phishing</b></td></tr>
+<tr><td><b>Intrusiones</b></td><td>Explotar vulnerabilidades de diseño, operación o configuración</td><td>Compromiso de <b>cuenta de usuario</b>, <b>XSS</b>, <b>CSRF</b>, <b>inyección SQL</b>, <b>pharming</b>, <b>fuerza bruta</b>, inyección de ficheros remota, explotación de vulnerabilidad SW/HW</td></tr>
+<tr><td><b>Compromiso de la información</b></td><td>Acceso y fuga (<b>confidencialidad</b>), modificación o borrado (<b>integridad</b>)</td><td>Acceso no autorizado, modificación/borrado, publicación no autorizada, <b>exfiltración</b></td></tr>
+<tr><td><b>Fraude</b></td><td>Acciones fraudulentas por <b>suplantación</b> de identidad</td><td><b>Suplantación/spoofing</b>, uso de recursos no autorizado, uso ilegítimo de credenciales, violación de propiedad intelectual</td></tr>
+<tr><td><b>Contenido abusivo</b></td><td>Dañar la imagen de la organización o usar sus medios para fines ilícitos</td><td><b>Spam</b>, acoso/extorsión/mensajes ofensivos, pederastia/racismo/apología de la violencia</td></tr>
+</table></div>
+<h3>4.1.2 Definiciones de los principales ciberataques</h3>
+<div class="tw"><table><tr><th>Ataque</th><th>Definición</th></tr>
+<tr><td><b>Virus</b></td><td>Se <b>replica e inserta en otros ejecutables</b>; se activa por acción del usuario</td></tr>
+<tr><td><b>Gusano</b></td><td><b>No necesita archivo huésped</b>: se multiplica <b>por redes</b>, consume recursos y satura sistemas</td></tr>
+<tr><td><b>Troyano</b></td><td>Aparenta ser legítimo; abre <b>puertas traseras</b> y acceso remoto</td></tr>
+<tr><td><b>Keylogger</b></td><td>Registra las <b>pulsaciones del teclado</b> (da acceso a contraseñas)</td></tr>
+<tr><td><b>Adware</b></td><td>Muestra <b>publicidad</b> con ventanas emergentes; viene con descargas gratuitas, redirige a sitios sospechosos</td></tr>
+<tr><td><b>Rogue</b></td><td><b>Simula ser un antivirus</b> o aplicación de seguridad con falsas advertencias</td></tr>
+<tr><td><b>Exploit</b></td><td><b>Aprovecha vulnerabilidades</b> para acceder y controlar el sistema sin consentimiento</td></tr>
+<tr><td><b>Spyware</b></td><td><b>Espía</b> al usuario y recopila contraseñas o datos bancarios</td></tr>
+<tr><td><b>Rootkit</b></td><td>Herramientas que <b>ocultan la presencia del atacante</b> y dan acceso privilegiado y persistente</td></tr>
+<tr><td><b>Ransomware</b></td><td><b>Cifra o bloquea archivos</b> y exige <b>rescate</b></td></tr>
+<tr><td><b>RAT</b> (Remote Access Tools)</td><td><b>Control remoto</b> de un dispositivo para espiar o manipular</td></tr>
+<tr><td><b>APT</b></td><td><b>Amenazas persistentes avanzadas</b>: ataques coordinados contra una organización, sin ser identificados</td></tr>
+<tr><td><b>DoS / DDoS</b></td><td><b>Saturar</b> un sistema o red; en DDoS, <b>múltiples sistemas</b> amplifican el ataque. Tipos: <b>Smurf, ICMP Flooding, UDP Flooding, Teardrop, buffer overflow</b></td></tr>
+<tr><td><b>Scanning</b></td><td>Búsqueda automática de debilidades en redes, sistemas o aplicaciones</td></tr>
+<tr><td><b>Sniffing</b></td><td><b>Capturar tráfico</b> de red para obtener datos sensibles</td></tr>
+<tr><td><b>Spoofing</b></td><td><b>Falsifica identidades</b> (IP, DHCP, ARP, DNS, web, mail)</td></tr>
+<tr><td><b>Port mapping</b></td><td>Verificar si un puerto está <b>protegido por un firewall</b> para conectarse por él</td></tr>
+<tr><td><b>MIM</b> (Man in the middle)</td><td>El atacante <b>captura el tráfico de dos sistemas</b>, lo modifica e inyecta el suyo. Tipos: <b>Eavesdropping</b> (intercepción pasiva) y <b>Hijacking</b> (secuestro de conexión, sesión o página web)</td></tr>
+<tr><td><b>XSS</b> (Cross-Site Scripting)</td><td><b>Inyecta código malicioso</b> en una web legítima que afecta a sus visitantes</td></tr>
+<tr><td><b>CSRF</b> (Cross-Site Request Forgery)</td><td>Un <b>usuario autenticado</b> realiza acciones no autorizadas sin saberlo</td></tr>
+<tr><td><b>Inyección SQL</b></td><td>Introduce <b>código SQL</b> en formularios o URLs vulnerables para acceder o manipular BBDD</td></tr>
+<tr><td><b>Fuerza bruta</b></td><td>Probar <b>todas las combinaciones</b> de contraseña, de forma automatizada</td></tr>
+</table></div>
+<ul>
+<li><b>Ingeniería social</b>: <b>manipulación psicológica</b> para que las personas divulguen información o hagan acciones comprometedoras; explota la <b>confianza</b> y el desconocimiento técnico.</li>
+</ul>
+<div class="tw"><table><tr><th>Técnica de ingeniería social</th><th>Descripción</th></tr>
+<tr><td><b>Phishing</b></td><td>Correos o webs falsas que <b>imitan entidades legítimas</b></td></tr>
+<tr><td><b>Spear phishing</b></td><td>Phishing <b>dirigido y personalizado</b> según el perfil de la víctima</td></tr>
+<tr><td><b>Whaling</b></td><td>Phishing dirigido a <b>directivos o altos cargos</b></td></tr>
+<tr><td><b>Vishing</b></td><td>Uso de <b>voz sobre IP</b></td></tr>
+<tr><td><b>Smishing</b></td><td>Phishing por <b>SMS</b></td></tr>
+<tr><td><b>Phreaker</b></td><td>Phishing basado en <b>conversaciones telefónicas</b></td></tr>
+<tr><td><b>Pharming</b></td><td><b>Redirige a webs falsas</b> aunque se escriba bien la dirección (alterando DNS o archivos locales)</td></tr>
+<tr><td><b>Baiting</b></td><td>Dejar <b>pendrives con malware</b> a propósito para que la víctima los use</td></tr>
+<tr><td><b>Shoulder surfing</b></td><td>Mirar <b>por encima del hombro</b> contraseñas o PIN</td></tr>
+<tr><td><b>Pretexting</b></td><td>El atacante se hace pasar por <b>soporte técnico</b></td></tr>
+<tr><td><b>Tailgating</b></td><td>Aprovechar la <b>buena voluntad</b> para entrar o conseguir información privilegiada</td></tr>
+<tr><td><b>Clickjacking</b></td><td>El usuario hace clic en un <b>objeto malicioso distinto del que ve</b></td></tr>
+</table></div>
+<h3>4.2 OWASP</h3>
+<ul>
+<li><b>OWASP</b> (Open Worldwide Application Security Project): comunidad internacional abierta que mejora la <b>seguridad del software</b> con guías, herramientas y documentación libres; identifica riesgos, buenas prácticas de desarrollo seguro y herramientas de análisis.</li>
+</ul>
+<h3>4.2.1 OWASP Top Ten</h3>
+<ul>
+<li>Informe periódico de los <b>diez principales riesgos en aplicaciones web</b>; última versión citada: <b>2021</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>OWASP Top Ten (2021)</b></p>
+<div class="tw"><table><tr><th>Riesgo</th><th>Descripción breve</th><th>Ejemplo</th></tr>
+<tr><td><b>A01 Broken Access Control</b></td><td>Fallos en restricciones de acceso</td><td>Usuario normal accede a datos de admin</td></tr>
+<tr><td><b>A02 Cryptographic Failures</b></td><td>Fallos en protección de datos sensibles</td><td>Contraseñas sin cifrar en tránsito</td></tr>
+<tr><td><b>A03 Injection</b></td><td>Inyección de código malicioso</td><td><b>Inyección SQL</b></td></tr>
+<tr><td><b>A04 Insecure Design</b></td><td>Deficiencias en la arquitectura de seguridad</td><td>No planificar la protección de datos personales</td></tr>
+<tr><td><b>A05 Security Misconfiguration</b></td><td>Configuración errónea o insegura</td><td><b>Contraseñas por defecto</b> en producción</td></tr>
+<tr><td><b>A06 Vulnerable and Outdated Components</b></td><td>Librerías o sistemas obsoletos</td><td>Plugins de CMS sin actualizar</td></tr>
+<tr><td><b>A07 Identification and Authentication Failures</b></td><td>Fallos de autenticación</td><td>Contraseñas débiles sin protección adicional</td></tr>
+<tr><td><b>A08 Software and Data Integrity Failures</b></td><td>Sin mecanismos para verificar integridad</td><td>Actualizaciones sin verificar</td></tr>
+<tr><td><b>A09 Security Logging and Monitoring Failures</b></td><td>Fallos en la detección de ataques</td><td>No registrar intentos fallidos</td></tr>
+<tr><td><b>A10 Server-Side Request Forgery (SSRF)</b></td><td>Servidores engañados para acceder a recursos internos</td><td>Manipulación de URLs hacia servicios internos</td></tr>
+</table></div>
+</div>
+<h3>4.2.2 Herramientas OWASP</h3>
+<div class="tw"><table><tr><th>Herramienta</th><th>Descripción</th></tr>
+<tr><td><b>OWASP ZAP</b> (Zed Attack Proxy)</td><td>Análisis de seguridad <b>automático</b> de aplicaciones web; ideal para principiantes</td></tr>
+<tr><td><b>Dependency-Check</b></td><td>Analiza <b>dependencias</b> en busca de librerías vulnerables</td></tr>
+<tr><td><b>Amass</b></td><td>Cartografía <b>superficies de ataque</b>, reconocimiento (recon)</td></tr>
+<tr><td><b>CSRFGuard</b></td><td>Protege frente a <b>CSRF</b></td></tr>
+<tr><td><b>Juice Shop</b></td><td>Aplicación <b>intencionadamente vulnerable</b> para hacking ético y formación</td></tr>
+</table></div>
+<h2 id="s4">5. Técnicas criptográficas y protocolos seguros</h2>
+<h3>5.1 Criptografía y cifrado de datos</h3>
+<ul>
+<li><b>Criptografía</b>: protege la información con técnicas matemáticas; garantiza <b>confidencialidad, integridad, autenticidad y no repudio</b>. <b>Cifrado</b>: transforma <b>texto claro en texto cifrado</b>; el <b>descifrado</b> con la clave adecuada recupera el original.</li>
+</ul>
+<h3>5.1.1 Tecnologías asociadas</h3>
+<div class="tw"><table><tr><th>Tecnología</th><th>Descripción</th></tr>
+<tr><td><b>VPN</b></td><td><b>Túneles cifrados</b> entre redes o dispositivos por Internet; protocolos <b>IPSec o SSL/TLS</b></td></tr>
+<tr><td><b>Certificados SSL/TLS</b></td><td>Conexión segura <b>HTTPS</b>; verifica al servidor con <b>certificado digital</b>; criptografía <b>asimétrica</b> para acordar una clave <b>simétrica</b> compartida</td></tr>
+<tr><td><b>WPA2 / WPA3</b></td><td>Cifrado y autenticación <b>Wi-Fi</b>. WPA2: <b>AES y PSK</b>. WPA3: <b>forward secrecy</b> (confidencialidad hacia adelante)</td></tr>
+<tr><td><b>Firma electrónica</b></td><td>Garantiza <b>autenticidad, integridad y no repudio</b>; clave <b>privada</b> para firmar, <b>pública</b> para verificar</td></tr>
+</table></div>
+<h3>5.1.2 El Centro Criptológico Nacional</h3>
+<ul>
+<li><b>CCN</b>: organismo que establece criterios y recomendaciones de <b>ciberseguridad y criptografía</b> para las AAPP; <b>depende del CNI</b> (Centro Nacional de Inteligencia).</li>
+<li>Funciones: emite <b>guías CCN-STIC</b> · define <b>algoritmos y niveles de cifrado</b> · supervisa productos criptográficos <b>homologados</b> · mediante el <b>CCN-CERT</b> gestiona incidentes y coordina respuestas.</li>
+<li><b>ENS y eIDAS</b> obligan a usar productos criptográficos conformes con las recomendaciones del CCN en entornos públicos.</li>
+</ul>
+<h3>5.2 Criptografía simétrica o de clave privada</h3>
+<ul>
+<li>La <b>misma clave</b> cifra y descifra; emisor y receptor la comparten previamente y la mantienen <b>secreta</b>. Eficiente, pero requiere un <b>intercambio seguro de claves</b> (p. ej. asimétrica para el reparto inicial en <b>TLS</b>). Dos métodos: <b>cifrado por bloques</b> y <b>cifrado de flujo</b>.</li>
+</ul>
+<h3>5.2.1 Ventajas e inconvenientes</h3>
+<div class="tw"><table><tr><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td><b>Más rápida</b> que la asimétrica</td><td>Si la <b>clave es interceptada</b>, toda la seguridad queda comprometida</td></tr>
+<tr><td><b>Menos recursos</b> de cálculo: ideal para dispositivos limitados</td><td></td></tr>
+<tr><td>Muy eficaz para <b>cifrado masivo</b> (almacenamiento, comunicaciones, backups)</td><td></td></tr>
+</table></div>
+<h3>5.2.2 Cifrado por bloques</h3>
+<ul>
+<li>Datos divididos en <b>bloques fijos</b> (normalmente <b>64 o 128 bits</b>), cada uno cifrado de forma independiente o dependiente del anterior según el <b>modo de operación</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Modo</th><th>Funcionamiento</th></tr>
+<tr><td><b>ECB</b> (Electronic Code Book)</td><td>Cada bloque <b>independiente</b>; el más simple y el <b>menos seguro</b></td></tr>
+<tr><td><b>CBC</b> (Cipher Block Chaining)</td><td>Cada bloque se combina por <b>XOR con el bloque cifrado anterior</b>; necesita <b>vector de inicialización</b></td></tr>
+<tr><td><b>CFB</b> (Cipher Feedback) y <b>OFB</b> (Output Feedback)</td><td>Funcionan <b>como cifrado de flujo</b>: generan bloques de flujo de claves operados con XOR con el texto en claro</td></tr>
+<tr><td><b>CTR</b> (Counter)</td><td>Como flujo (similar a CFB y OFB): cifra <b>valores sucesivos de un contador</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Algoritmos de cifrado por bloques</b></p>
+<div class="tw"><table><tr><th>Algoritmo</th><th>Descripción</th><th>Bits de bloque</th><th>Bits de clave</th></tr>
+<tr><td><b>DES</b> (Data Encryption Standard)</td><td>Antiguo y <b>obsoleto</b> por su vulnerabilidad</td><td><b>64</b></td><td><b>56</b> (+8 de paridad)</td></tr>
+<tr><td><b>TDES</b> (Triple DES)</td><td>Aplica <b>tres veces</b> el cifrado; más seguro pero <b>más lento</b></td><td>64</td><td><b>168</b></td></tr>
+<tr><td><b>IDEA</b></td><td>Usado en <b>PGP</b></td><td>64</td><td><b>128</b></td></tr>
+<tr><td><b>AES</b> (Rijndael)</td><td><b>Estándar actual</b>, rápido y seguro; <b>6 veces más rápido que TDES</b>; en <b>SSL/TLS, IPSec</b></td><td><b>128</b></td><td><b>128, 192 y 256</b></td></tr>
+<tr><td><b>RC</b> (Rivest Cipher)</td><td>Familia <b>RC2, RC5, RC6</b> (bloque) y <b>RC4</b> (flujo)</td><td>32, 64 y 128</td><td>128, 192 y 256</td></tr>
+<tr><td><b>GOST</b></td><td>Algoritmo <b>soviético</b> de bloques</td><td>64</td><td><b>256</b></td></tr>
+<tr><td><b>Blowfish</b></td><td><b>Libre</b>, rápido, clave variable</td><td>64</td><td>Entre <b>32 y 448</b></td></tr>
+<tr><td><b>Twofish</b></td><td><b>Sucesor de Blowfish</b>, finalista del proceso de selección del AES</td><td><b>128</b></td><td>Hasta <b>256</b></td></tr>
+</table></div>
+</div>
+<ul>
+<li>Otros: <b>iDEA, CAST5, SAFER, Serpent</b>.</li>
+</ul>
+<h3>5.2.3 Cifrado de flujo</h3>
+<ul>
+<li>Cifra <b>bit a bit</b> con un flujo continuo de clave (<b>keystream</b>); ideal para <b>tiempo real</b>. Algoritmos: <b>Rabbit, Snow 3G, HC-256, A5/1 y A5/2, RC4</b>.</li>
+</ul>
+<h3>5.3 Criptografía asimétrica o de clave pública</h3>
+<ul>
+<li><b>Par de claves</b> relacionadas matemáticamente: <b>pública</b> (se comparte) y <b>privada</b> (secreta).</li>
+</ul>
+<div class="tw"><table><tr><th>Operación</th><th>Resultado</th></tr>
+<tr><td>Cifrar con la <b>clave pública</b></td><td>Sólo se descifra con la <b>clave privada</b> (<b>confidencialidad</b>)</td></tr>
+<tr><td>Cifrar con la <b>clave privada</b></td><td>Sólo se verifica con la <b>clave pública</b> (<b>firma digital</b>)</td></tr>
+</table></div>
+<ul>
+<li>Principal ventaja frente a la simétrica: <b>cifra sin compartir previamente una clave secreta</b>. Garantiza <b>confidencialidad, autenticidad, integridad y no repudio</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td><b>No necesita canal seguro</b> para intercambiar claves</td><td><b>Mucho más lenta</b> que la simétrica (más potencia de cálculo)</td></tr>
+<tr><td>Base de la <b>firma digital</b> (integridad y no repudio)</td><td></td></tr>
+</table></div>
+<h3>5.3.2 Estándares de clave pública (PKCS)</h3>
+<ul>
+<li><b>PKCS</b> (Public Key Cryptographic Standard): especificaciones creadas inicialmente por <b>RSA Laboratories</b>; aseguran <b>interoperabilidad</b> (intercambio de claves, firma, cifrado).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>PKCS más relevantes</b></p>
+<div class="tw"><table><tr><th>Estándar</th><th>Contenido</th></tr>
+<tr><td><b>PKCS #3</b></td><td><b>Diffie-Hellman</b> Key Agreement Standard: intercambio seguro de claves; fundamental en las primeras versiones de <b>TLS</b></td></tr>
+<tr><td><b>PKCS #5</b></td><td><b>Password-Based Cryptography (PBKDF)</b>: derivar claves a partir de contraseñas poco seguras</td></tr>
+<tr><td><b>PKCS #7</b></td><td><b>Cryptographic Message Syntax (CMS)</b>: formato para datos firmados y cifrados; base de <b>S/MIME</b></td></tr>
+<tr><td><b>PKCS #10</b></td><td><b>Certification Request Syntax</b>: peticiones de certificado (<b>CSR</b>) a una autoridad de certificación</td></tr>
+<tr><td><b>PKCS #11</b></td><td><b>Cryptographic Token Interface (Cryptoki)</b>: API para <b>smartcards, tokens USB y HSM</b>; operaciones sin exponer las claves</td></tr>
+<tr><td><b>PKCS #12</b></td><td><b>Personal Information Exchange</b>: almacena y transporta <b>certificados y claves privadas</b> en un único archivo protegido, extensión <b>.p12 o .pfx</b></td></tr>
+</table></div>
+</div>
+<h3>5.3.3 Algoritmos principales</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Algoritmos asimétricos</b></p>
+<div class="tw"><table><tr><th>Algoritmo</th><th>Descripción</th></tr>
+<tr><td><b>Diffie-Hellman</b></td><td>Dos partes establecen una <b>clave secreta común</b> por canal inseguro; <b>no cifra datos directamente</b>; basado en el <b>logaritmo discreto</b></td></tr>
+<tr><td><b>RSA</b> (Rivest-Shamir-Adleman)</td><td>Muy usado: <b>cifrado y firma digital</b>; basado en la dificultad de <b>factorizar números primos grandes</b>; HTTPS, certificados, correo seguro; claves de <b>2048 y 4096 bits</b></td></tr>
+<tr><td><b>DSA</b> (Digital Signature Algorithm)</td><td><b>Sólo firma digital</b>, no cifra; basado en el logaritmo discreto</td></tr>
+<tr><td><b>ElGamal</b></td><td>Basado en <b>logaritmos discretos</b>, como Diffie-Hellman</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Curvas elípticas</b>: claves más cortas (<b>80, 112, 128, 192 y 256 bits</b>). <b>ECDSA</b> (DSA elíptico) y <b>ECDH</b> (Diffie-Hellman elíptico).</li>
+</ul>
+<h3>5.4 Combinación de cifrado asimétrico y simétrico (criptografía híbrida)</h3>
+<ul>
+<li>Estándar en la mayoría de comunicaciones seguras modernas: combina lo mejor de ambas.</li>
+</ul>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1</b></td><td>El emisor cifra una <b>clave de sesión (simétrica)</b> con la <b>clave pública del receptor</b></td></tr>
+<tr><td><b>2</b></td><td>Envía la clave cifrada</td></tr>
+<tr><td><b>3</b></td><td>El receptor la descifra con su <b>clave privada</b></td></tr>
+<tr><td><b>4</b></td><td>Ambos usan la <b>clave simétrica</b> para cifrar/descifrar los datos rápidamente</td></tr>
+</table></div>
+<ul>
+<li><b>Protocolos con cifrado híbrido</b>: <b>TLS/SSL (HTTPS)</b> · <b>PGP</b> (correo seguro) · <b>IPSec</b> (en modo IKE, túneles VPN) · <b>SSH</b>.</li>
+</ul>
+<h3>5.5 Funciones hash</h3>
+<ul>
+<li>Transforman una entrada de <b>tamaño variable</b> en una salida de <b>tamaño fijo</b> (<b>valor hash o resumen</b>). Aseguran la <b>integridad</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Características de una función hash criptográfica</b></p>
+<div class="tw"><table><tr><th>Característica</th><th>Significado</th></tr>
+<tr><td><b>Compresión</b></td><td><b>Tamaño fijo</b> del hash</td></tr>
+<tr><td><b>Difusión</b></td><td>Se aplica sobre <b>todos los bits</b> del mensaje, garantizando la integridad</td></tr>
+<tr><td><b>Determinista</b></td><td>El mismo mensaje <b>siempre</b> genera el mismo hash</td></tr>
+<tr><td><b>No reversible</b></td><td>Dado un hash, es <b>inviable</b> encontrar el mensaje original</td></tr>
+<tr><td><b>Resistencia a colisión débil</b> (segunda preimagen resistente)</td><td>Dado un mensaje <b>M</b>, es imposible encontrar otro <b>M'</b> con el mismo hash</td></tr>
+<tr><td><b>Resistencia a colisión fuerte</b> (<b>CRHF</b>)</td><td>Es imposible encontrar <b>dos mensajes distintos (M y M')</b> con el mismo hash</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Usos</b>: <b>verificación de integridad</b> · <b>almacenamiento seguro de contraseñas</b> (hashes, no texto claro) · <b>firma electrónica</b> (se resume con hash antes de firmar) · <b>blockchain</b> (bloques ligados por hash).</li>
+</ul>
+<div class="tw"><table><tr><th>Algoritmo</th><th>Resumen</th><th>Observaciones</th></tr>
+<tr><td><b>MD5</b></td><td><b>128 bits</b></td><td>Antiguo, <b>obsoleto</b> (colisiones)</td></tr>
+<tr><td><b>SHA-1</b></td><td><b>160 bits</b></td><td>Mejor que MD5 pero <b>inseguro</b></td></tr>
+<tr><td><b>SHA-2</b> (SHA-256, SHA-384, SHA-512)</td><td><b>224, 256, 384 ó 512 bits</b></td><td></td></tr>
+<tr><td><b>SHA-3</b></td><td><b>224, 256, 384 ó 512 bits</b></td><td></td></tr>
+<tr><td><b>Whirlpool</b></td><td><b>512 bits</b></td><td></td></tr>
+<tr><td><b>RIPEMD</b></td><td><b>256</b> (RIPEMD-256) ó <b>320</b> bits (RIPEMD-320)</td><td></td></tr>
+</table></div>
+<h3>5.6 Protocolos seguros de comunicación</h3>
+<div class="tw"><table><tr><th>Protocolo</th><th>Descripción</th></tr>
+<tr><td><b>SSH</b> (Secure Shell)</td><td>Administración <b>remota segura</b>, cifra el tráfico; Linux/Unix. <b>Asimétrica</b> para autenticar y <b>simétrica</b> para la sesión</td></tr>
+<tr><td><b>SSL/TLS</b></td><td>SSL, primer protocolo para cifrar web, <b>obsoleto</b>. <b>TLS</b> es su sucesor (HTTPS): autenticación del servidor, confidencialidad e integridad. <b>TLS 1.3</b>, la más actual</td></tr>
+<tr><td><b>IPsec</b></td><td>Seguridad en <b>capa 3 OSI</b>; cifra y autentica paquetes IP; <b>VPN</b>. Modos: <b>transporte</b> (sólo datos) y <b>túnel</b> (todo el paquete IP)</td></tr>
+<tr><td><b>WAP</b> (Wireless Application Protocol)</td><td>Comunicaciones móviles antiguas, <b>en desuso</b></td></tr>
+<tr><td><b>WEP</b></td><td>Primer estándar Wi-Fi; <b>inseguro y obsoleto</b>, sustituido por WPA2/WPA3</td></tr>
+<tr><td><b>SFTP</b></td><td>Transferencia de archivos <b>sobre SSH</b>; cifra datos y comandos</td></tr>
+<tr><td><b>HTTPS</b></td><td>HTTP sobre <b>TLS</b>; protege frente a espionaje, manipulación y <b>MitM</b>; candado en el navegador</td></tr>
+<tr><td><b>WPA2</b></td><td>Sustituye a WEP; <b>AES</b>; autenticación <b>802.1X o PSK</b>. <b>WPA3</b>: protección frente a <b>ataques de diccionario</b></td></tr>
+<tr><td><b>Kerberos</b></td><td>Autenticación mediante <b>tercero confiable</b>; <b>Active Directory</b>; criptografía <b>simétrica</b> y <b>tickets</b></td></tr>
+<tr><td><b>DNSSEC</b></td><td>Garantiza la <b>autenticidad de respuestas DNS</b> con firmas digitales; evita <b>DNS spoofing y cache poisoning</b></td></tr>
+<tr><td><b>S/MIME</b></td><td>Correo seguro con cifrado <b>asimétrico</b></td></tr>
+</table></div>
+<h2 id="s5">6. Mecanismos de firma digital</h2>
+<h3>6.1 Firma electrónica y firma digital</h3>
+<div class="tw"><table><tr><th>Concepto</th><th>Naturaleza</th><th>Definición</th></tr>
+<tr><td><b>Firma electrónica</b></td><td><b>Jurídico</b> (reconocimiento legal)</td><td>Datos en formato electrónico asociados a otros datos electrónicos que el firmante usa para firmar</td></tr>
+<tr><td><b>Firma digital</b></td><td><b>Técnico</b> (tecnología)</td><td><b>Mecanismo criptográfico</b> (normalmente <b>asimétrico</b>) para realizar una firma electrónica: <b>autenticidad, integridad y no repudio</b></td></tr>
+</table></div>
+<ul>
+<li><b>Toda firma digital es firma electrónica</b>, pero <b>no toda firma electrónica es digital</b>.</li>
+</ul>
+<h3>6.2 Proceso de firma digital y validación</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Proceso de firma digital</b></p>
+<p>Se aplica una <b>función hash</b> al documento y sobre el resumen se aplica el algoritmo de firma:</p>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1</b></td><td>Se calcula el <b>resumen (hash)</b> del documento</td></tr>
+<tr><td><b>2</b></td><td>El hash se <b>cifra con la clave privada del firmante</b> → <b>firma digital</b> (la clave privada suele estar en un <b>certificado electrónico</b>)</td></tr>
+<tr><td><b>3</b></td><td>Se genera un fichero con el <b>documento original y la firma digital</b></td></tr>
+<tr><td><b>4</b></td><td>El receptor valida con la <b>clave pública</b> (suele ir incluida la parte pública del certificado)</td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Proceso de validación</b></p>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1</b></td><td>El receptor separa <b>documento original, firma digital y clave pública</b> (del certificado)</td></tr>
+<tr><td><b>2</b></td><td>Calcula el <b>hash del documento recibido</b></td></tr>
+<tr><td><b>3</b></td><td>Obtiene el <b>hash original</b> aplicando el algoritmo de firma con la <b>clave pública</b> del firmante</td></tr>
+<tr><td><b>4</b></td><td><b>Compara</b> ambos hashes: si coinciden, <b>firma válida (integridad garantizada)</b></td></tr>
+<tr><td><b>5</b></td><td>Comprueba el <b>certificado</b>: emitido por <b>autoridad de certificación reconocida</b>, <b>no caducado ni revocado</b></td></tr>
+</table></div>
+</div>
+<h3>6.3 Base legal de la firma electrónica</h3>
+<div class="tw"><table><tr><th>Norma</th><th>Contenido</th></tr>
+<tr><td><b>Reglamento (UE) 910/2014 (eIDAS)</b></td><td>Identificación electrónica y <b>servicios de confianza</b> en la UE; <b>aplicación directa</b>. Tres tipos de firma: <b>simple, avanzada y cualificada</b> (esta última con <b>efectos jurídicos equivalentes a la manuscrita</b>)</td></tr>
+<tr><td><b>Ley 6/2020</b></td><td>De <b>servicios electrónicos de confianza</b>; adapta la legislación a eIDAS y <b>deroga la Ley 59/2003</b> de Firma electrónica</td></tr>
+<tr><td><b>Ley 39/2015 y Ley 40/2015</b></td><td><b>Uso obligatorio</b> de firma electrónica en relaciones con las AAPP</td></tr>
+<tr><td><b>ENS – RD 311/2022</b></td><td>Medidas de seguridad en el uso de firma según el <b>nivel de protección</b> exigido</td></tr>
+</table></div>
+<h3>6.4 Garantías de la firma digital</h3>
+<div class="tw"><table><tr><th>Garantía</th><th>Significado</th></tr>
+<tr><td><b>Autenticidad</b></td><td>La firma la hizo el <b>titular legítimo de la clave privada</b></td></tr>
+<tr><td><b>Integridad</b></td><td>El contenido <b>no se alteró</b> desde la firma</td></tr>
+<tr><td><b>No repudio</b></td><td>El firmante <b>no puede negar</b> su autoría (sólo él posee la clave privada)</td></tr>
+</table></div>
+<h3>6.5 Formatos de firma</h3>
+<ul>
+<li>Las AAPP deben usar los formatos de la <b>Norma Técnica de Interoperabilidad de Política de Firma Electrónica</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Principales formatos de firma</b></p>
+<div class="tw"><table><tr><th>Formato</th><th>Uso recomendado</th><th>Características</th></tr>
+<tr><td><b>CAdES</b> (CMS Advanced Electronic Signature)</td><td><b>Cualquier fichero</b> (imagen, audio, binario…)</td><td>Basado en <b>CMS y PKCS#7</b>; extensiones como <b>sello de tiempo</b> y políticas de firma. Si incluye el documento original: firma <b>implícita</b>; si no: <b>explícita</b></td></tr>
+<tr><td><b>XAdES</b> (XML Advanced Electronic Signature)</td><td><b>Documentos XML</b></td><td>Firma en <b>XML</b>. Formas: <b>envolvente</b> (documento dentro de la firma), <b>envuelta</b> (firma dentro del documento) o <b>detached</b> (por separado). Muy usado en procedimientos electrónicos y servicios web; <b>no adecuado para ficheros grandes</b></td></tr>
+<tr><td><b>PAdES</b> (PDF Advanced Electronic Signature)</td><td><b>Documentos PDF</b></td><td>Firma <b>dentro del PDF</b>; validación a largo plazo (<b>LTV</b>), sello de tiempo, <b>múltiples firmas</b></td></tr>
+<tr><td><b>ASiC</b> (Associated Signature Containers)</td><td>Agrupar <b>múltiples documentos y firmas</b></td><td>Contenedor basado en <b>ZIP</b> con documento y firma; intercambios entre organizaciones</td></tr>
+<tr><td><b>PKCS#7 / CMS</b></td><td>Correos y firma genérica</td><td>Estructura <b>binaria ASN.1</b>; base de <b>CAdES</b> y <b>S/MIME</b></td></tr>
+<tr><td><b>S/MIME</b></td><td>Correos electrónicos</td><td><b>Cifrado y firma</b> de correos basado en PKCS#7/CMS</td></tr>
+<tr><td><b>XMLDSig</b></td><td>Firmas XML básicas</td><td>Especificación de firma XML; <b>base técnica de XAdES</b></td></tr>
+<tr><td><b>OOXML y ODF</b></td><td><b>Office y Open Office</b></td><td>Formatos de firma de Microsoft Office y Open Office</td></tr>
+</table></div>
+</div>
+<h3>6.6 Firma múltiple</h3>
+<div class="tw"><table><tr><th>Tipo</th><th>Funcionamiento</th><th>Uso</th></tr>
+<tr><td><b>Cofirma</b> (firma en línea)</td><td>Cada firmante firma <b>independientemente el mismo contenido</b>, <b>sin orden</b>; firmas paralelas</td><td>Varias personas aprueban a la vez (resolución conjunta)</td></tr>
+<tr><td><b>Contrafirma</b> (firma en cascada)</td><td>Un firmante <b>firma una firma previa</b>, no el contenido original; <b>orden jerárquico</b></td><td>Un supervisor valida la firma de un subordinado</td></tr>
+</table></div>
+<ul>
+<li>Aplicaciones: <b>AutoFirma, Portafirmas, @Firma</b> (Ministerio de Asuntos Económicos y Transformación Digital) permiten firmar, cofirmar y contrafirmar.</li>
+</ul>
+<h3>6.7 Sello electrónico</h3>
+<ul>
+<li>Mecanismo de firma de <b>personas jurídicas</b> (organismos, empresas); garantiza <b>origen e integridad</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de sello</th><th>Descripción</th></tr>
+<tr><td><b>Simple</b></td><td>Certificado estándar; garantiza integridad, valor legal según contexto</td></tr>
+<tr><td><b>Avanzado</b></td><td>Sello <b>único</b>, la entidad tiene <b>control exclusivo</b> de los datos de sellado y cualquier <b>modificación es detectable</b></td></tr>
+<tr><td><b>Cualificado</b></td><td><b>Certificado cualificado de sello</b> y <b>dispositivo seguro</b> de creación; <b>plena validez legal en la UE</b></td></tr>
+</table></div>
+<ul>
+<li><b>Usos</b>: actuaciones <b>automatizadas</b> de las AAPP · emisión de documentos oficiales, notificaciones, justificantes o <b>facturas</b> · origen institucional sin intervención personal (p. ej. justificante de una <b>sede electrónica</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Aspecto</th><th>Firma electrónica</th><th>Sello electrónico</th></tr>
+<tr><td><b>Titular</b></td><td><b>Persona física</b></td><td><b>Persona jurídica</b> u organismo</td></tr>
+<tr><td><b>Finalidad</b></td><td>Identificar al firmante</td><td>Garantizar el <b>origen institucional</b></td></tr>
+<tr><td><b>Control</b></td><td>Exclusivo del firmante</td><td>Exclusivo de la <b>entidad emisora</b></td></tr>
+<tr><td><b>Validez legal plena</b></td><td>Si es <b>cualificada</b></td><td>Si es <b>cualificado</b></td></tr>
+</table></div>
+<h3>6.8 Sellado de tiempo – firma electrónica longeva</h3>
+<ul>
+<li><b>Sello de tiempo</b>: acredita de forma fehaciente la <b>fecha y hora exactas</b> de firma o existencia de un documento; lo emite un tercero de confianza, la <b>TSA</b> (Autoridad de Sellado de Tiempo).</li>
+<li>Necesario porque la hora del equipo del usuario <b>puede manipularse</b>; da <b>valor probatorio</b> (plazos legales en trámites).</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>Marca de tiempo</b></td><td>Fecha y hora generadas por un sistema, <b>sin garantías legales</b></td></tr>
+<tr><td><b>Sello de tiempo</b></td><td>Fecha y hora <b>emitidas y firmadas por una TSA</b>, con <b>plena validez jurídica</b></td></tr>
+</table></div>
+<h3>6.8.3 Firma electrónica longeva</h3>
+<ul>
+<li>Diseñada para <b>mantener su validez en el tiempo</b> aunque los algoritmos queden obsoletos o los certificados <b>caduquen o se revoquen</b>. El <b>sellado de tiempo</b> garantiza <b>cuándo</b> se firmó; la <b>firma longeva</b> garantiza que pueda <b>verificarse en el futuro</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Mecanismo de longevidad</th><th>Contenido</th></tr>
+<tr><td><b>1. Sello de tiempo</b></td><td>Acredita que la firma era válida en un momento concreto</td></tr>
+<tr><td><b>2. Información de validación</b></td><td><b>Certificados, CRL y respuestas OCSP</b></td></tr>
+<tr><td><b>3. Resellado periódico</b></td><td>Añadir <b>sellos de tiempo adicionales</b> con el tiempo</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Perfiles de firma avanzada para longevidad</b></p>
+<p><b>CAdES, XAdES y PAdES</b> se pueden extender en <b>formatos avanzados</b> que garantizan el <b>instante de la firma</b> y su <b>longevidad</b>. Son <b>incrementales</b>: para implementar un nivel hay que haber implementado los anteriores.</p>
+<div class="tw"><table><tr><th>Nivel</th><th>Formatos</th><th>Descripción</th></tr>
+<tr><td><b>T</b> (timestamp)</td><td>CAdES y XAdES</td><td>Añade <b>sello de tiempo</b> del momento exacto de la firma</td></tr>
+<tr><td><b>C</b> (completo)</td><td>CAdES y XAdES</td><td>Añade <b>referencias</b> a los elementos para validar (certificados, CRL…)</td></tr>
+<tr><td><b>X</b> (extendido)</td><td>CAdES y XAdES</td><td>Añade <b>sellos de tiempo sobre los elementos de C</b>; mejora la validez futura</td></tr>
+<tr><td><b>XL</b> (extendido longevo)</td><td>CAdES y XAdES</td><td>Incorpora <b>certificados y CRL/OCSP dentro de la firma</b></td></tr>
+<tr><td><b>A</b> (archivado)</td><td>CAdES y XAdES</td><td>Mecanismos para <b>resellar</b> el documento, válido aunque los algoritmos queden obsoletos</td></tr>
+<tr><td><b>LTV</b> (Long Term Validation)</td><td><b>Sólo PAdES</b></td><td>Equivale a <b>XL + A</b>; validez a largo plazo</td></tr>
+</table></div>
+</div>
+<h2 id="s6">7. Infraestructura física de un CPD: acondicionamiento y equipamiento</h2>
+<ul>
+<li><b>CPD</b>: instalaciones críticas con servidores, almacenamiento y red. Su diseño debe asegurar <b>disponibilidad constante, seguridad física y ambiental, redundancia frente a fallos</b> y cumplimiento de <b>estándares</b>.</li>
+</ul>
+<h3>7.1 Normativa vigente</h3>
+<h3>7.1.1 ANSI/TIA/EIA-942</h3>
+<ul>
+<li>Norma <b>más reconocida</b> para diseño y evaluación de CPD, elaborada por la <b>TIA</b> (Telecommunications Industry Association). <b>No obligatoria por ley</b>, pero muy adoptada como buena práctica.</li>
+<li>Regula: <b>diseño arquitectónico</b> y espacios · instalaciones <b>eléctricas, climatización y cableado estructurado</b> · <b>detección y extinción</b> de incendios · <b>seguridad física y accesos</b> · <b>redundancia y disponibilidad</b>.</li>
+<li>Objetivos: continuidad del servicio, establecer <b>niveles TIER</b>, infraestructura escalable, segura y eficiente.</li>
+</ul>
+<h3>7.1.2 Otras normas</h3>
+<div class="tw"><table><tr><th>Norma</th><th>Descripción</th></tr>
+<tr><td><b>UNE-EN 50600</b></td><td>Norma <b>europea</b> de <b>todo el ciclo de vida</b> del CPD (diseño, implementación, operación, mejora); complementa a ANSI/TIA</td></tr>
+<tr><td><b>ISO/IEC 27001</b></td><td>Gestión de seguridad de la información: controles <b>físicos y de acceso</b></td></tr>
+<tr><td><b>ISO/IEC 20000</b></td><td><b>Gestión de servicios TI</b>: operación eficiente del CPD</td></tr>
+<tr><td><b>Código Técnico de la Edificación</b> (España)</td><td><b>Protección contra incendios</b> y seguridad estructural</td></tr>
+<tr><td><b>REBT</b> (Reglamento Electrotécnico de Baja Tensión)</td><td><b>Obligatorio en España</b> para toda instalación eléctrica</td></tr>
+<tr><td><b>ENS – RD 311/2022</b></td><td>En el sector público, seguridad física, disponibilidad, continuidad y trazabilidad</td></tr>
+</table></div>
+<h3>7.2 Niveles TIER (Uptime Institute)</h3>
+<ul>
+<li>Clasificación del <b>Uptime Institute</b> que mide <b>resiliencia y disponibilidad</b> de un CPD.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Niveles TIER</b></p>
+<div class="tw"><table><tr><th>Nivel</th><th>Definición</th><th>Características</th><th>Disponibilidad</th></tr>
+<tr><td><b>TIER I</b></td><td>CPD <b>básico</b></td><td><b>Un único camino</b> de distribución eléctrica y refrigeración, <b>sin redundancia</b></td><td><b>99,671%</b> (unas <b>28,8 h</b>/año de parada)</td></tr>
+<tr><td><b>TIER II</b></td><td><b>Redundancia parcial</b></td><td>Redundancia en componentes críticos (<b>SAI, grupos electrógenos</b>), pero <b>un único camino</b> de distribución</td><td><b>99,741%</b> (unas <b>22 h</b>/año)</td></tr>
+<tr><td><b>TIER III</b></td><td><b>Concurrentemente mantenible</b></td><td><b>Redundancia completa</b> en componentes y caminos; mantenimiento <b>sin interrumpir</b> el servicio</td><td><b>99,982%</b> (unas <b>1,6 h</b>/año)</td></tr>
+<tr><td><b>TIER IV</b></td><td><b>Tolerante a fallos</b></td><td>Máxima disponibilidad: redundancia completa + <b>sistemas aislados</b> frente a fallos simultáneos</td><td><b>99,995%</b> (<b>menos de 0,5 h</b>/año)</td></tr>
+</table></div>
+</div>
+<ul>
+<li>Un <b>TIER IV</b> funciona sin interrupciones incluso durante <b>mantenimiento</b> o fallo de un sistema completo.</li>
+</ul>
+<h3>7.3 Ubicación</h3>
+<div class="tw"><table><tr><th>Factor</th><th>Criterios</th></tr>
+<tr><td><b>Logística</b></td><td>Accesos <b>seguros y controlados</b> · buena conectividad con comunicaciones y transporte · proximidad a proveedores de energía, servicios técnicos o centros redundantes</td></tr>
+<tr><td><b>Clima</b></td><td>Evitar <b>inundaciones, tormentas eléctricas, huracanes, terremotos</b> · valorar temperatura y humedad (eficiencia de refrigeración)</td></tr>
+<tr><td><b>Seguridad física y del entorno</b></td><td>Zonas <b>tranquilas</b>, lejos de instalaciones críticas (centrales, aeropuertos) y de alta criminalidad · evaluar riesgos ambientales e industriales</td></tr>
+<tr><td><b>Seguridad del edificio</b></td><td>Resistente a <b>incendios, explosiones, intrusiones</b> · accesos con <b>autenticación y videovigilancia</b> · zonas seguras, alarmas, protección perimetral · <b>redundancia en vías de acceso y evacuación</b></td></tr>
+</table></div>
+<h3>7.4 Instalación eléctrica</h3>
+<div class="tw"><table><tr><th>Componente</th><th>Características</th></tr>
+<tr><td><b>Alimentación principal</b></td><td>Conexión <b>redundante</b> a la red · capacidad para <b>toda la carga crítica</b> · protección frente a sobretensiones, bajadas y transitorios</td></tr>
+<tr><td><b>SAI</b> (Sistema de Alimentación Ininterrumpida)</td><td>Alimentación <b>inmediata y transitoria</b> (segundos o minutos) mientras arranca el generador · <b>filtra</b> la señal (microcortes, picos) · <b>SAI en línea (doble conversión)</b>: mayor calidad y disponibilidad</td></tr>
+<tr><td><b>Grupos electrógenos</b></td><td>Energía de respaldo durante <b>largos periodos</b>; arrancan <b>automáticamente</b> ante un fallo prolongado; <b>diésel</b> y mantenimiento periódico</td></tr>
+<tr><td><b>Redundancia</b></td><td>Configuración <b>N+1 o 2N</b> para evitar <b>puntos únicos de fallo</b>; líneas eléctricas <b>independientes</b> para red, generadores y SAI</td></tr>
+</table></div>
+<h3>7.5 Instalación de telecomunicaciones</h3>
+<ul>
+<li><b>Cableado estructurado</b>: sistema ordenado de cables, canalizaciones, paneles y conectores, <b>flexible, escalable y mantenible</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Medio</th><th>Uso en el CPD</th></tr>
+<tr><td><b>Fibra óptica</b> (monomodo o multimodo en distancias cortas)</td><td>Interconexión de servidores y equipos de comunicaciones: <b>alta velocidad, ancho de banda e inmunidad a interferencias</b>; enlaces core de <b>100 Gbps</b> con conexiones multifibra (conectores <b>MPO</b>)</td></tr>
+<tr><td><b>Cobre Cat6A</b></td><td>Equipos de menor velocidad, hasta <b>10 Gbps</b></td></tr>
+</table></div>
+<ul>
+<li>Organización: <b>racks</b>, <b>patch panels</b> de cobre y fibra, <b>pasahilos</b>, bandejas y canalizaciones; <b>etiquetado y mantenimiento</b> críticos.</li>
+</ul>
+<h3>7.6 Protección antiincendios</h3>
+<ul>
+<li>Detección y extinción <b>específicas para entornos tecnológicos</b>, con mantenimientos y <b>simulacros</b> regulares.</li>
+</ul>
+<div class="tw"><table><tr><th>Detección</th><th>Descripción</th></tr>
+<tr><td><b>Detectores de humo por aspiración</b></td><td><b>Muy sensibles</b>: captan partículas en fases muy tempranas</td></tr>
+<tr><td><b>Detectores iónicos u ópticos</b></td><td>En techos y <b>suelos técnicos</b></td></tr>
+<tr><td><b>Detección térmica</b></td><td>Aumentos anómalos de temperatura</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>No usar agua en un CPD</b></p>
+<p>En un CPD <b>no deben utilizarse sistemas basados en agua</b>, porque pueden dañar de forma irreversible los equipos electrónicos.</p>
+</div>
+<div class="tw"><table><tr><th>Sistema de extinción</th><th>Descripción</th><th>Observaciones</th></tr>
+<tr><td><b>Agentes gaseosos</b> (<b>FM-200, Novec 1230, CO₂</b>)</td><td>Suprimen el fuego <b>sin dañar los equipos</b>; no conductivos</td><td>Uso controlado; <b>peligrosos para personas</b> si no se evacúa la sala</td></tr>
+<tr><td><b>Neblina de agua</b> (pulverizada)</td><td><b>Microgotas</b>, muy poca agua</td><td>Apto si no hay gases limpios; alternativa aceptada en entornos mixtos</td></tr>
+<tr><td><b>Polvo o espuma</b></td><td><b>No recomendados</b>: dañan equipos y dejan residuos</td><td>Sólo áreas auxiliares</td></tr>
+</table></div>
+<ul>
+<li>Otros: <b>puertas cortafuegos y compartimentación</b> · <b>extintores portátiles de CO₂</b> señalizados · control de temperatura y presión · <b>monitorización remota</b> de sensores.</li>
+</ul>
+<h3>7.7 Servidores y máquinas del CPD</h3>
+<div class="tw"><table><tr><th>Formato físico</th><th>Descripción</th><th>Características</th></tr>
+<tr><td><b>Rack</b></td><td>Bastidores estándar (habitualmente <b>19"</b>)</td><td>Fáciles de escalar y mantener; <b>muy utilizados</b></td></tr>
+<tr><td><b>Blade</b></td><td>Módulos en <b>chasis compartido</b></td><td><b>Gran densidad, bajo consumo</b>, ideal para virtualización</td></tr>
+<tr><td><b>Torre</b></td><td>Formato de PC convencional</td><td><b>Uso muy limitado</b> en CPD; entornos pequeños</td></tr>
+<tr><td><b>Hiperconvergentes</b></td><td>Integran <b>computación, almacenamiento y red</b> en una unidad</td><td>Alta eficiencia y escalabilidad; creciente en entornos virtualizados</td></tr>
+</table></div>
+<ul>
+<li><b>Según su función</b>: <b>aplicaciones</b> · <b>archivos</b> · <b>web</b> (HTTP/HTTPS) · <b>base de datos</b> · <b>correo, DNS, DHCP</b>. Hoy muchas funciones se ejecutan en <b>máquinas virtuales</b> sobre hipervisores y almacenamiento compartido.</li>
+</ul>
+<div class="tw"><table><tr><th>Medidas físicas</th><th>Medidas lógicas</th></tr>
+<tr><td><b>Racks cerrados con llave</b> y control de acceso</td><td>Control de acceso a <b>BIOS</b> y configuración de red</td></tr>
+<tr><td><b>Sensores de temperatura y humedad</b> en armarios</td><td>Supervisión de <b>CPU, RAM y almacenamiento</b></td></tr>
+<tr><td><b>Suelo técnico elevado</b> (cableado y ventilación)</td><td><b>Segmentación y VLAN</b></td></tr>
+<tr><td>Protección contra incendios y fallos eléctricos (<b>SAI, generadores</b>)</td><td>Actualizaciones de <b>firmware y parches</b></td></tr>
+<tr><td><b>Monitorización remota</b> (temperatura, alimentación, hardware)</td><td><b>Virtualización</b> con aislamiento entre VM</td></tr>
+</table></div>
+<ul>
+<li><b>Buenas prácticas</b>: <b>etiquetado y documentación</b> · <b>inventario</b> actualizado · <b>backups</b> y verificación de recuperación · <b>alta disponibilidad (HA)</b> y clústeres.</li>
+</ul>
+<h3>7.8 Climatización del CPD</h3>
+<ul>
+<li>Los equipos generan mucho calor; sin disipación: sobrecalentamiento, fallos de HW e interrupciones.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Condiciones ambientales óptimas</b></p>
+<div class="tw"><table><tr><th>Parámetro</th><th>Valor</th></tr>
+<tr><td><b>Temperatura</b></td><td>Entre <b>18 y 27 °C</b></td></tr>
+<tr><td><b>Humedad relativa</b></td><td>Entre <b>40 % y 60 %</b></td></tr>
+<tr><td><b>Distribución del aire</b></td><td>Evitar <b>puntos calientes (hot spots)</b> y zonas muertas</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Sistema</th><th>Descripción</th><th>Aplicación</th></tr>
+<tr><td><b>CRAC</b> (Computer Room Air Conditioner)</td><td>Climatización <b>tradicional</b> específica para salas técnicas; controla temperatura y humedad</td><td>Salas blancas; con <b>suelo técnico</b> para distribuir el aire</td></tr>
+<tr><td><b>InRow</b> (entre filas)</td><td>Unidades <b>entre racks</b>: extraen aire caliente y lo refrigeran en el propio pasillo</td><td><b>Mayor eficiencia</b>, refrigeración localizada</td></tr>
+<tr><td><b>Overhead / Techo</b></td><td>Soplan aire frío sobre los racks o aspiran de la zona caliente</td><td>Uso limitado</td></tr>
+<tr><td><b>Rear Door / Rack-based</b></td><td>Disipan el calor en la <b>parte posterior del armario</b></td><td>CPD de <b>alta densidad energética</b></td></tr>
+<tr><td><b>Free cooling</b></td><td>Usan <b>aire exterior</b> cuando las condiciones lo permiten</td><td><b>Ahorro energético</b>; complemento, no sustituto</td></tr>
+<tr><td><b>Climatización líquida</b></td><td>Refrigeración directa con <b>agua o líquido refrigerante</b></td><td>Muy alta densidad o <b>HPC</b></td></tr>
+</table></div>
+<ul>
+<li><b>Pasillos frío-calor</b>: <b>pasillos fríos</b> = aire frío al <b>frontal</b> de los racks (donde toman aire los equipos); <b>pasillos calientes</b> = expulsión del aire caliente por la <b>parte trasera</b>. Evita mezclar flujos y mejora la eficiencia.</li>
+<li><b>Monitorización y control ambiental</b>: detectar variaciones de temperatura y humedad · <b>alertas</b> por umbrales · actuación remota y programada · sensores distribuidos · <b>medición por rack</b> · integración con <b>BMS/DCIM</b>.</li>
+<li><b>Recomendaciones</b>: climatización <b>redundante N+1</b> · mantenimientos periódicos · eficiencia energética (aislamientos, <b>contención de pasillos</b>) · medir el <b>PUE</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>PUE (Power Usage Effectiveness)</b></p>
+<p><b>PUE = Energía total del CPD / Energía consumida por equipos TI</b>. Un valor <b>cercano a 1</b> indica mayor eficiencia (casi toda la energía se dedica a computación, no a refrigeración o iluminación).</p>
+</div>
+<h2 id="s7">8. Sistemas de gestión de incidencias</h2>
+<ul>
+<li>Objetivo: <b>restaurar la operatividad lo antes posible</b> ante una interrupción o degradación del servicio; minimiza el impacto, mejora la calidad y garantiza el cumplimiento de los <b>SLA</b>.</li>
+</ul>
+<h3>8.1 Concepto</h3>
+<ul>
+<li><b>Incidencia</b>: cualquier evento que <b>interrumpe un servicio TI</b> o puede hacerlo si no se resuelve (también dudas técnicas o problemas de servicio).</li>
+<li>Tareas: <b>registro y clasificación</b> · <b>diagnóstico y resolución</b> · <b>comunicación</b> con el usuario · <b>escalado</b> (a otros equipos o niveles de la matriz de escalado) · <b>cierre y documentación</b> (fundamental). Actividad <b>reactiva</b>, aunque bien organizada forma parte de un enfoque <b>proactivo</b>.</li>
+</ul>
+<h3>8.2 Grupos de soporte y escalado</h3>
+<div class="tw"><table><tr><th>Nivel</th><th>Descripción</th><th>Función</th></tr>
+<tr><td><b>Nivel 1</b></td><td><b>Primer punto de contacto</b> (teléfono, correo, portal web)</td><td>Recoge información básica, <b>soluciones rápidas</b>, deriva si no resuelve</td></tr>
+<tr><td><b>Nivel 2</b></td><td><b>Técnicos especializados</b></td><td><b>Diagnóstico avanzado</b> y problemas más complejos</td></tr>
+<tr><td><b>Nivel 3</b></td><td><b>Expertos, fabricantes o desarrolladores</b></td><td><b>Fallos críticos</b>, errores del sistema, peticiones complejas</td></tr>
+</table></div>
+<h3>8.3 Estadísticas del servicio y SLA</h3>
+<ul>
+<li><b>KPIs</b>: número de incidencias <b>abiertas/cerradas</b> · <b>tiempo medio de respuesta</b> · <b>tiempo medio de resolución</b> · <b>% de resolución en primer nivel</b> · incidencias <b>reabiertas o mal cerradas</b>.</li>
+<li><b>SLA</b> (Service Level Agreement): contrato (formal o informal) con los <b>tiempos máximos aceptables</b> para responder, resolver o comunicar una incidencia; se incluye en cualquier contrato proveedor-organismo.</li>
+</ul>
+<h3>8.4 Herramientas del mercado</h3>
+<div class="tw"><table><tr><th>Tipo</th><th>Herramientas</th></tr>
+<tr><td><b>Comerciales</b></td><td><b>ServiceNow</b> (líder, escalable, orientada a <b>ITIL</b>) · <b>BMC Remedy</b> (grandes organizaciones y sector público) · <b>CA Service Desk</b> (Broadcom) · <b>Jira</b> (también gestión de proyectos)</td></tr>
+<tr><td><b>Código abierto / gratuitas</b></td><td><b>GLPI</b> (muy extendida en la <b>Administración pública</b>: incidencias, activos, contratos) · <b>OTRS / Znuny</b> (atención al cliente y soporte) · <b>Request Tracker (RT)</b> · <b>iTop</b> (incidencias + <b>CMDB</b> + procesos ITIL básicos)</td></tr>
+</table></div>
+<ul>
+<li>Deben permitir <b>trazabilidad, informes y cumplimiento normativo</b> (p. ej. <b>ENS</b>).</li>
+</ul>
+<h2 id="s8">9. Control remoto de puestos de usuario</h2>
+<ul>
+<li>Acceso a un ordenador desde otro equipo por red: <b>asistencia técnica</b>, administración remota, formación, <b>teletrabajo</b>; evita desplazamientos.</li>
+</ul>
+<h3>9.1 Requisitos y medidas de seguridad</h3>
+<ul>
+<li><b>Autenticación</b> de usuario y técnico · <b>cifrado</b> de la comunicación · control de permisos y sesiones · <b>registro</b> de accesos y acciones · <b>aceptación explícita</b> del usuario · integración con directorio corporativo o <b>SSO</b>. En la Administración: cumplir el <b>ENS</b> y la protección de datos (<b>LOPDGDD y RGPD</b>).</li>
+</ul>
+<h3>9.2 Tecnologías y protocolos</h3>
+<div class="tw"><table><tr><th>Protocolo</th><th>Descripción</th></tr>
+<tr><td><b>RDP</b> (Remote Desktop Protocol)</td><td><b>Microsoft</b>, escritorios remotos en Windows</td></tr>
+<tr><td><b>VNC</b> (Virtual Network Computing)</td><td><b>Multiplataforma</b>; transmite pantalla y permite control; suele requerir <b>cifrado adicional</b></td></tr>
+<tr><td><b>SSH</b></td><td>Acceso remoto por consola a <b>Linux/Unix</b>; <b>seguro</b></td></tr>
+<tr><td><b>Telnet</b></td><td>Acceso remoto <b>sin cifrado</b>; <b>obsoleto y desaconsejado</b></td></tr>
+</table></div>
+<h3>9.3 Herramientas</h3>
+<div class="tw"><table><tr><th>Herramienta</th><th>Características</th></tr>
+<tr><td><b>Microsoft Remote Desktop</b></td><td>Integrado en Windows; usa <b>RDP</b></td></tr>
+<tr><td><b>AnyDesk</b></td><td>Rápido, ligero, multiplataforma; acceso asistido o <b>desatendido</b></td></tr>
+<tr><td><b>TeamViewer</b></td><td>Soporte técnico; transferencia de archivos, videollamada, <b>2FA</b></td></tr>
+<tr><td><b>Dameware Remote Support</b></td><td>Entornos profesionales; control y gestión de red integrada</td></tr>
+<tr><td><b>Chrome Remote Desktop</b></td><td>Gratuito, simple, multiplataforma, desde el <b>navegador</b></td></tr>
+<tr><td><b>VNC</b> (RealVNC, TightVNC, UltraVNC)</td><td>Código abierto o comercial; requieren configurar la seguridad</td></tr>
+<tr><td><b>X2Go</b></td><td>Alternativa segura a RDP en <b>Linux</b>; usa <b>SSH</b></td></tr>
+</table></div>
+<div class="pn"><a href="b4t4.html">← 4.4</a><a href="b4t6.html">4.6 →</a></div></main></div><script src="../app.js"></script></body></html>

@@ -1,0 +1,244 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 3 · Tema 4 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción al paradigma orientado a objetos</a><a href="#s1">2. Elementos de la POO</a><a href="#s2">3. Mecanismos de la orientación a objetos</a><a href="#s3">4. Patrones de diseño (GoF)</a><a href="#s4">5. Lenguajes orientados a objetos</a><a href="#s5">6. Modelado orientado a objetos con UML</a><a href="#s6">7. Flujogramas</a></aside>
+<main class="doc" data-key="b3t4"><div class="crumb">Bloque 3 · Tema 4</div><h1>Programación orientada a objetos, patrones, UML y flujogramas</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (8)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema4.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema4.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Introducción al paradigma orientado a objetos</h2>
+<ul>
+<li><b>POO</b>: paradigma basado en <b>objetos</b> que agrupan <b>datos (atributos) y comportamiento (métodos)</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Época</th><th>Hito</th></tr>
+<tr><td><b>60-70</b></td><td>Primeros lenguajes estructurados (<b>C</b>)</td></tr>
+<tr><td><b>1980</b></td><td><b>Smalltalk</b>, primer lenguaje <b>puramente</b> orientado a objetos</td></tr>
+<tr><td><b>Años 80</b></td><td><b>C++</b> (orientación a objetos sobre C)</td></tr>
+<tr><td><b>Años 90</b></td><td>Consolidación con <b>Java</b></td></tr>
+<tr><td><b>Hoy</b></td><td>Java, C++, C#, Python, Swift…</td></tr>
+</table></div>
+<div class="tw"><table><tr><th></th><th><b>Programación estructurada</b></th><th><b>POO</b></th></tr>
+<tr><td><b>Unidad básica</b></td><td><b>Función o procedimiento</b></td><td><b>Objeto</b> (instancia de clase)</td></tr>
+<tr><td><b>Organización</b></td><td>Código en funciones</td><td>Código en <b>clases y objetos</b></td></tr>
+<tr><td><b>Datos y funciones</b></td><td><b>Separados</b></td><td><b>Agrupados</b></td></tr>
+<tr><td><b>Reutilización</b></td><td>Baja (copia/adaptación)</td><td><b>Alta</b> (herencia y composición)</td></tr>
+<tr><td><b>Mantenimiento</b></td><td>Difícil en proyectos grandes</td><td>Más sencillo (modular)</td></tr>
+<tr><td><b>Ejemplos</b></td><td>C, Pascal</td><td>Java, C++, Python</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Principios fundamentales de la POO</b></p>
+<p>Permiten un diseño <b>más limpio, mantenible y escalable</b>.</p>
+<div class="tw"><table><tr><th>Principio</th><th>Idea</th></tr>
+<tr><td><b>Encapsulamiento</b></td><td><b>Ocultar los detalles internos</b> y exponer solo lo necesario, con <b>modificadores de acceso</b> (privado, público, protegido); protege la integridad del estado</td></tr>
+<tr><td><b>Abstracción</b></td><td>Representar entidades reales con <b>modelos simplificados (clases)</b>, ignorando lo irrelevante</td></tr>
+<tr><td><b>Modularidad</b></td><td>Sistema dividido en <b>módulos (clases) independientes y cohesivos</b>; facilita el trabajo colaborativo y localizar errores</td></tr>
+<tr><td><b>Reutilización</b></td><td>Usar componentes existentes mediante <b>herencia, composición y bibliotecas de clases</b></td></tr>
+</table></div>
+</div>
+<h2 id="s1">2. Elementos de la POO</h2>
+<div class="tw"><table><tr><th>Elemento</th><th>Definición</th></tr>
+<tr><td><b>Clase</b></td><td><b>Plantilla o molde</b> que define atributos y métodos de un conjunto de objetos</td></tr>
+<tr><td><b>Objeto</b></td><td><b>Instancia de una clase</b>: estado (valores de atributos) + comportamiento (métodos). <code>Persona p = new Persona();</code></td></tr>
+<tr><td><b>Atributos</b></td><td>Variables que definen el <b>estado</b> (campos o propiedades)</td></tr>
+<tr><td><b>Métodos</b></td><td>Funciones que definen el <b>comportamiento</b></td></tr>
+<tr><td><b>Constructor</b></td><td>Método especial que <b>se ejecuta automáticamente al crear</b> el objeto; inicializa atributos</td></tr>
+<tr><td><b>Destructor</b></td><td>Se ejecuta cuando el objeto deja de existir; en <b>C++</b> (<code>~Clase()</code>) libera recursos; en <b>Java</b> lo gestiona el <b>recolector de basura</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Modificador</th><th>Desde la clase</th><th>Desde subclases</th><th>Desde otras clases</th></tr>
+<tr><td><b>private</b></td><td>Sí</td><td>No</td><td>No</td></tr>
+<tr><td><b>protected</b></td><td>Sí</td><td><b>Sí</b></td><td>No</td></tr>
+<tr><td><b>public</b></td><td>Sí</td><td>Sí</td><td><b>Sí</b></td></tr>
+</table></div>
+<ul>
+<li>Se recomienda atributos <b>private</b> + <b>getters y setters</b> públicos.</li>
+</ul>
+<div class="tw"><table><tr><th>SOLID</th><th>Principio</th><th>Idea</th></tr>
+<tr><td><b>S</b></td><td><b>Single Responsibility (SRP)</b></td><td>Una clase, <b>una única responsabilidad</b></td></tr>
+<tr><td><b>O</b></td><td><b>Open/Closed (OCP)</b></td><td><b>Abierto a extensión, cerrado a modificación</b></td></tr>
+<tr><td><b>L</b></td><td><b>Liskov Substitution (LSP)</b></td><td>Las derivadas <b>sustituyen a la base</b> sin alterar el programa</td></tr>
+<tr><td><b>I</b></td><td><b>Interface Segregation (ISP)</b></td><td><b>Muchas interfaces específicas</b> mejor que una general</td></tr>
+<tr><td><b>D</b></td><td><b>Dependency Inversion (DIP)</b></td><td>Los módulos de alto nivel <b>dependen de abstracciones</b>, no de los de bajo nivel</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Patrones GRASP</b></p>
+<p><b>General Responsibility Assignment Software Patterns</b>: patrones que ayudan a <b>asignar responsabilidades a clases y objetos</b>. <b>No son patrones de diseño</b> como Factory o Singleton, sino <b>principios generales</b>; introducidos por <b>Craig Larman</b>; ligados a cohesión, acoplamiento, encapsulamiento y abstracción.</p>
+</div>
+<div class="tw"><table><tr><th>GRASP</th><th>Idea</th></tr>
+<tr><td><b>1. Información experta</b></td><td>La responsabilidad va a la clase <b>con más información</b> necesaria</td></tr>
+<tr><td><b>2. Creador</b></td><td>Qué clase <b>crea instancias</b> de otra</td></tr>
+<tr><td><b>3. Controlador</b></td><td>Clase intermediaria que <b>recibe eventos del sistema</b> y coordina</td></tr>
+<tr><td><b>4. Alta cohesión</b></td><td>Responsabilidades <b>estrechamente relacionadas</b> en cada clase</td></tr>
+<tr><td><b>5. Bajo acoplamiento</b></td><td><b>Menos dependencia</b> entre clases</td></tr>
+<tr><td><b>6. Polimorfismo</b></td><td>Variantes de comportamiento según el tipo</td></tr>
+<tr><td><b>7. Fabricación pura</b></td><td>Clase <b>artificial</b> para mantener bajo acoplamiento y alta cohesión</td></tr>
+<tr><td><b>8. Indirección</b></td><td>Objeto <b>intermediario</b> para reducir acoplamiento</td></tr>
+<tr><td><b>9. Variación protegida</b></td><td><b>Interfaces estables</b> que protegen de cambios</td></tr>
+</table></div>
+<h2 id="s2">3. Mecanismos de la orientación a objetos</h2>
+<h3>3.1 Herencia</h3>
+<ul>
+<li>Una <b>subclase (derivada)</b> hereda atributos y métodos de una <b>superclase (base)</b>: reutilización, extensión y <b>jerarquías</b>. La subclase puede <b>sobrescribir (override)</b> métodos y añadir los suyos (<code>class Gallina extends Ave</code>).</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Lenguajes</th></tr>
+<tr><td><b>Herencia simple</b> (una sola superclase; evita ambigüedades)</td><td><b>Java</b> (<code>extends</code>; varias <b>interfaces</b> con <code>implements</code>) · <b>C#</b> (interfaces múltiples) · <b>Swift</b> (protocolos) · <b>Kotlin</b> · <b>Objective-C</b> (protocolos múltiples)</td></tr>
+<tr><td><b>Herencia múltiple</b> (más de una superclase; riesgo de ambigüedad)</td><td><b>C++</b> (<b>herencia virtual</b>) · <b>Python</b> (algoritmo <b>MRO</b>) · <b>Ruby</b>: no directa, usa <b>mixins (módulos)</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Polimorfismo</b></p>
+<p>Una misma operación tiene <b>diferentes comportamientos según el tipo de objeto</b>: distintas clases comparten el nombre de método con implementaciones distintas; permite tratar objetos de diferentes clases como del mismo tipo base. <b>Estático</b> (en compilación): mediante <b>sobrecarga</b>. <b>Dinámico</b> (en ejecución): mediante <b>herencia y sobreescritura</b> (<code>Animal a = new Perro(); a.sonido();</code> llama al de Perro).</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Sobrecarga de métodos</b></p>
+<p>Permite definir <b>múltiples versiones de un método dentro de una misma clase</b>, diferenciándolas por el <b>número o tipo de parámetros</b>. La <b>sobrecarga de operadores</b> (redefinir <code>+</code>, etc.) está disponible en <b>C++</b>.</p>
+</div>
+<div class="tw"><table><tr><th></th><th><b>Composición</b></th><th><b>Agregación</b></th></tr>
+<tr><td><b>Relación</b></td><td><b>Parte-todo «tiene un»</b>, <b>fuerte</b></td><td>Parte-todo <b>débil</b></td></tr>
+<tr><td><b>Dependencia</b></td><td>Si se destruye el todo, <b>se destruyen las partes</b></td><td>Las partes <b>existen independientemente</b></td></tr>
+<tr><td><b>Ejemplo</b></td><td>Coche → <b>Motor</b></td><td>Departamento → <b>Profesores</b></td></tr>
+</table></div>
+<h2 id="s3">4. Patrones de diseño (GoF)</h2>
+<ul>
+<li><b>Patrón de diseño</b>: solución general reutilizable a un problema común; <b>no es código listo para copiar</b>. <b>GoF (Gang of Four)</b>: autores del libro *Design Patterns* (<b>1994</b>): <b>Erich Gamma, Richard Helm, Ralph Johnson y John Vlissides</b>; describen <b>23 patrones</b> en <b>3 tipos</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Finalidad</th><th>Patrones</th></tr>
+<tr><td><b>Creacionales</b></td><td>Creación de objetos flexible y controlada</td><td><b>Singleton</b> (<b>única instancia</b> con acceso global), <b>Factory Method</b> (las subclases deciden qué instanciar), <b>Abstract Factory</b> (familias de objetos), <b>Builder</b> (separa construcción y representación), <b>Prototype</b> (copia objetos)</td></tr>
+<tr><td><b>Estructurales</b></td><td>Cómo se relacionan clases y objetos</td><td><b>Adapter</b> (traductor entre interfaces incompatibles), <b>Decorator</b> (añade funcionalidad dinámicamente), <b>Composite</b> (individuos y composiciones de forma uniforme), <b>Facade</b> (interfaz simplificada), <b>Proxy</b> (sustituto que controla el acceso), <b>Bridge</b> (separa abstracción e implementación), <b>Flyweight</b> (comparte objetos para ahorrar memoria)</td></tr>
+<tr><td><b>De comportamiento</b></td><td>Comunicación y colaboración</td><td><b>Observer</b> (notifica cambios), <b>Strategy</b> (algoritmos intercambiables), <b>Command</b> (solicitud como objeto), <b>State</b> (comportamiento según estado), <b>Template Method</b> (esqueleto de algoritmo), <b>Mediator</b> (centraliza comunicación), <b>Iterator</b> (recorrer sin exponer), <b>Chain of Responsibility</b> (cadena de manejadores), <b>Visitor</b> (nuevas operaciones sin modificar clases), <b>Interpreter</b> (gramática)</td></tr>
+</table></div>
+<ul>
+<li><b>Objetivos</b>: reutilizar conocimiento de diseño, mejorar mantenibilidad, <b>vocabulario común</b>, no reinventar soluciones.</li>
+</ul>
+<h2 id="s4">5. Lenguajes orientados a objetos</h2>
+<div class="tw"><table><tr><th>Lenguaje</th><th>Características</th></tr>
+<tr><td><b>Smalltalk</b></td><td><b>Puramente OO</b> (todo es objeto); influyó en Java y Ruby; uso <b>académico</b></td></tr>
+<tr><td><b>C++</b></td><td>Derivado de C + clases, herencia, sobrecarga; <b>control de bajo nivel</b> (punteros); sistemas embebidos, videojuegos, motores gráficos</td></tr>
+<tr><td><b>Java</b></td><td><b>JVM</b> (portabilidad); aplicaciones empresariales, Android, backend</td></tr>
+<tr><td><b>Python</b></td><td><b>Multiparadigma</b>; sintaxis simple; ciencia de datos, IA, automatización</td></tr>
+<tr><td><b>C#</b></td><td>De <b>Microsoft</b>, alternativa a Java; <b>.NET</b>; escritorio, web, <b>Unity</b></td></tr>
+<tr><td><b>Kotlin</b></td><td><b>Interoperable con Java</b>, conciso, seguro frente a null; <b>lenguaje oficial de Android desde 2017</b></td></tr>
+</table></div>
+<ul>
+<li><b>Java</b>: creado por <b>James Gosling</b> (Sun Microsystems, <b>1995</b>); lema <b>«write once, run anywhere»</b>. <b>Características</b>: orientado a objetos (con primitivos), <b>multiplataforma (bytecode en la JVM)</b>, <b>fuertemente tipado y de tipado estático</b>, <b>Garbage Collector</b>, seguro (<b>sandbox</b>), <b>multihilo</b>, modular. Punto de entrada: <b><code>main</code></b>. Programa = clases dentro de <b>paquetes</b>.</li>
+<li><b>Java y POO</b>: <b>abstracción</b> (clases abstractas e interfaces), <b>encapsulamiento</b> (private/public/protected), <b>herencia simple</b> (<code>extends</code>) y <b>múltiple por interfaces</b> (<code>implements</code>), <b>polimorfismo</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Ecosistema Java</th><th>Uso</th></tr>
+<tr><td><b>Java SE</b></td><td>Escritorio y consola</td></tr>
+<tr><td><b>Java EE</b> (hoy <b>Jakarta EE</b>)</td><td>Aplicaciones empresariales distribuidas</td></tr>
+<tr><td><b>Java ME</b></td><td>Dispositivos con pocos recursos</td></tr>
+<tr><td><b>Frameworks y herramientas</b></td><td><b>Spring, Hibernate, JSF, JUnit</b> (pruebas), <b>Maven, Gradle</b> (dependencias)</td></tr>
+</table></div>
+<h2 id="s5">6. Modelado orientado a objetos con UML</h2>
+<ul>
+<li><b>UML</b>: estándar para representar visualmente sistemas OO; <b>NO es un lenguaje de programación</b>, sino de <b>modelado</b> (cualquier fase del ciclo de vida). Creado en los <b>90</b> por <b>Grady Booch, Ivar Jacobson y James Rumbaugh</b>; estandarizado por <b>OMG</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Diagramas estructurales</b></p>
+<p>Describen la <b>estructura estática</b> del sistema: qué elementos lo componen, cómo se relacionan y cómo se organizan; permiten visualizar dependencias y modularidad <b>antes de programar</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Diagrama estructural</th><th>Descripción</th></tr>
+<tr><td><b>Clases</b></td><td>El más representativo: clases, atributos, métodos y relaciones (<b>asociación, agregación, composición, dependencia, herencia</b>); <b>no muestra información temporal</b>. Rectángulo con 3 secciones: <b>nombre, atributos, métodos</b>. Visibilidad: <b>+ público, − privado, # protegido</b></td></tr>
+<tr><td><b>Objetos</b></td><td>Vista <b>en tiempo de ejecución</b>: instancias concretas y sus valores actuales</td></tr>
+<tr><td><b>Paquetes</b></td><td>Agrupa clases en <b>módulos lógicos / capas</b> (presentación, negocio, datos); <b>dependencias entre paquetes no transitivas</b></td></tr>
+<tr><td><b>Componentes</b></td><td>Componentes físicos (módulos, bibliotecas, <b>.jar</b>, servicios web) e <b>interfaces</b>; sistemas distribuidos. Componente = rectángulo con <b>dos pequeños rectángulos</b> a la izquierda; interfaz = <b>círculo</b> unido por línea; paquete = <b>icono de carpeta</b></td></tr>
+<tr><td><b>Estructura</b></td><td><b>Estructura interna</b> de una clase o componente (Coche: Motor, Ruedas, Frenos)</td></tr>
+<tr><td><b>Implementación (despliegue)</b></td><td><b>Distribución física en hardware</b>: <b>nodos (cubo)</b> y <b>conexiones (línea continua)</b>; artefactos desplegados dentro del nodo</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Relación en clases</th><th>Descripción</th></tr>
+<tr><td><b>Asociación</b></td><td>Entre objetos (Cliente *tiene* Pedido)</td></tr>
+<tr><td><b>Herencia (generalización)</b></td><td>Una clase hereda de otra</td></tr>
+<tr><td><b>Composición</b></td><td>Contiene a otra de forma <b>exclusiva</b> (Coche–Motor)</td></tr>
+<tr><td><b>Agregación</b></td><td>Todo/parte <b>sin pertenencia exclusiva</b> (Universidad–Departamentos)</td></tr>
+</table></div>
+<h3>6.2 Diagramas de comportamiento</h3>
+<ul>
+<li>Representan el <b>comportamiento dinámico</b> a lo largo del tiempo.</li>
+</ul>
+<div class="tw"><table><tr><th>Diagrama</th><th>Descripción</th></tr>
+<tr><td><b>Casos de uso</b></td><td><b>Qué</b> hace el sistema (no cómo), para actores externos; útil en <b>análisis de requisitos</b></td></tr>
+<tr><td><b>Secuencia</b></td><td>Mensajes entre objetos <b>en orden temporal</b>: participantes, <b>línea de vida</b>, mensajes, <b>activaciones</b></td></tr>
+<tr><td><b>Colaboración (comunicación)</b></td><td>Enfatiza la <b>estructura de colaboración</b>: objetos con enlaces y <b>mensajes numerados</b></td></tr>
+<tr><td><b>Actividad</b></td><td><b>Flujos de trabajo/procesos</b>; como un diagrama de flujo con decisiones, <b>concurrencia y sincronización</b></td></tr>
+<tr><td><b>Estados (máquina de estados)</b></td><td><b>Estados</b> de un objeto en su ciclo de vida y <b>transiciones</b> por eventos</td></tr>
+<tr><td><b>Tiempo (temporal)</b></td><td>Cambios de valores <b>con el tiempo</b>; sistemas de <b>tiempo real</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Elemento de casos de uso</th><th>Símbolo</th><th>Descripción</th></tr>
+<tr><td><b>Actor</b></td><td>Figura humana</td><td>Usuario o sistema externo</td></tr>
+<tr><td><b>Caso de uso</b></td><td><b>Elipse</b></td><td>Funcionalidad del sistema</td></tr>
+<tr><td><b>Sistema</b></td><td>Rectángulo grande</td><td>Agrupa los casos de uso</td></tr>
+<tr><td><b>Asociación</b></td><td>Línea continua</td><td>Actor ↔ caso de uso</td></tr>
+<tr><td><b>Inclusión</b></td><td>Línea punteada <b>«include»</b></td><td>Un caso <b>siempre incluye</b> a otro</td></tr>
+<tr><td><b>Extensión</b></td><td>Línea punteada <b>«extend»</b></td><td>Un caso <b>opcionalmente amplía</b> otro</td></tr>
+<tr><td><b>Generalización</b></td><td><b>Flecha con triángulo vacío</b></td><td>Jerarquía entre actores o casos</td></tr>
+</table></div>
+<h3>6.2.6 Diagramas de flujo de datos (DFD)</h3>
+<ul>
+<li><b>No son parte de UML</b>; propios del análisis estructurado, usados en la <b>Administración Pública</b> y entornos legacy.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>DFD</b></p>
+<p>Herramientas gráficas para representar el <b>flujo de información dentro de un sistema</b>; se emplean sobre todo en la <b>fase de análisis</b> para ver cómo se mueven los datos entre procesos, usuarios y almacenamientos. Representan: <b>procesos que transforman datos</b>, <b>flujos</b> entre procesos, entidades externas y almacenes, y <b>entradas y salidas</b>.</p>
+</div>
+<ul>
+<li><b>Proceso</b>: transforma entradas en salidas; <b>no es origen ni final de datos</b>; debe tener entradas y salidas definidas.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de proceso</th><th>Descripción</th></tr>
+<tr><td><b>Principal</b></td><td>El único del <b>diagrama de contexto</b>; resume todo el sistema</td></tr>
+<tr><td><b>Nivel 0</b></td><td>Primera descomposición del principal; funciones de alto nivel</td></tr>
+<tr><td><b>Intermedio</b></td><td>Descompuesto en otros más simples</td></tr>
+<tr><td><b>Primitivo</b></td><td><b>Último nivel</b>, ya no se divide</td></tr>
+<tr><td><b>De control</b> (Métrica v3)</td><td>Coordina y sincroniza otros procesos</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>DFD de nivel 0</b></p>
+<p>Visión global: el sistema completo como <b>un único proceso principal</b> con sus interacciones con <b>entidades externas</b>. Se llama <b>diagrama de contexto o diagrama 0</b>; una sola burbuja; muestra entidades externas y flujos de entrada/salida; <b>no muestra procesos internos ni almacenes</b>.</p>
+</div>
+<ul>
+<li><b>Flujo de datos</b>: <b>una sola flecha</b> (dirección única), con un conjunto lógico de datos.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de flujo de datos</b></p>
+<p><b>Consulta</b>: lectura desde un almacén o solicitud de datos; va <b>del almacén/proceso que contiene los datos hacia quien solicita</b>. <b>Actualización</b>: modificación, inserción o eliminación en un almacén; va <b>del proceso hacia el almacén</b>. <b>Diálogo</b>: flujo <b>bidireccional</b> entre el sistema y una entidad externa (envío y recepción).</p>
+</div>
+<div class="tw"><table><tr><th>Elemento DFD</th><th>Símbolo</th><th>Descripción</th></tr>
+<tr><td><b>Proceso</b></td><td><b>Círculo o rectángulo redondeado</b></td><td>Transforma entrada en salida</td></tr>
+<tr><td><b>Almacén de datos</b></td><td><b>Dos líneas paralelas</b></td><td>Fichero, BD, archivo físico o memoria intermedia; <b>permanente</b> (BD, archivos) o <b>temporal</b> (caché, tablas de trabajo)</td></tr>
+<tr><td><b>Flujo de datos</b></td><td><b>Flecha</b></td><td>Dirección y contenido</td></tr>
+<tr><td><b>Entidad externa</b></td><td><b>Elipse</b></td><td>Fuente o destino externo (usuarios, sistemas, organismos); <b>no ejecuta procesos</b>, nombre claro y único</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Flujos válidos</th><th>Flujos inválidos</th><th>Motivo</th></tr>
+<tr><td><b>Entidad ↔ Proceso</b></td><td><b>Entidad ↔ Entidad</b></td><td>El sistema no interviene</td></tr>
+<tr><td><b>Proceso ↔ Almacén</b> (lee o escribe)</td><td><b>Almacén ↔ Almacén</b></td><td>Sin transformación entre almacenes</td></tr>
+<tr><td><b>Proceso ↔ Proceso</b></td><td><b>Entidad ↔ Almacén</b></td><td>Las entidades no acceden directamente a los datos</td></tr>
+<tr><td><b>Proceso ↔ Entidad</b></td><td>Bidireccional sin sentido</td><td>Datos de ida y vuelta no definidos</td></tr>
+</table></div>
+<ul>
+<li>Un almacén <b>siempre</b> se conecta a través de un proceso.</li>
+</ul>
+<h3>6.3 Mecanismos de extensión de UML</h3>
+<div class="tw"><table><tr><th>Mecanismo</th><th>Descripción</th></tr>
+<tr><td><b>Estereotipos (« »)</b></td><td>Nuevos elementos semánticos a partir de existentes (<code>«controlador»</code>, <code>«DAO»</code>)</td></tr>
+<tr><td><b>Valores etiquetados (tagged values)</b></td><td>Pares <b>clave/valor</b> añadidos a un elemento (<code>{versión=1.2}</code>)</td></tr>
+<tr><td><b>Restricciones</b></td><td>Reglas adicionales, en texto libre o en <b>OCL (Object Constraint Language)</b> (<code>{cantidad &gt; 0}</code>)</td></tr>
+</table></div>
+<h2 id="s6">7. Flujogramas</h2>
+<ul>
+<li>Representación gráfica <b>secuencial</b> de los pasos de un proceso (actividades, decisiones, entradas y salidas).</li>
+</ul>
+<div class="tw"><table><tr><th></th><th><b>DFD</b></th><th><b>Flujograma</b></th></tr>
+<tr><td><b>Enfoque</b></td><td><b>Flujo de datos</b></td><td><b>Flujo de actividades/tareas</b></td></tr>
+<tr><td><b>Elementos clave</b></td><td>Procesos, flujos, almacenes</td><td>Actividades, decisiones, caminos</td></tr>
+<tr><td><b>Nivel</b></td><td>Análisis del sistema / modelado funcional</td><td>Procedimientos operativos</td></tr>
+<tr><td><b>Símbolos</b></td><td>Círculos, flechas, rectángulos</td><td>Formas normalizadas (<b>óvalos, rombos, rectángulos</b>)</td></tr>
+<tr><td><b>Objetivo</b></td><td><b>Qué</b> datos se mueven</td><td><b>Cómo</b> se hacen las tareas paso a paso</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Símbolo de flujograma</th><th>Función</th></tr>
+<tr><td><b>Inicio / Fin (terminal)</b></td><td>Comienzo o final</td></tr>
+<tr><td><b>Proceso / tarea</b></td><td>Actividad o paso operativo</td></tr>
+<tr><td><b>Decisión</b></td><td>Bifurcación (sí / no)</td></tr>
+<tr><td><b>Conector de flujo</b></td><td>Dirección del proceso</td></tr>
+<tr><td><b>Conector dentro de la página</b></td><td>Continuar el flujo en otra parte</td></tr>
+<tr><td><b>Entrada/Salida</b></td><td>Entrada y salida de datos</td></tr>
+<tr><td><b>Comentario</b></td><td>Amplía el nombre de un proceso</td></tr>
+<tr><td><b>Proceso predefinido</b></td><td>Proceso definido en otro lugar</td></tr>
+</table></div>
+<div class="pn"><a href="b3t3.html">← 3.3</a><a href="b3t5.html">3.5 →</a></div></main></div><script src="../app.js"></script></body></html>

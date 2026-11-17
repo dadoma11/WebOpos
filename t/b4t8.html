@@ -1,0 +1,346 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 8 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Internet: origen y evolución. Estado actual</a><a href="#s1">2. Gobernanza de Internet</a><a href="#s2">3. Arquitectura de Internet</a><a href="#s3">4. Resolución de nombres: servicio DNS</a><a href="#s4">5. Principales servicios de Internet</a><a href="#s5">6. Protocolos HTTP y HTTPS</a><a href="#s6">7. La seguridad de Internet</a></aside>
+<main class="doc" data-key="b4t8"><div class="crumb">Bloque 4 · Tema 8</div><h1>Internet: gobernanza, arquitectura, DNS, servicios, HTTP/HTTPS y seguridad</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (6)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema8.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema8.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Internet: origen y evolución. Estado actual</h2>
+<h3>1.1 Concepto de Internet</h3>
+<ul>
+<li><b>Internet</b>: <b>red de redes</b> de alcance mundial, millones de dispositivos interconectados con la familia de protocolos <b>TCP/IP</b>; ecosistema <b>descentralizado</b> (correo, WWW, nube, datos en tiempo real).</li>
+<li><b>Internet ≠ Web</b>: Internet es la <b>infraestructura</b> de conectividad; la <b>World Wide Web</b> es un <b>servicio basado en hipertexto</b> que se ejecuta sobre Internet.</li>
+</ul>
+<h3>1.2 Origen y evolución histórica</h3>
+<ul>
+<li>Finales de los <b>60</b>, EE. UU.: sistema de comunicaciones <b>resistente a fallos</b> (incluso ataques militares).</li>
+</ul>
+<div class="tw"><table><tr><th>Año</th><th>Hito</th></tr>
+<tr><td><b>1969</b></td><td>Nace <b>ARPANET</b> (financiada por <b>ARPA</b>, luego DARPA); <b>conmutación de paquetes</b> para la resiliencia</td></tr>
+<tr><td><b>1973</b></td><td>Se desarrolla el protocolo <b>TCP/IP</b></td></tr>
+<tr><td><b>1984</b></td><td>Creación del <b>DNS</b></td></tr>
+<tr><td><b>1989</b></td><td>En el <b>CERN</b>, <b>Tim Berners-Lee</b> crea <b>HTTP y HTML</b> (base de la WWW)</td></tr>
+<tr><td><b>1993</b></td><td>Primer navegador gráfico: <b>Mosaic</b></td></tr>
+<tr><td><b>1995</b></td><td>La gestión pasa a <b>organizaciones privadas</b>, uso comercial; nacen los <b>ISP</b></td></tr>
+<tr><td><b>1998</b></td><td><b>Larry Page y Sergey Brin</b> fundan <b>Google</b></td></tr>
+<tr><td><b>2000 en adelante</b></td><td>Comercio electrónico, redes sociales, nube, mensajería</td></tr>
+</table></div>
+<h3>1.3 Estado actual</h3>
+<ul>
+<li><b>Conectividad</b>: más del <b>60%</b> de la población mundial con acceso; fibra, <b>5G</b> y satélites mejoran velocidad y cobertura; persisten <b>desigualdades</b> (zonas rurales, países en desarrollo).</li>
+<li><b>Usos</b>: comunicación a distancia, <b>comercio electrónico, redes sociales, datos en la nube, Big Data</b>, entretenimiento.</li>
+</ul>
+<h3>1.4 Tendencias y desafíos futuros</h3>
+<div class="tw"><table><tr><th>Tendencia</th><th>Detalle</th></tr>
+<tr><td><b>IPv6 y fin de IPv4</b></td><td>El agotamiento de direcciones IPv4 impulsa IPv6</td></tr>
+<tr><td><b>IoT</b></td><td>Miles de millones de dispositivos: hogares, ciudades inteligentes, industria</td></tr>
+<tr><td><b>IA y Machine Learning</b></td><td>Búsquedas, personalización, ciberseguridad, análisis de datos</td></tr>
+<tr><td><b>6G</b></td><td>En desarrollo para <b>2030</b>: velocidades ultra altas y latencia casi imperceptible</td></tr>
+<tr><td><b>Ciberseguridad</b></td><td><b>Autenticación multifactor, cifrado, Zero Trust</b>; la <b>computación cuántica</b> los pondrá a prueba</td></tr>
+</table></div>
+<h2 id="s1">2. Gobernanza de Internet</h2>
+<ul>
+<li><b>Gobernanza</b>: procesos, normas y organizaciones que supervisan y regulan Internet a nivel global. <b>No hay una única entidad de control</b>: la administran organismos internacionales, instituciones técnicas, gobiernos y empresas privadas.</li>
+</ul>
+<h3>2.1 Gestión de recursos de Internet</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>IANA e ICANN</b></p>
+<p>Para que Internet funcione hay que administrar <b>direcciones IP, nombres de dominio y parámetros de protocolos</b>. Destacan dos entidades: <b>IANA</b> (Internet Assigned Numbers Authority) e <b>ICANN</b> (Internet Corporation for Assigned Names and Numbers).</p>
+</div>
+<div class="tw"><table><tr><th>Entidad</th><th>Descripción</th></tr>
+<tr><td><b>ICANN</b></td><td>Organización <b>sin ánimo de lucro</b> que supervisa <b>nombres de dominio y direcciones IP</b> en todo el mundo. <b>Desde 2016</b> gestiona la IANA de forma <b>independiente del gobierno de EE. UU.</b> (antes dependía del Departamento de Comercio)</td></tr>
+<tr><td><b>IANA</b></td><td>Gestiona tres recursos: <b>direcciones IP</b> (bloques a los <b>RIR</b>, que los dan a ISP) · <b>Números de Sistema Autónomo (ASN)</b> (usados en <b>BGP</b>) · <b>Zona raíz</b> (asignación de operadores de <b>TLD</b>)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>RIR</th><th>Zona</th></tr>
+<tr><td><b>RIPE NCC</b></td><td>Europa, Oriente Medio y Asia Central</td></tr>
+<tr><td><b>ARIN</b></td><td>América del Norte</td></tr>
+<tr><td><b>APNIC</b></td><td>Asia y Pacífico</td></tr>
+<tr><td><b>LACNIC</b></td><td>América Latina y Caribe</td></tr>
+<tr><td><b>AFRINIC</b></td><td>África</td></tr>
+</table></div>
+<h3>2.2 Ingeniería, diseño, estandarización y coordinación</h3>
+<ul>
+<li><b>ISOC</b> (Internet Society): organización internacional <b>sin ánimo de lucro</b>, fundada en <b>1992</b>, para que Internet sea abierta, accesible y segura; coordina grupos técnicos:</li>
+</ul>
+<div class="tw"><table><tr><th>Grupo</th><th>Función</th></tr>
+<tr><td><b>IETF</b> (Internet Engineering Task Force)</td><td><b>Principal organismo de estandarización</b> de protocolos (TCP/IP, HTTP, IPv6); publica los <b>RFC</b> (Request for Comments, públicos); organizado en grupos de trabajo</td></tr>
+<tr><td><b>IAB</b> (Internet Architecture Board)</td><td>Define la <b>arquitectura general</b> de Internet y asesora</td></tr>
+<tr><td><b>IRTF</b> (Internet Research Task Force)</td><td><b>Investiga</b> innovaciones en protocolos y tecnologías</td></tr>
+</table></div>
+<h3>2.3 Desarrollo web (W3C)</h3>
+<ul>
+<li><b>W3C</b> (World Wide Web Consortium): estandariza <b>HTML, CSS, JavaScript</b> y protocolos como <b>HTTP o SOAP</b>; garantiza compatibilidad entre navegadores y plataformas. Fundado en <b>1994</b> por <b>Tim Berners-Lee</b>; colabora con <b>IETF</b> (HTTP) e <b>ICANN</b> (DNS).</li>
+</ul>
+<h2 id="s2">3. Arquitectura de Internet</h2>
+<ul>
+<li>Red de redes <b>descentralizada</b>: ISP, empresas y gobiernos gestionan partes distintas, interconectadas con protocolos estandarizados; organizada <b>jerárquicamente en niveles Tier</b> (a menor Tier, más localizada).</li>
+</ul>
+<div class="tw"><table><tr><th>Nivel</th><th>Descripción</th></tr>
+<tr><td><b>Tier 1</b></td><td><b>Proveedores de red globales</b></td></tr>
+<tr><td><b>Tier 2</b></td><td><b>ISP regionales</b> que compran acceso a Tier 1</td></tr>
+<tr><td><b>Tier 3</b></td><td><b>ISP locales</b></td></tr>
+</table></div>
+<ul>
+<li><b>AS (Autonomous System)</b>: redes IP bajo control de un mismo ISP; IANA los asigna a los <b>RIR</b> y estos a cada ISP.</li>
+<li><b>BGP</b> (Border Gateway Protocol) interconecta las redes: <b>iBGP</b> (Internal, dentro de un mismo AS) y <b>eBGP</b> (External, entre distintos AS).</li>
+<li><b>IXP</b> (Internet Exchange Point): infraestructuras donde se interconectan los ISP para intercambiar tráfico eficientemente. <b>Peering</b>: acuerdo de <b>intercambio de tráfico IP entre dos ISP</b>.</li>
+</ul>
+<h2 id="s3">4. Resolución de nombres: servicio DNS</h2>
+<ul>
+<li><b>DNS</b> (Sistema de Nombres de Dominio): sistema <b>jerárquico y distribuido</b> que <b>traduce nombres de dominio y de host en direcciones IP</b>.</li>
+</ul>
+<h3>4.1 Características (RFC 1034 y RFC 1035)</h3>
+<ul>
+<li>Base de datos global, distribuida y jerarquizada en <b>servidores DNS</b>, que <b>almacenan respuestas en caché</b>. Ejemplo: Google, <b>8.8.8.8 ó 8.8.4.4</b>.</li>
+<li><b>Nivel de aplicación</b> de TCP/IP; funciona sobre <b>UDP y TCP</b>, <b>puerto 53</b>.</li>
+</ul>
+<h3>4.2 Nombres y niveles de dominio</h3>
+<ul>
+<li>Estructura jerárquica en <b>árbol invertido</b>; el primer nivel lo establece <b>ICANN</b>. En España, <b>Red.es</b> es la autoridad de registro del <b>.es</b>. Bajo el dominio raíz están los <b>TLD</b> (Top Level Domain: la parte tras el último punto; en www.wikipedia.org, <b>.org</b>).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de TLD</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th><th>Ejemplos</th></tr>
+<tr><td><b>gTLD</b> (Generic)</td><td>Dominios <b>genéricos</b> de propósito general</td><td>.com, .org, .net, .info, .biz, .edu, .gov, .mil</td></tr>
+<tr><td><b>ccTLD</b> (Country Code)</td><td>Asociados a <b>países o territorios</b>; asignación y gestión por cada país</td><td>.es (España), .fr, .de</td></tr>
+<tr><td><b>sTLD</b> (Sponsored)</td><td>Reservado para <b>comunidades específicas</b>, como empresas. Ej.: en intranet.telefonica.com, el TLD es .com y el <b>SLD</b> es telefonica.com</td><td></td></tr>
+</table></div>
+</div>
+<h3>4.3 Tipos de servidores DNS</h3>
+<ul>
+<li>El más conocido es <b>BIND</b> (Berkeley Internet Name Domain). Consulta con el comando <b>nslookup</b> (Name Server Lookup).</li>
+</ul>
+<div class="tw"><table><tr><th>Servidor</th><th>Función</th></tr>
+<tr><td><b>Maestro o primario</b></td><td>Servidor de zona donde se <b>modifican los registros</b>; informa a los esclavos mediante <b>NOTIFY</b></td></tr>
+<tr><td><b>Secundario o esclavo</b></td><td>Apoyo al primario; ambos resuelven solicitudes, pero <b>sólo el primario gestiona las modificaciones</b></td></tr>
+<tr><td><b>Caché</b></td><td>Guarda registros de varias zonas localmente para <b>resoluciones más rápidas</b></td></tr>
+</table></div>
+<h3>4.4 Registros de una zona DNS</h3>
+<ul>
+<li><b>Zona DNS</b>: conjunto de registros gestionados por un <b>servidor autoritativo</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Registros DNS</b></p>
+<div class="tw"><table><tr><th>Registro</th><th>Uso principal</th></tr>
+<tr><td><b>A</b></td><td>Nombre de dominio → dirección <b>IPv4</b></td></tr>
+<tr><td><b>AAAA</b></td><td>Nombre de dominio → dirección <b>IPv6</b></td></tr>
+<tr><td><b>CNAME</b></td><td><b>Alias</b> de otro nombre de dominio</td></tr>
+<tr><td><b>MX</b></td><td><b>Servidores de correo</b> responsables del dominio</td></tr>
+<tr><td><b>TXT</b></td><td><b>Texto arbitrario</b> asociado al dominio</td></tr>
+<tr><td><b>NS</b></td><td>Servidores DNS <b>autoritativos</b> de la zona</td></tr>
+<tr><td><b>SOA</b></td><td><b>Inicio de una zona</b>: servidor principal, número de serie…</td></tr>
+<tr><td><b>SRV</b></td><td>Localiza <b>servicios</b> específicos (SIP, LDAP) con nombre, protocolo, puerto y host</td></tr>
+<tr><td><b>HINFO</b></td><td>Información del <b>SO y arquitectura hardware</b> del host</td></tr>
+</table></div>
+</div>
+<h3>4.5 Seguridad en las consultas DNS</h3>
+<ul>
+<li>El DNS tradicional <b>no cifra</b> las consultas (pueden interceptarse o manipularse).</li>
+</ul>
+<div class="tw"><table><tr><th>Protocolo</th><th>Características</th><th>RFC</th></tr>
+<tr><td><b>DNSSEC</b> (DNS Security Extensions)</td><td><b>Firmas digitales</b> para evitar manipular respuestas</td><td><b>4033, 4034 y 4035</b></td></tr>
+<tr><td><b>DoH</b> (DNS over HTTPS)</td><td>Cifra las consultas con <b>HTTPS</b></td><td><b>8484</b></td></tr>
+<tr><td><b>DoT</b> (DNS over TLS)</td><td>Cifra las consultas con <b>TLS</b></td><td><b>7858</b></td></tr>
+</table></div>
+<h3>4.6 Resolución de consultas</h3>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1</b></td><td>Se consulta el fichero <b>"hosts"</b> local; si no está, al <b>servidor DNS configurado (primario)</b></td></tr>
+<tr><td><b>2</b></td><td>Si el DNS primario no es alcanzable, al <b>DNS alternativo</b></td></tr>
+<tr><td><b>3</b></td><td>Si no conoce la respuesta, <b>reenvía la consulta al servidor de dominio raíz</b> (p. ej. el del .es)</td></tr>
+<tr><td><b>4</b></td><td>El servidor raíz contesta al servidor de zona con la resolución</td></tr>
+<tr><td><b>5</b></td><td>El servidor de zona indica la <b>IP</b> del dominio</td></tr>
+<tr><td><b>6</b></td><td>La respuesta llega al <b>cliente DNS</b> que inició la consulta</td></tr>
+</table></div>
+<h3>4.7 Resolución inversa</h3>
+<ul>
+<li><b>Reverse DNS lookup</b>: obtiene el <b>nombre asociado a una IP</b> (inversa de la directa). Sirve para verificar hosts y <b>filtrar spam</b>. Usa el dominio <b>in-addr.arpa</b> con la IP en <b>notación invertida</b>: 5.6.7.8 → <b>8.7.6.5.in-addr.arpa</b>.</li>
+</ul>
+<h3>4.8 Servicio WHOIS (RFC 1400)</h3>
+<ul>
+<li>Protocolo <b>TCP, puerto 43</b>: información sobre <b>propiedad y gestión de un dominio</b> (propietario, contactos administrativo y técnico, fechas de creación y expiración).</li>
+</ul>
+<h2 id="s4">5. Principales servicios de Internet</h2>
+<div class="tw"><table><tr><th>Servicio</th><th>Protocolo / puerto</th><th>Descripción</th></tr>
+<tr><td><b>Correo electrónico</b></td><td><b>SMTP TCP 25</b> (transferencia y envío) · <b>POP3 TCP 110</b> (descarga y elimina del servidor) · <b>IMAP TCP 143</b> (gestión en el servidor) · <b>MIME</b> (contenido multimedia y adjuntos)</td><td>Mensajería <b>asíncrona</b></td></tr>
+<tr><td><b>Grupos de noticias</b></td><td><b>NNTP</b>, <b>TCP 119</b> (similar a SMTP)</td><td>Foros distribuidos por temas; suele pedirse login</td></tr>
+<tr><td><b>Mensajería instantánea</b></td><td><b>IRC</b> (Internet Relay Chat): canales públicos o privados · <b>XMPP</b> y <b>WebSockets</b></td><td>Comunicación en tiempo real</td></tr>
+<tr><td><b>FTP</b></td><td><b>TCP 21</b> control y <b>TCP 20</b> datos (modo activo) · <b>SFTP</b> sobre <b>TCP 22</b> · <b>FTPS</b> (TLS/SSL) sobre <b>TCP 990</b></td><td>Transferencia de archivos</td></tr>
+<tr><td><b>Telnet – SSH</b></td><td><b>Telnet TCP 23</b> (sin cifrado, reemplazado) · <b>SSH TCP 22</b> (cifrado extremo a extremo)</td><td>Acceso remoto</td></tr>
+<tr><td><b>Rlogin</b></td><td><b>TCP 513</b></td><td>Similar a Telnet, entre máquinas <b>Unix</b> en red confiable</td></tr>
+<tr><td><b>NFS</b> (Network File System)</td><td></td><td>Acceso remoto a sistemas de archivos <b>como si fueran locales</b></td></tr>
+<tr><td><b>IPP</b> (Internet Printing Protocol)</td><td><b>TCP 631</b>, basado en <b>HTTP</b></td><td>Gestión de trabajos de impresión, impresoras remotas, autenticación y permisos</td></tr>
+<tr><td><b>Servicios en la nube</b></td><td><b>IaaS, PaaS, SaaS</b></td><td>Google Drive, Amazon WS, Microsoft Azure</td></tr>
+<tr><td><b>WWW</b></td><td><b>HTTP TCP 80</b> · <b>HTTPS TCP 443</b> (TLS)</td><td>Hipertexto; buscadores, portales, comercio electrónico, blogs, Wikipedia, redes sociales, analítica web</td></tr>
+</table></div>
+<h2 id="s5">6. Protocolos HTTP y HTTPS</h2>
+<h3>6.1 HTTP – HyperText Transfer Protocol</h3>
+<ul>
+<li>Protocolo de <b>nivel de aplicación</b> de la WWW, modelo <b>cliente-servidor</b> (el navegador solicita, el servidor responde). <b>Sin estado</b>: cada solicitud es independiente (salvo <b>cookies o sesiones</b>).</li>
+</ul>
+<h3>6.1.1 Versiones</h3>
+<div class="tw"><table><tr><th>Versión</th><th>Características</th></tr>
+<tr><td><b>HTTP/0.9</b></td><td>Primera, muy simple; sólo <b>GET</b></td></tr>
+<tr><td><b>HTTP/1.0</b></td><td>Cabeceras, <b>tipos MIME</b>, <b>códigos de estado</b>; conexiones persistentes limitadas; añade <b>POST y HEAD</b></td></tr>
+<tr><td><b>HTTP/1.1</b></td><td><b>Muy usada</b>: conexiones persistentes (<b>Keep-Alive</b>), caché eficiente, compresión, <b>chunked encoding</b>, métodos <b>PUT y DELETE</b></td></tr>
+<tr><td><b>HTTP/2</b></td><td><b>Una sola conexión multiplexada</b>, compresión de cabeceras, priorización; <b>formato binario</b></td></tr>
+<tr><td><b>HTTP/3</b></td><td>Más reciente: <b>QUIC (sobre UDP)</b> y cifrado <b>TLS 1.3</b>; menos latencia; adopción progresiva</td></tr>
+</table></div>
+<h3>6.1.2 Esquema de conexión HTTP</h3>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1</b></td><td>El usuario accede a una <b>URL</b></td></tr>
+<tr><td><b>2</b></td><td>El cliente identifica el <b>protocolo, la DNS e IP del servidor y el puerto</b></td></tr>
+<tr><td><b>3</b></td><td>Abre una <b>conexión TCP/IP</b> con el servidor</td></tr>
+<tr><td><b>4</b></td><td>Envía una <b>solicitud HTTP</b> (ej. GET /index.html HTTP/1.1)</td></tr>
+<tr><td><b>5</b></td><td>El servidor responde: <b>código de estado</b> (ej. 200 OK), <b>cabeceras</b> y <b>cuerpo</b></td></tr>
+<tr><td><b>6</b></td><td>La conexión se <b>cierra o se mantiene</b> según versión y cabeceras</td></tr>
+</table></div>
+<h3>6.1.3 Estructura de los mensajes HTTP</h3>
+<ul>
+<li>Petición: <b>método</b> (GET, POST…) + <b>ruta (URL)</b> + cabeceras opcionales. Respuesta: <b>código resultado</b> (p. ej. 200).</li>
+</ul>
+<div class="tw"><table><tr><th>Cabecera</th><th>Descripción</th></tr>
+<tr><td><b>Accept</b></td><td>Tipos de contenido que el cliente procesa (text/html, application/json)</td></tr>
+<tr><td><b>Accept-Charset</b></td><td>Conjunto de caracteres aceptados</td></tr>
+<tr><td><b>Accept-Encoding</b></td><td>Métodos de <b>compresión</b> aceptados (gzip, deflate)</td></tr>
+<tr><td><b>Accept-Language</b></td><td><b>Idiomas</b> preferidos (es-ES, en-US)</td></tr>
+<tr><td><b>Authorization</b></td><td>Identificación del navegador en el servidor</td></tr>
+<tr><td><b>Content-Encoding</b></td><td>Codificación del cuerpo</td></tr>
+<tr><td><b>Content-Language</b></td><td>Idioma del contenido enviado</td></tr>
+<tr><td><b>Content-Type</b></td><td><b>Tipo de contenido</b> del cuerpo</td></tr>
+<tr><td><b>Date</b></td><td>Fecha y hora de la solicitud</td></tr>
+<tr><td><b>Host</b></td><td><b>Dominio</b> al que se dirige la solicitud</td></tr>
+<tr><td><b>Link</b></td><td>Enlaces relacionados con el recurso</td></tr>
+<tr><td><b>Orig-URL</b></td><td>Dirección en la que se originó la solicitud</td></tr>
+<tr><td><b>Referer</b></td><td>URL de la página desde la que se hizo la solicitud</td></tr>
+<tr><td><b>User-Agent</b></td><td>Identifica la <b>aplicación cliente</b> (navegador o herramienta)</td></tr>
+</table></div>
+<h3>6.1.4 Métodos HTTP</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Métodos HTTP</b></p>
+<div class="tw"><table><tr><th>Método</th><th>Descripción</th></tr>
+<tr><td><b>GET</b></td><td><b>Solicita</b> un recurso</td></tr>
+<tr><td><b>HEAD</b></td><td>Como GET pero <b>sólo devuelve las cabeceras</b>, sin cuerpo</td></tr>
+<tr><td><b>POST</b></td><td><b>Envía datos</b> al servidor (crear o procesar), con cuerpo</td></tr>
+<tr><td><b>PUT</b></td><td>Envía datos para <b>reemplazar</b> un recurso existente o <b>crearlo</b> si no existe</td></tr>
+<tr><td><b>DELETE</b></td><td><b>Elimina</b> el recurso identificado por la URL</td></tr>
+<tr><td><b>OPTIONS</b></td><td>Consulta las <b>opciones disponibles</b>; muy usado en <b>CORS</b></td></tr>
+<tr><td><b>PATCH</b></td><td>Como PUT pero <b>modifica parcialmente</b> el recurso</td></tr>
+<tr><td><b>TRACE</b></td><td>Devuelve la solicitud recibida (diagnóstico); suele estar <b>deshabilitado por seguridad</b></td></tr>
+<tr><td><b>CONNECT</b></td><td>Establece un <b>túnel</b> con el servidor; conexiones seguras (HTTPS)</td></tr>
+</table></div>
+</div>
+<h3>6.1.5 Códigos de respuesta</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Códigos de estado HTTP</b></p>
+<div class="tw"><table><tr><th>Clase</th><th>Significado</th></tr>
+<tr><td><b>1xx</b> Informativos</td><td>Solicitud recibida, el proceso continúa</td></tr>
+<tr><td><b>2xx</b> Éxito</td><td>Recibida, entendida y procesada correctamente</td></tr>
+<tr><td><b>3xx</b> Redirección</td><td>El recurso ya no está en la ubicación indicada</td></tr>
+<tr><td><b>4xx</b> Error del cliente</td><td>Solicitud con errores (sintaxis, autenticación…)</td></tr>
+<tr><td><b>5xx</b> Error del servidor</td><td>Error en el servidor</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Código</th><th>Nombre</th><th>Descripción</th></tr>
+<tr><td><b>100</b></td><td>Continue</td><td>El cliente puede continuar</td></tr>
+<tr><td><b>101</b></td><td>Switching Protocols</td><td>El servidor acepta cambiar de protocolo</td></tr>
+<tr><td><b>200</b></td><td><b>OK</b></td><td>Procesada correctamente</td></tr>
+<tr><td><b>201</b></td><td><b>Created</b></td><td>Recurso creado</td></tr>
+<tr><td><b>202</b></td><td>Accepted</td><td>Aceptada pero aún no procesada</td></tr>
+<tr><td><b>203</b></td><td>Non-Authoritative Information</td><td>Respuesta modificada por un <b>proxy</b> intermedio</td></tr>
+<tr><td><b>204</b></td><td><b>No Content</b></td><td>Éxito sin cuerpo de respuesta</td></tr>
+<tr><td><b>205</b></td><td>Reset Content</td><td>El cliente debe reiniciar el formulario</td></tr>
+<tr><td><b>206</b></td><td>Partial Content</td><td>Sólo parte del recurso (descargas)</td></tr>
+<tr><td><b>301</b></td><td><b>Moved Permanently</b></td><td>Movido <b>definitivamente</b></td></tr>
+<tr><td><b>302</b></td><td><b>Found</b></td><td>Redirección <b>temporal</b></td></tr>
+<tr><td><b>303</b></td><td>See Other</td><td>Redirección a otra URL con GET</td></tr>
+<tr><td><b>304</b></td><td><b>Not Modified</b></td><td>No hace falta reenviar el recurso (<b>caché</b>)</td></tr>
+<tr><td><b>400</b></td><td><b>Bad Request</b></td><td>Error de sintaxis</td></tr>
+<tr><td><b>401</b></td><td><b>Unauthorized</b></td><td>Requiere <b>autenticación</b></td></tr>
+<tr><td><b>402</b></td><td>Payment Required</td><td>Reservado (micropagos, APIs)</td></tr>
+<tr><td><b>403</b></td><td><b>Forbidden</b></td><td>Acceso <b>prohibido</b> aunque esté autenticado</td></tr>
+<tr><td><b>404</b></td><td><b>Not Found</b></td><td>El recurso <b>no existe</b></td></tr>
+<tr><td><b>500</b></td><td><b>Internal Error</b></td><td>Fallo genérico del servidor</td></tr>
+<tr><td><b>501</b></td><td>Not Implemented</td><td>El servidor no reconoce el método</td></tr>
+<tr><td><b>502</b></td><td><b>Bad Gateway</b></td><td>Un servidor intermedio recibió una respuesta inválida</td></tr>
+<tr><td><b>503</b></td><td><b>Service Unavailable</b></td><td>Servidor <b>temporalmente fuera de servicio</b></td></tr>
+<tr><td><b>504</b></td><td><b>Gateway Timeout</b></td><td>El servidor no recibió respuesta a tiempo de otro servidor</td></tr>
+</table></div>
+</div>
+<h3>6.2 HTTPS – HTTP Secure</h3>
+<ul>
+<li><b>HTTP sobre conexión cifrada con TLS</b>: <b>confidencialidad, integridad y autenticación</b>; capa de aplicación.</li>
+</ul>
+<div class="tw"><table><tr><th>Aspecto</th><th>HTTP</th><th>HTTPS</th></tr>
+<tr><td><b>Seguridad</b></td><td>No cifrado</td><td>Cifrado mediante <b>TLS</b></td></tr>
+<tr><td><b>Puerto</b></td><td><b>80</b> (TCP)</td><td><b>443</b> (TCP)</td></tr>
+<tr><td><b>Confidencialidad</b></td><td>No protege</td><td>Protege frente a escuchas y robo</td></tr>
+<tr><td><b>Integridad</b></td><td>No detecta cambios</td><td><b>Detecta cambios</b> en los datos</td></tr>
+<tr><td><b>Autenticación</b></td><td>No verifica al servidor</td><td>Verifica al servidor mediante <b>certificados</b></td></tr>
+</table></div>
+<ul>
+<li>HTTP es inseguro (<b>man-in-the-middle, eavesdropping</b>). El servidor necesita un <b>certificado de clave pública firmado por una CA conocida</b>. <b>HSTS</b>: el sitio indica a los navegadores que <b>sólo se comunique por HTTPS</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Fase</th><th>Pasos</th></tr>
+<tr><td><b>Fase 1: handshake TLS</b></td><td>(1) El cliente se conecta al <b>puerto 443</b> → (2) el servidor responde con su <b>certificado digital</b> emitido por una <b>CA</b> → (3) el cliente <b>verifica</b> el certificado (dominio, firma, fecha) → (4) acuerdan una <b>clave simétrica</b>, intercambiada con cifrado <b>asimétrico</b></td></tr>
+<tr><td><b>Fase 2: comunicación cifrada</b></td><td>Todo el tráfico HTTP viaja <b>cifrado con la clave negociada</b></td></tr>
+</table></div>
+<h2 id="s6">7. La seguridad de Internet</h2>
+<h3>7.1 SSL / TLS</h3>
+<h3>7.1.1 Historia y evolución</h3>
+<div class="tw"><table><tr><th>Versión</th><th>Año</th><th>Notas</th></tr>
+<tr><td><b>SSL 2.0</b></td><td><b>1995</b></td><td>Desarrollado por <b>Netscape</b>; múltiples vulnerabilidades</td></tr>
+<tr><td><b>SSL 3.0</b></td><td><b>1996</b></td><td>Sustituye a SSL 2.0</td></tr>
+<tr><td><b>TLS 1.0</b></td><td><b>1999</b></td><td>El <b>IETF</b> estandariza SSL 3.0 como TLS 1.0</td></tr>
+<tr><td><b>TLS 1.1</b></td><td><b>2006</b></td><td>Protección contra ataques <b>CBC</b>; parámetros de registro de la IANA</td></tr>
+<tr><td><b>TLS 1.2</b></td><td><b>2008</b></td><td>Funciones hash más seguras (<b>SHA-2</b>), cifrado autenticado (<b>AEAD</b>), <b>HMAC</b></td></tr>
+<tr><td><b>TLS 1.3</b></td><td><b>2018</b></td><td><b>Simplifica</b>, elimina algoritmos obsoletos; muchas extensiones de TLS 1.2 no son compatibles</td></tr>
+</table></div>
+<h3>7.1.2 Características de TLS 1.3</h3>
+<ul>
+<li>Protocolo de la <b>capa de transporte (nivel 4 OSI)</b>. Mejoras: <b>menor latencia</b> (handshake rediseñado), algoritmos de cifrado seguros, <b>cifrado temprano</b>. Cifra los datos con <b>criptografía simétrica</b>; claves <b>únicas por conexión</b>.</li>
+</ul>
+<h3>7.1.3 Protocolos en TLS 1.3</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>IMPORTANTE – Subprotocolos de TLS 1.3: Handshake Protocol</b></p>
+<p>Durante el <b>Handshake Protocol</b> se establece una conexión segura entre cliente y servidor: se <b>negocian los parámetros de seguridad</b>, la <b>clave compartida</b> y los <b>algoritmos criptográficos</b>, y se <b>autentican las partes</b> mediante certificados. Pasos principales:</p>
+<div class="tw"><table><tr><th>Paso</th><th>Mensaje</th><th>Descripción</th></tr>
+<tr><td><b>1</b></td><td><b>ClientHello</b></td><td>El cliente inicia: <b>versiones de TLS soportadas</b>, <b>conjuntos de cifrado preferidos</b> y <b>datos aleatorios</b></td></tr>
+<tr><td><b>2</b></td><td><b>ServerHello</b></td><td>El servidor elige <b>versión de TLS y conjunto de cifrado</b>, y aporta sus datos aleatorios. <b>Desde aquí todos los mensajes van cifrados</b></td></tr>
+<tr><td><b>3</b></td><td><b>Intercambio de claves</b></td><td>Se genera la <b>clave de sesión compartida</b>; en TLS 1.3 con <b>Diffie-Hellman efímero (DHE)</b> para garantizar <b>Perfect Forward Secrecy</b></td></tr>
+<tr><td><b>4</b></td><td><b>Autenticación</b></td><td>El servidor envía su <b>certificado digital</b>; si se requiere <b>autenticación mutua</b>, el cliente también</td></tr>
+<tr><td><b>5</b></td><td><b>Finalización</b></td><td>Mensajes finales que confirman el handshake; empieza la comunicación cifrada</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Mensaje del handshake (TLS 1.3)</th><th>Participante</th><th>Uso</th></tr>
+<tr><td><b>ClientHello</b></td><td>Cliente</td><td>Inicia el handshake: capacidades criptográficas y datos aleatorios</td></tr>
+<tr><td><b>ServerHello</b></td><td>Servidor</td><td>Versión, algoritmos seleccionados</td></tr>
+<tr><td><b>HelloRetryRequest</b></td><td>Servidor</td><td>Pide un <b>nuevo ClientHello</b> (p. ej. para cambiar el grupo DH)</td></tr>
+<tr><td><b>Certificate</b></td><td>Ambos</td><td>Envío del certificado (también la respuesta del cliente si el servidor pide autenticación)</td></tr>
+<tr><td><b>CertificateRequest</b></td><td>Servidor</td><td>Solicita al cliente <b>autenticarse con certificado</b></td></tr>
+<tr><td><b>CertificateVerify</b></td><td>Cliente/Servidor</td><td>Prueba que quien envía el certificado <b>posee la clave privada</b></td></tr>
+<tr><td><b>Finished</b></td><td>Ambos</td><td><b>Último mensaje</b>: confirma la <b>integridad</b> de lo negociado</td></tr>
+<tr><td><b>NewSessionTicket</b></td><td>Servidor</td><td>Opcional: <b>reanudar sesiones</b> TLS futuras</td></tr>
+<tr><td><b>KeyUpdate</b></td><td>Ambos</td><td><b>Renueva claves</b> en una conexión larga</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Otros subprotocolos TLS</th><th>Función</th></tr>
+<tr><td><b>Record Protocol</b></td><td><b>Encapsula, comprime</b> (compresión <b>deshabilitada en TLS 1.3</b> por seguridad), <b>cifra y transmite</b> los datos con el algoritmo negociado en el Handshake</td></tr>
+<tr><td><b>Change Cipher Spec Protocol</b></td><td>Indica <b>cambios</b> en la forma de cifrar acordada</td></tr>
+<tr><td><b>Alert Protocol</b></td><td>Comunica <b>errores o advertencias</b> (fallos de autenticación, mensajes inesperados, descifrado); según gravedad puede <b>cerrar la conexión</b></td></tr>
+</table></div>
+<h3>7.2 IPsec (Internet Protocol Security)</h3>
+<ul>
+<li>Conjunto de protocolos que <b>cifra y autentica el tráfico IP</b>; actúa en la <b>capa de red</b> (TLS, en transporte/aplicación). Modos: <b>transporte</b> (sólo el contenido de los paquetes) y <b>túnel</b> (todo el paquete, creando una <b>VPN</b>). Protocolos: <b>AH</b> (Authentication Header, sólo autenticación) y <b>ESP</b> (Encapsulating Security Payload, autenticación y cifrado).</li>
+</ul>
+<h3>7.3 Kerberos</h3>
+<ul>
+<li>Autenticación para redes abiertas (entornos corporativos); <b>tercero de confianza: KDC</b> (Key Distribution Center); <b>criptografía simétrica y tickets</b>, sin enviar contraseñas por la red.</li>
+</ul>
+<h3>7.4 DNSSEC</h3>
+<ul>
+<li>Añade seguridad a la resolución de nombres: <b>integridad y autenticidad</b> de las respuestas con <b>firmas digitales (clave pública)</b>. <b>No cifra</b>, sólo garantiza que no se han manipulado; protege de <b>DNS spoofing y cache poisoning</b>.</li>
+</ul>
+<h3>7.5 DANE (DNS-based Authentication of Named Entities)</h3>
+<ul>
+<li>Complementa a DNSSEC: el propietario del dominio <b>publica certificados o claves públicas en los registros DNS</b>, de modo que los navegadores validan certificados <b>sin depender sólo de las CA</b>.</li>
+</ul>
+<div class="pn"><a href="b4t7.html">← 4.7</a><a href="b4t9.html">4.9 →</a></div></main></div><script src="../app.js"></script></body></html>

@@ -1,0 +1,260 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 4 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Administración de redes de área local</a><a href="#s1">2. Gestión de usuarios</a><a href="#s2">3. Gestión de dispositivos</a><a href="#s3">4. Monitorización y control de tráfico</a></aside>
+<main class="doc" data-key="b4t4"><div class="crumb">Bloque 4 · Tema 4</div><h1>Administración de redes de área local: usuarios, directorio, Kerberos, SNMP, gestión y monitorización</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (5)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema4.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema4.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Administración de redes de área local</h2>
+<h3>1.1 El administrador de red</h3>
+<ul>
+<li><b>Administrador de red</b>: profesional responsable del <b>correcto funcionamiento, seguridad y disponibilidad</b> de la red (<b>LAN</b>). Objetivo: que usuarios y sistemas se comuniquen de forma <b>eficiente, segura y sin interrupciones</b>, con los niveles de rendimiento acordados.</li>
+</ul>
+<h3>1.2 Funciones</h3>
+<div class="tw"><table><tr><th>Función</th><th>Contenido</th></tr>
+<tr><td><b>Planificación, diseño y configuración</b></td><td><b>Topología</b>, disposición de dispositivos, <b>protocolos</b>, <b>IP y subredes</b>; características físicas de los espacios</td></tr>
+<tr><td><b>Usuarios y permisos</b></td><td>Quién accede, a qué recursos y en qué condiciones: <b>cuentas, políticas de acceso, Active Directory</b></td></tr>
+<tr><td><b>Dispositivos de red</b></td><td>Instalar, configurar y mantener <b>routers, switches, APs, cortafuegos</b>; acceso remoto, <b>logs y alertas</b>, monitorización en tiempo real</td></tr>
+<tr><td><b>Supervisión del rendimiento</b></td><td>Tráfico, <b>cuellos de botella</b>, medidas correctivas: <b>SNMP, NetFlow, sFlow</b></td></tr>
+<tr><td><b>Seguridad</b></td><td><b>Cortafuegos, autenticación, segmentación</b>, control de dispositivos, <b>actualizaciones de firmware</b></td></tr>
+<tr><td><b>Mantenimiento e incidencias</b></td><td>Identificar y solucionar fallos en el <b>menor tiempo posible</b></td></tr>
+<tr><td><b>Documentación</b></td><td>Configuración, procedimientos, evolución, incidencias, <b>planos</b> de elementos; formación continua</td></tr>
+</table></div>
+<h2 id="s1">2. Gestión de usuarios</h2>
+<ul>
+<li>Tareas: <b>alta, modificación y baja</b> de cuentas · <b>permisos y grupos</b> según funciones · <b>políticas de seguridad</b> (contraseñas, bloqueo, acceso) · <b>supervisión</b> de actividad (seguridad y auditoría) · <b>perfil de usuario</b> (entorno, escritorio, unidades de red). Se centralizan en <b>sistemas de directorio</b> como Active Directory.</li>
+</ul>
+<h3>2.1 Cuentas de usuario</h3>
+<ul>
+<li>Identifican de forma <b>única</b> a cada persona: nombre de usuario + contraseña, grupos, perfil, restricciones de horario.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de cuenta</th><th>Dónde se crea</th><th>Alcance</th></tr>
+<tr><td><b>Local</b></td><td>En un <b>equipo concreto</b></td><td>Sólo ese equipo</td></tr>
+<tr><td><b>De dominio</b></td><td>En el servidor <b>Active Directory</b> (controlador de dominio)</td><td><b>Toda la red</b>; inicio de sesión desde cualquier equipo del dominio</td></tr>
+</table></div>
+<h3>2.2 Políticas de usuario</h3>
+<ul>
+<li>Ejemplos: <b>requisitos de contraseña</b> (longitud, complejidad, expiración) · <b>bloqueo</b> tras intentos fallidos · <b>limitaciones horarias</b> · <b>redirección de carpetas</b> personales a servidores · restricción de <b>USB</b> o instalación de programas.</li>
+<li>En Windows se aplican mediante <b>Directivas de grupo (GPO)</b>, configuradas desde AD y aplicables a <b>usuarios, grupos o unidades organizativas</b>.</li>
+</ul>
+<h3>2.3 Sistemas de directorio</h3>
+<ul>
+<li><b>Sistema de directorio</b>: base de datos especializada con información de <b>usuarios, equipos, grupos y recursos</b>; gestión centralizada de identidades y permisos (<b>autenticación, autorización y control de acceso</b>).</li>
+<li><b>LDAP</b> (Lightweight Directory Access Protocol): estándar <b>abierto del IETF</b> para consultar y modificar directorios; lo usan <b>Active Directory y OpenLDAP</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Sistema</th><th>Plataforma</th><th>Tipo</th><th>SSO</th><th>Gratuito</th></tr>
+<tr><td><b>Active Directory</b> (Microsoft)</td><td><b>Windows</b></td><td>On-premise</td><td><b>Sí (Kerberos)</b></td><td>No</td></tr>
+<tr><td><b>OpenLDAP</b></td><td><b>Linux/Unix</b></td><td>On-premise</td><td>Parcial (con extensiones)</td><td><b>Sí</b></td></tr>
+<tr><td><b>JumpCloud</b></td><td><b>Multiplataforma</b></td><td><b>SaaS / Cloud</b> (DaaS)</td><td>Sí</td><td>No (freemium)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Sistema</th><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td><b>Active Directory</b></td><td>Integración total con <b>Microsoft</b>, SSO con <b>Kerberos</b>, amplio soporte; integra <b>GPO, DNS</b></td><td>Dependencia de Windows, <b>licencias Windows Server</b>, mayor consumo de recursos</td></tr>
+<tr><td><b>OpenLDAP</b></td><td><b>Gratuito, código abierto</b>, ligero y configurable; ideal Linux o mixtos</td><td>Configuración inicial <b>más técnica</b>; requiere herramientas extra (contraseñas, interfaz gráfica)</td></tr>
+<tr><td><b>JumpCloud</b></td><td>Acceso desde cualquier lugar, <b>multiplataforma</b> desde una consola, integra <b>SSO, RADIUS, LDAP, MFA</b> y políticas de dispositivos</td><td><b>Suscripción</b>, menos control que on-premise, depende de <b>Internet</b></td></tr>
+</table></div>
+<h3>2.4 SSO (Single Sign-On)</h3>
+<ul>
+<li><b>SSO</b>: una <b>única autenticación</b> da acceso a múltiples servicios del mismo entorno de confianza.</li>
+<li>Ventajas: <b>menos contraseñas</b> que recordar · menor riesgo de <b>reutilización</b> · <b>gestión centralizada</b> de identidades · <b>acceso unificado y trazabilidad</b>.</li>
+<li>En redes Windows el SSO se basa en <b>Kerberos</b>, integrado en <b>Active Directory</b>.</li>
+</ul>
+<h3>2.4.1 Kerberos y Active Directory</h3>
+<ul>
+<li><b>Kerberos</b>: protocolo de autenticación de red para entornos <b>no confiables</b>, desarrollado por el <b>MIT</b>; principal en <b>AD desde Windows 2000</b>. Puerto <b>88</b> (<b>UDP o TCP</b>). Modelo de <b>tickets</b>: no se envían contraseñas por la red en cada acceso.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Elementos de Kerberos-Active Directory</b></p>
+<div class="tw"><table><tr><th>Elemento</th><th>Función</th></tr>
+<tr><td><b>Cliente (usuario)</b></td><td>Equipo desde el que el usuario inicia sesión</td></tr>
+<tr><td><b>KDC</b> (Key Distribution Center)</td><td>Componente <b>central</b>; en Windows está <b>integrado en el Controlador de Dominio (DC)</b>; <b>emite los tickets</b></td></tr>
+<tr><td><b>TGT</b> (Ticket Granting Ticket)</td><td>Demuestra que el usuario <b>se autenticó</b> y permite <b>pedir otros tickets</b> sin reenviar la contraseña</td></tr>
+<tr><td><b>TGS</b> (Ticket Granting Service)</td><td><b>Servicio del KDC</b> que entrega los tickets de acceso a servicios</td></tr>
+<tr><td><b>STS</b> (Service Ticket)</td><td>Ticket <b>específico</b> para un recurso (carpeta compartida, correo…)</td></tr>
+</table></div>
+</div>
+<h3>Flujo de autenticación Kerberos</h3>
+<div class="tw"><table><tr><th>Paso</th><th>Acción</th></tr>
+<tr><td><b>1. Inicio de sesión</b></td><td>Usuario y contraseña en el cliente</td></tr>
+<tr><td><b>2. Solicitud de TGT</b></td><td>El cliente pide autenticación al <b>KDC</b>, que comprueba credenciales</td></tr>
+<tr><td><b>3. Entrega del TGT</b></td><td>Si son correctas, el KDC envía un <b>TGT cifrado</b> con <b>duración limitada</b> (p. ej. <b>10 horas</b>)</td></tr>
+<tr><td><b>4. Acceso a un servicio</b></td><td>El cliente pide un <b>STS</b> al KDC <b>presentando el TGT</b></td></tr>
+<tr><td><b>5. Obtención del STS</b></td><td>El KDC valida el TGT y entrega el STS</td></tr>
+<tr><td><b>6. Acceso al recurso</b></td><td>El cliente envía el STS al servidor; si es válido, accede <b>sin volver a pedir credenciales</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Mensaje Kerberos</th><th>Uso</th></tr>
+<tr><td><b>KRB_AS_REQ</b></td><td>Solicitar el <b>TGT</b> al KDC</td></tr>
+<tr><td><b>KRB_AS_REP</b></td><td>Respuesta del KDC con el <b>TGT</b></td></tr>
+<tr><td><b>KRB_TGS_REQ</b></td><td>Solicitar el <b>TGS</b> al KDC usando el TGT</td></tr>
+<tr><td><b>KRB_TGS_REP</b></td><td>Respuesta del KDC con el <b>TGS</b> solicitado</td></tr>
+<tr><td><b>KRB_AP_REQ</b></td><td>Identificarse <b>contra el servicio</b> con el TGS del servicio</td></tr>
+<tr><td><b>KRB_ERROR</b></td><td>Notificar <b>errores</b></td></tr>
+</table></div>
+<ul>
+<li><b>Requisitos del SSO con Kerberos</b>: equipos <b>unidos al dominio AD</b> · el cliente <b>resuelve por DNS</b> los controladores de dominio · <b>hora sincronizada</b> (sensible a desfases de <b>más de 5 minutos</b>) · servicios registrados con su <b>SPN</b> (Service Principal Name).</li>
+</ul>
+<h2 id="s2">3. Gestión de dispositivos</h2>
+<ul>
+<li>Garantiza que ordenadores, impresoras, switches, routers y APs <b>funcionen, estén actualizados, seguros y controlados</b>.</li>
+</ul>
+<h3>3.1 Tareas asociadas</h3>
+<div class="tw"><table><tr><th>Tarea</th><th>Contenido</th></tr>
+<tr><td><b>Inventariado</b></td><td>Identificar y registrar el hardware conectado</td></tr>
+<tr><td><b>Configuración remota</b></td><td>Modificar parámetros desde consolas</td></tr>
+<tr><td><b>Actualización de firmware y software</b></td><td>Corregir errores y vulnerabilidades</td></tr>
+<tr><td><b>Supervisión del estado</b></td><td>Rendimiento, temperatura, carga</td></tr>
+<tr><td><b>Alertas y eventos</b></td><td>Notificaciones ante fallos</td></tr>
+<tr><td><b>Políticas de seguridad</b></td><td>Acceso, contraseñas, desactivar puertos</td></tr>
+<tr><td><b>Conectividad</b></td><td>Estado de enlaces, puertos, velocidad</td></tr>
+<tr><td><b>Automatización</b></td><td>Scripts o herramientas para tareas recurrentes o masivas</td></tr>
+</table></div>
+<h3>3.2 Protocolos de gestión de red</h3>
+<h3>3.2.1 SNMP</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>SNMP (Protocolo Simple de Administración de Red)</b></p>
+<p>Uno de los más usados para <b>monitorizar y gestionar</b> dispositivos en redes IP: un <b>gestor</b> central supervisa remotamente routers, switches, impresoras, servidores… mediante mensajes estructurados.</p>
+<ul>
+<li>Protocolo de <b>capa de aplicación (nivel 7 OSI)</b>, definido sobre <b>UDP</b>.</li>
+<li>Modelo <b>cliente-servidor</b>: el <b>gestor</b> solicita y el <b>agente</b> (en el dispositivo) responde.</li>
+<li>Permite <b>lectura</b> y <b>escritura</b> (modificar parámetros).</li>
+<li>Puede recibir <b>notificaciones (traps)</b> de los dispositivos.</li>
+</ul>
+<div class="tw"><table><tr><th>Puerto</th><th>Uso</th></tr>
+<tr><td><b>UDP 161</b></td><td>El <b>agente</b> recibe solicitudes del administrador</td></tr>
+<tr><td><b>UDP 162</b></td><td>Se reciben los <b>traps</b> (notificaciones)</td></tr>
+<tr><td><b>UDP 10161</b></td><td>Solicitudes con SNMP sobre <b>TLS</b></td></tr>
+<tr><td><b>UDP 10162</b></td><td>Traps con SNMP sobre <b>TLS</b></td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Versión</th><th>RFC</th><th>Seguridad</th></tr>
+<tr><td><b>SNMPv1</b></td><td><b>RFC 1157</b></td><td>Muy básica: <b>community string en texto claro</b> (<b>public</b> lectura, <b>private</b> lectura/escritura)</td></tr>
+<tr><td><b>SNMPv2c</b></td><td><b>RFC 1901 a 1908</b></td><td>Mejor rendimiento y nuevas funciones (<b>GetBulkRequest</b>); <b>sigue con community strings</b>, sin mejora de seguridad; muy usada por simplicidad</td></tr>
+<tr><td><b>SNMPv3</b></td><td><b>RFC 3410 a 3418</b></td><td><b>Autenticación, cifrado y control de acceso por roles</b>; <b>usuarios y claves</b> en lugar de community strings; la <b>más segura</b>; mejoras en configuración remota</td></tr>
+</table></div>
+<ul>
+<li><b>Entidad SNMP</b> (router, switch, servidor gestionado): <b>Motor SNMP</b> (comunicación y seguridad) + aplicaciones:</li>
+</ul>
+<div class="tw"><table><tr><th>Aplicación SNMP</th><th>Función</th></tr>
+<tr><td><b>Command Responder</b></td><td><b>Responde</b> a peticiones SNMP</td></tr>
+<tr><td><b>Notification Originator</b></td><td><b>Genera notificaciones</b> (traps, informes)</td></tr>
+<tr><td><b>Proxy Forwarder</b></td><td><b>Reenvía</b> mensajes SNMP a otras entidades</td></tr>
+<tr><td><b>Command Generator</b></td><td><b>Genera peticiones</b> desde el gestor</td></tr>
+</table></div>
+<ul>
+<li><b>Seguridad en SNMPv3</b>:</li>
+</ul>
+<div class="tw"><table><tr><th>Modelo</th><th>Función</th></tr>
+<tr><td><b>USM</b> (User-based Security Model)</td><td><b>Autenticación y privacidad</b>; <b>HMAC-MD5-96 o HMAC-SHA-96</b> para compartir la clave; cifrado <b>DES o AES</b></td></tr>
+<tr><td><b>VACM</b> (View-based Access Control Model)</td><td>Qué <b>objetos</b> puede consultar o modificar cada usuario mediante <b>views</b> según rol o grupo</td></tr>
+<tr><td><b>TSM</b> (Transport Security Model)</td><td>Seguridad cuando SNMP opera sobre <b>SSH o TLS</b>; alternativa moderna a USM; <b>TLSTM</b> define el uso de <b>TLS y DTLS</b> con SNMP</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Nivel USM</th><th>Autenticación</th><th>Cifrado</th></tr>
+<tr><td><b>noAuthNoPriv</b></td><td>No</td><td>No</td></tr>
+<tr><td><b>authNoPriv</b></td><td>Sí (<b>SHA y MD5</b>)</td><td>No</td></tr>
+<tr><td><b>authPriv</b></td><td>Sí</td><td>Sí (<b>DES y AES</b>)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Componentes de un sistema administrado con SNMP</b></p>
+<div class="tw"><table><tr><th>Componente</th><th>Descripción</th></tr>
+<tr><td><b>Gestor SNMP (NMS</b> – Network Management Station)</td><td>Equipo o software que <b>supervisa y administra</b> los dispositivos; debe existir <b>al menos 1 NMS</b> en cualquier red administrada con SNMP</td></tr>
+<tr><td><b>Dispositivos administrados</b></td><td>Equipos con capacidad SNMP (routers, switches, servidores…) que <b>contienen un agente SNMP</b></td></tr>
+<tr><td><b>Agentes SNMP</b></td><td><b>Software</b> en los dispositivos gestionados; se comunica con el NMS y <b>recoge los datos</b> del dispositivo</td></tr>
+<tr><td><b>MIB</b> (Management Information Base)</td><td><b>Base de datos jerárquica</b> de objetos gestionables; cada objeto tiene un <b>OID</b> (Object Identifier) único, tipo de objeto, nivel de acceso…</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>4 comandos básicos</b>: <b>Lectura</b> (el NMS supervisa) · <b>Escritura</b> (el NMS cambia valores de variables) · <b>Notificación</b> (el dispositivo reporta un evento al NMS) · <b>Operaciones transversales</b> (el NMS recoge información secuencial).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Mensajes SNMP</b></p>
+<div class="tw"><table><tr><th>Mensaje</th><th>Descripción</th></tr>
+<tr><td><b>GetRequest</b></td><td>El NMS solicita al agente el <b>valor de un objeto específico</b></td></tr>
+<tr><td><b>GetNextRequest</b></td><td>Solicita el valor del <b>siguiente objeto</b> de la MIB (navegación secuencial; recorrer tablas)</td></tr>
+<tr><td><b>SetRequest</b></td><td>El NMS pide al agente <b>modificar</b> el valor de objetos</td></tr>
+<tr><td><b>GetResponse</b></td><td><b>Respuesta</b> del agente a un Get o Set, con los datos solicitados</td></tr>
+<tr><td><b>Trap</b></td><td><b>Notificación del agente al gestor</b> de un evento (error, cambio)</td></tr>
+<tr><td><b>GetBulkRequest</b></td><td>Variante optimizada de GetNext: recupera <b>grandes cantidades</b> de información (<b>sólo SNMPv2c y SNMPv3</b>)</td></tr>
+<tr><td><b>InformRequest</b></td><td>Similar a Trap, pero <b>entre distintos NMS</b>; se espera <b>confirmación</b> del gestor (más fiable; introducido en <b>SNMPv2</b>)</td></tr>
+</table></div>
+</div>
+<h3>3.2.2 CMI / CMIP</h3>
+<ul>
+<li><b>CMI</b>: especificación definida por <b>ISO</b> con una estructura estándar para representar información de gestión; forma parte de <b>CMIP</b> (Common Management Information Protocol), usado en gestión de redes <b>OSI</b>. <b>CMIP está definido por la ITU, serie X.700</b>.</li>
+<li>Usado en entornos académicos o de <b>telecomunicaciones</b>; hoy <b>prácticamente reemplazado por SNMP</b>.</li>
+</ul>
+<h3>3.2.3 CMOT (CMIP over TCP/IP)</h3>
+<ul>
+<li>Variante de CMIP para transmitir gestión sobre <b>redes TCP/IP</b>; <b>más complejo que SNMP</b>; como SNMP, objetos codificados en <b>ASN.1</b>.</li>
+</ul>
+<h3>3.2.4 NETCONF</h3>
+<ul>
+<li>Protocolo moderno del <b>IETF</b> (<b>RFC 6241</b>) para gestionar la <b>configuración</b> de dispositivos (routers, switches, firewalls); SNMP está más orientado a <b>monitorización</b>.</li>
+<li>Usa <b>XML</b>, se basa en <b>RPC</b> sobre <b>SSH</b> como transporte seguro: consulta, modificación, borrado y <b>bloqueo</b> de configuraciones.</li>
+<li>Compatible con <b>YANG</b> (lenguaje de modelado de datos). Operaciones: <b>get-config, edit-config, commit, lock, unlock</b>…</li>
+<li>Muy usado en <b>automatización de redes y SDN</b> (Cisco, Juniper…).</li>
+</ul>
+<h3>3.3 Gestión centralizada</h3>
+<ul>
+<li><b>Concepto</b>: controlar y administrar <b>todos los dispositivos, servicios y usuarios desde un único punto o consola</b>, con visión unificada. Útil en redes <b>medianas y grandes</b>: más eficiencia, <b>menos errores humanos</b>, más seguridad.</li>
+<li>Se realiza desde un servidor o consola mediante <b>SNMP, SSH, NETCONF</b> o soluciones <b>en la nube</b>: aplicar configuraciones, desplegar actualizaciones, monitorizar, recibir alertas. Cada vez más con <b>IA, automatización y analítica</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Herramientas de gestión centralizada</b></p>
+<div class="tw"><table><tr><th>Herramienta</th><th>Tipo</th><th>Características</th></tr>
+<tr><td><b>Microsoft SCCM</b> (System Center Configuration Manager)</td><td>Microsoft</td><td>Entornos <b>Windows</b>: gestiona estaciones, configuraciones, <b>despliegue de software</b> e <b>inventario</b> HW/SW</td></tr>
+<tr><td><b>Nagios</b></td><td><b>Open source</b></td><td>Monitorización de red y sistemas: servicios, disponibilidad de hosts, recursos, alertas; <b>plugins</b></td></tr>
+<tr><td><b>Zabbix</b></td><td><b>Open source</b></td><td>Monitorización <b>en tiempo real</b>: recopilación de datos, alertas y <b>gráficas</b></td></tr>
+<tr><td><b>PRTG Network Monitor</b></td><td><b>Comercial</b></td><td>Interfaz web; ancho de banda, CPU, tráfico; usa <b>SNMP, WMI o NetFlow</b></td></tr>
+<tr><td><b>SolarWinds Network Performance Monitor</b></td><td>Comercial (suite profesional)</td><td><b>Grandes infraestructuras</b>: rendimiento, gestión de configuraciones, detección de fallos</td></tr>
+<tr><td><b>Cisco Prime Infrastructure</b></td><td>Cisco</td><td>Redes corporativas <b>Cisco</b> (físicos y virtuales), integración avanzada con <b>Wi-Fi</b></td></tr>
+</table></div>
+</div>
+<h2 id="s3">4. Monitorización y control de tráfico</h2>
+<ul>
+<li><b>Monitorización de red</b>: observar y registrar <b>en tiempo real</b> el tráfico de la LAN; detecta cuellos de botella, caídas de rendimiento, usos indebidos e intrusiones. La monitorización de dispositivos por <b>SNMP o CMIP</b> se encuadra dentro de ella.</li>
+<li><b>Control de tráfico</b>: complementa; aplica medidas como <b>limitar ancho de banda</b>, <b>prioridades (QoS)</b> o <b>bloquear</b> tipos de tráfico; facilita políticas de seguridad.</li>
+<li>Permite: conocer qué dispositivos generan más carga · identificar <b>protocolos y aplicaciones</b> que más consumen · detectar <b>patrones anómalos o ataques</b> (escaneo de puertos) · <b>estudios de capacidad</b> · aplicar <b>QoS</b> a servicios críticos · decidir optimizaciones y cambios de arquitectura.</li>
+</ul>
+<h3>4.1 Análisis pasivo de paquetes</h3>
+<ul>
+<li><b>Captura y examina</b> los paquetes <b>sin interferir</b> en la transmisión; con <b>sniffers</b>. Útil para diagnóstico de errores, <b>retransmisiones y pérdidas</b>, y <b>análisis forense</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Herramienta</th><th>Características</th></tr>
+<tr><td><b>Wireshark</b></td><td>Open source, potente; captura en tiempo real, filtra por protocolo o IP, analiza sesiones completas</td></tr>
+<tr><td><b>tcpdump</b></td><td><b>Línea de comandos</b>, Unix/Linux</td></tr>
+<tr><td><b>TShark</b></td><td>Versión por <b>consola de Wireshark</b></td></tr>
+</table></div>
+<h3>4.2 Análisis activo de la red</h3>
+<ul>
+<li><b>Genera tráfico artificial</b> controlado (<b>inyección de paquetes</b>) para evaluar la red. Mide: <b>latencia</b>, <b>ancho de banda disponible</b>, <b>tasa de pérdida de paquetes</b>, <b>disponibilidad de servicios</b>, rendimiento.</li>
+</ul>
+<div class="tw"><table><tr><th>Herramienta</th><th>Función</th></tr>
+<tr><td><b>Ping</b></td><td>Tiempo de ida y vuelta de un paquete <b>ICMP</b></td></tr>
+<tr><td><b>Traceroute</b></td><td><b>Ruta</b> que siguen los paquetes hacia un destino</td></tr>
+<tr><td><b>iperf</b></td><td>Open source; flujos <b>TCP y UDP</b> para medir rendimiento y ajustar parámetros; Linux o Windows</td></tr>
+</table></div>
+<h3>4.3 Análisis de tráfico de red</h3>
+<ul>
+<li>Conocer <b>tipo, volumen, origen, destino y velocidad</b> de los datos. Estándares principales: <b>RMON, NetFlow, IPFIX y sFlow</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tecnología</th><th>Origen / capa</th><th>Características</th><th>Transporte</th></tr>
+<tr><td><b>RMON</b></td><td>Capas <b>1 y 2</b> (en origen), creado por el IETF</td><td><b>Extensión de SNMP</b>: estadísticas del <b>tráfico real</b> (paquetes, errores, utilización, conversaciones entre hosts) en Ethernet</td><td><b>UDP</b></td></tr>
+<tr><td><b>NetFlow</b></td><td><b>Cisco</b></td><td>Información de <b>flujos IP</b> (secuencia de paquetes con mismo IP origen/destino, puerto, protocolo…) en routers o switches</td><td>Típicamente <b>UDP</b></td></tr>
+<tr><td><b>IPFIX</b></td><td><b>IETF</b>, <b>RFC 7011 a 7015</b></td><td><b>Estándar abierto</b>, evolución y generalización de NetFlow; formato <b>extensible</b> con nuevos campos; compatible entre fabricantes</td><td><b>TCP, UDP o SCTP</b></td></tr>
+<tr><td><b>sFlow</b> (sampled Flow)</td><td>Capa <b>2 OSI</b></td><td><b>Muestreo aleatorio</b> del tráfico (no analiza todos los flujos); poco consumo, ideal para <b>redes de alta velocidad</b>; monitoriza capas <b>2 a 7</b>; exporta a <b>colectores sFlow</b></td><td><b>UDP</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Versión RMON</th><th>RFC</th><th>Alcance</th></tr>
+<tr><td><b>RMON1</b></td><td><b>RFC 1757</b></td><td><b>Enlace de datos</b> (nivel 2 OSI)</td></tr>
+<tr><td><b>RMON2</b></td><td><b>RFC 2021</b></td><td>Añade <b>red (nivel 3)</b> y <b>aplicación (nivel 7)</b>; permite <b>delegar la recopilación al agente</b>, reduciendo la carga del gestor central</td></tr>
+</table></div>
+<h3>4.4 Herramientas de monitorización de red</h3>
+<div class="tw"><table><tr><th>Herramienta</th><th>Características</th></tr>
+<tr><td><b>Nagios</b></td><td><b>Open source</b>, modular; servicios, dispositivos y recursos; alertas; basado en <b>SNMP</b>; <b>plugins</b> a medida</td></tr>
+<tr><td><b>Zabbix</b></td><td><b>Open source</b>; rendimiento de redes y servidores en tiempo real; interfaz web y gráficas</td></tr>
+<tr><td><b>PRTG Network Monitor</b></td><td><b>Comercial</b> "todo en uno": tráfico, ancho de banda, dispositivos y servicios</td></tr>
+<tr><td><b>ntopng</b></td><td>Estadísticas en tiempo real por <b>protocolos, usuarios y aplicaciones</b>; detección de anomalías</td></tr>
+<tr><td><b>SolarWinds NPM</b></td><td>Suite profesional para grandes entornos: cuellos de botella, pérdida de paquetes, conectividad</td></tr>
+<tr><td><b>Tcpdump</b></td><td><b>Consola de Linux</b>: paquetes de una interfaz con parámetros y opciones</td></tr>
+<tr><td><b>Otras</b></td><td><b>DataDog, Checkmk, LogicMonitor, WhatsUp</b></td></tr>
+</table></div>
+<div class="pn"><a href="b4t3.html">← 4.3</a><a href="b4t5.html">4.5 →</a></div></main></div><script src="../app.js"></script></body></html>

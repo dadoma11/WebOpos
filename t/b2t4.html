@@ -1,0 +1,554 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 2 · Tema 4 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción a los sistemas operativos</a><a href="#s1">2. Componentes internos</a><a href="#s2">3. Windows</a><a href="#s3">4. Unix</a><a href="#s4">5. Linux</a><a href="#s5">6. SO para dispositivos móviles</a><a href="#s6">7. SO para mainframe</a></aside>
+<main class="doc" data-key="b2t4"><div class="crumb">Bloque 2 · Tema 4</div><h1>Sistemas operativos: Windows, Unix, Linux y móviles</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (16)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque2_Tema4.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque2_Tema4.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Introducción a los sistemas operativos</h2>
+<ul>
+<li><b>SO</b>: conjunto de programas <b>intermediario entre hardware y software de aplicación</b>; gestiona los recursos y ofrece una interfaz de uso.</li>
+</ul>
+<div class="tw"><table><tr><th>Función</th><th>Qué hace</th></tr>
+<tr><td><b>Procesos</b></td><td>Controla la ejecución de programas, <b>gestiona la CPU</b> y la multitarea</td></tr>
+<tr><td><b>Memoria</b></td><td>Asigna y libera espacio a los procesos</td></tr>
+<tr><td><b>Almacenamiento</b></td><td>Organiza el acceso a discos; guardar y recuperar archivos</td></tr>
+<tr><td><b>E/S</b></td><td>Interacción con teclados, pantallas, impresoras…</td></tr>
+<tr><td><b>Usuarios y seguridad</b></td><td>Control de acceso; protege datos y procesos</td></tr>
+</table></div>
+<h3>1.2 Clasificaciones</h3>
+<div class="tw"><table><tr><th>Criterio</th><th>Tipos</th></tr>
+<tr><td><b>Estructura interna</b></td><td><b>Monolíticos</b> (todo en un bloque; primeros UNIX) · <b>Jerárquicos</b> (por capas; <b>MULTICS</b>) · <b>Microkernel</b> (núcleo aislado; memoria y E/S aparte; <b>Minix</b>) · <b>Máquina virtual</b> (simula equipos; <b>VMware</b>) · <b>Híbridos</b> (mezcla; <b>Windows NT, Linux moderno</b>)</td></tr>
+<tr><td><b>Tareas</b></td><td><b>Monotarea</b> (un proceso a la vez) · <b>Multitarea</b></td></tr>
+<tr><td><b>Usuarios</b></td><td><b>Monousuario</b> (MS-DOS) · <b>Multiusuario</b> (<b>Unix/Linux, Windows Server</b>)</td></tr>
+<tr><td><b>Procesadores</b></td><td><b>Uniprocesador</b> (multiprogramación: apariencia de paralelismo) · <b>Multiprocesador</b></td></tr>
+<tr><td><b>Servicios</b></td><td><b>En red</b> (comparten recursos, cada equipo independiente) · <b>Distribuidos</b> (recursos en varias máquinas pero un único sistema: <b>Google File System, HPC</b>)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Multiprocesador</th><th>Descripción</th></tr>
+<tr><td><b>UMA / SMP</b></td><td><b>Misma memoria, mismo tiempo de acceso</b>, mismo bus; cada procesador con su caché</td></tr>
+<tr><td><b>NUMA</b></td><td>Cada procesador con <b>memoria propia</b> (accede a la de otros); <b>más rápida que UMA</b> y más ancho de banda</td></tr>
+<tr><td><b>DSM</b></td><td><b>Memoria compartida lógica</b> sobre máquinas físicas distribuidas (clúster)</td></tr>
+<tr><td><b>Memoria híbrida</b></td><td>Memoria global + memoria local</td></tr>
+</table></div>
+<h2 id="s1">2. Componentes internos</h2>
+<h3>2.1 Kernel</h3>
+<ul>
+<li><b>Corazón del SO</b>: interactúa <b>directamente con el hardware</b>, controla los recursos. <b>Siempre residente en memoria</b>, en el nivel más privilegiado (<b>modo núcleo / kernel mode</b>). Asegura la <b>multiprogramación</b> ordenada, con prioridades.</li>
+</ul>
+<h3>2.2 Gestión de procesos</h3>
+<ul>
+<li><b>Proceso</b> = programa <b>en ejecución</b> (código, contador de programa, registros, pila, datos). Se controla con la <b>tabla de procesos</b> (estado, prioridad, recursos…).</li>
+</ul>
+<div class="tw"><table><tr><th>Causas de <b>creación</b></th><th>Causas de <b>finalización</b></th></tr>
+<tr><td>1. <b>Inicialización</b> del sistema (<code>init</code> en Linux, <code>smss.exe</code> en Windows)</td><td>1. <b>Normal</b></td></tr>
+<tr><td>2. <b>Orden del usuario</b></td><td>2. <b>Por error</b> (controlado)</td></tr>
+<tr><td>3. <b>Llamada al sistema</b> (<code>fork()</code>, <code>CreateProcess()</code>)</td><td>3. <b>Error fatal</b> (acceso inválido a memoria)</td></tr>
+<tr><td>4. <b>Trabajo por lotes</b> o planificación</td><td>4. <b>Forzada</b> por otro proceso o por el SO</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Estado</th><th>Descripción</th></tr>
+<tr><td><b>Listo</b></td><td>Espera que el planificador le asigne la CPU</td></tr>
+<tr><td><b>Ejecución</b></td><td>Usa la CPU</td></tr>
+<tr><td><b>Bloqueado</b></td><td>Espera un evento externo (disco, usuario)</td></tr>
+<tr><td><b>Terminado</b></td><td>Finalizó</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Proceso zombie (Z)</b></p>
+<p>Proceso que <b>ya terminó</b>, pero sigue en la <b>tabla de procesos</b> porque su <b>proceso padre aún no ha leído su estado de salida</b>. Conserva su <b>PID</b> y una pequeña entrada; apenas consume recursos, pero puede <b>acumularse</b> si el padre falla.</p>
+</div>
+<h3>Planificación</h3>
+<ul>
+<li>Decide <b>qué proceso "listo" usa la CPU</b> (planificador del kernel). <b>Objetivos</b>: maximizar <b>rendimiento (throughput)</b>, minimizar <b>tiempo de respuesta (turnaround)</b>, <b>equidad</b>, evitar <b>inanición (starvation)</b>, ser predecible y eficiente.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Niveles de planificación</b></p>
+<p><b>1. Alto nivel (scheduler)</b>: decide qué <b>trabajos</b> son candidatos a convertirse en procesos. <b>2. Nivel medio</b>: decide qué procesos se <b>suspenden o retoman</b>. <b>3. Bajo nivel (dispatcher)</b>: decide <b>cuál de los listos usa la CPU</b>.</p>
+</div>
+<ul>
+<li><b>No apropiativa</b>: el proceso no cede la CPU hasta <b>terminar o bloquearse</b>. <b>Apropiativa</b>: el planificador toma el control cada cierto tiempo.</li>
+</ul>
+<div class="tw"><table><tr><th>Algoritmo</th><th>Descripción</th></tr>
+<tr><td><b>FCFS</b></td><td><b>El primero que llega, el primero que se ejecuta</b>; justo pero con esperas largas</td></tr>
+<tr><td><b>SJF</b></td><td><b>Primero el más corto</b>; eficiente pero difícil de estimar la duración</td></tr>
+<tr><td><b>Round Robin</b></td><td>Cada proceso recibe un <b>quantum (time-slice)</b>; al agotarse pasa al <b>final de la cola</b>; simple, justo, sin aplazamiento indefinido</td></tr>
+<tr><td><b>Por prioridad</b></td><td>Se ejecuta según prioridad; puede causar <b>inanición</b> de baja prioridad</td></tr>
+<tr><td><b>SRTF</b></td><td>Variante <b>apropiativa de SJF</b>: se calcula en todo momento el tiempo restante</td></tr>
+<tr><td><b>Multicolas / multinivel</b></td><td>Varias colas según el tipo de proceso (interactivo, por lotes)</td></tr>
+</table></div>
+<h3>Concurrencia</h3>
+<div class="tw"><table><tr><th>Problema</th><th>Definición</th></tr>
+<tr><td><b>Condiciones de carrera</b></td><td>Acceso a un recurso compartido <b>sin sincronización</b></td></tr>
+<tr><td><b>Aplazamiento indefinido</b></td><td>Un proceso no recibe tiempo suficiente</td></tr>
+<tr><td><b>Espera circular</b></td><td>Cadena de procesos esperando recursos entre sí</td></tr>
+<tr><td><b>No apropiación</b></td><td>Un recurso asignado <b>no puede arrebatarse</b> hasta que se libere</td></tr>
+<tr><td><b>Exclusión mutua</b></td><td>La <b>región crítica</b> solo la usa un proceso a la vez (<b>semáforos, candados</b>)</td></tr>
+<tr><td><b>Ocupar y esperar</b></td><td>Un proceso pide otro recurso <b>sin liberar</b> el que ya tiene</td></tr>
+</table></div>
+<ul>
+<li><b>Deadlock (interbloqueo)</b>: el mayor problema; exige <b>las cuatro condiciones a la vez</b>: <b>no apropiación, espera circular, exclusión mutua y ocupar-y-esperar</b>. Los procesos implicados <b>nunca se ejecutan</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Técnica de prevención</th><th>Descripción</th></tr>
+<tr><td><b>Asignación todo-o-nada</b></td><td>Solicitar <b>todos los recursos al inicio</b>; si no están, espera</td></tr>
+<tr><td><b>Orden lineal de recursos</b></td><td>Recursos etiquetados; solo se piden <b>hacia adelante</b></td></tr>
+<tr><td><b>Algoritmo del banquero</b></td><td>Tabla de recursos disponibles y requeridos; <b>decide si concede o no</b></td></tr>
+</table></div>
+<h3>2.3 Gestión de memoria</h3>
+<ul>
+<li>El <b>gestor de memoria</b> controla qué zonas se usan y por quién, decide qué procesos se cargan, evita <b>interferencias</b> y permite la <b>multiprogramación</b>.</li>
+</ul>
+<div class="tw"><table><tr><th></th><th><b>Paginación</b></th><th><b>Segmentación</b></th></tr>
+<tr><td><b>Unidades</b></td><td><b>Tamaño fijo</b>: páginas (lógica) y marcos (física)</td><td><b>Tamaño variable</b>: segmentos (código, datos, pila)</td></tr>
+<tr><td><b>Fragmentación</b></td><td><b>Interna</b> (evita la externa)</td><td><b>Externa</b></td></tr>
+<tr><td><b>Lógica</b></td><td>No sigue la lógica del programa</td><td>Se adapta a la estructura del programa</td></tr>
+<tr><td><b>Tabla</b></td><td><b>Tabla de páginas</b> (con <b>MMU</b>)</td><td><b>Tabla de segmentos</b>; dirección = nº de segmento + desplazamiento</td></tr>
+</table></div>
+<ul>
+<li>Se pueden <b>combinar</b>. La paginación permite cargar un proceso <b>parcialmente</b> y facilita la <b>memoria virtual</b>.</li>
+<li><b>Memoria virtual</b>: usar más memoria de la que hay físicamente llevando páginas o segmentos al <b>disco</b>; sin marcos libres actúan los <b>algoritmos de reemplazo</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Reemplazo</th><th>Descripción</th></tr>
+<tr><td><b>FIFO</b></td><td>Reemplaza la página que <b>entró primero</b>; <b>efecto de Belady</b></td></tr>
+<tr><td><b>LRU</b></td><td><b>Menos recientemente usada</b> (más tiempo sin usarse)</td></tr>
+<tr><td><b>NFU</b></td><td><b>Menos usada en términos acumulados</b> (nº de referencias)</td></tr>
+<tr><td><b>LFU</b></td><td><b>Menos veces usada</b></td></tr>
+<tr><td><b>NRU</b></td><td>No referenciada ni modificada recientemente</td></tr>
+<tr><td><b>Óptimo</b></td><td>Reemplaza la que <b>no se usará en el futuro más cercano</b>; <b>teórico</b>, no aplicable</td></tr>
+</table></div>
+<h3>2.4 Gestión de almacenamiento y archivos</h3>
+<ul>
+<li><b>Archivo</b>: unidad lógica de datos que persiste más allá del proceso. <b>Sistema de archivos</b>: crea, organiza, almacena, accede, modifica y elimina; gestiona <b>directorios, asignación de espacio, permisos y atributos, integridad</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Sistema</th><th>Características</th><th>SO</th></tr>
+<tr><td><b>FAT16</b></td><td>Antiguo; volumen máx. <b>2 GB</b></td><td>Windows antiguos, embebidos</td></tr>
+<tr><td><b>FAT32</b></td><td>Volúmenes hasta <b>32 GB</b>, archivos hasta <b>4 GB</b></td><td>Windows, USB</td></tr>
+<tr><td><b>exFAT</b></td><td>Optimizado para <b>flash</b>; sin límite práctico de archivo</td><td>Windows, macOS, móviles</td></tr>
+<tr><td><b>NTFS</b></td><td><b>Permisos, cifrado, journaling, compresión</b></td><td>Windows</td></tr>
+<tr><td><b>ReFS</b></td><td><b>Alta tolerancia a fallos</b>, escalabilidad y autocorrección</td><td>Windows Server</td></tr>
+<tr><td><b>EXT2</b></td><td>Primer sistema extendido; <b>sin journaling</b></td><td>Linux</td></tr>
+<tr><td><b>EXT3</b></td><td>EXT2 <b>+ journaling</b></td><td>Linux</td></tr>
+<tr><td><b>EXT4</b></td><td>Más rendimiento, capacidad y journaling avanzado</td><td>Linux</td></tr>
+<tr><td><b>NFS</b></td><td><b>Distribuido</b>; compartir archivos en red</td><td>Linux, Unix</td></tr>
+<tr><td><b>FFS</b></td><td>Organización y rendimiento</td><td>BSD</td></tr>
+<tr><td><b>ZFS</b></td><td><b>Integridad de datos, compresión y snapshots</b></td><td>FreeBSD, Solaris</td></tr>
+<tr><td><b>HFS/HFS+</b></td><td>Sistema de Apple; HFS+ con journaling</td><td>macOS</td></tr>
+<tr><td><b>XFS</b></td><td><b>Alto rendimiento</b> en grandes volúmenes</td><td>Linux, especialmente Red Hat</td></tr>
+</table></div>
+<h3>Planificación de disco</h3>
+<div class="tw"><table><tr><th>Algoritmo</th><th>Descripción</th></tr>
+<tr><td><b>FCFS</b></td><td>Por <b>orden de llegada</b></td></tr>
+<tr><td><b>SSF / SSTF</b></td><td>Atiende la petición <b>más cercana</b> al cabezal; reduce tiempo medio pero puede causar <b>inanición</b></td></tr>
+<tr><td><b>SCAN</b> («ascensor»)</td><td>El cabezal avanza en una dirección atendiendo todo y al final <b>invierte el sentido</b></td></tr>
+<tr><td><b>C-SCAN</b></td><td>Como SCAN, pero al llegar al final <b>vuelve al inicio sin atender</b>; esperas más uniformes</td></tr>
+<tr><td><b>LOOK / C-LOOK</b></td><td>Optimizados: <b>no llegan hasta el final</b> si no hay peticiones</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Técnica de acceso</th><th>Descripción</th></tr>
+<tr><td><b>BSAM</b></td><td>Secuencial básico: orden físico, <b>sin acceso directo</b></td></tr>
+<tr><td><b>BDAM</b></td><td>Acceso <b>directo</b> a bloques mediante dirección calculada</td></tr>
+<tr><td><b>Indexado</b></td><td>Búsqueda por listas con campos clave</td></tr>
+<tr><td><b>ISAM</b></td><td><b>Secuencial + directo</b> con índice; usado en Windows y Linux</td></tr>
+</table></div>
+<ul>
+<li><b>Fragmentación externa</b>: huecos libres pequeños entre archivos. <b>Fragmentación interna</b>: el archivo es menor que el clúster.</li>
+</ul>
+<div class="tw"><table><tr><th>Asignación</th><th>Descripción</th><th>Acceso directo</th><th>Frag. externa</th><th>Expansión</th></tr>
+<tr><td><b>Contigua</b></td><td>Nombre + bloque inicial + tamaño; <b>acceso rápido, ideal para archivos grandes</b></td><td><b>Sí</b></td><td><b>Sí</b></td><td>Baja</td></tr>
+<tr><td><b>Encadenada (enlazada)</b></td><td>Bloque inicial; no requiere bloques contiguos; <b>acceso secuencial lento</b></td><td>No</td><td>No</td><td>Alta</td></tr>
+<tr><td><b>Indexada</b></td><td><b>Bloque índice con punteros</b>; acceso directo y flexible; <b>más memoria</b> para índices</td><td><b>Sí</b></td><td>No</td><td>Alta</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Acceso a archivos</th><th>Descripción</th></tr>
+<tr><td><b>Secuencial</b></td><td>Del principio al final; <b>el más simple y lento</b></td></tr>
+<tr><td><b>Directo (aleatorio)</b></td><td>Por posición; rápido; discos duros y RAM</td></tr>
+<tr><td><b>Directo indexado</b></td><td>Tabla de índices; <b>grandes volúmenes</b></td></tr>
+</table></div>
+<h3>2.5 Administración de E/S</h3>
+<ul>
+<li>Coordina el intercambio entre procesador/memoria y periféricos mediante <b>controladores de dispositivo</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de dispositivo</th><th>Acceso</th><th>Ejemplos</th></tr>
+<tr><td><b>Orientado a caracteres</b></td><td>Secuencial; carácter a carácter; sin reposicionar</td><td><b>Teclado, ratón, puerto serie</b></td></tr>
+<tr><td><b>Orientado a bloques</b></td><td>Aleatorio o secuencial; <b>bloques de tamaño fijo</b></td><td><b>Disco duro, SSD, pendrive</b></td></tr>
+</table></div>
+<ul>
+<li><b>Driver (controlador)</b>: traduce las <b>órdenes genéricas del SO</b> a instrucciones específicas del hardware; abstrae su complejidad.</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Driver WHQL</b></p>
+<p><b>Windows Hardware Quality Laboratory</b>: drivers que <b>garantizan que el periférico es compatible con Windows</b>.</p>
+</div>
+<ul>
+<li><b>DMA</b>: transfiere datos con la memoria <b>sin intervención directa de la CPU</b> → mayor rendimiento.</li>
+<li><b>Plug and Play</b> (creado por <b>Intel y Microsoft</b>): 1. detecta el dispositivo · 2. lo interroga (tipo y características) · 3. <b>asigna recursos y carga el controlador</b> · 4. notifica al usuario.</li>
+<li><b>Interfaz de usuario</b>: gráfica, táctil o <b>línea de comandos</b>; software + hardware.</li>
+</ul>
+<h3>2.6 Seguridad y protección</h3>
+<ul>
+<li><b>Control de acceso</b> (usuarios, grupos, permisos) · <b>aislamiento de procesos</b> · <b>cifrado</b> · <b>auditoría y registro</b> · antivirus/cortafuegos (<b>Windows Defender</b>) · a nivel de software y de hardware (<b>arranque seguro</b>).</li>
+</ul>
+<h2 id="s2">3. Windows</h2>
+<ul>
+<li>Familia de SO de <b>Microsoft</b> (desde mediados de los 80). Dos líneas: <b>cliente</b> y <b>servidor</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Versión cliente</th><th>Año</th><th>Características</th></tr>
+<tr><td><b>Windows 3.x</b></td><td>1990</td><td>Mejoras gráficas, multitarea limitada</td></tr>
+<tr><td><b>Windows 95</b></td><td>1995</td><td>Integración de MS-DOS, <b>Plug and Play</b>, interfaz moderna</td></tr>
+<tr><td><b>Windows 98</b></td><td>1998</td><td>Navegador integrado, multimedia</td></tr>
+<tr><td><b>Windows XP</b></td><td>2001</td><td>Estabilidad, rendimiento, gran adopción</td></tr>
+<tr><td><b>Windows Vista</b></td><td>2007</td><td>Seguridad, interfaz <b>Aero</b></td></tr>
+<tr><td><b>Windows 7</b></td><td>2009</td><td>Éxito comercial</td></tr>
+<tr><td><b>Windows 8</b></td><td>2012</td><td>Interfaz táctil, tienda de aplicaciones</td></tr>
+<tr><td><b>Windows 10</b></td><td>2015</td><td>Actualizaciones continuas, <b>Edge</b></td></tr>
+<tr><td><b>Windows 11</b></td><td>2021</td><td>Interfaz renovada, productividad y seguridad</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Licencia cliente</th><th>Descripción</th></tr>
+<tr><td><b>OEM</b></td><td><b>Preinstalada</b>, <b>vinculada al hardware</b>, no transferible; más económica</td></tr>
+<tr><td><b>Retail (FPP)</b></td><td>Se compra por separado; instalable en varios equipos según el paquete</td></tr>
+<tr><td><b>GVLK</b></td><td>Generic Volume License Key; <b>activación por volumen</b> en empresas</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Windows Server</th><th>Año</th><th>Novedades</th></tr>
+<tr><td><b>NT Server</b></td><td>1993</td><td>Primera versión con arquitectura <b>NT</b></td></tr>
+<tr><td><b>2000 Server</b></td><td>2000</td><td><b>Active Directory</b> y <b>NTFS 3.0</b></td></tr>
+<tr><td><b>2003</b></td><td>2003</td><td>Rendimiento y compatibilidad</td></tr>
+<tr><td><b>2008</b></td><td>2008</td><td><b>Hyper-V, Server Core</b>, seguridad avanzada</td></tr>
+<tr><td><b>2012</b></td><td>2012</td><td>Interfaz Metro, virtualización</td></tr>
+<tr><td><b>2016</b></td><td>2016</td><td><b>Nano Server, contenedores</b>, Azure</td></tr>
+<tr><td><b>2019</b></td><td>2018</td><td>Seguridad, <b>clústeres híbridos</b></td></tr>
+<tr><td><b>2022</b></td><td>2021</td><td><b>TLS 1.3</b>, seguridad multicapa</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Licencia de servidor</th><th>Descripción</th></tr>
+<tr><td><b>Licencia + CAL</b></td><td>SO + <b>licencia de acceso por usuario o dispositivo</b>; común en pymes</td></tr>
+<tr><td><b>Por núcleo (Core)</b></td><td>Se licencian los <b>núcleos</b>; obligatoria desde <b>Windows Server 2016</b></td></tr>
+<tr><td><b>Por servidor (Server-only)</b></td><td>Sin CALs, pero limita los servicios</td></tr>
+<tr><td><b>ML (Management Licenses)</b></td><td>Con <b>System Center</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Atajo</th><th>Acción</th></tr>
+<tr><td><b>Ctrl + C / V / X</b></td><td>Copiar / Pegar / Cortar</td></tr>
+<tr><td><b>Ctrl + Z / Y</b></td><td>Deshacer / Rehacer</td></tr>
+<tr><td><b>Alt + Tab</b></td><td>Cambiar entre ventanas</td></tr>
+<tr><td><b>Win + D</b></td><td>Mostrar u ocultar escritorio</td></tr>
+<tr><td><b>Win + E</b></td><td>Explorador de archivos</td></tr>
+<tr><td><b>Win + L</b></td><td>Bloquear el equipo</td></tr>
+<tr><td><b>Ctrl + Shift + Esc</b></td><td>Administrador de tareas</td></tr>
+</table></div>
+<h3>3.2 Arquitectura Windows (NT → 11)</h3>
+<ul>
+<li><b>Modular</b>, en dos niveles: <b>modo usuario</b> y <b>modo núcleo</b> (protege frente a fallos).</li>
+</ul>
+<div class="tw"><table><tr><th>Modo usuario</th><th>Contenido</th></tr>
+<tr><td><b>Subsistemas de entorno</b></td><td>Interfaz entre aplicaciones y funciones del núcleo; <b>Win32</b> (el más común, API gráfica y de consola)</td></tr>
+<tr><td><b>SMSS.EXE</b></td><td>Session Manager: inicia la sesión, crea el entorno y <b>lanza winlogon.exe y csrss.exe</b></td></tr>
+<tr><td><b>WINLOGON.EXE</b></td><td><b>Inicio de sesión</b>, escritorio seguro, bloqueo de pantalla y Shell</td></tr>
+<tr><td><b>CSRSS.EXE</b></td><td>Client/Server Runtime: <b>carga el entorno Win32</b></td></tr>
+<tr><td><b>SYSTEM</b></td><td>Visible como proceso, pero <b>en modo kernel</b> (hilos del núcleo y servicios)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>DLLs (Dynamic Link Libraries)</b></p>
+<p><b>Bibliotecas de funciones compartidas</b> por múltiples programas. El código se vincula al ejecutable <b>en tiempo de ejecución</b> (no de compilación): modularidad y reutilización. Ejemplos: <b>user32.dll, kernel32.dll, gdi32.dll</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Modo núcleo</th><th>Contenido</th></tr>
+<tr><td><b>HAL</b></td><td>Capa de abstracción de hardware: Windows <b>independiente del hardware</b>; traduce a comandos del procesador, memoria y buses</td></tr>
+<tr><td><b>Microkernel</b></td><td>Planificación de procesos, interrupciones, sincronización; <b>Windows no es microkernel puro</b></td></tr>
+<tr><td><b>Nivel ejecutivo</b></td><td>Relación con los subsistemas de usuario; <b>independiente de la arquitectura</b>: administradores de objetos, procesos, memoria, E/S, caché</td></tr>
+<tr><td><b>Drivers de dispositivos</b></td><td>Acceso a hardware</td></tr>
+</table></div>
+<ul>
+<li><b>Registro de Windows</b>: <b>base de datos jerárquica</b> de configuración (sistema, dispositivos, servicios, aplicaciones, usuarios). Se edita con <b>regedit.exe</b> (o <code>reg.exe</code> por línea de comandos); <b>hacer copia antes de modificar</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Clave raíz</th><th>Abrev.</th><th>Uso</th></tr>
+<tr><td><b>HKEY_LOCAL_MACHINE</b></td><td><b>HKLM</b></td><td>Configuración <b>global</b> del sistema y hardware</td></tr>
+<tr><td><b>HKEY_CURRENT_USER</b></td><td><b>HKCU</b></td><td>Preferencias del <b>usuario actual</b></td></tr>
+<tr><td><b>HKEY_CLASSES_ROOT</b></td><td><b>HKCR</b></td><td><b>Asociación de extensiones</b> y objetos COM</td></tr>
+<tr><td><b>HKEY_USERS</b></td><td><b>HKU</b></td><td>Perfiles de <b>todos los usuarios</b></td></tr>
+<tr><td><b>HKEY_CURRENT_CONFIG</b></td><td><b>HKCC</b></td><td>Hardware detectado en el <b>arranque actual</b></td></tr>
+</table></div>
+<h3>3.3 Administración de procesos en Windows</h3>
+<ul>
+<li>Herramientas: <b>Administrador de tareas</b>, <code>tasklist</code>, <code>taskkill</code>, PowerShell (<code>Get-Process</code>, <code>Stop-Process</code>).</li>
+</ul>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición</th></tr>
+<tr><td><b>Hilo (thread)</b></td><td><b>Unidad mínima de ejecución</b> de un proceso; comparten memoria y recursos (exige sincronización)</td></tr>
+<tr><td><b>Fibra (fiber)</b></td><td>Más ligera que el hilo; <b>no la planifica el SO</b> sino el proceso; cambiar de fibra <b>no sobrecarga el kernel</b>; espacio de usuario</td></tr>
+<tr><td><b>Tarea (task)</b></td><td><b>Agrupación de procesos</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Comunicación entre procesos</th><th>Descripción</th></tr>
+<tr><td><b>Tuberías anónimas</b></td><td>Procesos con relación directa (<b>padre-hijo</b>)</td></tr>
+<tr><td><b>Tuberías con nombre (Named Pipes)</b></td><td>Procesos sin relación directa, incluso <b>remotos</b></td></tr>
+<tr><td><b>Sockets</b></td><td>Entre máquinas por red: <b>TCP</b> (orientado a conexión) o <b>UDP</b> (no orientado)</td></tr>
+<tr><td><b>RPC</b></td><td>Invocar funciones en otro proceso o equipo como si fueran locales; entre 32 y 64 bits <b>solo en el mismo equipo</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Objeto de sincronización</th><th>Función</th></tr>
+<tr><td><b>Mutex</b></td><td><b>Un solo hilo</b> accede al recurso a la vez</td></tr>
+<tr><td><b>Semáforo</b></td><td><b>Número máximo</b> de hilos simultáneos</td></tr>
+<tr><td><b>Eventos</b></td><td><b>Notificar</b> a hilos que se cumplió una condición</td></tr>
+<tr><td><b>Critical Sections</b></td><td>Como mutex pero <b>más rápidas</b>, solo en el proceso actual</td></tr>
+<tr><td><b>Temporizadores</b></td><td>Suspenden un hilo hasta que <b>expire</b> el temporizador</td></tr>
+</table></div>
+<h3>3.4 Sistema de archivos de Windows</h3>
+<div class="tw"><table><tr><th>Sistema</th><th>Descripción</th><th>Uso</th></tr>
+<tr><td><b>FAT16</b></td><td>Máx. <b>2 GB</b></td><td>Disquetes, embebidos</td></tr>
+<tr><td><b>FAT32</b></td><td>Volúmenes hasta <b>32 GB</b>, archivos hasta <b>4 GB</b></td><td>USB, discos externos</td></tr>
+<tr><td><b>NTFS</b></td><td>Direcciones de disco de <b>64 bits</b>; nombres de <b>255 caracteres</b></td><td><b>Por defecto</b> en Windows modernos</td></tr>
+<tr><td><b>ReFS</b></td><td>Tolerancia a fallos y autocorrección</td><td>Windows Server</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Cifrado</th><th>Descripción</th></tr>
+<tr><td><b>EFS</b> (Encrypting File System)</td><td>Incluido en <b>NTFS</b>; cifra <b>archivos o carpetas individuales</b> (solo el usuario que los cifró); transparente; limitado si el atacante accede físicamente y es administrador</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>BitLocker</b></p>
+<p>Cifrado <b>a nivel de volumen</b> (discos completos, sistema y datos), desde <b>Windows Vista</b> en ediciones <b>profesionales y empresariales</b>. Algoritmo <b>AES con claves de 128 bits por defecto</b>. Usa <b>TPM (Trusted Platform Module)</b> para proteger las claves; puede combinarse con <b>PIN, contraseña o llave USB</b>.</p>
+</div>
+<h3>3.5 Seguridad en Windows</h3>
+<div class="tw"><table><tr><th>Mecanismo</th><th>Descripción</th></tr>
+<tr><td><b>SID</b> (Security Identifier)</td><td><b>Identificador único</b> de usuarios, grupos, archivos, procesos, servicios</td></tr>
+<tr><td><b>DACL</b> (Discretionary Access Control List)</td><td>Lista de reglas de acceso; cada entrada (<b>ACE</b>) indica <b>qué SID</b> puede <b>qué acciones</b></td></tr>
+<tr><td><b>AppLocker</b></td><td>Políticas sobre <b>qué aplicaciones se ejecutan</b>: por <b>nombre/ruta</b>, <b>editor (firma digital)</b> o <b>hash</b></td></tr>
+<tr><td><b>Microsoft Defender Antivirus</b></td><td>Protección <b>en tiempo real</b> (virus, spyware, ransomware) integrada</td></tr>
+<tr><td><b>Windows Sandbox</b></td><td>Desde <b>Windows 10 Pro y Enterprise</b>; <b>máquina virtual ligera, aislada y desechable</b>; se elimina al cerrar, sin rastro; ya preconfigurada</td></tr>
+</table></div>
+<h3>3.6 Interfaz gráfica de Windows</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Evolución de la interfaz</b></p>
+<div class="tw"><table><tr><th>Interfaz</th><th>Características</th><th>Versión</th></tr>
+<tr><td><b>Program Manager</b></td><td>Ventanas <b>sin barra de tareas ni menú Inicio</b>; grupos de programas</td><td><b>Windows 3.x</b></td></tr>
+<tr><td><b>Classic Shell</b></td><td>Escritorio tradicional con menú Inicio simple y barra de tareas</td><td><b>95, 98, ME, 2000, XP</b></td></tr>
+<tr><td><b>Luna</b></td><td>Tres esquemas de color: <b>azul, verde y plateado</b></td><td><b>XP</b></td></tr>
+<tr><td><b>Aero</b></td><td><b>Transparencias</b>, animaciones, vistas previas en miniatura</td><td><b>Vista, 7</b></td></tr>
+<tr><td><b>Metro / Modern UI</b></td><td><b>Táctil</b>, mosaicos dinámicos a pantalla completa</td><td><b>8, 8.1</b></td></tr>
+<tr><td><b>Fluent Design</b></td><td>Profundidad, transparencia, iluminación y transiciones</td><td><b>10, 11</b></td></tr>
+<tr><td><b>Mica / Acrylic</b></td><td>Subconjunto de Fluent con <b>efectos translúcidos</b></td><td><b>11</b></td></tr>
+</table></div>
+</div>
+<h3>3.7 Windows 11</h3>
+<ul>
+<li>Lanzado el <b>5 de octubre de 2021</b>; evolución de Windows 10 con rediseño profundo.</li>
+</ul>
+<div class="tw"><table><tr><th>Aspecto</th><th>Windows 10</th><th>Windows 11</th></tr>
+<tr><td><b>Interfaz</b></td><td>Tradicional, con <b>Live Tiles</b></td><td>Rediseñada, <b>sin Live Tiles</b></td></tr>
+<tr><td><b>Productividad</b></td><td>Escritorios y ajustes limitados</td><td><b>Snap Layouts, Snap Groups</b>, escritorios personalizados</td></tr>
+<tr><td><b>Apps Android</b></td><td>No compatible</td><td>Sí, vía <b>WSA</b> y <b>Amazon Appstore</b></td></tr>
+<tr><td><b>Seguridad</b></td><td>TPM opcional</td><td><b>TPM 2.0 obligatorio</b></td></tr>
+<tr><td><b>Requisitos</b></td><td>Amplia compatibilidad</td><td>Más exigentes (procesadores recientes)</td></tr>
+</table></div>
+<ul>
+<li><b>Requisitos mínimos</b>: procesador <b>1 GHz o superior, 2 o más núcleos de 64 bits</b>, <b>4 GB RAM</b>, <b>64 GB</b> de almacenamiento.</li>
+</ul>
+<h2 id="s3">4. Unix</h2>
+<ul>
+<li><b>Multitarea y multiusuario</b>, creado en los <b>laboratorios Bell de AT&amp;T</b> a finales de los <b>60</b>. Linux y macOS se basan en UNIX.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Principales versiones de UNIX</b></p>
+<div class="tw"><table><tr><th>Versión</th><th>Propietario</th><th>Descripción</th></tr>
+<tr><td><b>Solaris</b></td><td><b>Oracle</b> (originalmente Sun Microsystems)</td><td>Robusto y escalable; servidores <b>SPARC y x86</b>; incluye <b>ZFS</b></td></tr>
+<tr><td><b>AIX</b></td><td><b>IBM</b></td><td>Para sistemas <b>Power</b> de IBM</td></tr>
+<tr><td><b>HP-UX</b></td><td><b>Hewlett-Packard</b></td><td>Servidores HP (<b>PA-RISC e Itanium</b>)</td></tr>
+<tr><td><b>macOS</b></td><td><b>Apple</b></td><td>Unix certificado (basado en <b>BSD</b>), interfaz <b>Aqua</b>; desarrollado en <b>Objective-C</b></td></tr>
+</table></div>
+</div>
+<h2 id="s4">5. Linux</h2>
+<ul>
+<li>Tipo Unix, <b>libre y de código abierto</b>, creado por <b>Linus Torvalds en 1991</b>; se basa en Unix y <b>Minix</b>. Con las utilidades <b>GNU</b> (iniciado en <b>1983</b> por <b>Richard Stallman</b>) forma <b>GNU/Linux</b>. Licencia <b>GPL</b>.</li>
+<li><b>Filosofía</b>: libertad de uso y modificación, colaboración, modularidad y simplicidad, estabilidad y eficiencia.</li>
+</ul>
+<h3>5.2 Arquitectura</h3>
+<ul>
+<li>Componentes: <b>kernel</b> (con el hardware), <b>llamadas al sistema</b> (aplicaciones ↔ núcleo) y <b>espacio de usuario</b> (procesos, comandos, servicios). Dos modos: <b>usuario</b> y <b>kernel</b>.</li>
+<li><b>Kernel de Linux</b>: <b>monolítico</b> pero admite <b>módulos</b>; comunicación usuario-kernel con las librerías <b>libc y libm</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Parte del kernel</th><th>Contenido</th></tr>
+<tr><td><b>Núcleo dependiente</b></td><td>Interactúa con el <b>hardware</b> (interrupciones, controladores, inicialización); <b>varía según la arquitectura</b> (x86, ARM, PowerPC)</td></tr>
+<tr><td><b>Núcleo independiente</b></td><td><b>Común a todas las arquitecturas</b>: procesos, planificación, memoria, sistemas de archivos, E/S, red, seguridad</td></tr>
+</table></div>
+<ul>
+<li>Al arrancar se carga el <b>kernel</b> y luego <b>init</b> (primer proceso), que gestiona los <b>niveles de ejecución</b>; scripts en <b>/etc/init.d/</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Niveles de ejecución (runlevels)</b></p>
+<div class="tw"><table><tr><th>Runlevel</th><th>Descripción</th></tr>
+<tr><td><b>0</b></td><td><b>Apagado</b> del sistema</td></tr>
+<tr><td><b>1</b></td><td><b>Monousuario</b> (rescate o mantenimiento)</td></tr>
+<tr><td><b>2</b></td><td>Multiusuario <b>sin red</b></td></tr>
+<tr><td><b>3</b></td><td>Multiusuario <b>sin entorno gráfico</b></td></tr>
+<tr><td><b>5</b></td><td>Multiusuario <b>con entorno gráfico</b></td></tr>
+<tr><td><b>6</b></td><td><b>Reinicio</b> del sistema</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Procesos</b>: instancias en ejecución; <b>daemons</b> = procesos no interactivos en segundo plano. <b>Threads</b> comparten memoria. Creación: <b>fork()</b> (hijo copia del padre) y <b>exec()</b> (sustituye el contenido por un nuevo programa).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Identificadores de proceso</b></p>
+<div class="tw"><table><tr><th>Identificador</th><th>Función</th></tr>
+<tr><td><b>PID</b></td><td>Identificador <b>único</b> del proceso</td></tr>
+<tr><td><b>PPID</b></td><td>Identificador del <b>proceso padre</b></td></tr>
+<tr><td><b>UID</b></td><td><b>Usuario</b> que inició el proceso</td></tr>
+<tr><td><b>GID</b></td><td><b>Grupo</b> del usuario</td></tr>
+</table></div>
+</div>
+<ul>
+<li>Se consultan con <b>ps aux</b> o <b>top</b>; se modifican en ejecución con <b>setuid / setgid</b>. El <b>scheduler</b> usa <b>prioridad y round robin</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Estructura de directorios</b></p>
+<div class="tw"><table><tr><th>Directorio</th><th>Descripción</th></tr>
+<tr><td><b>/</b></td><td><b>Raíz</b>, inicio del sistema de archivos</td></tr>
+<tr><td><b>/bin</b></td><td>Binarios ejecutables de los usuarios</td></tr>
+<tr><td><b>/boot</b></td><td>Archivos de arranque, incluido el <b>kernel</b></td></tr>
+<tr><td><b>/sbin</b></td><td>Binarios del <b>administrador</b></td></tr>
+<tr><td><b>/dev</b></td><td>Archivos especiales que representan <b>dispositivos</b></td></tr>
+<tr><td><b>/etc</b></td><td><b>Configuración</b> del sistema y aplicaciones</td></tr>
+<tr><td><b>/tmp</b></td><td>Archivos <b>temporales</b></td></tr>
+<tr><td><b>/home</b></td><td>Directorios personales de usuarios (salvo root)</td></tr>
+<tr><td><b>/root</b></td><td>Directorio personal del <b>superusuario</b></td></tr>
+<tr><td><b>/usr</b></td><td>Aplicaciones y archivos de <b>solo lectura</b> para usuarios</td></tr>
+<tr><td><b>/var</b></td><td>Datos <b>variables</b>: logs, colas de impresión, bases de datos</td></tr>
+<tr><td><b>/proc</b></td><td>Sistema de archivos <b>virtual</b> (procesos y kernel)</td></tr>
+<tr><td><b>/lib</b></td><td><b>Bibliotecas compartidas</b> para /bin y /sbin</td></tr>
+<tr><td><b>/mnt</b></td><td>Punto de montaje <b>temporal</b></td></tr>
+<tr><td><b>/media</b></td><td>Montaje de <b>medios extraíbles</b> (USB, CD)</td></tr>
+<tr><td><b>/opt</b></td><td>Aplicaciones <b>adicionales opcionales</b></td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Archivos importantes</b></p>
+<div class="tw"><table><tr><th>Archivo o ruta</th><th>Descripción</th></tr>
+<tr><td><b>/etc/passwd</b></td><td>Cuentas de usuario: nombre, <b>UID, GID</b></td></tr>
+<tr><td><b>/etc/shadow</b></td><td><b>Contraseñas cifradas</b> de usuarios (acceso restringido)</td></tr>
+<tr><td><b>/etc/gshadow</b></td><td>Contraseñas cifradas de <b>grupo</b></td></tr>
+<tr><td><b>/etc/group</b></td><td>Definición de <b>grupos</b></td></tr>
+<tr><td><b>/etc/hostname</b></td><td><b>Nombre del host</b></td></tr>
+<tr><td><b>/etc/hosts</b></td><td>Asociaciones estáticas <b>nombre-IP</b></td></tr>
+<tr><td><b>/etc/hosts.allow</b></td><td>Control de acceso a hosts</td></tr>
+<tr><td><b>/etc/resolv.conf</b></td><td>Servidores <b>DNS</b></td></tr>
+<tr><td><b>/etc/fstab</b></td><td><b>Montaje automático</b> de particiones al inicio</td></tr>
+<tr><td><b>/etc/network/interfaces</b></td><td>Configuración de red en <b>Debian</b> y derivados</td></tr>
+<tr><td><b>/etc/systemd/</b></td><td>Servicios y unidades de <b>systemd</b></td></tr>
+<tr><td><b>/usr/bin</b></td><td>Aplicaciones de usuario no esenciales para el arranque</td></tr>
+<tr><td><b>/usr/sbin</b></td><td>Herramientas administrativas para root</td></tr>
+<tr><td><b>/usr/lib</b></td><td>Librerías y ejecutables</td></tr>
+<tr><td><b>/usr/share</b></td><td>Datos independientes del hardware (documentación)</td></tr>
+<tr><td><b>/usr/local</b></td><td>Programas locales de la máquina</td></tr>
+<tr><td><b>/proc/version</b></td><td>Versión del <b>kernel</b>, compilador y fecha</td></tr>
+<tr><td><b>/proc/cpuinfo</b></td><td>Información del <b>procesador</b></td></tr>
+<tr><td><b>/proc/filesystems</b></td><td>Sistemas de archivos compatibles con el kernel</td></tr>
+<tr><td><b>/proc/meminfo</b></td><td>Estadísticas de <b>RAM y swap</b></td></tr>
+<tr><td><b>/proc/stat</b></td><td>Uso de CPU, interrupciones, procesos</td></tr>
+<tr><td><b>/proc/uptime</b></td><td>Tiempo desde el arranque e inactividad</td></tr>
+<tr><td><b>/proc/interrupts</b></td><td>Mapa de <b>interrupciones hardware</b></td></tr>
+</table></div>
+</div>
+<h3>Seguridad en Linux</h3>
+<div class="tw"><table><tr><th>Mecanismo</th><th>Descripción</th></tr>
+<tr><td><b>Permisos</b></td><td>Cada archivo con <b>propietario (usuario y grupo)</b> y permisos <b>lectura, escritura, ejecución</b>; especiales: <b>setuid, setgid, sticky bit</b></td></tr>
+<tr><td><b>ACLs</b></td><td>Permisos detallados para múltiples usuarios o grupos</td></tr>
+<tr><td><b>SELinux</b></td><td>Políticas <b>obligatorias (MAC)</b> que restringen a los procesos</td></tr>
+<tr><td><b>AppArmor</b></td><td>Alternativa <b>más sencilla</b> a SELinux; limita el acceso de aplicaciones</td></tr>
+<tr><td><b>GnuPG (GPG)</b></td><td>Implementación libre de <b>OpenPGP</b>; cifra y firma con <b>clave pública</b></td></tr>
+<tr><td><b>LUKS</b></td><td><b>Estándar de facto</b> para cifrado de volúmenes; usa <b>dm-crypt</b>; AES, múltiples claves</td></tr>
+<tr><td><b>eCryptfs</b></td><td>Cifrado de archivos individuales (Ubuntu para /home); sustituido por <b>fscrypt</b></td></tr>
+<tr><td><b>Fscrypt</b></td><td>Cifrado de directorios en <b>ext4 y f2fs</b></td></tr>
+<tr><td><b>auditd</b></td><td>Auditoría de archivos, configuración y comandos</td></tr>
+<tr><td><b>Fail2Ban</b></td><td><b>Bloquea IP</b> tras intentos fallidos</td></tr>
+<tr><td><b>Logwatch / Logrotate</b></td><td>Revisar y gestionar logs</td></tr>
+</table></div>
+<ul>
+<li><b>E/S</b>: los dispositivos se tratan como <b>ficheros especiales</b> (de <b>carácter</b> y de <b>bloque</b>).</li>
+</ul>
+<h3>5.3 Interfaz de usuario</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Shell</b></p>
+<p>La interfaz tradicional y más potente es la <b>shell</b>, <b>intérprete de comandos</b> (ejecutar programas, gestionar archivos, configurar y automatizar con <b>scripts</b>). La más común es <b>Bash (Bourne Again Shell)</b>; también <b>sh, Zsh, Ksh, Csh</b>. La shell predeterminada se indica en <b>/etc/passwd</b>.</p>
+</div>
+<ul>
+<li><b>Gráfica</b>: <b>X Window System (X11)</b> es la base (muestra gráficos, ventanas y entradas; no define la apariencia). Sobre X: <b>window managers</b> y <b>entornos de escritorio</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Entorno</th><th>Rasgos</th></tr>
+<tr><td><b>KDE (Plasma)</b></td><td>Moderno, muy <b>personalizable</b>; <b>Dolphin</b> (archivos), <b>Kate</b> (editor)</td></tr>
+<tr><td><b>GNOME</b></td><td><b>Simple, minimalista</b>, productividad; por defecto en <b>Fedora y Ubuntu</b></td></tr>
+<tr><td>Otros</td><td><b>XFCE, MATE, Pantheon, LXQt, Cinnamon</b></td></tr>
+</table></div>
+<h3>5.4 Distribuciones</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Distribuciones populares</b></p>
+<div class="tw"><table><tr><th>Distribución</th><th>Descripción</th></tr>
+<tr><td><b>Red Hat Enterprise Linux (RHEL)</b></td><td><b>Comercial</b> para empresas, con soporte y certificaciones; basada en Fedora</td></tr>
+<tr><td><b>Ubuntu</b></td><td>Basada en <b>Debian</b>; facilidad de uso; creada por <b>Canonical</b></td></tr>
+<tr><td><b>Fedora</b></td><td>Comunitaria, patrocinada por <b>Red Hat</b>; software reciente, base de RHEL</td></tr>
+<tr><td><b>openSUSE</b></td><td>Patrocinada por <b>SUSE</b>; herramientas como <b>YaST</b></td></tr>
+<tr><td><b>Debian</b></td><td>Estable y comunitaria; base de Ubuntu; <b>APT (Advanced Package Tool)</b></td></tr>
+<tr><td><b>Knoppix</b></td><td>Basada en Debian; arranque desde <b>CD/DVD o USB</b>; rescate</td></tr>
+<tr><td><b>Linux Mint</b></td><td>Basada en Ubuntu y Debian; <b>escritorio</b> amigable</td></tr>
+<tr><td><b>Arch Linux</b></td><td>Ligera y minimalista; control total; <b>rolling release</b></td></tr>
+<tr><td><b>CentOS</b></td><td>Derivada de <b>RHEL</b>, gratuita; servidores</td></tr>
+<tr><td><b>Kali Linux</b></td><td>Basada en Debian; <b>seguridad informática y pentesting</b></td></tr>
+<tr><td><b>Manjaro</b></td><td>Basada en <b>Arch</b> pero más fácil</td></tr>
+</table></div>
+</div>
+<h2 id="s5">6. SO para dispositivos móviles</h2>
+<h3>6.1 Android</h3>
+<ul>
+<li>El <b>más utilizado</b> (<b>70-72 %</b> de cuota en 2024). Desarrollado por <b>Android Inc.</b>, <b>adquirida por Google en 2005</b>; primera versión comercial <b>2008</b> con el <b>HTC Dream</b>. Código bajo licencia <b>Apache</b> (<b>AOSP</b>). Basado en el <b>kernel de Linux</b>; ejecuta apps en <b>ART</b> (Java y Kotlin).</li>
+</ul>
+<div class="tw"><table><tr><th>Versión</th><th>Nombre</th><th>Año</th><th>Característica estrella</th></tr>
+<tr><td><b>1.0 / 1.1</b></td><td>Apple Pie / Banana</td><td>2008</td><td><b>Android Market</b> y notificaciones</td></tr>
+<tr><td><b>4.0</b></td><td>Ice Cream Sandwich</td><td>2011</td><td><b>Interfaz unificada</b> móviles y tablets</td></tr>
+<tr><td><b>4.4</b></td><td>KitKat</td><td>2013</td><td><b>Project Svelte</b> (poca RAM)</td></tr>
+<tr><td><b>5.0</b></td><td>Lollipop</td><td>2014</td><td><b>Material Design / ART</b></td></tr>
+<tr><td><b>6.0</b></td><td>Marshmallow</td><td>2015</td><td><b>Permisos en ejecución</b></td></tr>
+<tr><td><b>8.0</b></td><td>Oreo</td><td>2017</td><td><b>Project Treble</b></td></tr>
+<tr><td><b>10</b></td><td>Quince Tart</td><td>2019</td><td><b>Navegación por gestos</b> y modo oscuro</td></tr>
+<tr><td><b>12</b></td><td>Snow Cone</td><td>2021</td><td><b>Material You</b></td></tr>
+<tr><td><b>13</b></td><td>Tiramisu</td><td>2022</td><td><b>Permisos de notificaciones</b></td></tr>
+<tr><td><b>14</b></td><td>Upside Down Cake</td><td>2023</td><td><b>Health Connect nativo</b></td></tr>
+<tr><td><b>15</b></td><td>Vanilla Ice Cream</td><td>2024</td><td><b>Espacio Privado</b></td></tr>
+<tr><td><b>16</b></td><td>Baklava</td><td>2025</td><td><b>IA Gemini Nano</b> integrada</td></tr>
+<tr><td><b>17</b></td><td>Cinnamon Bun</td><td>2026</td><td><b>Seguridad post-cuántica</b></td></tr>
+</table></div>
+<ul>
+<li>Los nombres de postres se mantuvieron <b>hasta Android 10</b>.</li>
+<li><b>Arquitectura en capas</b>: <b>kernel de Linux</b> → <b>HAL</b> (interfaz estándar hardware) → <b>Android Runtime</b> → <b>bibliotecas nativas (C/C++)</b> y <b>bibliotecas Java/Kotlin</b> → <b>aplicaciones del sistema</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Android Runtime (ART)</b></p>
+<p>Hasta la <b>versión 5</b> se usaba la máquina virtual <b>Dalvik</b>, sustituida por <b>ART</b>. ART combina <b>AOT (Ahead Of Time)</b>, que compila parte del código <b>al instalar</b> la app, y <b>JIT (Just In Time)</b>, que compila <b>dinámicamente durante la ejecución</b>.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Desarrollo en Android</b></p>
+<p>Se basa en el <b>Android SDK</b> (compilar, depurar y empaquetar), integrado en <b>Android Studio</b>, la plataforma oficial de Google.</p>
+</div>
+<ul>
+<li>Apps en <b>Java o Kotlin</b>, empaquetadas en <b>.apk</b> (código compilado, recursos y <b>Manifest</b>). Componentes: <b>Activities</b> (pantallas), servicios, <b>Broadcast Receivers</b> (eventos) y <b>proveedores de contenido</b>; se comunican con <b>intents</b>. Para publicar: <b>firma digital con clave privada</b> (Google Play Store u otros mercados).</li>
+<li><b>Android NDK</b> (Native Development Kit): partes en <b>C/C++</b> (rendimiento, reutilizar bibliotecas nativas); compilación con <b>CMake o ndk-build</b>; se cargan mediante <b>JNI</b> (Java Native Interface).</li>
+</ul>
+<h3>6.2 iOS</h3>
+<ul>
+<li>Creado por <b>Apple en 2007</b>, exclusivo de sus equipos (iPhone, iPad, Apple TV); <b>segundo en cuota (27 % en 2024)</b>; tipo <b>Unix</b>. Desarrollo con <b>Xcode</b> en <b>Swift</b> (moderno) u <b>Objective-C</b>; publicar en la <b>App Store</b> exige firma digital y revisión previa.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Arquitectura de iOS (4 capas)</b></p>
+<p><b>Core OS</b> (núcleo): acceso directo al hardware; basado en <b>UNIX (Darwin)</b>; interfaces, energía, certificados y claves. <b>Core Services</b>: bases de datos, caché, preferencias, red, localización, notificaciones. <b>Media</b>: gráficos, audio, vídeo y animaciones (<b>AVFoundation, Core Audio, Core Graphics, Core Animation</b>). <b>Cocoa Touch</b>: interfaz gráfica y sensores (movimiento, cámara, localización). La interfaz de iOS se llama <b>Aqua</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Otro SO móvil</th><th>Descripción</th></tr>
+<tr><td><b>HarmonyOS</b></td><td><b>Huawei</b>; <b>microkernel</b>; móviles, IoT, TV</td></tr>
+<tr><td><b>KaiOS</b></td><td>Basado en <b>Firefox OS</b>; móviles básicos con apps web y 4G</td></tr>
+<tr><td><b>Tizen</b></td><td>Código abierto, impulsado por <b>Samsung</b>; wearables, TV</td></tr>
+<tr><td><b>Sailfish OS</b></td><td>Origen <b>europeo</b>, basado en Linux, compatible con apps Android</td></tr>
+<tr><td><b>Windows Phone</b></td><td><b>Microsoft</b>, <b>discontinuado</b></td></tr>
+</table></div>
+<h2 id="s6">7. SO para mainframe</h2>
+<ul>
+<li><b>Mainframes</b>: grandes sistemas para <b>alto volumen de transacciones</b>, operaciones críticas y muchos usuarios, con alta <b>disponibilidad, seguridad y rendimiento</b> (banca, administración pública, seguros, telecomunicaciones, transporte aéreo). Escalabilidad <b>vertical y horizontal</b>; control de acceso, <b>particionamiento lógico</b>, virtualización, trazabilidad y recuperación ante fallos.</li>
+</ul>
+<div class="tw"><table><tr><th>Modo</th><th>Descripción</th></tr>
+<tr><td><b>Batch (por lotes)</b></td><td>Trabajos agrupados y procesados <b>secuencialmente sin interacción</b>; eficiente en tareas repetitivas</td></tr>
+<tr><td><b>Online (interactivo / transaccional)</b></td><td>Interacción <b>en tiempo real</b> (terminales, aplicaciones cliente)</td></tr>
+</table></div>
+<ul>
+<li>Normalmente <b>combinan ambos modos</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>SO mainframe</th><th>Descripción</th></tr>
+<tr><td><b>z/OS</b></td><td><b>IBM</b>, System z; alta disponibilidad, procesamiento paralelo, <b>LPARs</b>, cifrado, compatibilidad con <b>UNIX y Java</b></td></tr>
+<tr><td><b>z/VM</b></td><td><b>Virtualización</b>: varios SO en particiones virtuales</td></tr>
+<tr><td><b>z/VSE</b></td><td><b>Más sencillo</b> que z/OS; cargas menos complejas; entornos heredados</td></tr>
+<tr><td><b>Linux on Z</b></td><td>Linux adaptado a mainframes</td></tr>
+</table></div>
+<div class="pn"><a href="b2t3.html">← 2.3</a><a href="b2t5.html">2.5 →</a></div></main></div><script src="../app.js"></script></body></html>

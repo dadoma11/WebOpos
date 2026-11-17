@@ -1,0 +1,29 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prácticas · Oposiciones TAI</title><link rel="stylesheet" href="style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script>
+<script src="vendor/sql-wasm.js"></script></head><body>
+<header class="top"><a class="logo" href="index.html">TAI · Oposiciones</a><nav><a href="index.html">Temario</a><a href="practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<main class="practicas"><h1>Prácticas interactivas</h1><p class="sub">Todo funciona en tu navegador. Los ejercicios SQL se pueden editar y se guardan en tu dispositivo; para cambiarlos "de forma oficial" edita <code>data/sql.json</code> del repositorio (o usa Exportar/Importar).</p>
+
+<section class="pcard" id="sql"><h2>🗄️ Laboratorio SQL <small class="sub">(Bloque 3 · Tema 3; también Tema 1 y Bloque 2 · Tema 5)</small></h2>
+<div class="exlist" id="exlist"></div><p id="stmt"></p>
+<textarea id="sqlin" spellcheck="false" placeholder="Escribe tu consulta SQL aquí (SQLite). Se admiten varias sentencias."></textarea>
+<div class="row"><button id="run">▶ Ejecutar</button><button id="check">✔ Comprobar ejercicio</button><button id="tables">Ver tablas</button><span id="verdict"></span></div>
+<div id="sqlout"></div>
+<details><summary>💡 Pista</summary><p id="hint"></p></details><details><summary>Ver solución</summary><div class="out" id="sol"></div></details>
+<details id="edit"><summary>✏️ Editar este ejercicio / añadir nuevos</summary>
+<label class="f">Título<input type="text" id="ed_title"></label><label class="f">Enunciado<textarea id="ed_st" style="min-height:60px"></textarea></label><label class="f">Solución (SQL)<textarea id="ed_sol" style="min-height:70px"></textarea></label><label class="f">Pista<input type="text" id="ed_hint"></label>
+<div class="row"><button id="edSave">Guardar cambios</button><button id="edNew">+ Nuevo ejercicio</button><button id="edDel">Borrar</button></div></details>
+<details><summary>🧱 Esquema y datos de la base de ejemplo</summary><textarea id="schema" spellcheck="false" style="min-height:170px"></textarea><div class="row"><button id="schemaSave">Aplicar esquema</button><span id="schemaMsg"></span></div></details>
+<div class="row"><button id="exp">⬇ Exportar ejercicios (JSON)</button><label class="chip">⬆ Importar<input type="file" id="imp" accept=".json" hidden></label><button id="reset">Restaurar originales</button></div></section>
+
+<section class="pcard" id="red"><h2>🌐 Calculadora de subredes IPv4 <small class="sub">(Bloque 4 · Tema 7)</small></h2>
+<div class="row"><label class="f">IP/CIDR<input type="text" id="ip" value="192.168.10.77/26"></label><label class="f">Dividir en (nº subredes)<input type="number" id="nsub" value="1" min="1" max="64"></label><button id="sub">Calcular</button></div><div class="out" id="netout"></div></section>
+
+<section class="pcard" id="conv"><h2>🔢 Conversor de bases <small class="sub">(Bloque 2 · Tema 1)</small></h2>
+<div class="row"><label class="f">Decimal<input type="text" id="cd"></label><label class="f">Binario<input type="text" id="cb"></label><label class="f">Hexadecimal<input type="text" id="ch"></label><label class="f">Octal<input type="text" id="co"></label></div><div id="convmsg" class="ko"></div><div class="out" id="convx"></div></section>
+
+<section class="pcard" id="raid"><h2>💽 Calculadora RAID <small class="sub">(Bloque 4 · Tema 2)</small></h2>
+<div class="row"><label class="f">Nivel<select id="rl"><option>0</option><option>1</option><option selected>5</option><option>6</option><option>10</option></select></label><label class="f">Nº de discos<input type="number" id="rn" value="4" min="2"></label><label class="f">Tamaño por disco (GB)<input type="number" id="rs" value="1000" min="1"></label></div><div class="out" id="raidout"></div></section>
+
+<section class="pcard" id="hash"><h2>🔐 Hash y Base64 <small class="sub">(Bloque 4 · Tema 5)</small></h2>
+<textarea id="ht" style="min-height:70px">Hola oposiciones</textarea><div class="row"><label class="f">Algoritmo<select id="ha"><option>SHA-1</option><option selected>SHA-256</option><option>SHA-384</option><option>SHA-512</option></select></label><button id="hgo">Calcular hash</button><button id="benc">Base64 ⇢ codificar</button><button id="bdec">Base64 ⇢ decodificar</button></div><div class="out" id="hout"></div></section>
+</main><script src="practicas.js"></script></body></html>

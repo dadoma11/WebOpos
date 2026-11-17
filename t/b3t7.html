@@ -1,0 +1,668 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 3 · Tema 7 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción a las aplicaciones web</a><a href="#s1">2. Desarrollo web front-end y en servidor</a><a href="#s2">3. Desarrollo multiplataforma y multidispositivo</a><a href="#s3">4. HTML, XML y derivaciones</a><a href="#s4">5. XML</a><a href="#s5">6. JavaScript</a><a href="#s6">7. PHP</a><a href="#s7">8. Python</a><a href="#s8">9. Ruby</a></aside>
+<main class="doc" data-key="b3t7"><div class="crumb">Bloque 3 · Tema 7</div><h1>Aplicaciones web. Front-end y servidor. HTML, XML, CSS, JavaScript, PHP, Python y Ruby</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (13)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema7.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema7.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Introducción a las aplicaciones web</h2>
+<ul>
+<li><b>Aplicación web</b>: programa accesible desde un <b>navegador</b>, ejecutado en una <b>arquitectura distribuida</b>, sin instalar software local. Se diferencia de una página estática en la <b>interacción</b>, el <b>procesamiento dinámico</b>, la <b>persistencia en BD</b> y la <b>integración</b> con otros sistemas (pasarelas de pago, autenticación, APIs).</li>
+</ul>
+<div class="tw"><table><tr><th>Etapa</th><th>Características</th></tr>
+<tr><td><b>Web 1.0 – estática (años 90)</b></td><td><b>HTML estático</b>, sin interacción; contenido fijo, consulta <b>unidireccional</b>; cambios manuales en los archivos</td></tr>
+<tr><td><b>Web 2.0 – dinámica e interactiva (años 2000)</b></td><td>Lenguajes de servidor (<b>PHP, ASP, JSP</b>); <b>JavaScript y AJAX</b> (actualizar partes sin recargar); <b>usuario participativo</b> (comentarios, perfiles)</td></tr>
+<tr><td><b>Web 3.0 – semántica (actualidad)</b></td><td><b>Estructura semántica</b> de datos, interoperabilidad, automatización; <b>APIs REST, ontologías, metadatos, IA</b>; apps complejas como las de escritorio; <b>PWA</b>, apps híbridas, <b>WebAssembly</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th></th><th><b>Cliente (front-end)</b></th><th><b>Servidor (back-end)</b></th></tr>
+<tr><td><b>Qué es</b></td><td><b>Navegador</b>; interfaz con el usuario</td><td>Procesa las peticiones</td></tr>
+<tr><td><b>Hace</b></td><td>Solicita recursos por <b>HTTP/HTTPS</b>; interpreta <b>HTML, CSS, JavaScript</b>; lógica local (validaciones de formularios)</td><td><b>Lógica de negocio</b>; accede a BD y servicios externos; responde con <b>HTML completo o datos (JSON, XML)</b></td></tr>
+<tr><td><b>Lenguajes</b></td><td>HTML, CSS, JavaScript</td><td><b>PHP, Java, C#, Python, Node.js</b></td></tr>
+</table></div>
+<ul>
+<li><b>Modelo de ejecución</b>: (1) el usuario accede a una <b>URL</b> → (2) el navegador hace una <b>petición HTTP</b> → (3) el servidor ejecuta el código (p. ej. consulta BD) y genera la respuesta → (4) la respuesta (HTML/JSON/XML) se envía y se presenta → (5) el usuario interactúa (formularios, botones) y genera nuevas peticiones o acciones locales con JS.</li>
+</ul>
+<div class="tw"><table><tr><th>Arquitectura avanzada</th><th>Descripción</th></tr>
+<tr><td><b>Multitier (multicapa)</b></td><td>Separa <b>presentación, lógica de negocio y acceso a datos</b></td></tr>
+<tr><td><b>SPA (Single Page Application)</b></td><td><b>Toda la lógica en el cliente</b>; el servidor solo proporciona datos</td></tr>
+<tr><td><b>PWA (Progressive Web App)</b></td><td>Uso <b>sin conexión</b>, notificaciones y capacidades de apps nativas</td></tr>
+</table></div>
+<h2 id="s1">2. Desarrollo web front-end y en servidor</h2>
+<div class="tw"><table><tr><th></th><th><b>Front-end</b></th><th><b>Back-end</b></th></tr>
+<tr><td><b>Definición</b></td><td>Parte <b>visible</b> con la que interactúa el usuario (UX/UI)</td><td><b>Lógica de negocio</b>, procesamiento de datos y comunicación con servidores</td></tr>
+<tr><td><b>Lenguajes</b></td><td><b>HTML, CSS, JavaScript</b></td><td><b>PHP, Python, Java, C#, Node.js</b></td></tr>
+<tr><td><b>Responsabilidad</b></td><td>Diseño de interfaz, interacción, animaciones, estructura visual</td><td>Procesamiento de datos, <b>autenticación</b>, acceso a BD, <b>seguridad</b></td></tr>
+<tr><td><b>Se ejecuta en</b></td><td><b>Navegador del usuario</b></td><td><b>Servidor web</b></td></tr>
+<tr><td><b>Frameworks</b></td><td><b>React, Angular, Vue.js</b></td><td><b>Django, Express.js, Spring Boot, Laravel</b></td></tr>
+</table></div>
+<h3>2.1 Front-end</h3>
+<div class="tw"><table><tr><th>Lenguaje</th><th>Función</th></tr>
+<tr><td><b>HTML</b></td><td>Lenguaje de <b>marcado</b> que define la <b>estructura</b></td></tr>
+<tr><td><b>CSS</b></td><td><b>Estilos</b> y apariencia (<b>Flexbox, Grid</b>, animaciones)</td></tr>
+<tr><td><b>JavaScript</b></td><td><b>Interactividad</b>: eventos, manipular el <b>DOM</b>, peticiones asíncronas (<b>AJAX</b>)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Framework / biblioteca</th><th>Descripción</th><th>Ventajas</th></tr>
+<tr><td><b>React.js</b></td><td>Biblioteca de <b>Meta (Facebook)</b>, basada en <b>componentes</b> reutilizables</td><td><b>Virtual DOM</b>: alto rendimiento y reactividad</td></tr>
+<tr><td><b>Angular</b></td><td>Framework completo de <b>Google</b>, basado en <b>TypeScript</b></td><td>Robusto, modular, <b>CLI</b>; proyectos grandes</td></tr>
+<tr><td><b>Vue.js</b></td><td>Framework <b>progresivo</b> y ligero</td><td>Flexible, fácil de integrar y aprender; proyectos pequeños y medianos</td></tr>
+</table></div>
+<ul>
+<li>Herramientas: <b>Bootstrap</b> (CSS responsivo), <b>Tailwind CSS</b> (clases personalizables), <b>Webpack/Vite</b> (construcción y optimización).</li>
+</ul>
+<h3>2.2 Servidor</h3>
+<div class="tw"><table><tr><th>Tecnología</th><th>Características</th></tr>
+<tr><td><b>PHP</b></td><td>Web dinámica tradicional; <b>Apache + MySQL</b>; <b>Laravel, Symfony</b></td></tr>
+<tr><td><b>Java</b></td><td>Robusto y escalable; <b>Spring Boot, Jakarta EE</b></td></tr>
+<tr><td><b>Python</b></td><td>Web, IA, automatización; <b>Django, Flask</b></td></tr>
+<tr><td><b>Node.js</b></td><td>JavaScript en servidor con el motor <b>V8</b>; tiempo real y microservicios; <b>Express.js, NestJS</b></td></tr>
+<tr><td><b>C# (.NET Core)</b></td><td><b>ASP.NET</b>; integración con la nube de Microsoft</td></tr>
+</table></div>
+<ul>
+<li><b>Arquitecturas</b>: <b>MVC</b> (Django, Laravel, ASP.NET), <b>microservicios</b> (Docker, Kubernetes), comunicación front–back con <b>API REST y GraphQL</b>.</li>
+<li><b>Bases de datos</b>: <b>relacionales (SQL)</b>: MySQL, PostgreSQL, SQL Server · <b>NoSQL</b>: MongoDB, Firebase, Redis.</li>
+</ul>
+<h2 id="s2">3. Desarrollo multiplataforma y multidispositivo</h2>
+<ul>
+<li>Enfoques: <b>Responsive Web Design (RWD)</b>, <b>frameworks multiplataforma</b> (una sola base de código) y <b>PWA</b>.</li>
+</ul>
+<h3>3.1 Responsive Web Design</h3>
+<ul>
+<li>Técnica que <b>adapta el sitio al tamaño y resolución</b> del dispositivo, sin varias versiones.</li>
+</ul>
+<div class="tw"><table><tr><th>Principio</th><th>Descripción</th></tr>
+<tr><td><b>Mobile-first</b></td><td>Se diseña <b>primero para móviles</b> y luego se amplía</td></tr>
+<tr><td><b>Media queries</b></td><td>Estilos según el tamaño de pantalla; regla CSS <b><code>@media</code></b></td></tr>
+<tr><td><b>Diseño flexible</b></td><td><b>CSS Grid y Flexbox</b>; <b>porcentajes, <code>vh</code> (alto del viewport) y <code>vw</code> (ancho del viewport)</b> en lugar de medidas fijas</td></tr>
+<tr><td><b>Imágenes adaptables</b></td><td><b><code>max-width:100%</code></b> para que no desborden</td></tr>
+<tr><td><b>Tipografía adaptable</b></td><td><b><code>rem</code> y <code>em</code></b> en lugar de <code>px</code></td></tr>
+</table></div>
+<h3>3.2 PWA</h3>
+<ul>
+<li>Experiencia similar a una <b>app nativa</b>: <b>funcionan sin conexión</b> (<b>Service Workers</b>, caché), son <b>instalables</b>, se ejecutan en <b>pantalla completa</b> y tienen rendimiento optimizado.</li>
+</ul>
+<div class="tw"><table><tr><th>Componente clave de una PWA</th><th>Función</th></tr>
+<tr><td><b>Service Worker</b></td><td>Script JavaScript que gestiona la <b>caché</b> y el funcionamiento sin conexión</td></tr>
+<tr><td><b>Manifiesto (<code>manifest.json</code>)</b></td><td>Define <b>nombre, iconos y apariencia</b></td></tr>
+<tr><td><b>HTTPS obligatorio</b></td><td>Integridad y seguridad de los datos</td></tr>
+</table></div>
+<h3>3.3 Frameworks multiplataforma</h3>
+<div class="tw"><table><tr><th>Tecnología</th><th>Uso</th><th>Rendimiento</th><th>Lenguaje</th><th>Plataforma</th></tr>
+<tr><td><b>Responsive Web Design</b></td><td>Web adaptable</td><td>Depende del navegador</td><td>HTML, CSS, JS</td><td>Web</td></tr>
+<tr><td><b>PWA</b></td><td>Web con funciones avanzadas</td><td><b>Alto</b> (Service Workers)</td><td>HTML, CSS, JS</td><td>Web, móvil</td></tr>
+<tr><td><b>Ionic</b></td><td>Apps <b>híbridas</b></td><td><b>Medio</b> (usa <b>WebView</b>)</td><td>JavaScript; Angular, React</td><td>Android, iOS, Web</td></tr>
+<tr><td><b>React Native</b></td><td>Apps casi nativas (<b>Meta</b>)</td><td><b>Alto</b> (compila a <b>nativo</b>)</td><td>JavaScript, <b>JSX</b></td><td>Android, iOS</td></tr>
+<tr><td><b>Flutter</b></td><td>Alto rendimiento (<b>Google</b>)</td><td><b>Muy alto</b> (motor gráfico propio)</td><td><b>Dart</b></td><td>Android, iOS, Web, escritorio</td></tr>
+<tr><td><b>Xamarin</b></td><td>Apps nativas (.NET)</td><td><b>Alto</b> (compila a nativo)</td><td><b>C#</b></td><td>Android, iOS, Windows</td></tr>
+</table></div>
+<ul>
+<li><b>React Native</b> lo usan Instagram, Facebook y Airbnb. <b>Ionic</b> se integra con Angular, React o Vue.</li>
+</ul>
+<h3>3.4 Android</h3>
+<ul>
+<li>SO móvil más usado, de <b>Google</b>, basado en el <b>núcleo Linux</b>; lanzado en <b>2008</b>. Hasta <b>Android 9 Pie</b> con nombres de postres; <b>desde Android 10</b> numeración simple.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Versiones de Android</b></p>
+<div class="tw"><table><tr><th>Versión</th><th>Nombre</th><th>Año</th><th>Características clave</th></tr>
+<tr><td><b>1.0</b></td><td><b>Apple Pie</b></td><td>2008</td><td>Primera versión comercial; Gmail, YouTube, navegador</td></tr>
+<tr><td><b>1.1</b></td><td><b>Banana Bread</b></td><td>2009</td><td></td></tr>
+<tr><td><b>1.5</b></td><td><b>Cupcake</b></td><td>2009</td><td></td></tr>
+<tr><td><b>1.6</b></td><td><b>Donut</b></td><td>2009</td><td></td></tr>
+<tr><td><b>2.2</b></td><td><b>Froyo</b></td><td>2010</td><td>Soporte Flash y mejoras de rendimiento</td></tr>
+<tr><td><b>4.0</b></td><td><b>Ice Cream Sandwich</b></td><td>2011</td><td>Interfaz <b>Holo</b>, multitarea mejorada</td></tr>
+<tr><td><b>4.1–4.3.1</b></td><td><b>Jelly Bean</b></td><td></td><td></td></tr>
+<tr><td><b>4.4</b></td><td><b>KitKat</b></td><td></td><td></td></tr>
+<tr><td><b>5.0</b></td><td><b>Lollipop</b></td><td>2014</td><td><b>Material Design</b>, <b>64 bits</b></td></tr>
+<tr><td><b>6.0</b></td><td><b>Marshmallow</b></td><td>2015</td><td><b>Permisos de apps</b>, <b>Doze</b> (ahorro de batería)</td></tr>
+<tr><td><b>8.0</b></td><td><b>Oreo</b></td><td>2017</td><td><b>Picture-in-picture</b>, rendimiento</td></tr>
+<tr><td><b>9.0</b></td><td><b>Pie</b></td><td>2018</td><td>Último con nombre de postre</td></tr>
+<tr><td><b>10</b></td><td>—</td><td>2019</td><td><b>Sin nombres de postres</b>, <b>modo oscuro</b>, navegación por gestos</td></tr>
+<tr><td><b>12</b></td><td>—</td><td>2021</td><td><b>Material You</b>, seguridad y rendimiento</td></tr>
+<tr><td><b>14</b></td><td>—</td><td>2023</td><td>Personalización, batería y privacidad</td></tr>
+</table></div>
+</div>
+<h2 id="s3">4. HTML, XML y derivaciones</h2>
+<h3>4.1 HTML</h3>
+<ul>
+<li><b>HyperText Markup Language</b>: estándar para <b>estructurar contenido</b> web. <b>No es un lenguaje de programación, sino de marcado.</b></li>
+</ul>
+<div class="tw"><table><tr><th>Grupo</th><th>Elementos</th></tr>
+<tr><td><b>Texto</b></td><td><code>&lt;h1&gt;…&lt;h6&gt;</code> títulos · <code>&lt;p&gt;</code> párrafo · <code>&lt;br&gt;</code> salto de línea · <code>&lt;hr&gt;</code> línea horizontal · <code>&lt;em&gt;</code>/<code>&lt;i&gt;</code> cursiva · <code>&lt;div&gt;</code> contenedor en bloque</td></tr>
+<tr><td><b>Enlaces e imágenes</b></td><td><code>&lt;a href&gt;</code> hipervínculo · <code>&lt;img&gt;</code> con <b>src, alt, width, height</b></td></tr>
+<tr><td><b>Listas</b></td><td><code>&lt;ul&gt;</code> no ordenada · <code>&lt;ol&gt;</code> ordenada · <code>&lt;li&gt;</code> elemento · <code>&lt;dl&gt;</code> definiciones · <code>&lt;dt&gt;</code> término</td></tr>
+<tr><td><b>Tablas</b></td><td><code>&lt;table&gt;</code> · <code>&lt;tr&gt;</code> fila · <code>&lt;td&gt;</code> celda de datos · <code>&lt;th&gt;</code> encabezado · <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tfoot&gt;</code> · <code>&lt;caption&gt;</code> título</td></tr>
+<tr><td><b>Formularios</b></td><td><code>&lt;form&gt;</code> · <code>&lt;input&gt;</code> · <code>&lt;label&gt;</code> · <code>&lt;textarea&gt;</code> multilínea · <code>&lt;select&gt;</code> + <code>&lt;option&gt;</code> desplegable · <code>&lt;button&gt;</code> · <code>&lt;fieldset&gt;</code> agrupa · <code>&lt;legend&gt;</code> título del grupo</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Listas</b></p>
+<p>Para crear un nuevo listado se usa <b><code>&lt;ul&gt;</code></b>, y los elementos se identifican con <b><code>&lt;li&gt;</code></b>.</p>
+</div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Etiqueta label</b></p>
+<p><code>&lt;label&gt;</code> <b>asocia una etiqueta textual con un campo</b> de formulario. El atributo <b><code>for</code> debe coincidir con el <code>id</code></b> del campo asociado.</p>
+</div>
+<ul>
+<li><b><code>&lt;input&gt;</code></b>: etiqueta <b>vacía</b> (sin etiqueta de cierre).</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo (<code>type</code>)</th><th>Descripción</th></tr>
+<tr><td><b>text</b></td><td>Texto de una línea</td></tr>
+<tr><td><b>password</b></td><td>Caracteres ocultos</td></tr>
+<tr><td><b>email</b></td><td>Valida formato de email</td></tr>
+<tr><td><b>number</b></td><td>Numérico con flechas</td></tr>
+<tr><td><b>date</b></td><td>Selector de fecha</td></tr>
+<tr><td><b>checkbox</b></td><td>Casilla de verificación</td></tr>
+<tr><td><b>radio</b></td><td><b>Opción única</b> (en grupo)</td></tr>
+<tr><td><b>file</b></td><td>Subir archivos</td></tr>
+<tr><td><b>submit</b></td><td>Enviar el formulario</td></tr>
+<tr><td><b>reset</b></td><td>Reiniciar los campos</td></tr>
+<tr><td><b>button</b></td><td>Botón sin función (se usa con JS)</td></tr>
+<tr><td><b>range</b></td><td>Deslizante numérico</td></tr>
+<tr><td><b>color</b></td><td>Selector de color</td></tr>
+<tr><td><b>search</b></td><td>Búsquedas</td></tr>
+<tr><td><b>tel</b></td><td>Teléfono (teclado adaptado)</td></tr>
+<tr><td><b>url</b></td><td>Valida URL</td></tr>
+<tr><td><b>datetime-local</b></td><td>Fecha y hora sin zona horaria</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Atributo</th><th>Descripción</th></tr>
+<tr><td><b>name</b></td><td>Nombre del campo (clave en el envío)</td></tr>
+<tr><td><b>value</b></td><td>Valor inicial</td></tr>
+<tr><td><b>placeholder</b></td><td>Texto guía dentro del campo</td></tr>
+<tr><td><b>required</b></td><td><b>Obligatorio</b> rellenarlo</td></tr>
+<tr><td><b>readonly</b></td><td>Visible pero <b>no editable</b></td></tr>
+<tr><td><b>disabled</b></td><td><b>Deshabilitado</b></td></tr>
+<tr><td><b>min / max</b></td><td>Valor mínimo / máximo</td></tr>
+<tr><td><b>step</b></td><td>Incremento permitido (number, range)</td></tr>
+<tr><td><b>checked</b></td><td>Marca checkbox/radio por defecto</td></tr>
+<tr><td><b>multiple</b></td><td>Varias selecciones (file, email)</td></tr>
+<tr><td><b>pattern</b></td><td><b>Expresión regular</b> de validación</td></tr>
+<tr><td><b>maxlength</b></td><td><b>Número máximo de caracteres</b> que se pueden introducir</td></tr>
+<tr><td><b>size</b></td><td><b>Ancho visible</b> de caracteres, <b>NO el máximo</b> de caracteres</td></tr>
+<tr><td><b>autofocus</b></td><td>El campo gana el foco al cargar</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Atributos de input</b></p>
+<p>Habitualmente aparece un <b>fragmento de código</b> y hay que reconocer las funciones de los atributos principales, como <b><code>maxlength</code>, <code>size</code> o <code>required</code></b>.</p>
+</div>
+<h3>4.2 HTML5</h3>
+<ul>
+<li>Quinta versión mayor; <b>recomendación oficial del W3C en 2014</b>. Consolida funcionalidades que antes requerían plugins.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Novedades de HTML5: etiquetas semánticas de estructura</b></p>
+<div class="tw"><table><tr><th>Etiqueta</th><th>Uso</th></tr>
+<tr><td><b><code>&lt;header&gt;</code></b></td><td>Encabezado de página o sección (<b>no confundir con <code>&lt;head&gt;</code></b>)</td></tr>
+<tr><td><b><code>&lt;footer&gt;</code></b></td><td>Pie de página o sección</td></tr>
+<tr><td><b><code>&lt;nav&gt;</code></b></td><td>Bloque de <b>navegación</b></td></tr>
+<tr><td><b><code>&lt;article&gt;</code></b></td><td>Contenido <b>independiente y autocontenido</b> (noticia, entrada de blog)</td></tr>
+<tr><td><b><code>&lt;section&gt;</code></b></td><td><b>Agrupación temática</b></td></tr>
+<tr><td><b><code>&lt;aside&gt;</code></b></td><td>Contenido <b>lateral o complementario</b></td></tr>
+<tr><td><b><code>&lt;main&gt;</code></b></td><td>Contenido principal (<b>solo uno por página</b>)</td></tr>
+<tr><td><b><code>&lt;figure&gt;</code></b></td><td>Elemento gráfico independiente</td></tr>
+<tr><td><b><code>&lt;figcaption&gt;</code></b></td><td>Título o pie dentro de <code>&lt;figure&gt;</code></td></tr>
+<tr><td><b><code>&lt;mark&gt;</code></b></td><td>Resalta texto</td></tr>
+<tr><td><b><code>&lt;time&gt;</code></b></td><td>Fecha u hora</td></tr>
+<tr><td><b><code>&lt;details&gt;</code></b></td><td>Contenido que se <b>oculta/muestra al hacer clic, sin JavaScript</b></td></tr>
+<tr><td><b><code>&lt;summary&gt;</code></b></td><td>Título visible de <code>&lt;details&gt;</code></td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Tablas HTML5</b>: misma estructura; secciones semánticas <code>&lt;caption&gt;</code> (título), <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tfoot&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code> (negrita y centrado), <code>&lt;td&gt;</code>. Atributos: <b>colspan</b> (ocupa varias columnas), <b>rowspan</b> (varias filas), <b>scope</b> (accesibilidad: <code>row</code> o <code>col</code>).</li>
+<li><b>Multimedia nativo</b> (sin plugins como Flash): <b><code>&lt;audio&gt;</code></b> (mp3, ogg, wav), <b><code>&lt;video&gt;</code></b>, <b><code>&lt;track&gt;</code></b> (subtítulos, descripciones, traducciones). Con varios <b><code>&lt;source&gt;</code></b> el navegador <b>los lee de arriba abajo y reproduce el primero compatible</b>; si ninguno sirve, muestra el texto alternativo. <b><code>controls</code></b> añade el reproductor.</li>
+</ul>
+<div class="tw"><table><tr><th>Atributo de audio/vídeo</th><th>Descripción</th></tr>
+<tr><td><b>controls</b></td><td>Muestra play, pausa, volumen</td></tr>
+<tr><td><b>autoplay</b></td><td>Reproduce al cargar (puede bloquearse)</td></tr>
+<tr><td><b>loop</b></td><td>En bucle</td></tr>
+<tr><td><b>muted</b></td><td>Silenciado por defecto</td></tr>
+<tr><td><b>preload</b></td><td>Cuándo cargar: <b>none, metadata, auto</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Formularios mejorados HTML5</th><th>Uso</th><th>Atributos</th></tr>
+<tr><td><b><code>&lt;progress&gt;</code></b></td><td>Barra de progreso</td><td>value, max</td></tr>
+<tr><td><b><code>&lt;meter&gt;</code></b></td><td>Valor dentro de un rango conocido</td><td>min, max, value, low, high, optimum</td></tr>
+<tr><td><b><code>&lt;output&gt;</code></b></td><td>Resultado de un cálculo</td><td>for, name, id</td></tr>
+<tr><td><b><code>&lt;datalist&gt;</code></b></td><td>Lista de <b>sugerencias</b> para un input</td><td>id</td></tr>
+<tr><td><b><code>type="range"</code></b></td><td>Deslizante</td><td>min, max, step, value</td></tr>
+<tr><td><b><code>type="number"</code></b></td><td>Numérico con flechas</td><td>min, max, step, value</td></tr>
+<tr><td><b><code>type="color"</code></b></td><td>Selector gráfico de color</td><td>value</td></tr>
+<tr><td><b><code>type="date"</code></b></td><td>Calendario emergente</td><td>formato <b>YYYY-MM-DD</b></td></tr>
+</table></div>
+<ul>
+<li>Nuevos tipos de input: <b>email, url, tel, number, range, date, color, search, datetime-local</b>; validación sin JavaScript.</li>
+</ul>
+<h3>4.3 CSS (Cascading Style Sheets)</h3>
+<ul>
+<li>Define la <b>presentación visual</b> de HTML (colores, tamaños, márgenes, fuentes, posiciones) y <b>separa contenido y presentación</b>. Regla: <b><code>selector { propiedad: valor; }</code></b>.</li>
+</ul>
+<h3>4.3.1 Especificidad de selectores</h3>
+<ul>
+<li>Mecanismo por el que el navegador decide qué regla aplica cuando varias afectan al mismo elemento. Formato <b>(ID – clases/pseudo-clases – etiquetas/pseudo-elementos)</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Selector</th><th>Especificidad</th></tr>
+<tr><td><b>Etiqueta</b></td><td><b>0-0-1</b></td></tr>
+<tr><td><b>Clase, pseudo-clase</b></td><td><b>0-1-0</b></td></tr>
+<tr><td><b>ID</b></td><td><b>1-0-0</b></td></tr>
+<tr><td><b>Estilo en línea</b></td><td><b>1-0-0-0</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ejemplo</th><th>Cálculo</th></tr>
+<tr><td><code>input:required</code></td><td>input (<b>0-0-1</b>) + <code>:required</code> pseudo-clase (<b>0-1-0</b>) = <b>0-1-1</b></td></tr>
+<tr><td><code>#contenido p</code></td><td><b>1-0-1</b></td></tr>
+</table></div>
+<ul>
+<li><b>Misma especificidad</b>: gana la regla que aparece <b>más abajo</b> en la hoja (la más reciente). Selectores combinados <b>suman especificidad</b>. El comodín <b><code>*</code></b> tiene la <b>menor</b> prioridad. <b><code>!important</code></b> fuerza la regla aunque otra tenga más especificidad (no abusar).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de selectores</b></p>
+<div class="tw"><table><tr><th>Nombre</th><th>Símbolo</th><th>Significado</th><th>Ejemplo</th></tr>
+<tr><td><b>Descendiente</b></td><td>(espacio)</td><td>Todos los elementos <b>dentro</b> de otro</td><td><code>div p</code></td></tr>
+<tr><td><b>Hijo directo</b></td><td><b>&gt;</b></td><td>Solo <b>hijos directos</b> del padre (no anidados más hondo)</td><td><code>ul &gt; li</code></td></tr>
+<tr><td><b>Hermano adyacente</b></td><td><b>+</b></td><td>El <b>siguiente hermano inmediato</b></td><td><code>h2 + p</code> (primer p justo tras un h2)</td></tr>
+<tr><td><b>Hermanos generales</b></td><td><b>~</b></td><td><b>Todos los hermanos siguientes</b> con el mismo padre</td><td><code>h2 ~ p</code></td></tr>
+<tr><td><b>ID</b></td><td><b>#</b></td><td>Elemento único; <b>solo un id por documento</b></td><td><code>#miElemento</code></td></tr>
+<tr><td><b>Clase</b></td><td><b>.</b></td><td><b>Reutilizable</b></td><td><code>.alerta</code></td></tr>
+</table></div>
+</div>
+<h3>4.3.2 Estilo en CSS</h3>
+<div class="tw"><table><tr><th>Propiedades de tabla</th><th>Descripción</th></tr>
+<tr><td><b>border</b></td><td>Borde de tabla, celdas o filas</td></tr>
+<tr><td><b>border-collapse</b></td><td>Une bordes adyacentes (<b>collapse o separate</b>)</td></tr>
+<tr><td><b>width</b></td><td>Ancho (% o px)</td></tr>
+<tr><td><b>text-align</b></td><td>Alineación horizontal (left, center, right)</td></tr>
+<tr><td><b>vertical-align</b></td><td>Alineación vertical (top, middle, bottom)</td></tr>
+<tr><td><b>padding</b></td><td>Espacio interior de celdas</td></tr>
+<tr><td><b>background-color / color / font-weight</b></td><td>Fondo, texto y grosor</td></tr>
+</table></div>
+<div class="tw"><table><tr><th><b>text-transform</b></th><th>Efecto</th></tr>
+<tr><td><b>uppercase</b></td><td>MAYÚSCULAS</td></tr>
+<tr><td><b>lowercase</b></td><td>minúsculas</td></tr>
+<tr><td><b>capitalize</b></td><td>Primera letra de cada palabra en mayúscula</td></tr>
+<tr><td><b>none</b></td><td>Sin transformación (por defecto)</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Preprocesador CSS</b></p>
+<p>Herramienta que permite escribir CSS con funcionalidades avanzadas (<b>variables, anidamiento, funciones o mixins, operaciones, reutilización</b>) y que luego se <b>compila a CSS estándar</b>. Los más conocidos: <b>Sass y Less</b>.</p>
+</div>
+<h3>4.4 CSS Grid Layout</h3>
+<ul>
+<li>Sistema <b>bidimensional</b> (filas y columnas a la vez) de <b>CSS3</b>; ideal para maquetación compleja. Flexbox trabaja mejor en <b>una dimensión</b>. Contenedor: <b><code>display: grid</code></b>; columnas con <b><code>grid-template-columns</code></b>, filas con <b><code>grid-template-rows</code></b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Unidad en Grid</th><th>Significado</th></tr>
+<tr><td><b>px, %</b></td><td>Fijos o relativos clásicos</td></tr>
+<tr><td><b>fr</b></td><td><b>Fracción</b> del espacio disponible</td></tr>
+<tr><td><b>auto</b></td><td>Se adapta al contenido</td></tr>
+<tr><td><b>minmax()</b></td><td>Mínimo y máximo</td></tr>
+<tr><td><b>repeat()</b></td><td>Repite valores</td></tr>
+</table></div>
+<ul>
+<li>Posicionar: <b>grid-column-start/end</b>, <b>grid-row-start/end</b> (o abreviados <b>grid-column</b>, <b>grid-row</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Espaciado y alineación</th><th>Función</th></tr>
+<tr><td><b>gap / row-gap / column-gap</b></td><td>Espacio entre filas y columnas</td></tr>
+<tr><td><b>justify-items</b></td><td>Alineación <b>horizontal</b> de ítems</td></tr>
+<tr><td><b>align-items</b></td><td>Alineación <b>vertical</b></td></tr>
+<tr><td><b>place-items</b></td><td>Abreviatura de ambas</td></tr>
+</table></div>
+<h3>4.5 Flexbox</h3>
+<ul>
+<li>Distribuye y alinea elementos de forma flexible en <b>una sola dimensión</b> (fila o columna). <b>Eje principal</b> (row, column) y <b>eje cruzado</b> (perpendicular).</li>
+</ul>
+<div class="tw"><table><tr><th>Propiedad del contenedor</th><th>Descripción</th></tr>
+<tr><td><b>display: flex</b></td><td>Activa Flexbox</td></tr>
+<tr><td><b>flex-direction</b></td><td>Eje principal: <b>row</b> (por defecto), <b>column</b>, <b>row-reverse</b>, <b>column-reverse</b></td></tr>
+<tr><td><b>justify-content</b></td><td>Alineación en el <b>eje principal</b></td></tr>
+<tr><td><b>align-items</b></td><td>Alineación en el <b>eje cruzado</b></td></tr>
+<tr><td><b>align-content</b></td><td>Alineación de <b>varias líneas</b> (con flex-wrap)</td></tr>
+<tr><td><b>flex-wrap</b></td><td>Los elementos pasan a la <b>línea siguiente</b> si no caben</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Propiedad de los hijos</th><th>Descripción</th></tr>
+<tr><td><b>flex-grow</b></td><td>Cuánto puede <b>crecer</b></td></tr>
+<tr><td><b>flex-shrink</b></td><td>Cuánto puede <b>reducirse</b></td></tr>
+<tr><td><b>flex-basis</b></td><td>Tamaño inicial</td></tr>
+<tr><td><b>flex</b></td><td>Atajo de grow, shrink y basis (<code>flex: 1 0 auto</code>)</td></tr>
+<tr><td><b>align-self</b></td><td>Alineación individual en el eje cruzado (sobrescribe align-items)</td></tr>
+<tr><td><b>order</b></td><td><b>Reordena</b> visualmente</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>justify-content</th><th>Alineación</th></tr>
+<tr><td><b>flex-start</b></td><td>Inicio del eje (izquierda)</td></tr>
+<tr><td><b>flex-end</b></td><td>Final del eje (derecha)</td></tr>
+<tr><td><b>center</b></td><td>Centrado</td></tr>
+<tr><td><b>space-between</b></td><td>Espacio entre ítems, <b>extremos alineados</b></td></tr>
+<tr><td><b>space-around</b></td><td>Espaciado uniforme <b>alrededor</b></td></tr>
+<tr><td><b>space-evenly</b></td><td>Espaciado <b>equitativo</b> entre todos</td></tr>
+</table></div>
+<h3>4.6 Bootstrap</h3>
+<ul>
+<li>Framework front-end <b>open source</b> para interfaces <b>responsivas</b> rápidas. Incluye CSS predefinido, <b>sistema de rejilla (grid)</b>, <b>clases utilitarias</b> (<code>.text-center</code>, <code>.bg-primary</code>, <code>.mt-3</code>), componentes (<code>.btn</code>, <code>.form-control</code>, navbars, tarjetas, alertas, modales) y JavaScript básico (desplegables, carruseles, pestañas). Es <b>mobile-first</b>.</li>
+</ul>
+<h2 id="s4">5. XML</h2>
+<ul>
+<li><b>eXtensible Markup Language</b>: creado por el <b>W3C</b>; estructura <b>jerárquica</b>, legible por humanos y máquinas. <b>A diferencia de HTML no tiene etiquetas predefinidas</b>: el usuario las define.</li>
+</ul>
+<div class="tw"><table><tr><th>Característica</th><th>Descripción</th></tr>
+<tr><td><b>Extensible</b></td><td>Etiquetas propias</td></tr>
+<tr><td><b>Autodescriptivo</b></td><td>Los datos llevan su significado</td></tr>
+<tr><td><b>Bien formado</b></td><td>Sintaxis estricta</td></tr>
+<tr><td><b>Validable</b></td><td>Con <b>DTD o XML Schema</b></td></tr>
+<tr><td><b>Independiente</b></td><td>De plataforma y lenguaje</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Etiqueta / estructura</th><th>Uso</th></tr>
+<tr><td><b><code>&lt;?xml ... ?&gt;</code></b></td><td><b>Declaración XML</b>; al inicio; versión y codificación</td></tr>
+<tr><td><b><code>&lt;!-- --&gt;</code></b></td><td>Comentarios</td></tr>
+<tr><td><b><code>&lt;etiqueta/&gt;</code></b></td><td>Etiqueta <b>vacía</b> (autocontenida)</td></tr>
+<tr><td><b><code>&lt;!DOCTYPE&gt;</code></b></td><td>Tipo de documento (con <b>DTD</b>), opcional</td></tr>
+<tr><td><b><code>&lt;!ELEMENT&gt;</code> / <code>&lt;!ATTLIST&gt;</code></b></td><td>Declaran elementos / atributos en un <b>DTD</b></td></tr>
+<tr><td><b>Elemento raíz</b></td><td><b>Obligatorio</b>; envuelve todo el contenido</td></tr>
+<tr><td><b><code>&lt;xsd:schema&gt;</code>, <code>&lt;xsd:element&gt;</code>, <code>&lt;xsd:attribute&gt;</code></b></td><td>Esquema <b>XSD</b></td></tr>
+<tr><td><b><code>&lt;xsl:stylesheet&gt;</code>, <code>&lt;xsl:template&gt;</code>, <code>&lt;xsl:value-of&gt;</code></b></td><td>Transformación <b>XSLT</b></td></tr>
+<tr><td><b><code>&lt;xop:Include&gt;</code></b></td><td>Incluye datos binarios externos (<b>XOP</b>)</td></tr>
+</table></div>
+<ul>
+<li><b>Bien formado</b>: <b>un único elemento raíz</b>, etiquetas <b>cerradas y bien anidadas</b>, atributos <b>entre comillas</b>, <b>sensible a mayúsculas</b> (<code>&lt;dato&gt;</code> ≠ <code>&lt;Dato&gt;</code>). <b>Válido</b>: bien formado <b>y</b> cumple un DTD.</li>
+</ul>
+<div class="tw"><table><tr><th>Derivación de XML</th><th>Descripción</th></tr>
+<tr><td><b>XHTML</b></td><td>HTML reescrito en XML, más estricto; <b>sustituido en la práctica por HTML5</b></td></tr>
+<tr><td><b>SVG</b></td><td>Gráficos <b>vectoriales</b> escalables</td></tr>
+<tr><td><b>MathML</b></td><td>Expresiones matemáticas</td></tr>
+<tr><td><b>XSL / XSLT</b></td><td>Dar formato / <b>transformar</b> XML a HTML, texto u otro XML</td></tr>
+<tr><td><b>XSD</b></td><td>Definición y validación de estructura (<b>más potente que DTD</b>)</td></tr>
+<tr><td><b>RSS</b></td><td>Distribución de contenido actualizado (noticias, blogs)</td></tr>
+<tr><td><b>SOAP</b></td><td>Mensajes de servicios web</td></tr>
+<tr><td><b>WSDL</b></td><td>Descripción de servicios web</td></tr>
+<tr><td><b>XBRL</b></td><td>Informes financieros y contables</td></tr>
+<tr><td><b>GML</b></td><td>Información geográfica</td></tr>
+<tr><td><b>SCORM</b></td><td>Contenidos de e-learning</td></tr>
+</table></div>
+<ul>
+<li><b>XOP (XML-binary Optimized Packaging)</b>: especificación del <b>W3C</b> para incluir <b>datos binarios</b> (imágenes, audio, archivos) en XML de forma eficiente, <b>referenciándolos externamente</b> en lugar de usar base64 (que aumenta el tamaño).</li>
+<li><b>DTD (Document Type Definition)</b>: define qué <b>elementos</b> pueden aparecer, su <b>orden</b>, sus <b>atributos</b> y si son <b>opcionales o repetibles</b>.</li>
+</ul>
+<h2 id="s5">6. JavaScript</h2>
+<ul>
+<li>Lenguaje <b>interpretado, imperativo, dinámico, orientado a objetos y basado en prototipos</b>; principalmente <b>cliente</b> (también servidor con <b>Node.js</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Característica</th><th>Descripción</th></tr>
+<tr><td><b>Interpretado</b></td><td>Sin compilación previa</td></tr>
+<tr><td><b>Basado en prototipos</b></td><td>Objetos y prototipos organizan datos y funciones</td></tr>
+<tr><td><b>Tipado dinámico</b></td><td><code>var x = 5; x = "texto"</code> válido</td></tr>
+<tr><td><b>Débilmente tipado</b></td><td>Mezcla tipos sin error inmediato</td></tr>
+<tr><td><b>Orientado a eventos</b></td><td>Responde a clics, envíos, teclas</td></tr>
+<tr><td><b>Multiplataforma</b></td><td>Todos los navegadores modernos</td></tr>
+<tr><td><b>Asincronía</b></td><td><b>Callbacks, promises y async/await</b></td></tr>
+</table></div>
+<ul>
+<li>Operadores aritméticos: suma, resta, multiplicación, división, <b>módulo <code>%</code></b>, <b>potencia con doble asterisco</b>, incremento <code>++</code>, decremento.</li>
+</ul>
+<h3>6.2 Eventos</h3>
+<ul>
+<li><b>Evento</b>: acción (normalmente del usuario) detectada y respondida con JavaScript. Dos formas: <b>en línea</b> (<code>&lt;button onclick="saludar()"&gt;</code>) o <b><code>addEventListener</code></b> (<b>más recomendado</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Eventos de ratón</th><th>Descripción</th></tr>
+<tr><td><b>onclick</b></td><td>Clic</td></tr>
+<tr><td><b>ondblclick</b></td><td>Doble clic</td></tr>
+<tr><td><b>onmouseover</b></td><td>El ratón <b>entra</b> en el elemento</td></tr>
+<tr><td><b>onmouseout</b></td><td>El ratón <b>sale</b></td></tr>
+<tr><td><b>onmousedown / onmouseup</b></td><td>Se presiona / se suelta el botón</td></tr>
+<tr><td><b>onmousemove</b></td><td>Movimiento dentro del elemento</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Eventos de teclado y formulario</b></p>
+<div class="tw"><table><tr><th>Evento</th><th>Descripción</th></tr>
+<tr><td><b>onkeydown</b></td><td>Se <b>presiona</b> una tecla</td></tr>
+<tr><td><b>onkeyup</b></td><td>Se <b>suelta</b> una tecla</td></tr>
+<tr><td><b>onkeypress</b></td><td>Se presiona y mantiene (<b>obsoleto</b>)</td></tr>
+<tr><td><b>onsubmit</b></td><td>Se <b>envía</b> un formulario</td></tr>
+<tr><td><b>onreset</b></td><td>Se <b>reinicia</b> un formulario</td></tr>
+<tr><td><b>onchange</b></td><td>Cambia el valor de un campo (<b>al perder el foco</b>)</td></tr>
+<tr><td><b>oninput</b></td><td>El usuario introduce datos (<b>más inmediato</b> que onchange)</td></tr>
+<tr><td><b>onfocus</b></td><td>El elemento <b>recibe el foco</b></td></tr>
+<tr><td><b>onblur</b></td><td>El elemento <b>pierde el foco</b></td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Eventos de ventana y documento</b></p>
+<div class="tw"><table><tr><th>Evento</th><th>Descripción</th></tr>
+<tr><td><b>onload</b></td><td>La página o recurso <b>se ha cargado completamente</b></td></tr>
+<tr><td><b>onunload</b></td><td>El usuario <b>abandona</b> la página</td></tr>
+<tr><td><b>onresize</b></td><td>Cambia el <b>tamaño de la ventana</b></td></tr>
+<tr><td><b>onscroll</b></td><td>El usuario hace <b>scroll</b></td></tr>
+</table></div>
+</div>
+<h3>6.3 DOM</h3>
+<ul>
+<li><b>DOM (Document Object Model)</b>: representación estructurada del documento HTML; cada etiqueta es un <b>nodo</b> manipulable con JS.</li>
+</ul>
+<div class="tw"><table><tr><th>Método de selección</th><th>Resultado</th></tr>
+<tr><td><b>getElementById()</b></td><td><b>Un</b> elemento por <code>id</code></td></tr>
+<tr><td><b>getElementsByClassName()</b></td><td><b>HTMLCollection</b> por clase</td></tr>
+<tr><td><b>getElementsByTagName()</b></td><td><b>HTMLCollection</b> por etiqueta</td></tr>
+<tr><td><b>querySelector()</b></td><td><b>Primer</b> elemento que cumple un selector CSS</td></tr>
+<tr><td><b>querySelectorAll()</b></td><td><b>NodeList</b> (iterable) de todos los que cumplen el selector</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Propiedad de nodo</th><th>Descripción</th></tr>
+<tr><td><b>firstChild / lastChild</b></td><td>Primer / último hijo (puede ser texto)</td></tr>
+<tr><td><b>childNodes</b></td><td>Lista (NodeList) de todos los hijos, incluidos textos</td></tr>
+<tr><td><b>parentNode</b></td><td>Padre</td></tr>
+<tr><td><b>nextSibling / previousSibling</b></td><td>Nodo siguiente / anterior al mismo nivel</td></tr>
+<tr><td><b>nodeValue</b></td><td>Valor del nodo (nodos de texto): <code>element.firstChild.nodeValue</code></td></tr>
+<tr><td><b>textContent</b></td><td>Contenido de texto (alternativa actual preferida)</td></tr>
+<tr><td><b>innerHTML</b></td><td>HTML interno</td></tr>
+</table></div>
+<h3>6.4 JSON</h3>
+<ul>
+<li><b>JavaScript Object Notation</b>: formato <b>ligero de intercambio de datos</b>, basado en texto; cliente–servidor y configuraciones.</li>
+<li><b>Reglas</b>: propiedades entre <b>comillas dobles</b>; valores <b>string, number, boolean, array, object o null</b>; <b>sin funciones ni comentarios</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Método</th><th>Qué hace</th></tr>
+<tr><td><b>JSON.stringify(obj)</b></td><td>Objeto JS → texto JSON (<b>serializar</b>)</td></tr>
+<tr><td><b>JSON.parse(texto)</b></td><td>Texto JSON → objeto JS (<b>parsear</b>)</td></tr>
+<tr><td><b>console.log()</b></td><td>Muestra datos en consola (depurar)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Error común</th><th>Descripción</th></tr>
+<tr><td><b>Comillas simples</b></td><td>JSON solo admite <b>dobles</b></td></tr>
+<tr><td><b>Comentarios</b></td><td>No permitidos</td></tr>
+<tr><td><b>Claves sin comillas</b></td><td>Deben llevar comillas</td></tr>
+</table></div>
+<h3>6.5 Frameworks y bibliotecas JS</h3>
+<div class="tw"><table><tr><th>Nombre</th><th>Descripción</th></tr>
+<tr><td><b>React</b></td><td><b>Meta</b>; componentes y <b>Virtual DOM</b></td></tr>
+<tr><td><b>Angular</b></td><td><b>Google</b>; completo, <b>TypeScript</b>, enrutamiento, servicios</td></tr>
+<tr><td><b>Vue.js</b></td><td>Ligero y progresivo</td></tr>
+<tr><td><b>Svelte</b></td><td><b>Compila a JS puro</b> (sin Virtual DOM)</td></tr>
+<tr><td><b>Next.js</b></td><td>Extensión de React para <b>renderizado en servidor (SSR)</b></td></tr>
+<tr><td><b>Node.js</b></td><td>JS en servidor; motor <b>V8</b> de Chrome</td></tr>
+<tr><td><b>Express.js</b></td><td>Minimalista, servidores y <b>APIs REST</b></td></tr>
+<tr><td><b>jQuery</b></td><td>Manipulación del DOM y AJAX (desplazado)</td></tr>
+<tr><td><b>Meteor</b></td><td>Full-stack en tiempo real sobre Node.js</td></tr>
+<tr><td><b>Ember.js</b></td><td>Completo y estructurado</td></tr>
+<tr><td><b>Bootstrap</b></td><td>CSS con componentes y grid</td></tr>
+<tr><td><b>Jest</b></td><td><b>Testing</b> (pruebas unitarias y de integración)</td></tr>
+</table></div>
+<ul>
+<li>React y Vue: más flexibles; <b>Angular</b>: «todo en uno». <b>Node.js + Express</b> = base más común de backends JS.</li>
+</ul>
+<h3>6.6 AJAX</h3>
+<ul>
+<li><b>Asynchronous JavaScript and XML</b>: comunicación <b>asíncrona</b> que actualiza partes de la página <b>sin recargarla</b>. Pasos: acción del usuario → JS envía solicitud (<b>XMLHttpRequest o fetch()</b>) en segundo plano → el servidor responde (JSON o XML) → JS <b>actualiza el DOM</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Método</th><th>Descripción</th></tr>
+<tr><td><b>XMLHttpRequest</b></td><td>Clásico; más código y manejo manual de estados</td></tr>
+<tr><td><b>fetch()</b></td><td><b>API moderna recomendada</b>, basada en <b>promesas</b>: <code>fetch(url).then(...).catch(...)</code></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Elemento AJAX</th><th>Ejemplo</th></tr>
+<tr><td><b>URL</b></td><td>Recurso destino</td></tr>
+<tr><td><b>Método HTTP</b></td><td>GET, POST, PUT, DELETE</td></tr>
+<tr><td><b>Cabeceras</b></td><td><code>Content-Type: application/json</code></td></tr>
+<tr><td><b>Body</b></td><td>Datos enviados (<code>JSON.stringify(...)</code>)</td></tr>
+<tr><td><b>Tipo de respuesta</b></td><td><code>response.json()</code>, <code>response.text()</code></td></tr>
+<tr><td><b>Manejo de respuesta / errores</b></td><td><code>.then()</code> / <code>.catch()</code></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Formato AJAX</th><th>Ventajas</th></tr>
+<tr><td><b>JSON</b></td><td>El <b>más usado</b>; ligero, fácil de parsear</td></tr>
+<tr><td><b>XML</b></td><td>Estandarizado, validable con DTD/XSD</td></tr>
+<tr><td><b>Texto plano</b></td><td>Muy ligero</td></tr>
+</table></div>
+<h2 id="s6">7. PHP</h2>
+<ul>
+<li><b>Hypertext Preprocessor</b>: lenguaje <b>del lado del servidor</b> para web; <b>interpretado</b>, multiplataforma, integración con <b>MySQL, PostgreSQL, SQLite, Oracle</b>; frameworks Laravel y Symfony. El código va entre <b><code>&lt;?php ... ?&gt;</code></b> (atajo de echo: <b><code>&lt;?= ... ?&gt;</code></b>) en archivos <b><code>.php</code></b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Elemento</th><th>Detalle</th></tr>
+<tr><td><b>Comentarios</b></td><td>Una línea: <code>//</code> o <code>#</code> · varias: <code>/* ... */</code></td></tr>
+<tr><td><b>Variables</b></td><td>Símbolo <b><code>$</code></b>; sin declarar tipo</td></tr>
+<tr><td><b>Constantes</b></td><td><code>define()</code> o <code>const</code></td></tr>
+<tr><td><b>Concatenación</b></td><td>Punto <b><code>.</code></b></td></tr>
+<tr><td><b>Tipos</b></td><td>String, Integer, Float, Boolean, Array, Object, NULL</td></tr>
+<tr><td><b>Condicionales</b></td><td><b>if / elseif / else</b>, <b>switch</b></td></tr>
+<tr><td><b>Bucles</b></td><td><b>for</b>, <b>while</b>, <b>do...while</b> (al menos una vez), <b>foreach</b> (arrays)</td></tr>
+<tr><td><b>break / continue</b></td><td>Salir del bucle / saltar a la siguiente iteración</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Superglobal</th><th>Descripción</th></tr>
+<tr><td><b>$_GET</b></td><td>Datos enviados por <b>GET</b> (URL)</td></tr>
+<tr><td><b>$_POST</b></td><td>Datos enviados por <b>POST</b> (formularios)</td></tr>
+<tr><td><b>$_REQUEST</b></td><td>Contiene <b>$_GET, $_POST y $_COOKIE</b></td></tr>
+<tr><td><b>$_SERVER</b></td><td>Información del servidor y entorno</td></tr>
+<tr><td><b>$_SESSION</b></td><td>Datos de <b>sesión</b> (requiere <code>session_start()</code>)</td></tr>
+<tr><td><b>$_COOKIE</b></td><td>Cookies del navegador</td></tr>
+<tr><td><b>$_FILES</b></td><td>Archivos subidos</td></tr>
+<tr><td><b>$_ENV</b></td><td>Variables de entorno</td></tr>
+<tr><td><b>$GLOBALS</b></td><td>Todas las variables globales</td></tr>
+</table></div>
+<ul>
+<li>Las superglobales están disponibles en <b>cualquier parte</b> del script y son <b>arrays asociativos</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Funciones de cadenas en PHP</b></p>
+<div class="tw"><table><tr><th>Función</th><th>Descripción</th><th>Ejemplo → Resultado</th></tr>
+<tr><td><b>strlen()</b></td><td>Longitud</td><td><code>strlen("Hola")</code> → 4</td></tr>
+<tr><td><b>substr()</b></td><td>Subcadena</td><td><code>substr("PHP7", 0, 3)</code> → "PHP"</td></tr>
+<tr><td><b>strtolower()</b></td><td>Minúsculas</td><td>→ "texto"</td></tr>
+<tr><td><b>strtoupper()</b></td><td>Mayúsculas</td><td>→ "PHP"</td></tr>
+<tr><td><b>str_replace()</b></td><td>Reemplaza texto</td><td><code>str_replace("mundo","PHP","Hola mundo")</code> → "Hola PHP"</td></tr>
+<tr><td><b>trim()</b></td><td>Quita espacios al inicio y final</td><td>→ "hola"</td></tr>
+<tr><td><b>strpos()</b></td><td>Posición de una subcadena</td><td><code>strpos("Hola PHP","PHP")</code> → 5</td></tr>
+<tr><td><b>str_shuffle()</b></td><td><b>Mezcla aleatoriamente</b> los caracteres</td><td><code>"abc123"</code> → p. ej. "b1a2c3"</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>date("formato", timestamp)</b> da formato a fecha y hora.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Funciones de arrays en PHP</b></p>
+<div class="tw"><table><tr><th>Función</th><th>Descripción</th></tr>
+<tr><td><b>count()</b></td><td>Número de elementos</td></tr>
+<tr><td><b>array_push()</b></td><td>Añade al <b>final</b> (modifica el array)</td></tr>
+<tr><td><b>array_pop()</b></td><td>Elimina y devuelve el <b>último</b></td></tr>
+<tr><td><b>array_shift()</b></td><td>Elimina y devuelve el <b>primero</b></td></tr>
+<tr><td><b>array_unshift()</b></td><td>Añade al <b>inicio</b></td></tr>
+<tr><td><b>in_array()</b></td><td>¿Existe el valor? (true/false)</td></tr>
+<tr><td><b>array_key_exists()</b></td><td>¿Existe la clave?</td></tr>
+<tr><td><b>array_keys() / array_values()</b></td><td>Todas las claves / todos los valores</td></tr>
+<tr><td><b>array_merge()</b></td><td>Combina arrays</td></tr>
+<tr><td><b>array_slice()</b></td><td>Extrae una porción</td></tr>
+<tr><td><b>array_reverse()</b></td><td>Orden inverso</td></tr>
+<tr><td><b>sort() / rsort()</b></td><td>Ordena ascendente / descendente (indexado)</td></tr>
+<tr><td><b>asort()</b></td><td>Ordena asociativo <b>por valores</b> manteniendo claves</td></tr>
+<tr><td><b>ksort()</b></td><td>Ordena asociativo <b>por claves</b></td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Frameworks PHP</b></p>
+<div class="tw"><table><tr><th>Framework</th><th>Descripción</th><th>Ideal para</th></tr>
+<tr><td><b>Laravel</b></td><td>El <b>más popular</b>; elegante; rutas, migraciones, <b>Eloquent ORM</b>, <b>Blade</b></td><td>Aplicaciones web modernas y complejas</td></tr>
+<tr><td><b>Symfony</b></td><td>Robusto, modular, reutilizable; <b>base de Laravel</b></td><td>Proyectos grandes y personalizables</td></tr>
+<tr><td><b>CodeIgniter</b></td><td><b>Ligero y rápido</b>, curva de aprendizaje baja</td><td>Aplicaciones pequeñas o medianas</td></tr>
+<tr><td><b>Yii</b></td><td>Alto rendimiento («Yes, it is!»); <b>Gii</b> (generador de código), caché, REST</td><td>Aplicaciones empresariales seguras</td></tr>
+<tr><td><b>CakePHP</b></td><td>Basado en <b>convenciones</b> (inspirado en Ruby on Rails); CRUD automático, MVC</td><td>Prototipado rápido</td></tr>
+<tr><td><b>Phalcon</b></td><td>Muy rápido; <b>extensión en C</b> de PHP</td><td>Aplicaciones que requieren velocidad</td></tr>
+<tr><td><b>Slim</b></td><td><b>Microframework</b></td><td>APIs REST y microservicios</td></tr>
+<tr><td><b>Lumen</b></td><td>Microframework de <b>Laravel</b></td><td>APIs y microservicios</td></tr>
+<tr><td><b>FuelPHP</b></td><td>Soporte <b>HMVC</b>, modular</td><td>Proyectos medianos y avanzados</td></tr>
+<tr><td><b>Zend / Laminas</b></td><td>Empresarial, modular</td><td>Aplicaciones empresariales críticas</td></tr>
+</table></div>
+</div>
+<h2 id="s7">8. Python</h2>
+<ul>
+<li>Lenguaje de alto nivel, <b>interpretado</b>, propósito general, sintaxis legible; creado por <b>Guido van Rossum</b> (primera versión <b>1991</b>). <b>Multiparadigma</b> (imperativo, OO, funcional), <b>tipado dinámico</b>, multiplataforma.</li>
+<li><b>Sintaxis</b>: <b>sin llaves ni punto y coma</b>; los bloques se definen por <b>indentación obligatoria</b> (recomendado <b>4 espacios</b>); comentarios con <b><code>#</code></b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo primitivo</th><th>Ejemplos</th></tr>
+<tr><td><b>int</b></td><td>5, -12</td></tr>
+<tr><td><b>float</b></td><td>3.14</td></tr>
+<tr><td><b>str</b></td><td>'hola'; <code>"hi" * 3</code> → 'hihihi'</td></tr>
+<tr><td><b>bool</b></td><td>True, False</td></tr>
+<tr><td><b>None</b></td><td>Ausencia de valor (como null)</td></tr>
+</table></div>
+<ul>
+<li><b>Conversión</b>: <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>bool()</code>.</li>
+</ul>
+<div class="tw"><table><tr><th>Reglas de nombres de variables</th><th></th></tr>
+<tr><td><b>Permitido</b></td><td>Letras, números (no al inicio), <b>guion bajo</b>; empezar por letra o <code>_</code></td></tr>
+<tr><td><b>Prohibido</b></td><td>Empezar por número, <b>espacios</b>, símbolos especiales, <b>palabras reservadas</b></td></tr>
+</table></div>
+<ul>
+<li><b>Constantes</b>: <b>no existen verdaderas</b>; por convención se escriben en <b>MAYÚSCULAS</b>. <b>Asignación múltiple</b>: <code>a, b, c = 1, 2, 3</code>; <code>x = y = z = 0</code>.</li>
+</ul>
+<div class="tw"><table><tr><th>Operador aritmético</th><th>Ejemplo</th></tr>
+<tr><td><code>+ − *</code></td><td>suma, resta, multiplicación</td></tr>
+<tr><td><b>/</b></td><td>División <b>float</b> (10 / 4 = 2.5)</td></tr>
+<tr><td><b>//</b></td><td>División <b>entera</b> (10 // 4 = 2)</td></tr>
+<tr><td><b>%</b></td><td>Módulo (10 % 3 = 1)</td></tr>
+<tr><td><b>doble asterisco</b></td><td>Potencia (2 elevado a 3 = 8)</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Operador de multiplicación con cadenas</b></p>
+<p>Si se usa el operador <code>*</code> para multiplicar una <b>cadena de texto</b>, esta <b>se repetirá</b> tantas veces como indique el número.</p>
+</div>
+<div class="tw"><table><tr><th>Tipo de operador</th><th>Operadores</th></tr>
+<tr><td><b>Comparación</b></td><td><code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> (devuelven True/False)</td></tr>
+<tr><td><b>Lógicos</b></td><td><b>and, or, not</b></td></tr>
+<tr><td><b>Identidad</b></td><td><b>is, is not</b> (¿mismo objeto en memoria?)</td></tr>
+<tr><td><b>Pertenencia</b></td><td><b>in, not in</b> (elemento en colección)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Control de flujo</th><th>Función</th></tr>
+<tr><td><b>if / elif / else</b></td><td>Decisiones</td></tr>
+<tr><td><b>for / while</b></td><td>Recorrer / repetir</td></tr>
+<tr><td><b>break / continue</b></td><td>Salir / saltar iteración</td></tr>
+<tr><td><b>pass</b></td><td>No hacer nada (relleno)</td></tr>
+<tr><td><b>List comprehension</b></td><td>Crear listas de forma concisa</td></tr>
+</table></div>
+<ul>
+<li><b>Funciones</b>: <code>def nombre(parámetros):</code> y <b><code>return</code></b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Estructura de datos</th><th>Características</th><th>Métodos</th></tr>
+<tr><td><b>Lista</b> <code>[ ]</code></td><td><b>Ordenada y mutable</b>; índice desde <b>0</b></td><td>append, insert, remove, pop, sort, reverse</td></tr>
+<tr><td><b>Tupla</b> <code>( )</code></td><td>Ordenada e <b>inmutable</b></td><td>Acceso por índice</td></tr>
+<tr><td><b>Conjunto</b> <code>{ }</code></td><td><b>Sin orden y sin duplicados</b></td><td>add, remove, union, intersection</td></tr>
+<tr><td><b>Diccionario</b></td><td>Pares <b>clave:valor</b>, acceso por clave (entre comillas si es texto)</td><td>get, keys, values, items, update, pop</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Operador de cadenas</th><th>Ejemplo</th></tr>
+<tr><td><code>+</code> concatena</td><td>"Hola" + " Mundo"</td></tr>
+<tr><td><code>*</code> repite</td><td>"Ha" * 3 = "HaHaHa"</td></tr>
+<tr><td><code>in / not in</code></td><td>"a" in "python" → False</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Método de cadena</th><th>Descripción</th></tr>
+<tr><td><b>.lower() / .upper()</b></td><td>Minúsculas / mayúsculas</td></tr>
+<tr><td><b>.replace(a, b)</b></td><td>Reemplaza texto</td></tr>
+<tr><td><b>.split()</b></td><td>Divide por separador</td></tr>
+<tr><td><b>.strip()</b></td><td>Quita espacios iniciales y finales</td></tr>
+<tr><td><b>.find(sub)</b></td><td>Índice de la subcadena o <b>-1</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Frameworks Python</th><th>Ejemplos</th></tr>
+<tr><td><b>Web (backend/API)</b></td><td><b>Django</b> (el más preguntado), Flask, FastAPI, Pyramid</td></tr>
+<tr><td><b>Ciencia de datos / IA</b></td><td>TensorFlow, scikit-learn, PyTorch</td></tr>
+<tr><td><b>Visualización</b></td><td>matplotlib, seaborn, Plotly</td></tr>
+<tr><td><b>Testing</b></td><td><b>unittest</b> (estándar), <b>pytest</b>, <b>doctest</b> (desde los comentarios), nose</td></tr>
+<tr><td><b>Interfaces gráficas</b></td><td>Tkinter, PyQt, Kivy</td></tr>
+<tr><td><b>Automatización / scraping</b></td><td>Selenium, Scrapy, BeautifulSoup</td></tr>
+</table></div>
+<h2 id="s8">9. Ruby</h2>
+<ul>
+<li>Lenguaje <b>interpretado, orientado a objetos y de alto nivel</b>; creado por <b>Yukihiro «Matz» Matsumoto</b> (<b>1995</b>). <b>Todo es un objeto</b>, incluso los primitivos; dinámico y <b>multiparadigma</b> (POO, funcional, imperativo). Famoso por <b>Ruby on Rails</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Framework Ruby</th><th>Descripción</th><th>Ideal para</th></tr>
+<tr><td><b>Ruby on Rails</b></td><td>El más popular; ORM, rutas, vistas, generadores; patrón <b>MVC</b></td><td>Aplicaciones web completas y escalables</td></tr>
+<tr><td><b>Sinatra</b></td><td>Microframework ligero</td><td>Prototipos, microservicios, APIs</td></tr>
+<tr><td><b>Hanami</b></td><td>Modular, arquitectura limpia</td><td>Aplicaciones profesionales mantenibles</td></tr>
+<tr><td><b>Padrino</b></td><td>Extensión de Sinatra (administración, internacionalización)</td><td>Apps medianas</td></tr>
+<tr><td><b>Cuba</b></td><td>Minimalista y rápido</td><td>APIs RESTful ligeras</td></tr>
+</table></div>
+<div class="pn"><a href="b3t6.html">← 3.6</a><a href="b3t8.html">3.8 →</a></div></main></div><script src="../app.js"></script></body></html>

@@ -1,0 +1,247 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 3 · Tema 8 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción</a><a href="#s1">2. Accesibilidad en la sociedad de la información</a><a href="#s2">3. Usabilidad y diseño universal</a><a href="#s3">4. Acceso y usabilidad de tecnologías y servicios: sistemas de diseño</a><a href="#s4">5. Confidencialidad y disponibilidad en puestos de usuario final</a><a href="#s5">6. Seguridad en el desarrollo de sistemas. ENS</a></aside>
+<main class="doc" data-key="b3t8"><div class="crumb">Bloque 3 · Tema 8</div><h1>Accesibilidad, diseño universal y usabilidad. Seguridad en el desarrollo (ENS, OWASP)</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (8)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema8.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema8.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Introducción</h2>
+<h3>1.1 Accesibilidad, diseño universal y usabilidad</h3>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición</th></tr>
+<tr><td><b>Accesibilidad</b></td><td>Capacidad de entornos, productos y servicios de ser <b>usados por cualquier persona, incluidas las personas con discapacidad</b>; en lo digital, con <b>tecnologías asistivas</b> (lectores de pantalla, teclados alternativos). Es la <b>posibilidad de acceso</b> (no la facilidad de uso): <b>un portal debe ser accesible antes que usable</b></td></tr>
+<tr><td><b>Diseño universal</b></td><td>Productos y servicios <b>accesibles desde su concepción, sin adaptaciones posteriores</b>, para el mayor número posible de personas</td></tr>
+<tr><td><b>Usabilidad</b></td><td><b>Facilidad</b> para aprender a usar una tecnología, realizar tareas y alcanzar objetivos. Se mide en <b>eficiencia, efectividad y satisfacción</b></td></tr>
+</table></div>
+<h3>1.2 Relación con seguridad y privacidad</h3>
+<div class="tw"><table><tr><th>Aspecto</th><th>Idea</th></tr>
+<tr><td><b>Seguridad en el acceso</b></td><td>Todas las personas deben poder <b>autenticarse</b> con seguridad (biometría, <b>2FA</b>, alternativas accesibles)</td></tr>
+<tr><td><b>Privacidad</b></td><td>Los lectores de pantalla leen datos sensibles en voz alta → opciones como <b>auriculares</b> o modos seguros</td></tr>
+<tr><td><b>Disponibilidad</b></td><td>Evitar la <b>exclusión digital</b> por caídas, incompatibilidades o restricciones</td></tr>
+<tr><td><b>Prevención de ataques</b></td><td>Interfaces comprensibles y no engañosas frente a <b>phishing y malware</b></td></tr>
+</table></div>
+<ul>
+<li>Una interfaz fácil de usar <b>reduce los errores humanos</b> que comprometen la seguridad.</li>
+</ul>
+<h2 id="s1">2. Accesibilidad en la sociedad de la información</h2>
+<ul>
+<li>Objetivo: <b>igualdad de oportunidades</b> en el acceso a la información y la tecnología, eliminando barreras para discapacidades <b>visuales, auditivas, motrices o cognitivas</b>.</li>
+</ul>
+<h3>2.2 Marco normativo</h3>
+<div class="tw"><table><tr><th>Norma</th><th>Contenido</th></tr>
+<tr><td><b>Ley 51/2003</b></td><td><b>Igualdad de Oportunidades, No Discriminación y Accesibilidad Universal</b> de las personas con discapacidad; incluye entornos digitales</td></tr>
+<tr><td><b>Real Decreto 1494/2007</b></td><td><b>Accesibilidad en la Administración Electrónica</b>: reglamento de condiciones básicas de acceso de personas con discapacidad a las TIC</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Normas de accesibilidad web</b></p>
+<p><b>UNE-EN 301 549:2019</b>: requisitos de accesibilidad para <b>productos y servicios TIC</b> (contenidos web, software y móviles, en especial servicios públicos electrónicos). <b>Plenamente alineada con las WCAG</b> del W3C. <b>Obligatoria en la UE</b> según la <b>Directiva Europea 2016/2102</b>.</p>
+<p><b>Real Decreto 1112/2018, de 7 de septiembre</b>: regula la accesibilidad de <b>sitios web y aplicaciones móviles del sector público</b>; adapta a España la <b>Directiva 2016/2102</b>.</p>
+</div>
+<ul>
+<li><b>RD 1112/2018</b>: tres <b>niveles de conformidad A, AA y AAA</b> (según <b>WCAG 2.1</b>); abarca contenido web, formularios, documentos digitales, multimedia y apps móviles. En cada portal y app debe existir una <b>declaración de accesibilidad</b> y mecanismos de <b>sugerencias, quejas y reclamación</b>, con un <b>plazo de 20 días hábiles</b> para responder. Obliga a mantener la accesibilidad de forma <b>continua</b>.</li>
+<li><b>Obligados</b>: Administraciones públicas; <b>empresas privadas que presten servicios públicos</b> (transporte, agua, electricidad, telecomunicaciones); entidades <b>financiadas mayoritariamente con fondos públicos</b>; <b>universidades públicas</b> y centros educativos.</li>
+<li><b>Excepciones</b>: transmisiones <b>en directo</b>, mapas en línea no esenciales para navegación, <b>archivos ofimáticos publicados antes de 2018</b>, contenido de terceros no financiado por la entidad.</li>
+<li><b>Plazos de revisión</b>: <b>sitios web</b>: antes de <b>2 años</b> desde la entrada en vigor · <b>aplicaciones móviles</b>: antes de <b>3 años</b>.</li>
+</ul>
+<h3>2.3 W3C y WAI</h3>
+<ul>
+<li><b>W3C</b>: consorcio internacional que desarrolla estándares web, <b>creado en 1994</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>WAI y WCAG</b></p>
+<p>La <b>Web Accessibility Initiative (WAI)</b> (Iniciativa para la accesibilidad a la web) del W3C desarrolló las <b>WCAG 2.0</b> (Directrices de accesibilidad para el contenido web), aprobadas como estándar internacional <b>ISO/IEC 40500:2012</b>. En <b>junio de 2018</b> fueron sustituidas por <b>WCAG 2.1</b>. Los <b>cuatro principios</b>: el diseño debe ser <b>perceptible, operable, comprensible y robusto</b>.</p>
+</div>
+<ul>
+<li><b>Notación x.y.z</b>: <b>x</b> = principio (1 Perceptible, 2 Operable, 3 Comprensible, 4 Robusto) · <b>y</b> = directriz o pauta · <b>z</b> = criterio de éxito.</li>
+</ul>
+<div class="tw"><table><tr><th>Versión WCAG</th><th>Novedades</th></tr>
+<tr><td><b>1.0 (1999)</b></td><td>Primera; accesibilidad básica para HTML; <b>14 pautas</b> con prioridades 1, 2 y 3</td></tr>
+<tr><td><b>2.0 (2008)</b></td><td><b>Cuatro principios</b>; <b>niveles A, AA, AAA</b>; independiente de la tecnología (HTML, PDF, Flash); <b>ISO/IEC 40500:2012</b>; base de <b>UNE 139803:2012 y EN 301 549</b></td></tr>
+<tr><td><b>2.1 (2018)</b></td><td>Móviles y pantallas táctiles; discapacidad cognitiva y <b>baja visión</b>; <b>17 criterios nuevos</b> sin modificar los anteriores</td></tr>
+<tr><td><b>2.2 (2023)</b></td><td><b>9 criterios nuevos</b>: dificultades cognitivas, de aprendizaje y movilidad; navegación, formularios, controles</td></tr>
+<tr><td><b>3.0</b></td><td>En desarrollo; revisión completa del modelo de evaluación</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Nivel</th><th>Significado</th></tr>
+<tr><td><b>A</b></td><td>Requisitos <b>esenciales</b> (mínimos)</td></tr>
+<tr><td><b>AA</b></td><td>Accesibilidad <b>óptima para la mayoría</b></td></tr>
+<tr><td><b>AAA</b></td><td><b>Máxima</b>, difícil de cumplir en todos los contextos</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Principios WCAG</b></p>
+<p><b>PERCEPTIBLE, OPERABLE, COMPRENSIBLE y ROBUSTO.</b></p>
+<div class="tw"><table><tr><th>Principio</th><th>Pauta</th><th>Descripción</th></tr>
+<tr><td><b>1. Perceptible</b> (la información y los componentes deben poder percibirse)</td><td>1.1 <b>Alternativas textuales</b></td><td>Texto alternativo para contenido no textual</td></tr>
+<tr><td></td><td>1.2 <b>Multimedia dependiente del tiempo</b></td><td>Alternativas sincronizadas</td></tr>
+<tr><td></td><td>1.3 <b>Adaptable</b></td><td>Presentar el contenido de varias formas sin perder estructura</td></tr>
+<tr><td></td><td>1.4 <b>Distinguible</b></td><td>Facilitar ver y oír el contenido</td></tr>
+<tr><td><b>2. Operable</b> (navegar e interactuar)</td><td>2.1 <b>Accesible por teclado</b></td><td>Todas las funciones sin ratón</td></tr>
+<tr><td></td><td>2.2 <b>Tiempo suficiente</b></td><td>Leer y usar el contenido; ampliar el tiempo</td></tr>
+<tr><td></td><td>2.3 <b>Evitar ataques epilépticos</b></td><td>Sin destellos ni parpadeos</td></tr>
+<tr><td></td><td>2.4 <b>Navegación fácil</b></td><td>Ayudar a navegar, localizar contenido y saber dónde se está</td></tr>
+<tr><td></td><td>2.5 <b>Modos de entrada</b></td><td>Voz, gestos, pantallas táctiles</td></tr>
+<tr><td><b>3. Comprensible</b> (claro y fácil de entender)</td><td>3.1 <b>Legible</b></td><td>Lenguaje claro y definiciones</td></tr>
+<tr><td></td><td>3.2 <b>Predecible</b></td><td>Interfaz coherente</td></tr>
+<tr><td></td><td>3.3 <b>Asistencia en la introducción de datos</b></td><td>Mensajes de error claros y sugerencias en formularios</td></tr>
+<tr><td><b>4. Robusto</b> (compatible con distintas tecnologías)</td><td>4.1 <b>Compatible</b></td><td>Código interpretable por <b>tecnologías de asistencia (lectores de pantalla)</b></td></tr>
+</table></div>
+</div>
+<h3>2.3.2 Otras especificaciones del W3C</h3>
+<div class="tw"><table><tr><th>Especificación</th><th>Función</th></tr>
+<tr><td><b>ATAG 2.0 (2015)</b></td><td><b>Authoring Tool Accessibility Guidelines</b>: <b>herramientas de creación</b> de contenido (CMS, editores); que sean accesibles y generen contenido accesible</td></tr>
+<tr><td><b>UAAG 2.0 (2015)</b></td><td><b>User Agent Accessibility Guidelines</b>: <b>navegadores y reproductores multimedia</b></td></tr>
+<tr><td><b>WAI-ARIA</b></td><td><b>Accessible Rich Internet Applications</b>: atributos adicionales para HTML en <b>aplicaciones dinámicas</b> (menús, formularios dinámicos, SPA)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Atributo ARIA</th><th>Función</th></tr>
+<tr><td><b>aria-label</b></td><td>Etiqueta de texto cuando no hay etiqueta visible</td></tr>
+<tr><td><b>aria-labelledby</b></td><td>Asocia el elemento con el <b>id</b> de otro que actúa como etiqueta</td></tr>
+<tr><td><b>aria-describedby</b></td><td>Asocia con otro elemento que da una <b>descripción detallada</b></td></tr>
+<tr><td><b>aria-hidden</b></td><td>Oculta el elemento a las tecnologías de asistencia (<code>true</code>)</td></tr>
+<tr><td><b>aria-live</b></td><td>Cómo se anuncian las actualizaciones en tiempo real: <b>off, assertive, polite</b></td></tr>
+<tr><td><b>role</b></td><td>Propósito del elemento en la interfaz</td></tr>
+<tr><td><b>aria-checked</b></td><td>Estado de casilla, radio o interruptor</td></tr>
+<tr><td><b>aria-haspopup</b></td><td>El elemento tiene un submenú emergente</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>WCAG, ATAG y UAAG</b></p>
+<p><b>WCAG</b>: garantizan que el <b>contenido web</b> sea accesible. <b>ATAG</b>: las <b>herramientas de creación</b> generan material accesible. <b>UAAG</b>: los <b>navegadores y reproductores</b> permiten el acceso adecuado al contenido.</p>
+</div>
+<h3>2.4 Validación: WAI-Tools y WAI-Adapt</h3>
+<div class="tw"><table><tr><th>Proyecto</th><th>Objetivo</th></tr>
+<tr><td><b>WAI-Tools</b></td><td>Mejorar las herramientas de <b>evaluación automática</b> de accesibilidad</td></tr>
+<tr><td><b>WAI-Adapt</b></td><td>Especificaciones para <b>personalizar interfaces</b> (discapacidades cognitivas, neurodivergencias)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Evaluación</th><th>Herramienta</th><th>Descripción</th></tr>
+<tr><td><b>Automática</b></td><td><b>WAVE</b></td><td>De <b>WebAIM</b>; analiza el código y detecta problemas</td></tr>
+<tr><td></td><td><b>TAW</b></td><td>Test de Accesibilidad Web; <b>WCAG 2.0</b></td></tr>
+<tr><td></td><td><b>Lighthouse</b></td><td>De <b>Google</b>; accesibilidad + rendimiento + SEO</td></tr>
+<tr><td></td><td><b>Nibbler</b></td><td>Accesibilidad, SEO, rendimiento y experiencia de usuario</td></tr>
+<tr><td></td><td><b>eXaminator</b></td><td><b>Española</b>; Observatorio de Accesibilidad Web del Gobierno</td></tr>
+<tr><td><b>Manual</b></td><td><b>WCAG Contrast Checker</b></td><td><b>Contraste de color</b></td></tr>
+<tr><td></td><td><b>Web Accessibility Toolbar (WAT)</b></td><td>Plugin para Internet Explorer</td></tr>
+<tr><td></td><td><b>Firebug</b></td><td>Depurar (X)HTML, CSS y JS en vivo</td></tr>
+<tr><td></td><td><b>Web Developer</b></td><td>Extensión Firefox/Chrome para inspeccionar accesibilidad, formularios, imágenes</td></tr>
+<tr><td></td><td><b>NoCoffee Vision Simulator</b></td><td>Extensión de Chrome que <b>simula discapacidades visuales</b> (daltonismo, cataratas, baja visión)</td></tr>
+</table></div>
+<h2 id="s2">3. Usabilidad y diseño universal</h2>
+<ul>
+<li>Normas base: <b>ISO/IEC 25010:2011</b> e <b>ISO 9241-210:2010</b> (diseño centrado en el usuario, iteración y adaptación).</li>
+</ul>
+<h3>3.1 Principios de usabilidad (Jakob Nielsen)</h3>
+<div class="tw"><table><tr><th>N.º</th><th>Principio</th><th>Idea</th></tr>
+<tr><td>1</td><td><b>Visibilidad del estado del sistema</b></td><td>Mantener informado al usuario con retroalimentación</td></tr>
+<tr><td>2</td><td><b>Equiparación con el mundo real</b></td><td>Términos familiares, sin tecnicismos</td></tr>
+<tr><td>3</td><td><b>Control y libertad del usuario</b></td><td>Deshacer y rehacer fácilmente</td></tr>
+<tr><td>4</td><td><b>Consistencia y estándares</b></td><td>Patrones comunes</td></tr>
+<tr><td>5</td><td><b>Prevención de errores</b></td><td>Mejor evitarlos que avisar</td></tr>
+<tr><td>6</td><td><b>Reconocimiento mejor que memoria</b></td><td>Mostrar opciones, no obligar a recordar</td></tr>
+<tr><td>7</td><td><b>Flexibilidad y eficiencia de uso</b></td><td>Atajos y personalización para avanzados</td></tr>
+<tr><td>8</td><td><b>Diseño minimalista</b></td><td>Sin información innecesaria</td></tr>
+<tr><td>9</td><td><b>Ayudar a reconocer y corregir errores</b></td><td>Mensajes claros de qué ocurrió y cómo resolverlo</td></tr>
+<tr><td>10</td><td><b>Documentación y ayuda accesible</b></td><td>Ayuda disponible y comprensible</td></tr>
+</table></div>
+<h3>3.2 Normativa de usabilidad</h3>
+<div class="tw"><table><tr><th>Norma</th><th>Contenido</th></tr>
+<tr><td><b>ISO 9241-210</b></td><td>Principios del <b>diseño centrado en el usuario</b>; retroalimentación e iteración</td></tr>
+<tr><td><b>ISO 9241-11</b></td><td>Principios de usabilidad y diseño centrado en el usuario</td></tr>
+<tr><td><b>ISO 9241-110</b></td><td><b>Diálogos de comandos</b>; diálogo usuario–sistema: retroalimentación inmediata, claridad, consistencia</td></tr>
+<tr><td><b>ISO 9241-12</b></td><td><b>Presentación de información</b> (visual y organización)</td></tr>
+<tr><td><b>ISO 9241-171</b></td><td><b>Directrices de accesibilidad</b> para la ergonomía de la interacción</td></tr>
+<tr><td><b>ISO/IEC 25010:2011</b></td><td><b>Modelo de calidad del software</b>; <b>8 características</b>: adecuación funcional, eficiencia de desempeño, compatibilidad, <b>usabilidad</b>, fiabilidad, seguridad, mantenibilidad y portabilidad</td></tr>
+</table></div>
+<h3>3.3 Evaluación de la usabilidad</h3>
+<ul>
+<li><b>Pruebas de usuario</b> (usuarios reales), <b>test de heurísticas</b> (expertos según principios como los de Nielsen), <b>métodos automáticos y manuales</b>.</li>
+</ul>
+<h3>3.4 Diseño universal</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Diseño universal</b></p>
+<p>Enfoque para crear <b>productos y entornos utilizables por todas las personas sin adaptaciones ni diseño especializado</b>; maximiza accesibilidad y usabilidad. <b>Posible pregunta: indicar cuál es uno de los principios.</b></p>
+</div>
+<div class="tw"><table><tr><th>N.º</th><th>Principio del diseño universal</th><th>Idea</th></tr>
+<tr><td>1</td><td><b>Igualdad de uso</b></td><td>Útil para personas con diversas capacidades, sin adaptaciones</td></tr>
+<tr><td>2</td><td><b>Flexibilidad</b></td><td>Amplio rango de preferencias y habilidades</td></tr>
+<tr><td>3</td><td><b>Uso simple e intuitivo</b></td><td>Fácil de entender sin experiencia previa</td></tr>
+<tr><td>4</td><td><b>Información perceptible</b></td><td>Independiente de las capacidades sensoriales o del entorno</td></tr>
+<tr><td>5</td><td><b>Tolerancia al error</b></td><td>Minimiza las consecuencias de errores accidentales</td></tr>
+<tr><td>6</td><td><b>Avisos de error o peligro</b></td><td>Evitar acciones que puedan dar lugar a error</td></tr>
+<tr><td>7</td><td><b>Bajo esfuerzo físico</b></td><td>Uso eficiente y cómodo, sin fatiga</td></tr>
+<tr><td>8</td><td><b>Tamaño y espacio adecuados</b></td><td>Espacio suficiente para acceso y uso, sea cual sea la movilidad</td></tr>
+</table></div>
+<h2 id="s3">4. Acceso y usabilidad de tecnologías y servicios: sistemas de diseño</h2>
+<div class="tw"><table><tr><th>Sistema de diseño</th><th>Origen</th><th>Características</th></tr>
+<tr><td><b>Material Design</b></td><td><b>Google</b></td><td>Pautas, componentes (botones, tarjetas, listas, formularios) y <b>Material Theming</b> para personalizar estilo</td></tr>
+<tr><td><b>Human Interface Guidelines (HIG)</b></td><td><b>Apple</b></td><td>iOS, macOS, watchOS, tvOS; tipografía, iconografía, colores, animaciones fluidas</td></tr>
+<tr><td><b>Fluent Design System</b></td><td><b>Microsoft</b></td><td>Windows, web y móvil; principios de <b>luz, profundidad, movimiento, material y escala</b></td></tr>
+<tr><td><b>Carbon Design System</b></td><td><b>IBM</b></td><td>Aplicaciones <b>empresariales</b>; componentes modulares; accesibilidad y escalabilidad</td></tr>
+<tr><td><b>Bootstrap</b></td><td>Nació en <b>Twitter</b>, hoy open source</td><td>Diseños responsivos con CSS y JavaScript</td></tr>
+</table></div>
+<h2 id="s4">5. Confidencialidad y disponibilidad en puestos de usuario final</h2>
+<ul>
+<li><b>Confidencialidad</b>: datos solo para usuarios autorizados · <b>Disponibilidad</b>: información accesible cuando se necesita. El <b>Real Decreto 311/2022</b> (Esquema Nacional de Seguridad) establece medidas <b>organizativas, operacionales y de protección</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Marco</th><th>Código</th><th>Medidas</th></tr>
+<tr><td><b>5.1 Organizativo</b></td><td><b>[org]</b></td><td>Política de seguridad de la información (roles, <b>ENS y RGPD</b>) · Control de acceso (<b>mínimos privilegios</b>, <b>2FA</b>, sesiones) · Formación y concienciación (simulación de <b>phishing</b>) · Plan de continuidad y recuperación (<b>DRP</b>, copias de seguridad)</td></tr>
+<tr><td><b>5.2 Operacional</b></td><td><b>[op]</b></td><td>Análisis de riesgos · Arquitectura de seguridad · Control de acceso · Segregación de funciones y tareas</td></tr>
+<tr><td><b>5.3 Medidas de protección</b></td><td><b>[mp]</b></td><td>Cifrado (<b>AES-256</b>, <b>TLS/SSL</b> en tránsito) · Seguridad en redes (<b>firewalls, IDS/IPS</b>, segmentación, <b>VPN</b>) · Actualizaciones y parches · Monitoreo y auditoría (<b>SIEM</b>) · Protección contra malware (antivirus, <b>EDR</b>)</td></tr>
+</table></div>
+<h2 id="s5">6. Seguridad en el desarrollo de sistemas. ENS</h2>
+<h3>6.2 Dimensiones de la seguridad</h3>
+<div class="tw"><table><tr><th>Dimensión</th><th>Definición</th><th>Métodos</th></tr>
+<tr><td><b>Autenticidad</b></td><td>Garantiza la <b>identidad</b> de usuario o sistema</td><td><b>MFA</b> (al menos dos factores), <b>certificados digitales</b>, <b>biometría</b> (huella, facial, retina)</td></tr>
+<tr><td><b>Confidencialidad</b></td><td>Evita la <b>divulgación</b> a personas no autorizadas</td><td><b>Cifrado</b> (SSL/TLS en tránsito, <b>AES</b> en reposo), <b>control de acceso basado en roles (RBAC)</b>, autenticación fuerte, <b>destrucción segura de datos</b></td></tr>
+<tr><td><b>Integridad</b></td><td><b>Exactitud y consistencia</b> de los datos; sin modificación no autorizada</td><td><b>Control de versiones</b>, <b>firmas digitales</b>, <b>registros de auditoría (logs inmutables)</b></td></tr>
+<tr><td><b>Disponibilidad</b></td><td>Acceso a sistemas e información cuando se necesita</td><td><b>Redundancia</b>, <b>balanceo de carga</b>, <b>backups regulares</b>, monitoreo y detección de fallos</td></tr>
+<tr><td><b>Trazabilidad</b></td><td>Una acción realizada <b>no puede ser negada</b> por su autor</td><td><b>Firmas digitales</b>, <b>registros de auditoría (logs)</b>, <b>sellos de tiempo</b> criptográficos</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>ENS</b></p>
+<p>Entre las preguntas típicas del ENS, una de las más habituales es <b>asociar a una dimensión un método de acción</b>.</p>
+</div>
+<h3>6.3 Esquema Nacional de Seguridad (ENS, RD 311/2022)</h3>
+<ul>
+<li>Marco normativo con los <b>requisitos de seguridad</b> de los sistemas de información de las administraciones públicas y del sector público en España.</li>
+<li><b>Principios básicos</b>: (a) seguridad como <b>proceso integral</b> · (b) gestión de la seguridad <b>basada en los riesgos</b> · (c) <b>prevención, detección, respuesta y conservación</b> · (d) <b>líneas de defensa</b> · (e) <b>vigilancia continua</b> · (f) <b>reevaluación periódica</b> · (g) <b>diferenciación de responsabilidades</b>.</li>
+<li><b>Objetivos</b>: garantizar <b>confidencialidad, integridad y disponibilidad</b>; procedimientos de protección frente a amenazas; cumplimiento legal; fomentar una <b>cultura de seguridad</b> desde el diseño.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Dimensiones del ENS</b></p>
+<p><b>Autenticidad [A]</b>: los usuarios o sistemas son quienes dicen ser y la información proviene de fuentes legítimas. <b>Confidencialidad [C]</b>: solo acceden personas o sistemas autorizados. <b>Integridad [I]</b>: la información no se altera de forma no autorizada. <b>Disponibilidad [D]</b>: sistemas accesibles y operativos cuando se necesitan. <b>Trazabilidad [T]</b>: seguimiento de las acciones; todas las operaciones se registran y pueden auditarse. <b>Saber a qué se refiere cada dimensión puede ser pregunta de examen.</b></p>
+</div>
+<ul>
+<li>Cada dimensión se valora en <b>3 niveles de impacto: BAJO, MEDIO, ALTO</b>. Flujo: <b>Dimensiones (A C I D T) → Nivel de impacto → Categoría del sistema</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Categoría</th><th>Condición</th></tr>
+<tr><td><b>ALTA</b></td><td><b>Alguna</b> dimensión alcanza el nivel <b>ALTO</b></td></tr>
+<tr><td><b>MEDIA</b></td><td>Alguna dimensión alcanza <b>MEDIO</b> y <b>ninguna ALTO</b></td></tr>
+<tr><td><b>BÁSICA</b></td><td>Alguna dimensión alcanza <b>BAJO</b> y ninguna nivel superior (aun así, medidas mínimas)</td></tr>
+</table></div>
+<ul>
+<li><b>Criterios de evaluación</b>: <b>clasificación de impacto</b> (alto, medio, bajo), <b>evaluación continua de riesgos</b>, <b>controles proporcionales</b> (a mayor impacto, controles más rigurosos).</li>
+</ul>
+<h3>6.4 OWASP</h3>
+<ul>
+<li><b>Open Web Application Security Project</b>: comunidad open source para mejorar la seguridad del software. El <b>OWASP Top 10</b> lista las vulnerabilidades más críticas en aplicaciones web.</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>OWASP Top 10</b></p>
+<p><b>Identificar algún tipo de amenaza entre varias opciones puede ser pregunta de examen tipo test.</b></p>
+</div>
+<div class="tw"><table><tr><th>N.º</th><th>Vulnerabilidad</th><th>Descripción</th></tr>
+<tr><td>1</td><td><b>Inyección</b></td><td>Datos maliciosos enviados a un intérprete (<b>SQL, NoSQL, OS, LDAP</b>) que ejecuta comandos no autorizados</td></tr>
+<tr><td>2</td><td><b>Autenticación rota</b></td><td>Fallos que permiten robar credenciales o explotar sesiones</td></tr>
+<tr><td>3</td><td><b>Exposición de datos sensibles</b></td><td>Falta de cifrado o mala gestión</td></tr>
+<tr><td>4</td><td><b>Entidades externas XML (XXE)</b></td><td>Explotar el procesamiento de XML: acceso a archivos, <b>DoS</b>, filtrado de datos</td></tr>
+<tr><td>5</td><td><b>Control de acceso roto</b></td><td>Usuarios no autorizados acceden a datos restringidos</td></tr>
+<tr><td>6</td><td><b>Configuración incorrecta de seguridad</b></td><td>Configuraciones débiles o predeterminadas</td></tr>
+<tr><td>7</td><td><b>Cross-Site Scripting (XSS)</b></td><td>Inyección de <b>scripts</b> maliciosos en páginas vistas por otros usuarios</td></tr>
+<tr><td>8</td><td><b>Deserialización insegura</b></td><td>Ejecución de código, escalada de privilegios, DoS</td></tr>
+<tr><td>9</td><td><b>Uso de componentes con vulnerabilidades conocidas</b></td><td>Dependencias desactualizadas o sin parchear</td></tr>
+<tr><td>10</td><td><b>Registro y monitoreo insuficientes</b></td><td>Dificulta detectar y responder a incidentes</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Herramienta OWASP</th><th>Descripción</th></tr>
+<tr><td><b>ZAP (Zed Attack Proxy)</b></td><td>Escáner de seguridad gratuito para aplicaciones web</td></tr>
+<tr><td><b>Dependency-Check</b></td><td>Analiza <b>dependencias</b> con vulnerabilidades conocidas</td></tr>
+<tr><td><b>ASVS (Application Security Verification Standard)</b></td><td>Estándares para evaluar la seguridad de aplicaciones web</td></tr>
+<tr><td><b>Security Knowledge Framework (SKF)</b></td><td>Plataforma de aprendizaje de desarrollo seguro</td></tr>
+</table></div>
+<div class="pn"><a href="b3t7.html">← 3.7</a><a href="b3t9.html">3.9 →</a></div></main></div><script src="../app.js"></script></body></html>

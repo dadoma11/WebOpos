@@ -1,0 +1,344 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 2 · Tema 2 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción a los periféricos</a><a href="#s1">1.2 Conectividad: interfaces físicas y lógicas</a><a href="#s2">2. Conectividad de periféricos</a><a href="#s3">3. Administración de periféricos</a><a href="#s4">4. Periféricos de impresión</a><a href="#s5">5. Periféricos de almacenamiento</a><a href="#s6">6. Periféricos de visualización y digitalización</a></aside>
+<main class="doc" data-key="b2t2"><div class="crumb">Bloque 2 · Tema 2</div><h1>Periféricos: conectividad, administración, impresión, almacenamiento y visualización</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (12)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque2_Tema2.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque2_Tema2.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Introducción a los periféricos</h2>
+<ul>
+<li><b>Periférico</b>: dispositivo de hardware que <b>amplía la funcionalidad</b> del sistema y permite comunicarse con el usuario u otros sistemas. <b>No son esenciales</b> para el núcleo (CPU y RAM), pero sin ellos el uso sería inviable.</li>
+</ul>
+<div class="tw"><table><tr><th>Criterio</th><th>Tipos</th></tr>
+<tr><td><b>Ubicación</b></td><td><b>Internos</b> (dentro del chasis, en la placa: tarjeta gráfica, disco duro) · <b>Externos</b> (cables o inalámbricos: impresora, ratón, escáner)</td></tr>
+<tr><td><b>Conexión</b></td><td><b>Alámbricos</b> (USB, HDMI, SATA) · <b>Inalámbricos</b> (<b>Bluetooth, Wi-Fi, NFC</b>)</td></tr>
+<tr><td><b>Función</b></td><td><b>Entrada</b>, <b>salida</b> y <b>mixtos</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Función</th><th>Dirección</th><th>Ejemplos</th></tr>
+<tr><td><b>Entrada</b></td><td>Usuario/entorno → ordenador</td><td><b>Teclado, ratón/touchpad, escáner, cámara web, micrófono</b></td></tr>
+<tr><td><b>Salida</b></td><td>Ordenador → usuario</td><td><b>Monitor, impresora, altavoces, proyector</b></td></tr>
+<tr><td><b>Mixtos (E/S)</b></td><td>Ambas, simultánea o alterna</td><td><b>Pantalla táctil, impresora multifunción</b> (escanea = entrada, imprime = salida), <b>disco externo USB</b>, <b>router/módem</b></td></tr>
+</table></div>
+<h2 id="s1">1.2 Conectividad: interfaces físicas y lógicas</h2>
+<ul>
+<li><b>Físicas</b> (hardware): conectores, puertos, cables o buses. <b>Lógicas</b> (software): gestionan la comunicación entre el <b>SO</b> y el dispositivo.</li>
+</ul>
+<div class="tw"><table><tr><th>Función</th><th>Interfaces</th><th>Uso</th></tr>
+<tr><td><b>Datos y energía</b></td><td><b>USB, Thunderbolt, USB-C</b></td><td>Teclado, ratón, memorias, impresoras</td></tr>
+<tr><td><b>Solo vídeo</b></td><td>VGA, HDMI, DisplayPort, DVI</td><td>Monitores, proyectores</td></tr>
+<tr><td><b>Solo audio</b></td><td><b>Jack 3,5 mm, S/PDIF</b></td><td>Micrófonos, altavoces</td></tr>
+<tr><td><b>Almacenamiento</b></td><td><b>SATA, M.2, NVMe, U.2, eSATA</b></td><td>HDD, SSD, ópticas</td></tr>
+<tr><td><b>Red</b></td><td><b>RJ-45, Wi-Fi, Bluetooth</b></td><td>Routers, impresoras en red, NAS</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Interfaz</th><th>Tipo</th><th>Velocidad</th></tr>
+<tr><td><b>USB 2.0</b></td><td>Serie</td><td><b>480 Mbps</b></td></tr>
+<tr><td><b>USB 3.x</b></td><td>Serie</td><td>Hasta <b>20 Gbps</b></td></tr>
+<tr><td><b>HDMI 2.0</b></td><td>Serie</td><td>Hasta <b>18 Gbps</b></td></tr>
+<tr><td><b>DisplayPort 1.4</b></td><td>Serie</td><td>Hasta <b>32 Gbps</b></td></tr>
+<tr><td><b>SATA III</b></td><td>Serie</td><td><b>600 MB/s</b></td></tr>
+<tr><td><b>NVMe (PCIe 4.0)</b></td><td>Serie</td><td>Hasta <b>7.000 MB/s</b></td></tr>
+<tr><td><b>Thunderbolt 4</b></td><td>Serie</td><td>Hasta <b>40 Gbps</b></td></tr>
+<tr><td><b>PS/2</b></td><td>Paralelo</td><td>Baja (legacy)</td></tr>
+<tr><td><b>VGA</b></td><td>Analógica</td><td>640×480 a 1920×1080</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Elemento lógico</th><th>Función</th></tr>
+<tr><td><b>Driver (controlador)</b></td><td><b>Traductor</b> entre SO y hardware</td></tr>
+<tr><td><b>Plug &amp; Play (PnP)</b></td><td><b>Detecta automáticamente</b> el dispositivo y busca su driver</td></tr>
+<tr><td><b>Gestor de dispositivos</b></td><td>Ver, actualizar o eliminar dispositivos</td></tr>
+</table></div>
+<h3>Herramientas de gestión por sistema operativo</h3>
+<ul>
+<li><b>Windows</b>: gran compatibilidad PnP y base de datos de drivers. <b>Linux</b>: consola muy útil para diagnóstico fino. <b>macOS</b>: gestión automática o semiautomática.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Herramientas de Windows</b></p>
+<div class="tw"><table><tr><th>Herramienta</th><th>Descripción</th></tr>
+<tr><td><b>Administrador de dispositivos</b></td><td>Utilidad gráfica (Panel de Control): <b>ver periféricos, actualizar/desinstalar drivers y solucionar conflictos</b></td></tr>
+<tr><td><b>Windows Update</b></td><td>Descarga <b>drivers oficiales certificados por Microsoft</b> al conectar nuevos dispositivos</td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Comandos de Linux (Ubuntu, Debian)</b></p>
+<div class="tw"><table><tr><th>Comando</th><th>Descripción</th></tr>
+<tr><td><b>lsusb</b></td><td>Lista los dispositivos <b>USB</b> conectados</td></tr>
+<tr><td><b>lspci</b></td><td>Muestra los dispositivos <b>PCI y PCIe</b> (gráficas, red…)</td></tr>
+<tr><td><b>dmesg</b></td><td>Mensajes del <b>kernel</b>; ver en tiempo real la respuesta al conectar/desconectar</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Herramienta de macOS</th><th>Descripción</th></tr>
+<tr><td><b>Perfil del sistema</b></td><td>Menú Apple &gt; Acerca de este Mac &gt; <b>Informe del sistema</b>: hardware, buses, puertos y periféricos</td></tr>
+<tr><td><b>Preferencias del sistema</b></td><td>Impresoras, ratones, teclados, sonido, red, Bluetooth, pantallas</td></tr>
+</table></div>
+<h2 id="s2">2. Conectividad de periféricos</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Puertos e interfaces estándar</b></p>
+<p>Ampliamente adoptados en equipos modernos; destacan por <b>versatilidad, velocidad</b> y capacidad de transportar <b>datos, audio, vídeo e incluso alimentación eléctrica</b>.</p>
+</div>
+<div class="tw"><table><tr><th>Interfaz</th><th>Uso principal</th></tr>
+<tr><td><b>USB</b></td><td>E/S general: teclados, ratones, almacenamiento, impresoras, cámaras</td></tr>
+<tr><td><b>USB Type-C</b></td><td>Conector <b>reversible</b>: USB 3.x, <b>USB4</b>, <b>DisplayPort</b> y carga <b>Power Delivery (hasta 100 W)</b></td></tr>
+<tr><td><b>HDMI</b></td><td>Salida de <b>vídeo y audio digital</b> para monitores, proyectores, TV</td></tr>
+<tr><td><b>DisplayPort</b></td><td>Vídeo de <b>alto rendimiento</b></td></tr>
+<tr><td><b>Thunderbolt</b></td><td><b>Datos, vídeo y energía</b></td></tr>
+</table></div>
+<h3>Interfaces legacy (heredadas)</h3>
+<ul>
+<li>Obsoletas o en desuso, pero presentes en <b>entornos industriales, científicos</b> o por compatibilidad.</li>
+</ul>
+<div class="tw"><table><tr><th>Interfaz</th><th>Uso en el pasado</th><th>Estado actual</th></tr>
+<tr><td><b>PS/2</b></td><td>Teclados y ratones</td><td>Sustituida por <b>USB</b>; aún en BIOS y entornos seguros</td></tr>
+<tr><td><b>VGA</b></td><td>Salida de vídeo <b>analógica</b></td><td>Sustituida por <b>HDMI/DisplayPort</b>; proyectores antiguos</td></tr>
+<tr><td><b>Puerto serie (RS-232)</b></td><td>Módems, terminales, impresoras antiguas</td><td>Aún en <b>robótica, industria</b> y configuración de redes</td></tr>
+<tr><td><b>Puerto paralelo (LPT)</b></td><td>Impresoras y escáneres antiguos</td><td><b>Totalmente obsoleto</b> en uso doméstico</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Interfaces de red y almacenamiento</b></p>
+<p>Permiten la comunicación con <b>almacenamiento masivo</b> y, a menudo, con <b>redes o servidores</b>. Esenciales para rendimiento, <b>backup, virtualización</b> y servicios empresariales.</p>
+</div>
+<div class="tw"><table><tr><th>Interfaz</th><th>Características</th></tr>
+<tr><td><b>SATA (Serial ATA)</b></td><td>HDD, SSD y ópticas; hasta <b>600 MB/s</b> (SATA III); muy extendido</td></tr>
+<tr><td><b>NVMe</b></td><td>SSD de alto rendimiento; bus <b>PCIe</b>; hasta <b>7.000 MB/s</b></td></tr>
+<tr><td><b>SCSI</b></td><td>Discos y cintas empresariales; rápido y robusto; <b>sustituido por SAS</b></td></tr>
+<tr><td><b>SAS (Serial Attached SCSI)</b></td><td>Servidores; <b>más fiable y rápido que SATA</b>; soporta discos <b>dual-port</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Inalámbrica</th><th>Uso</th><th>Características</th></tr>
+<tr><td><b>Bluetooth</b></td><td>Ratones, teclados, auriculares, impresoras</td><td><b>Bajo consumo</b>, rango corto (<b>~10 m</b>)</td></tr>
+<tr><td><b>Wi-Fi</b></td><td>Redes locales y NAS</td><td><b>Alta velocidad</b>; compatible con IPv4/IPv6</td></tr>
+<tr><td><b>NFC</b></td><td>Tarjetas, móviles</td><td>Rango <b>&lt; 10 cm</b>; identificación y <b>pagos</b></td></tr>
+</table></div>
+<ul>
+<li>Ventaja: <b>portabilidad</b>; inconveniente: <b>interferencias y alcance</b>.</li>
+</ul>
+<h2 id="s3">3. Administración de periféricos</h2>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Driver o controlador</b></p>
+<p>Programa <b>intermediario entre el sistema operativo y el hardware</b>: <b>traduce las órdenes del SO</b> a un lenguaje que el dispositivo entiende, y viceversa. Sin el controlador adecuado el periférico puede <b>no funcionar, funcionar de forma limitada o provocar errores del sistema</b>.</p>
+</div>
+<ul>
+<li><b>Funciones</b>: permite que el SO <b>reconozca</b> el periférico · facilita la <b>comunicación</b> hardware-software · gestiona sus <b>características específicas</b> · asegura un funcionamiento <b>estable</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de controlador</th><th>Descripción</th></tr>
+<tr><td><b>Genéricos</b></td><td>Incluidos en el SO; compatibles con <b>varios dispositivos similares</b></td></tr>
+<tr><td><b>Específicos del fabricante</b></td><td><b>Todas las funciones</b> del hardware (impresoras, tarjetas gráficas)</td></tr>
+</table></div>
+<h3>3.2 Plug &amp; Play (PnP)</h3>
+<ul>
+<li><b>Detección, identificación, configuración e instalación automática</b> sin intervención del usuario.</li>
+</ul>
+<div class="tw"><table><tr><th>Fase</th><th>Acción</th></tr>
+<tr><td><b>1. Detección física</b></td><td>Se reconoce el nuevo periférico por la interfaz (USB, PCIe, Bluetooth)</td></tr>
+<tr><td><b>2. Lectura del ID de hardware</b></td><td>Código único: <b>modelo y fabricante</b></td></tr>
+<tr><td><b>3. Búsqueda del driver</b></td><td>Base de datos interna; si no está: <b>Windows Update</b> (Windows), <b>repositorios de paquetes</b> (Linux), <b>Software Update</b> (macOS)</td></tr>
+<tr><td><b>4. Instalación y configuración</b></td><td>Automática</td></tr>
+<tr><td><b>5. Notificación al usuario</b></td><td>Mensaje de dispositivo listo</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>SO</th><th>Soporte PnP</th></tr>
+<tr><td><b>Windows</b></td><td><b>Muy avanzado</b>; Windows Update instala drivers sin intervención</td></tr>
+<tr><td><b>Linux</b></td><td>Buen soporte; usa <b>udev, modprobe</b> y gestores de paquetes</td></tr>
+<tr><td><b>macOS</b></td><td>Integración completa; <b>drivers genéricos</b> en cada versión</td></tr>
+</table></div>
+<h3>3.3 Configuración en Windows y Linux</h3>
+<div class="tw"><table><tr><th>Windows</th><th>Función</th></tr>
+<tr><td><b>Administrador de dispositivos</b></td><td>Ver periféricos, actualizar drivers, <b>habilitar/deshabilitar</b> y diagnosticar errores</td></tr>
+<tr><td><b>Windows Update</b></td><td>Instala controladores desde servidores de Microsoft</td></tr>
+<tr><td><b>Panel de control / Configuración</b></td><td>Impresoras, pantallas, audio, Bluetooth</td></tr>
+<tr><td><b>Herramientas del fabricante</b></td><td>Logitech Options, HP Smart, NVIDIA Control Panel, Realtek Audio Console</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Comando Linux</th><th>Función</th></tr>
+<tr><td><b>lsusb</b></td><td>Dispositivos USB</td></tr>
+<tr><td><b>lspci</b></td><td>Dispositivos PCI/PCIe</td></tr>
+<tr><td><b>dmesg</b></td><td>Mensajes del kernel</td></tr>
+<tr><td><b>modprobe</b></td><td><b>Carga un módulo (driver)</b> manualmente</td></tr>
+<tr><td><b>lsmod</b></td><td><b>Lista los drivers cargados</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Gestor de paquetes</th><th>Comando</th></tr>
+<tr><td><b>Debian/Ubuntu</b></td><td><code>apt install</code></td></tr>
+<tr><td><b>Fedora/Red Hat</b></td><td><code>dnf install</code> o <code>yum install</code></td></tr>
+<tr><td><b>Arch Linux</b></td><td><code>pacman -S</code></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Herramienta gráfica</th><th>Distribución</th></tr>
+<tr><td><b>«Controladores adicionales»</b> (drivers propietarios NVIDIA/Broadcom)</td><td><b>Ubuntu</b></td></tr>
+<tr><td><b>«Preferencias del sistema &gt; Controladores»</b></td><td><b>KDE Neon</b></td></tr>
+<tr><td><b>«Configuración &gt; Dispositivos»</b> (impresoras, pantalla, sonido, energía)</td><td><b>GNOME</b></td></tr>
+</table></div>
+<ul>
+<li><b>Gestión desde el SO</b> (Windows): Administrador de dispositivos, centro de impresión y escáneres, <b>Configuración/Panel de control</b>, gestores de red y utilidades de terceros.</li>
+</ul>
+<h2 id="s4">4. Periféricos de impresión</h2>
+<ul>
+<li>Transfieren información digital a un soporte físico. Los <b>equipos multifunción (MFP)</b> combinan escaneado, copia o fax.</li>
+<li><b>Resolución</b>: nivel de detalle; se mide en <b>PPP o DPI</b> (Dots Per Inch). <b>Más PPP = más nitidez</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Impresoras de <b>impacto</b> (golpean una cinta entintada)</th><th>Características</th></tr>
+<tr><td><b>Matriciales (dot-matrix)</b></td><td><b>Matriz de agujas</b>; económicas y duraderas; <b>formularios multicopia</b></td></tr>
+<tr><td><b>De margarita (daisy wheel)</b></td><td>Carácter en un «pétalo» metálico; <b>mejor calidad pero lentas</b></td></tr>
+<tr><td><b>De línea</b></td><td><b>Una línea completa</b> a la vez; uso industrial, rápidas pero <b>ruidosas</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Impresoras sin impacto</b></p>
+<p><b>No hay contacto físico</b> entre cabezal y papel: más <b>silenciosas, rápidas, versátiles</b> y de <b>mayor calidad</b>. Transfieren tinta, tóner o calor.</p>
+</div>
+<div class="tw"><table><tr><th>Tipo</th><th>Funcionamiento</th><th>Ventajas</th><th>Aplicaciones</th></tr>
+<tr><td><b>Inyección de tinta</b></td><td>Pulveriza <b>gotas microscópicas</b></td><td>Económicas, buena calidad fotográfica</td><td>Hogar, fotografía, oficinas</td></tr>
+<tr><td><b>Láser</b></td><td>Láser forma imagen <b>electrostática</b>, se transfiere con <b>tóner</b> y se fija con el <b>fusor</b> (calor y presión)</td><td>Rápidas, <b>bajo coste por página</b>, buen texto</td><td>Oficinas, centros de impresión</td></tr>
+<tr><td><b>Térmica directa</b></td><td>Calor sobre <b>papel termosensible</b></td><td>Silenciosas, <b>sin tinta ni tóner</b></td><td>Tickets, etiquetas, TPV</td></tr>
+<tr><td><b>Térmica por transferencia</b></td><td>Calienta una <b>cinta con tinta</b></td><td><b>Mayor durabilidad</b></td><td>Etiquetas adhesivas, pulseras médicas</td></tr>
+<tr><td><b>3D</b></td><td><b>Funde filamento plástico capa a capa</b></td><td>Prototipado rápido</td><td>Ingeniería, diseño, educación, medicina</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Tecnología</th><th>Consumible</th><th>Observaciones</th></tr>
+<tr><td><b>Inyección de tinta</b></td><td>Cartuchos de tinta líquida</td><td>Buena foto; <b>cartuchos pueden secarse</b>; coste medio-alto por página</td></tr>
+<tr><td><b>Inyección con tanque (Ecotank)</b></td><td>Tanques recargables</td><td><b>Muy bajo coste por página</b>; alto volumen; relleno manual</td></tr>
+<tr><td><b>Láser</b></td><td><b>Tóner (polvo seco)</b></td><td>Alta velocidad, bajo coste por página; <b>mayor coste inicial</b></td></tr>
+<tr><td><b>Térmica directa</b></td><td>Papel térmico</td><td>Sin tinta; el papel <b>se degrada con el tiempo</b></td></tr>
+<tr><td><b>Térmica por transferencia</b></td><td>Cinta de tinta sólida</td><td>Mayor durabilidad; etiquetado profesional</td></tr>
+<tr><td><b>Sublimación</b></td><td>Cintas de tinta por calor</td><td><b>Alta calidad</b>, colores vivos; fotografía, carnets</td></tr>
+<tr><td><b>3D</b></td><td>Filamento (<b>PLA, ABS</b>)</td><td>Capa a capa; requiere calibración</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Sistemas de tinta continua</b></p>
+<p><b>Epson Ecotank, Canon Megatank, HP Smart Tank</b>: depósitos de tinta visibles que se rellenan con botellas, pensados para <b>altos volúmenes de impresión</b>; el coste por página es <b>de los más bajos del mercado</b>.</p>
+</div>
+<h3>Escáneres y equipos MFP</h3>
+<div class="tw"><table><tr><th>Tipo de escáner</th><th>Descripción</th></tr>
+<tr><td><b>Cama plana (flatbed)</b></td><td>Documento sobre un cristal; libros, fotografías, carnets</td></tr>
+<tr><td><b>Alimentador automático (ADF)</b></td><td><b>Varias páginas en secuencia</b>; documentos largos</td></tr>
+<tr><td><b>Portátil (USB)</b></td><td>Pequeño; uso móvil</td></tr>
+<tr><td><b>Doble cara (duplex)</b></td><td><b>Ambas caras en un solo paso</b>; archivado</td></tr>
+</table></div>
+<ul>
+<li><b>Funciones avanzadas</b>: <b>OCR</b> (convierte texto impreso en editable), <b>escaneo en red</b>, escaneo a USB/email/nube, control desde apps móviles o panel táctil.</li>
+</ul>
+<h2 id="s5">5. Periféricos de almacenamiento</h2>
+<h3>5.1 HDD</h3>
+<ul>
+<li><b>No volátil y magnético</b>. <b>Platos</b> metálicos, <b>cabezas</b> en brazo mecánico, <b>motor</b> (<b>5.400–10.000 RPM</b>) y <b>controlador</b>.</li>
+<li><b>Organización lógica</b>: <b>pistas</b> (circunferencias concéntricas), <b>sectores</b> (unidad mínima, ej. <b>512 B</b>), <b>cilindros</b> (pistas alineadas verticalmente) y <b>clústeres</b> (sectores gestionados por el sistema de archivos).</li>
+<li><b>Capacidad</b>: <b>500 GB a más de 20 TB</b>. <b>Interfaces</b>: <b>SATA III</b> (habitual) y <b>SAS</b> (profesional). <b>Ventajas</b>: gran capacidad y <b>bajo coste por GB</b>. <b>Inconvenientes</b>: mecánicos, <b>más lentos y frágiles</b> que los SSD.</li>
+</ul>
+<h3>5.2 SSD</h3>
+<ul>
+<li><b>Sin partes móviles</b>; memoria <b>flash NAND</b>. Ventajas: <b>acceso casi instantáneo (baja latencia)</b>, mayor velocidad, <b>menor consumo</b>, mayor resistencia a golpes.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Formatos e interfaces de SSD</b></p>
+<div class="tw"><table><tr><th>Formato físico</th><th>Interfaz</th><th>Características</th></tr>
+<tr><td><b>2,5" SATA</b></td><td>SATA III</td><td>Portátiles y sobremesa; hasta <b>600 MB/s</b></td></tr>
+<tr><td><b>M.2 SATA</b></td><td>SATA sobre bus M.2</td><td>Igual que el anterior pero <b>más compacto</b></td></tr>
+<tr><td><b>M.2 NVMe</b></td><td><b>PCIe</b></td><td>Hasta <b>7.000 MB/s</b>; equipos modernos</td></tr>
+<tr><td><b>U.2</b></td><td>PCIe</td><td>Alta velocidad; <b>servidores</b></td></tr>
+<tr><td><b>PCIe (tarjeta AIC)</b></td><td>PCIe x4 o superior</td><td>SSD como tarjeta de expansión; <b>máximo rendimiento</b></td></tr>
+</table></div>
+</div>
+<h3>5.3 Unidades ópticas</h3>
+<ul>
+<li>Un <b>haz láser</b> lee/escribe en discos plásticos con capa reflectante. <b>Lectura</b>: variaciones de <b>pits y lands</b>. <b>Escritura</b>: el láser «quema» marcas que cambian la reflectividad. Pueden ser <b>ROM</b> (solo lectura), <b>R</b> (grabables) o <b>RW/RE</b> (regrabables).</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de discos ópticos</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Capacidad</th><th>Uso</th></tr>
+<tr><td><b>CD-ROM</b></td><td><b>700 MB</b></td><td>Música, software, drivers antiguos</td></tr>
+<tr><td><b>CD-R / CD-RW</b></td><td>700 MB</td><td>Grabación de datos, audio, copias</td></tr>
+<tr><td><b>DVD-ROM</b></td><td><b>4,7 GB</b> (simple capa)</td><td>Películas, distribución de software</td></tr>
+<tr><td><b>DVD±R / DVD±RW</b></td><td><b>4,7 a 8,5 GB</b></td><td>Copias de seguridad, datos</td></tr>
+<tr><td><b>Blu-ray (BD-ROM)</b></td><td><b>25 GB</b> (simple), <b>50 GB</b> (doble capa)</td><td>Películas HD, videojuegos, backup</td></tr>
+<tr><td><b>BD-R / BD-RE</b></td><td><b>25-128 GB</b></td><td>Alta capacidad, archivado</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Formato</th><th>Descripción</th></tr>
+<tr><td><b>CD-R / DVD±R / BD-R</b></td><td><b>Grabable una sola vez</b> (no se puede borrar ni modificar)</td></tr>
+<tr><td><b>CD-RW / DVD±RW / BD-RE</b></td><td><b>Regrabable</b>; +RW más compatible con grabadoras modernas</td></tr>
+</table></div>
+<ul>
+<li>Siguen presentes en equipos industriales o institucionales, distribución física de software, ediciones de coleccionista y <b>archivos de larga duración</b> (estables frente a imanes y golpes).</li>
+</ul>
+<h3>5.4 Almacenamiento externo y flash</h3>
+<ul>
+<li><b>Ventajas</b>: <b>portabilidad</b>, <b>backup y recuperación</b>, <b>compatibilidad multiplataforma</b> (Windows, Linux, macOS, móviles), <b>seguridad</b> (cifrado hardware/software, <b>AES</b>), <b>OTG</b> (conexión directa a smartphones).</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Características</th><th>Uso</th></tr>
+<tr><td><b>Disco duro externo (HDD)</b></td><td>Hasta <b>20 TB</b>, bajo coste/GB; frágil y lento</td><td>Backup de gran volumen</td></tr>
+<tr><td><b>SSD externo</b></td><td>Rápido, resistente; <b>mayor coste/GB</b></td><td>Transferencias rápidas, edición de vídeo</td></tr>
+<tr><td><b>Memoria USB (pendrive)</b></td><td>Compacta; <b>8 GB a 2 TB</b></td><td>Documentos, <b>arranque de sistemas</b></td></tr>
+<tr><td><b>SD/microSD</b></td><td>Cámaras, móviles, tablets, <b>Raspberry Pi</b>; requiere lector</td><td>Fotografía, embebidos</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Almacenamiento externo</b></p>
+<p><b>Velocidad</b>: depende del <b>tipo de almacenamiento</b> (HDD, SSD, flash) y de la <b>interfaz</b> (USB 2.0, 3.0, 3.2, Thunderbolt). <b>Sistemas de archivos</b>: <b>exFAT o FAT32</b> para compatibilidad entre SO; <b>NTFS</b> (Windows) o <b>EXT4</b> (Linux) para funciones avanzadas. <b>Arranque desde USB</b>: instalar SO y arrancar desde ellas (<b>Live USB</b>).</p>
+</div>
+<h3>5.5 Almacenamiento en red: NAS y SAN</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>NAS (Network Attached Storage)</b></p>
+<p><b>Dispositivo autónomo conectado a la red local (LAN)</b> que ofrece <b>almacenamiento centralizado</b> a través de <b>protocolos de red estándar</b>.</p>
+</div>
+<ul>
+<li><b>Características</b>: <b>sistema operativo propio</b> optimizado para almacenamiento · acceso compartido a archivos desde cualquier dispositivo · copia de seguridad, multimedia, sincronización en la nube y vigilancia IP.</li>
+</ul>
+<div class="tw"><table><tr><th>Protocolo NAS</th><th>Uso</th></tr>
+<tr><td><b>SMB/CIFS</b></td><td><b>Windows</b></td></tr>
+<tr><td><b>NFS</b></td><td><b>Unix/Linux</b></td></tr>
+<tr><td><b>FTP/SFTP</b></td><td>Acceso remoto por Internet</td></tr>
+<tr><td><b>WebDAV</b></td><td>Acceso vía <b>HTTP</b></td></tr>
+</table></div>
+<ul>
+<li><b>Usos</b>: grupos de trabajo, copias automáticas, servidores de medios (<b>Plex, DLNA</b>), sincronización con Google Drive, Dropbox u OneDrive.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>SAN (Storage Area Network)</b></p>
+<p><b>Red de almacenamiento dedicada</b> que permite a varios servidores acceder a dispositivos de almacenamiento <b>como si fueran discos duros locales</b>.</p>
+</div>
+<ul>
+<li><b>Alta velocidad y baja latencia</b>; conectividad <b>Fibre Channel (FC)</b> o <b>iSCSI sobre Ethernet</b>; usa <b>switches SAN, controladoras RAID y cabinas de discos</b>.</li>
+</ul>
+<div class="tw"><table><tr><th></th><th><b>NAS</b></th><th><b>SAN</b></th></tr>
+<tr><td><b>Acceso</b></td><td>A nivel de <b>archivo</b></td><td>A nivel de <b>bloque</b> (se formatean y usan como discos físicos)</td></tr>
+<tr><td><b>Red</b></td><td>LAN estándar</td><td><b>Red dedicada</b> (FC/iSCSI)</td></tr>
+<tr><td><b>Entornos</b></td><td>Grupos de trabajo, backups, multimedia</td><td><b>Centros de datos, bases de datos de alto rendimiento, virtualización (VMware, Hyper-V), ERP, CRM</b></td></tr>
+</table></div>
+<h2 id="s6">6. Periféricos de visualización y digitalización</h2>
+<h3>6.1 Monitores</h3>
+<div class="tw"><table><tr><th>Tecnología</th><th>Características</th></tr>
+<tr><td><b>LCD</b></td><td>Uso generalizado; <b>requiere retroiluminación</b></td></tr>
+<tr><td><b>LED</b></td><td>Variante de LCD con <b>retroiluminación LED</b>; más eficiente</td></tr>
+<tr><td><b>OLED</b></td><td><b>Iluminación por píxel</b>; mejor contraste y color; costosa</td></tr>
+<tr><td><b>IPS</b></td><td><b>Mejores ángulos de visión y color</b>; diseño</td></tr>
+<tr><td><b>TN</b></td><td><b>Menor coste y respuesta rápida</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Denominación</th><th>Resolución</th><th>Uso</th></tr>
+<tr><td><b>HD</b></td><td><b>1280×720</b></td><td>Básico</td></tr>
+<tr><td><b>Full HD (FHD)</b></td><td><b>1920×1080</b></td><td>Estándar en oficinas y hogar</td></tr>
+<tr><td><b>QHD / 2K</b></td><td><b>2560×1440</b></td><td>Diseño, juegos</td></tr>
+<tr><td><b>4K / UHD</b></td><td><b>3840×2160</b></td><td>Vídeo y diseño profesional</td></tr>
+<tr><td><b>8K</b></td><td><b>7680×4320</b></td><td>Ultra-HD, cine</td></tr>
+</table></div>
+<ul>
+<li><b>Conectividad</b>: <b>HDMI</b> (estándar multimedia universal), <b>DisplayPort</b> (mejor para <b>altas tasas de refresco</b>), <b>USB-C/Thunderbolt</b> (vídeo, datos y energía en un cable), <b>VGA/DVI</b> (legacy).</li>
+</ul>
+<h3>6.2 Proyectores y pantallas interactivas</h3>
+<div class="tw"><table><tr><th>Proyector</th><th>Tecnología</th><th>Ventajas</th></tr>
+<tr><td><b>LCD</b></td><td>Paneles de cristal líquido</td><td>Buena calidad de color</td></tr>
+<tr><td><b>DLP</b></td><td><b>Microespejos digitales</b></td><td>Imágenes nítidas y compactas</td></tr>
+<tr><td><b>Láser</b></td><td>Fuente láser</td><td><b>Larga vida, alto brillo y contraste</b></td></tr>
+</table></div>
+<ul>
+<li><b>Pantallas interactivas</b>: superficies <b>táctiles</b> (pizarras electrónicas) con pantalla, sistema táctil y software; aulas, reuniones; pueden <b>reemplazar al proyector</b>.</li>
+</ul>
+<h3>6.3 Cámaras y micrófonos</h3>
+<div class="tw"><table><tr><th>Cámaras</th><th>Uso</th><th></th><th>Micrófonos</th><th>Aplicación</th></tr>
+<tr><td><b>Webcam (USB)</b></td><td>Videollamadas, vigilancia</td><td></td><td><b>Condensador</b></td><td>Grabación profesional</td></tr>
+<tr><td><b>DSLR / mirrorless</b></td><td>Producción audiovisual</td><td></td><td><b>Dinámico</b></td><td>Voz en directo, resistente</td></tr>
+<tr><td><b>Cámaras IP</b></td><td>Seguridad en red</td><td></td><td><b>Lavalier (solapa)</b></td><td>Presentaciones, eventos</td></tr>
+</table></div>
+<ul>
+<li>Micrófonos: USB o <b>jack de 3,5 mm</b>.</li>
+</ul>
+<h3>6.4 Digitalización 3D y tecnologías emergentes</h3>
+<ul>
+<li><b>Escáneres 3D</b>: captan la forma de un objeto real en un <b>modelo 3D digital</b> con <b>láser, luz estructurada o fotogrametría</b>; ingeniería inversa, medicina, patrimonio cultural, videojuegos.</li>
+</ul>
+<div class="tw"><table><tr><th>Tecnología emergente</th><th>Idea</th></tr>
+<tr><td><b>Interfaz háptica</b></td><td><b>Retroalimentación táctil</b> que simula el tacto</td></tr>
+<tr><td><b>Realidad aumentada</b></td><td><b>Superposición de elementos digitales</b> sobre el entorno real</td></tr>
+<tr><td><b>Captura de movimiento (motion capture)</b></td><td>Análisis de movimientos humanos para <b>animación o biomecánica</b></td></tr>
+</table></div>
+<div class="pn"><a href="b2t1.html">← 2.1</a><a href="b2t3.html">2.3 →</a></div></main></div><script src="../app.js"></script></body></html>

@@ -1,0 +1,696 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 4 · Tema 6 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Comunicaciones</a><a href="#s1">2. Medios de transmisión</a><a href="#s2">3. Equipos terminales, de interconexión y conmutación</a><a href="#s3">4. Redes de comunicaciones</a><a href="#s4">5. Redes de conmutación y redes de difusión</a><a href="#s5">6. Comunicaciones móviles e inalámbricas</a></aside>
+<main class="doc" data-key="b4t6"><div class="crumb">Bloque 4 · Tema 6</div><h1>Comunicaciones: señales, medios de transmisión, redes, conmutación, móviles e inalámbricas</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (16)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque4_Tema6.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque4_Tema6.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Comunicaciones</h2>
+<h3>1.1 Introducción y conceptos</h3>
+<div class="tw"><table><tr><th>Concepto</th><th>Definición</th></tr>
+<tr><td><b>Comunicación</b></td><td>Proceso por el que se <b>transmite información de un punto a otro</b></td></tr>
+<tr><td><b>Telecomunicación</b></td><td>Comunicación <b>a distancia mediada por tecnología</b> ("tele" = lejos + "communicare" = compartir): datos, voz y vídeo por medios <b>físicos</b> (cable, fibra) o <b>inalámbricos</b> (radiofrecuencia, microondas, satélite)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Elemento de la comunicación</th><th>Función</th></tr>
+<tr><td><b>Emisor</b></td><td>Genera y envía el mensaje</td></tr>
+<tr><td><b>Mensaje</b></td><td>Información (en redes, <b>bits</b> codificados)</td></tr>
+<tr><td><b>Receptor</b></td><td>Recibe el mensaje</td></tr>
+<tr><td><b>Canal</b></td><td><b>Medio</b> de transmisión (cable, fibra, radio)</td></tr>
+<tr><td><b>Protocolo</b></td><td><b>Lenguaje común</b> que fija la forma de comunicarse; el mensaje se <b>codifica</b> en el emisor y se <b>decodifica</b> en el receptor</td></tr>
+</table></div>
+<h3>1.2 Tipos de señales</h3>
+<div class="tw"><table><tr><th>Señal</th><th>Características</th><th>Ejemplos</th></tr>
+<tr><td><b>Analógica</b></td><td>Varía de forma <b>continua</b>, <b>infinitos valores</b> en un rango</td><td>Radio y TV analógicas, voz</td></tr>
+<tr><td><b>Digital</b></td><td>Valores <b>discretos</b> (normalmente <b>0 y 1</b>); base de la comunicación informática</td><td>Pulsos eléctricos: tensión alta = 1, baja = 0</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Conversión</th><th>Proceso</th></tr>
+<tr><td><b>Analógico → digital (A/D)</b></td><td><b>3 pasos</b>: <b>1. Muestreo</b> (valor a intervalos regulares) → <b>2. Cuantificación</b> (valor numérico en niveles finitos) → <b>3. Codificación</b> (a bits). Ej.: <b>VoIP</b></td></tr>
+<tr><td><b>Digital → analógico</b></td><td><b>Modulación digital</b>, para canales que sólo admiten analógico (línea telefónica). Ej.: <b>módem</b> (modulador-demodulador)</td></tr>
+</table></div>
+<h3>1.3 Sistema de comunicaciones. Técnicas de transmisión</h3>
+<ul>
+<li>Objetivo: que el mensaje llegue <b>de forma precisa y eficiente</b>, minimizando errores y adaptándose al canal.</li>
+</ul>
+<div class="tw"><table><tr><th>Bloque</th><th>Función</th></tr>
+<tr><td><b>Fuente de información</b></td><td>Genera los datos (texto, audio, vídeo)</td></tr>
+<tr><td><b>Codificador</b></td><td>Transforma los datos en <b>señal digital</b> adecuada; puede añadir <b>redundancia o corrección de errores</b></td></tr>
+<tr><td><b>Modulador</b></td><td>Adapta la señal digital al medio (la convierte en <b>analógica</b> si hace falta)</td></tr>
+<tr><td><b>Canal de transmisión</b></td><td>Medio por el que viaja la señal; aquí aparecen <b>interferencias, atenuación y ruido</b></td></tr>
+<tr><td><b>Demodulador</b></td><td>Recupera la señal digital original eliminando los efectos del canal</td></tr>
+<tr><td><b>Decodificador</b></td><td>Reconstruye los datos originales y corrige errores si es posible</td></tr>
+<tr><td><b>Destino de la información</b></td><td>Punto final</td></tr>
+</table></div>
+<h3>1.3.2 Codificación</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Codificación</b></p>
+<p>Proceso por el que una información (señal) se <b>convierte a una forma adecuada para su transmisión, sin perder el sentido</b> de la misma (p. ej. señal digital → señal eléctrica, óptica o electromagnética). <b>No cambia el contenido</b>, sino la forma de representarlo. Afecta a la <b>eficiencia, fiabilidad y sincronización</b>.</p>
+</div>
+<ul>
+<li><b>BER</b> (Bit Error Rate): <b>tasa de error de bit</b>; bits recibidos erróneamente respecto al total transmitido. Una buena codificación <b>minimiza el BER</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Esquema (codificación unipolar: un solo nivel de tensión y el otro = 0 V)</th><th>Funcionamiento</th></tr>
+<tr><td><b>NRZ</b> (Non Return to Zero)</td><td>Señal <b>constante</b> durante todo el bit: 1 = nivel alto, 0 = nivel bajo (o al revés)</td></tr>
+<tr><td><b>RZ</b> (Return to Zero)</td><td><b>Vuelve a cero a mitad del intervalo</b>: el 1 sube y vuelve a cero; el 0 no representa nada</td></tr>
+<tr><td><b>Bifase</b> (Manchester y Differential Manchester)</td><td>Supera las limitaciones de NRZ: <b>transiciones regulares</b> que mantienen la <b>sincronización</b></td></tr>
+<tr><td><b>Manchester</b></td><td>Se usa en <b>Ethernet</b>; transición <b>en el centro del bit</b>: <b>1 = bajo→alto</b>, <b>0 = alto→bajo</b></td></tr>
+<tr><td><b>Differential Manchester</b></td><td><b>Siempre hay transición en medio del bit</b>; el valor depende de si hay transición <b>al principio</b> o no</td></tr>
+</table></div>
+<h3>1.3.3 Modulación</h3>
+<ul>
+<li><b>Modulación</b>: modificar un parámetro (<b>amplitud, frecuencia o fase</b>) de una <b>portadora</b> para adaptar la información (<b>moduladora</b>) al canal; permite transmitir a grandes distancias o reducir ruido.</li>
+</ul>
+<div class="tw"><table><tr><th>Modulación analógica</th><th>Parámetro</th><th>Características</th></tr>
+<tr><td><b>AM</b></td><td><b>Amplitud</b></td><td>Radiodifusión de <b>onda media</b></td></tr>
+<tr><td><b>FM</b></td><td><b>Frecuencia</b></td><td><b>Mayor inmunidad al ruido que AM</b>; la más común en radio FM</td></tr>
+<tr><td><b>PM</b></td><td><b>Fase</b></td><td>Más inmune al ruido, mejor calidad; <b>alcance más limitado</b>, más compleja y cara</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Modulación digital</b></p>
+<p>Cuando la información es <b>binaria</b> se emplea <b>modulación digital</b>: la moduladora son <b>pulsos digitales</b>. Hay <b>tres tipos básicos</b>:</p>
+<div class="tw"><table><tr><th>Tipo</th><th>Parámetro</th><th>Características</th><th>Uso</th></tr>
+<tr><td><b>ASK</b> (Amplitude Shift Keying)</td><td><b>Amplitud</b></td><td>Simple, <b>muy sensible al ruido</b></td><td>Infrarrojos de mandos a distancia</td></tr>
+<tr><td><b>FSK</b> (Frequency Shift Keying)</td><td><b>Frecuencia</b></td><td><b>Más robusta que ASK</b></td><td>Módems antiguos, radio digital, <b>RFID</b></td></tr>
+<tr><td><b>PSK</b> (Phase Shift Keying)</td><td><b>Fase</b></td><td><b>BPSK</b>: 2 fases (0° y 180°); <b>QPSK</b>: 4 fases, 2 bits por símbolo</td><td>Satélites, redes móviles, <b>Wi-Fi</b></td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Modulación avanzada (híbrida, QAM)</b>: modifica amplitud, frecuencia y fase para mejorar la <b>eficiencia espectral</b> (más bits por segundo en menos ancho de banda).</li>
+<li><b>Constelación</b>: representación gráfica de los símbolos posibles; <b>más puntos = más velocidad (bits por símbolo) pero más sensibilidad al ruido</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Modulación</th><th>Puntos</th><th>Bits/símbolo</th></tr>
+<tr><td><b>BPSK</b></td><td>2</td><td><b>1</b></td></tr>
+<tr><td><b>QPSK</b></td><td>4</td><td><b>2</b></td></tr>
+<tr><td><b>16-QAM</b></td><td>16</td><td><b>4</b></td></tr>
+<tr><td><b>64-QAM</b></td><td>64</td><td><b>6</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Técnica</th><th>Parámetro modulado</th><th>Bits/símbolo</th><th>Resistencia al ruido</th><th>Uso típico</th></tr>
+<tr><td><b>ASK</b></td><td>Amplitud</td><td>1</td><td>Baja</td><td>Infrarrojos, RF básica</td></tr>
+<tr><td><b>FSK</b></td><td>Frecuencia</td><td>1</td><td>Media</td><td>RFID, radio digital</td></tr>
+<tr><td><b>PSK</b></td><td>Fase</td><td>1-2 (o más)</td><td>Alta</td><td>Satélite, Wi-Fi</td></tr>
+<tr><td><b>QAM</b></td><td>Amplitud + Fase</td><td>2 a 8+</td><td>Variable según orden</td><td>Wi-Fi, TV digital, LTE</td></tr>
+</table></div>
+<h3>1.3.4 Multiplexación</h3>
+<ul>
+<li>Transmitir <b>varias señales simultáneamente por un único medio</b>, aprovechando la capacidad del canal y reduciendo costes. <b>Multiplexor</b> (combina) y <b>demultiplexor</b> (separa en destino).</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Recurso que se comparte</th><th>Ejemplo / uso</th></tr>
+<tr><td><b>FDM</b> (Frequency Division)</td><td>Una <b>banda de frecuencia</b> distinta por señal</td><td>Radio FM</td></tr>
+<tr><td><b>TDM</b> (Time Division)</td><td><b>Intervalos de tiempo</b> exclusivos</td><td>Telefonía digital <b>E1/T1</b></td></tr>
+<tr><td><b>WDM</b> (Wavelength Division)</td><td><b>Longitud de onda (color)</b> distinta; variante de FDM en <b>fibra óptica</b></td><td><b>CWDM</b> (Coarse): menos canales, más separación · <b>DWDM</b> (Dense): más canales, mayor densidad</td></tr>
+<tr><td><b>CDM</b> (Code Division)</td><td><b>Código de dispersión</b> único por canal</td><td><b>CDMA</b> (telefonía móvil)</td></tr>
+</table></div>
+<h3>1.3.5 Canal</h3>
+<ul>
+<li>Medio por el que se propaga la señal: <b>guiado</b> (cable, fibra) o <b>no guiado</b> (aire, vacío). Sus características afectan a calidad, velocidad y fiabilidad.</li>
+</ul>
+<div class="tw"><table><tr><th>Característica</th><th>Descripción</th></tr>
+<tr><td><b>Ancho de banda</b></td><td>Información que el canal transmite por segundo: <b>Hz</b> (analógico) o <b>bps</b> (digital)</td></tr>
+<tr><td><b>Atenuación</b></td><td><b>Pérdida de potencia</b> con la distancia o al atravesar materiales; se mide en <b>dB</b></td></tr>
+<tr><td><b>Ruido</b></td><td>Señal no deseada superpuesta; origen térmico, electromagnético o de otros dispositivos. Ej.: <b>ruido blanco</b> e <b>impulsivo</b></td></tr>
+<tr><td><b>Interferencias</b></td><td>Perturbaciones de otras señales. <b>EMI</b> (electromagnética: motores, líneas eléctricas) y <b>diafonía (crosstalk)</b> (señales en cables cercanos)</td></tr>
+<tr><td><b>Distorsión</b></td><td>Componentes de la señal viajan a distinta velocidad o se alteran de modo desigual</td></tr>
+<tr><td><b>Reflexión</b></td><td>La señal <b>rebota</b> ante un obstáculo; produce ecos y <b>multi-trayecto</b></td></tr>
+<tr><td><b>Dispersión</b></td><td>La señal se dispersa por materiales o irregularidades; en fibra, <b>ensanchamiento del pulso</b></td></tr>
+<tr><td><b>Refracción</b></td><td><b>Cambio de dirección</b> al pasar a un medio de distinta densidad (ópticas y microondas)</td></tr>
+<tr><td><b>Difracción</b></td><td>La onda <b>rodea obstáculos</b> o atraviesa pequeñas aberturas, a costa de perder intensidad</td></tr>
+</table></div>
+<ul>
+<li><b>Demodulador</b>: operación <b>inversa a la modulación</b> (según ASK, FSK, PSK, QAM…); puede aplicar filtrado y corrección de errores. <b>Decodificador</b>: reconstruye la <b>secuencia de bits original</b>; debe estar <b>sincronizado con el codificador</b> (si usan esquemas distintos, hay errores de interpretación).</li>
+</ul>
+<h3>1.4 Modos de comunicación</h3>
+<div class="tw"><table><tr><th>Clasificación</th><th>Tipo</th><th>Descripción</th><th>Ejemplo</th></tr>
+<tr><td><b>Organización de bits</b></td><td><b>Paralela</b></td><td>Varios bits <b>a la vez</b>, varias líneas</td><td>Bus de datos interno</td></tr>
+<tr><td></td><td><b>Serie</b></td><td>Bits <b>uno tras otro</b> por una sola línea</td><td>Redes, <b>USB, SATA</b></td></tr>
+<tr><td><b>Dirección del flujo</b></td><td><b>Simplex</b></td><td><b>Un solo sentido</b></td><td>TV, radio, teclado → ordenador</td></tr>
+<tr><td></td><td><b>Half-duplex</b></td><td>Ambos sentidos, <b>no a la vez</b> (se turnan)</td><td>Walkie-talkie, Ethernet antigua (hubs)</td></tr>
+<tr><td></td><td><b>Full-duplex</b></td><td>Ambos sentidos <b>simultáneamente</b>; canales separados o técnicas que distingan flujos</td><td>Telefonía móvil, Ethernet moderna (switches)</td></tr>
+</table></div>
+<h3>1.5 Regulación de las telecomunicaciones</h3>
+<h3>1.5.1 Organismos internacionales</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Organismos internacionales</b></p>
+<div class="tw"><table><tr><th>Organismo</th><th>Descripción</th></tr>
+<tr><td><b>ISO</b> (International Organization for Standardization)</td><td>Normas técnicas en todos los campos; creó el <b>modelo de referencia OSI</b></td></tr>
+<tr><td><b>IETF</b> (Internet Engineering Task Force)</td><td>Organismo <b>abierto</b> que desarrolla estándares de Internet (<b>TCP/IP, DNS, HTTP</b>); publica <b>RFC</b> (Request for Comments)</td></tr>
+<tr><td><b>ITU</b> (International Telecommunication Union)</td><td>Organismo de la <b>ONU</b> para TIC; regula el <b>espectro radioeléctrico</b>; redes, satélites, 5G</td></tr>
+<tr><td><b>IEC</b> (International Electrotechnical Commission)</td><td>Normas de tecnologías <b>eléctricas y electrónicas</b>; colabora con ISO en cables, conectores y equipos de red</td></tr>
+<tr><td><b>CCITT</b> (Comité Consultivo Internacional de Teléfonos y Telégrafos)</td><td>Hoy parte del <b>ITU-T</b>; estándares de redes telefónicas y telegráficas</td></tr>
+<tr><td><b>CCIR</b> (Comité Consultivo Internacional de Radiocomunicaciones)</td><td>Absorbido por el <b>ITU-R</b>; radiocomunicaciones (TV, radio, satélite)</td></tr>
+</table></div>
+</div>
+<h3>1.5.2 Organismos europeos</h3>
+<div class="tw"><table><tr><th>Organismo</th><th>Descripción</th></tr>
+<tr><td><b>CENELEC</b> (Comité Europeo de Normalización Electrotécnica)</td><td>Normalización en <b>electricidad y electrónica</b></td></tr>
+<tr><td><b>ETSI</b> (Instituto Europeo de Normas de Telecomunicación)</td><td>Estándares de telecomunicaciones, radio y redes; clave en <b>GSM, UMTS, LTE y 5G</b></td></tr>
+<tr><td><b>ECMA</b> (Asociación de Fabricantes Europeos de ordenadores)</td><td>Normas globales: <b>ECMAScript, DVD, CD</b> y redes</td></tr>
+<tr><td><b>CEN</b> (Comité Europeo para Estandarización)</td><td>Colabora con CENELEC y ETSI; incluye servicios digitales</td></tr>
+</table></div>
+<h3>1.5.3 Organismos nacionales y IEEE</h3>
+<div class="tw"><table><tr><th>Organismo</th><th>Descripción</th></tr>
+<tr><td><b>AENOR</b></td><td>Organismo <b>nacional de normalización</b>; representa a España en <b>ISO, CEN</b>; publica normas <b>UNE</b></td></tr>
+<tr><td><b>SETELECO</b></td><td><b>Regulador estatal</b>: supervisa el espectro, autoriza operadores y vigila el cumplimiento normativo</td></tr>
+<tr><td><b>IEEE</b></td><td>Asociación internacional sin ánimo de lucro; <b>no es regulador oficial</b> pero sus normas son referencia: <b>802.3 (Ethernet)</b>, <b>802.11 (Wi-Fi)</b>, <b>802.1Q (VLAN)</b></td></tr>
+</table></div>
+<h3>1.6 Red SARA</h3>
+<ul>
+<li><b>Red SARA</b> (Sistema de Aplicaciones y Redes para las Administraciones): infraestructura que permite la <b>interconexión segura entre AAPP españolas</b> y el intercambio de datos y servicios (eficaz, interoperable, con garantías legales). Gestionada por el Ministerio para la Transformación Digital y de la Función Pública a través de la <b>SGAD</b>, actual <b>Agencia española de Administración Digital (AEAD)</b>. Es la <b>columna vertebral</b> de la comunicación entre administraciones.</li>
+</ul>
+<h2 id="s1">2. Medios de transmisión</h2>
+<ul>
+<li><b>Medio de transmisión</b>: canal físico o lógico por el que se propaga la señal (eléctrica, óptica o electromagnética).</li>
+</ul>
+<div class="tw"><table><tr><th>Grupo</th><th>Descripción</th><th>Ejemplos</th></tr>
+<tr><td><b>Guiados (alámbricos)</b></td><td>La señal sigue un <b>camino físico definido</b>; más <b>seguros</b> (frente a sniffing o man in the middle hay que conectarse al medio)</td><td>Cobre (par trenzado, coaxial), <b>fibra óptica</b></td></tr>
+<tr><td><b>No guiados (inalámbricos)</b></td><td><b>Espacio libre</b>; cobertura amplia y movilidad, pero susceptibles a interferencias, obstáculos y <b>más inseguros</b></td><td>Radio, microondas, infrarrojos, satélite</td></tr>
+</table></div>
+<ul>
+<li>Factores de elección: tipo de señal, distancia, entorno, <b>ancho de banda</b>, seguridad, inmunidad al ruido y <b>coste</b>.</li>
+</ul>
+<h3>2.1 Medios guiados</h3>
+<h3>2.1.1 Par trenzado</h3>
+<ul>
+<li><b>Dos conductores de cobre aislados enrollados en espiral</b>; flexible y fácil de instalar, alcance limitado frente a la fibra. El trenzado reduce <b>interferencias electromagnéticas</b> y la <b>diafonía</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de diafonía</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>NEXT</b> (Near-End Crosstalk)</td><td>Diafonía medida en el <b>extremo emisor</b></td></tr>
+<tr><td><b>FEXT</b> (Far-End Crosstalk)</td><td>Diafonía medida en el <b>extremo receptor</b></td></tr>
+<tr><td><b>Alien Crosstalk</b></td><td>Interferencia de <b>pares de cables adyacentes (no del mismo cable)</b>, porque se instalan en mazos en la misma canalización</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Tipo por apantallamiento</th><th>Descripción</th></tr>
+<tr><td><b>UTP</b> (Unshielded)</td><td><b>Sin apantallar</b>; el más común en Ethernet doméstica y de oficina</td></tr>
+<tr><td><b>FTP</b> (Foiled)</td><td><b>Lámina metálica</b> sobre cada par o el conjunto</td></tr>
+<tr><td><b>STP</b> (Shielded)</td><td><b>Malla metálica</b> alrededor de cada par y/o del conjunto; mayor protección</td></tr>
+</table></div>
+<ul>
+<li>Nomenclatura actual <b>XX/YYP</b>: <b>antes de la barra</b> = apantallamiento <b>general</b> del conjunto; <b>después</b> = apantallamiento <b>individual de cada par</b>. Letras: <b>U</b> = Unshielded (sin) · <b>F</b> = Foiled (lámina) · <b>S</b> = Shielded (malla) · <b>SF</b> = Shielded + Foiled.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Construcciones de par trenzado</b></p>
+<div class="tw"><table><tr><th>Nombre</th><th>Apantallamiento general</th><th>Por par</th><th>Descripción</th></tr>
+<tr><td><b>U/UTP</b></td><td>Ninguno</td><td>Ninguno</td><td>Sin apantallamiento (<b>el más común</b>)</td></tr>
+<tr><td><b>F/UTP</b></td><td>Lámina general</td><td>Ninguno</td><td>Lámina que cubre todos los pares</td></tr>
+<tr><td><b>SF/UTP</b></td><td>Malla + lámina general</td><td>Ninguno</td><td>Mayor protección frente a interferencias externas</td></tr>
+<tr><td><b>U/FTP</b></td><td>Ninguno</td><td>Lámina en cada par</td><td>Protege cada par de forma independiente</td></tr>
+<tr><td><b>F/FTP</b></td><td>Lámina general</td><td>Lámina en cada par</td><td>Protección total: general y por par</td></tr>
+<tr><td><b>S/FTP</b></td><td>Malla general</td><td>Lámina en cada par</td><td>Muy usado en entornos de <b>alta interferencia</b></td></tr>
+<tr><td><b>SF/FTP</b></td><td>Malla + lámina general</td><td>Lámina en cada par</td><td><b>Máxima protección</b> electromagnética</td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Categorías de cable de par trenzado</b></p>
+<div class="tw"><table><tr><th>Categoría</th><th>Frecuencia (MHz)</th><th>Velocidad máxima</th><th>Aplicación típica</th></tr>
+<tr><td><b>Cat 3</b> – Clase C</td><td>16</td><td><b>10 Mbps</b></td><td>Ethernet 10BASE-T</td></tr>
+<tr><td><b>Cat 4</b></td><td>20</td><td>16 Mbps</td><td><b>Token Ring</b></td></tr>
+<tr><td><b>Cat 5</b> – Clase D</td><td>100</td><td><b>100 Mbps</b></td><td>Ethernet 100BASE-TX</td></tr>
+<tr><td><b>Cat 5e</b> – Clase D</td><td>100</td><td><b>1 Gbps</b> (hasta 55 m)</td><td>Ethernet 1000BASE-T</td></tr>
+<tr><td><b>Cat 6</b> – Clase E</td><td>250</td><td>1 Gbps</td><td>1000BASE-TX (usa sólo 2 pares)</td></tr>
+<tr><td><b>Cat 6A</b> – Clase EA</td><td><b>500</b></td><td><b>10 Gbps</b></td><td>10GBASE-T</td></tr>
+<tr><td><b>Cat 7</b> – Clase F</td><td>600</td><td>10 Gbps</td><td>Redes profesionales con apantallamiento</td></tr>
+<tr><td><b>Cat 7A</b></td><td>1000</td><td>10 Gbps</td><td>Multimedia de alta frecuencia</td></tr>
+<tr><td><b>Cat 8</b></td><td>2000</td><td><b>25-40 Gbps</b> (hasta 30 m)</td><td><b>Data centers</b></td></tr>
+<tr><td><b>Cat 9</b></td><td>2000+</td><td>&gt;= 40 Gbps</td><td>Aplicaciones industriales de última generación</td></tr>
+</table></div>
+</div>
+<ul>
+<li>Conector típico en Clase D y E/EA: <b>RJ45</b>; en clase F y FA pueden existir <b>GG-45</b> o <b>TERA</b>.</li>
+<li><b>RJ45</b>: <b>8 pines</b>, <b>4 pares</b>. Estándares <b>T568A y T568B</b> (ANSI/TIA-568), distinto orden de colores:</li>
+</ul>
+<div class="tw"><table><tr><th>Pin</th><th>T568A</th><th>T568B</th></tr>
+<tr><td>1</td><td>Blanco/Verde</td><td>Blanco/Naranja</td></tr>
+<tr><td>2</td><td>Verde</td><td>Naranja</td></tr>
+<tr><td>3</td><td>Blanco/Naranja</td><td>Blanco/Verde</td></tr>
+<tr><td>4</td><td>Azul</td><td>Azul</td></tr>
+<tr><td>5</td><td>Blanco/Azul</td><td>Blanco/Azul</td></tr>
+<tr><td>6</td><td>Naranja</td><td>Verde</td></tr>
+<tr><td>7</td><td>Blanco/Marrón</td><td>Blanco/Marrón</td></tr>
+<tr><td>8</td><td>Marrón</td><td>Marrón</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Cable</th><th>Extremos</th><th>Uso</th></tr>
+<tr><td><b>Directo</b></td><td><b>Mismo estándar</b> en ambos (A-A o B-B)</td><td>Dispositivos <b>distintos</b> (PC a switch)</td></tr>
+<tr><td><b>Cruzado</b></td><td><b>T568A en un extremo y T568B en el otro</b></td><td>Dispositivos del <b>mismo tipo</b> (PC-PC, switch-switch); hoy lo gestiona <b>Auto MDI/MDI-X</b></td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>PoE (Power over Ethernet)</b></p>
+<p>Tecnología que suministra <b>energía eléctrica y datos por el mismo cable</b>, sin fuentes independientes. El <b>switch</b> aporta la alimentación por los pares trenzados (<b>Cat 5e o superior</b>) junto a los datos. Útil donde no es práctico poner tomas de corriente. Alimenta <b>puntos de acceso Wi-Fi, teléfonos IP, cámaras de videovigilancia</b>.</p>
+<div class="tw"><table><tr><th>Tipo</th><th>Estándar IEEE</th><th>Potencia máxima</th><th>Nombre</th></tr>
+<tr><td><b>PoE</b></td><td><b>802.3af</b></td><td>Hasta <b>15,4 W</b> (mín. 12,95 W en el dispositivo)</td><td>PoE (tipo 1)</td></tr>
+<tr><td><b>PoE+</b></td><td><b>802.3at</b></td><td>Hasta <b>30 W</b> (mín. 25,5 W útiles)</td><td>PoE+ (tipo 2)</td></tr>
+<tr><td><b>PoE++</b></td><td><b>802.3bt</b></td><td>Hasta <b>60 W</b> (tipo 3) / <b>100 W</b> (tipo 4)</td><td>PoE++ (tipo 3 y 4)</td></tr>
+</table></div>
+<p>El switch <b>detecta automáticamente</b> si el dispositivo necesita alimentación y ajusta el voltaje.</p>
+</div>
+<h3>2.1.2 Coaxial</h3>
+<ul>
+<li>Medio guiado histórico en redes locales, TV por cable y videovigilancia; señales de <b>alta frecuencia</b>, buena <b>inmunidad al ruido</b>. Capas concéntricas:</li>
+</ul>
+<div class="tw"><table><tr><th>Capa</th><th>Función</th></tr>
+<tr><td><b>1. Conductor central (núcleo)</b></td><td>Hilo de cobre macizo o trenzado por donde viaja la señal</td></tr>
+<tr><td><b>2. Aislante dieléctrico</b></td><td>Separa núcleo y malla; mantiene constante la <b>impedancia</b></td></tr>
+<tr><td><b>3. Malla metálica</b></td><td>Cobre o aluminio trenzado: <b>retorno de la señal</b> y escudo</td></tr>
+<tr><td><b>4. Capa exterior (chaqueta)</b></td><td>Protección mecánica y ambiental</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Tipo</th><th>Impedancia</th><th>Transmisión</th><th>Uso</th></tr>
+<tr><td><b>RG-6</b></td><td><b>75 ohm</b></td><td>Banda ancha</td><td>TV por cable, CCTV</td></tr>
+<tr><td><b>RG-59</b></td><td>75 ohm</td><td>Banda ancha</td><td>Vídeo analógico, instalaciones domésticas</td></tr>
+<tr><td><b>RG-11</b></td><td>75 ohm</td><td>Banda ancha</td><td>Largas distancias en TV por cable</td></tr>
+<tr><td><b>RG-58</b></td><td><b>50 ohm</b></td><td>Banda base</td><td>Ethernet <b>10BASE2</b> (obsoleto), instrumentación</td></tr>
+<tr><td><b>RG-213</b></td><td>50 ohm</td><td>Banda base</td><td>Radiofrecuencia (RF)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Conector</th><th>Descripción</th></tr>
+<tr><td><b>Belling-Lee</b> (IEC 169-2)</td><td>TV analógica y receptores domésticos europeos; <b>sin rosca</b></td></tr>
+<tr><td><b>BNC</b></td><td><b>10BASE2</b>, laboratorio, videovigilancia; <b>bayoneta</b></td></tr>
+<tr><td><b>SMA</b></td><td>Variante del BNC para <b>radiofrecuencia</b></td></tr>
+<tr><td><b>Balun</b></td><td>Convierte <b>coaxial a par trenzado</b>; equilibra la señal</td></tr>
+<tr><td><b>TNC</b></td><td>Versión <b>roscada</b> del BNC (vibraciones)</td></tr>
+<tr><td><b>N</b></td><td>Grande y robusto, altas frecuencias; RF y telecomunicaciones profesionales</td></tr>
+<tr><td><b>F</b></td><td>Pequeño; televisión y audio</td></tr>
+</table></div>
+<h3>2.1.3 Fibra óptica</h3>
+<ul>
+<li>Transporta datos con <b>luz</b> por un hilo de vidrio o plástico: máxima eficiencia en grandes volúmenes y largas distancias, <b>alta velocidad, baja atenuación e inmunidad total a interferencias electromagnéticas</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Monomodo y multimodo</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Núcleo</th><th>Fuente de luz</th><th>Alcance</th><th>Aplicación</th></tr>
+<tr><td><b>Monomodo (SMF)</b></td><td><b>8-10 µm</b></td><td><b>Láser (ILD)</b></td><td>Hasta <b>100 km</b></td><td>Redes troncales, larga distancia</td></tr>
+<tr><td><b>Multimodo (MMF)</b></td><td><b>50 ó 62,5 µm</b></td><td><b>LED</b> o láser de bajo coste</td><td>Hasta <b>2 km</b></td><td>LAN, campus</td></tr>
+</table></div>
+<ul>
+<li><b>SMF</b>: núcleo reducido, <b>un solo modo de luz</b> → evita la dispersión modal, mayores distancias y velocidades.</li>
+<li><b>MMF</b>: <b>múltiples modos</b> → limita la distancia y aumenta la dispersión, pero es <b>más económica</b> y fácil de instalar.</li>
+</ul>
+</div>
+<div class="tw"><table><tr><th>Multimodo</th><th>Descripción</th></tr>
+<tr><td><b>Índice escalonado</b> (step-index)</td><td>Núcleo con índice de refracción <b>constante</b> y revestimiento de índice menor; múltiples trayectorias; <b>en desuso</b></td></tr>
+<tr><td><b>Índice gradual</b> (graded-index)</td><td>Índice de refracción que <b>disminuye del centro al borde</b>; los rayos se curvan suavemente; <b>reduce la dispersión modal</b>; <b>la más usada</b> (OM2, OM3, OM4, OM5)</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Tipos de fibra según ISO/IEC 11801</b></p>
+<div class="tw"><table><tr><th>Tipo</th><th>Clasificación</th><th>Núcleo/recubrimiento</th><th>Aplicación</th></tr>
+<tr><td><b>OM1</b></td><td>Multimodo</td><td>62,5/125 µm</td><td>Hasta 1 Gbps a 300 m</td></tr>
+<tr><td><b>OM2</b></td><td>Multimodo</td><td>50/125 µm</td><td>Hasta 1 Gbps a 600 m</td></tr>
+<tr><td><b>OM3</b></td><td>Multimodo</td><td>50/125 µm (láser optimizado)</td><td>Hasta <b>10 Gbps a 300 m</b></td></tr>
+<tr><td><b>OM4</b></td><td>Multimodo</td><td>50/125 µm</td><td>Hasta <b>10 Gbps a 550 m</b></td></tr>
+<tr><td><b>OM5</b></td><td>Multimodo</td><td>50/125 µm (multilongitud de onda)</td><td>Optimizado para <b>WDM en LAN</b></td></tr>
+<tr><td><b>OS1</b></td><td>Monomodo</td><td>9/125 µm</td><td>Redes <b>interiores</b>, hasta <b>10 km</b></td></tr>
+<tr><td><b>OS2</b></td><td>Monomodo</td><td>9/125 µm</td><td>Redes <b>exteriores</b>, hasta <b>100 km</b></td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Conector de fibra</th><th>Características</th></tr>
+<tr><td><b>ST</b></td><td>Tipo <b>bayoneta</b>, instalaciones antiguas, en desuso</td></tr>
+<tr><td><b>SC</b></td><td><b>Push-pull</b>; muy usado en redes <b>PON</b></td></tr>
+<tr><td><b>LC</b></td><td><b>Tamaño reducido</b>; equipos modernos (SM y MM)</td></tr>
+<tr><td><b>FC</b></td><td><b>Rosca</b> de precisión; entornos industriales</td></tr>
+<tr><td><b>MTP/MPO</b></td><td><b>Alta densidad</b>, más de 24 fibras; <b>centros de datos</b> y fibras paralelas</td></tr>
+</table></div>
+<ul>
+<li>Tipos de <b>pulido</b>: <b>FLAT, PC, APC y UPC</b>.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Ventanas de transmisión de la fibra óptica</b></p>
+<div class="tw"><table><tr><th>Ventana</th><th>Longitud de onda</th><th>Atenuación típica</th><th>Aplicaciones</th></tr>
+<tr><td><b>1ª</b></td><td><b>850 nm</b></td><td><b>3 dB/km</b></td><td>LAN con fibra <b>multimodo</b> (OM1, OM2) y <b>LED</b></td></tr>
+<tr><td><b>2ª</b></td><td><b>1310 nm</b></td><td><b>0,4 dB/km</b></td><td>Redes metropolitanas y campus (SM y MM)</td></tr>
+<tr><td><b>3ª</b></td><td><b>1550 nm</b></td><td><b>0,2 dB/km</b></td><td>Redes <b>troncales</b>, larga distancia</td></tr>
+<tr><td><b>4ª</b></td><td><b>1625 nm</b></td><td>~0,25 dB/km</td><td><b>Supervisión y monitorización</b> de redes ópticas</td></tr>
+</table></div>
+</div>
+<div class="tw"><table><tr><th>Fuente de luz</th><th>Características</th></tr>
+<tr><td><b>LED</b></td><td>Económica y fiable; <b>multimodo</b> en <b>1ª ventana</b>; luz dispersa y baja potencia → limitada en distancia y velocidad</td></tr>
+<tr><td><b>ILD</b> (láser)</td><td>Precisa y potente, menor dispersión; <b>monomodo</b> en <b>2ª y 3ª ventanas</b>; grandes distancias y velocidades</td></tr>
+</table></div>
+<h3>2.2 Medios no guiados</h3>
+<ul>
+<li>Propagan señales por <b>aire, vacío o agua</b> con ondas electromagnéticas (radio, microondas, infrarrojos); dependen de frecuencia, entorno, potencia y antena.</li>
+</ul>
+<h3>2.2.1 Antenas</h3>
+<ul>
+<li><b>Antena</b>: convierte <b>señales eléctricas en ondas electromagnéticas</b> (emisión) y viceversa (recepción).</li>
+</ul>
+<div class="tw"><table><tr><th>Clasificación</th><th>Descripción</th></tr>
+<tr><td><b>Omnidireccionales</b></td><td>Todas las direcciones; cobertura general (Wi-Fi, móvil)</td></tr>
+<tr><td><b>Direccionales</b></td><td>Concentran la señal: más alcance, menos interferencias; enlaces <b>punto a punto</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Antena</th><th>Características</th></tr>
+<tr><td><b>Dipolo</b></td><td>Simple y simétrica, un hilo de metal</td></tr>
+<tr><td><b>Monopolar</b></td><td>Versión <b>vertical</b> del dipolo; emisoras y móviles</td></tr>
+<tr><td><b>Yagi</b></td><td>Direccional, <b>gran ganancia</b>; televisión y enlaces fijos</td></tr>
+<tr><td><b>Parabólica</b></td><td><b>Altamente direccional</b>; comunicaciones satelitales</td></tr>
+<tr><td><b>Panel</b></td><td>Direccional y compacta; Wi-Fi exterior y enlaces urbanos</td></tr>
+</table></div>
+<h3>2.2.2 Espectro radioeléctrico y bandas</h3>
+<div class="tw"><table><tr><th>Banda</th><th>Rango</th><th>Usos</th></tr>
+<tr><td><b>VLF</b></td><td>3 – 30 kHz</td><td>Comunicaciones submarinas, navegación</td></tr>
+<tr><td><b>LF</b></td><td>30 – 300 kHz</td><td>Radionavegación, señales horarias</td></tr>
+<tr><td><b>MF</b></td><td>300 – 3000 kHz</td><td><b>Radio AM</b>, comunicaciones marítimas</td></tr>
+<tr><td><b>HF</b></td><td>3 – 30 MHz</td><td>Radioaficionados, <b>ondas cortas</b></td></tr>
+<tr><td><b>VHF</b></td><td>30 – 300 MHz</td><td><b>Radio FM</b>, TV analógica, aeronáuticas</td></tr>
+<tr><td><b>UHF</b></td><td>300 – 3000 MHz</td><td><b>TV digital, Wi-Fi, telefonía móvil, Bluetooth</b></td></tr>
+<tr><td><b>SHF</b></td><td>3 – 30 GHz</td><td><b>Microondas</b>, enlaces punto a punto, radar, satélites</td></tr>
+</table></div>
+<ul>
+<li><b>Bajas frecuencias</b> (VLF, LF, MF): largo alcance, siguen la curvatura terrestre, poca capacidad de datos. <b>Altas frecuencias</b> (VHF, UHF, SHF): más velocidad y calidad, <b>alcance limitado, línea de vista</b>, más sensibles a interferencias.</li>
+</ul>
+<div class="tw"><table><tr><th>Medio no guiado</th><th>Características</th></tr>
+<tr><td><b>Microondas</b></td><td><b>3 a 30 GHz</b>; <b>línea de vista</b> → repetidores en torres; enlaces punto a punto, troncales, entre edificios; gran ancho de banda, sensibles a obstáculos y meteorología</td></tr>
+<tr><td><b>Láser</b></td><td>Haz de luz coherente (infrarrojo o visible); <b>línea directa</b> y alineamiento preciso; enlaces temporales entre edificios; sensible a <b>niebla, lluvia, nieve</b></td></tr>
+<tr><td><b>Infrarrojos</b></td><td><b>300 GHz a 400 THz</b>; <b>corto alcance</b>, no atraviesa paredes; mandos a distancia y periféricos</td></tr>
+<tr><td><b>Radio</b></td><td><b>3 Hz a 300 GHz</b>; atraviesa paredes, <b>sin línea de vista</b>; radio AM/FM, TV, Wi-Fi, Bluetooth, móvil, <b>LoRa</b></td></tr>
+<tr><td><b>Satélite</b></td><td>Enlace de larga distancia; subtipo de <b>microondas</b>; <b>mayor latencia</b>, sensible a la atmósfera</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Órbitas de satélites</b></p>
+<div class="tw"><table><tr><th>Órbita</th><th>Significado</th><th>Altitud</th><th>Características</th></tr>
+<tr><td><b>GEO</b></td><td>Geostationary Earth Orbit</td><td><b>35.786 km</b></td><td><b>Estacionarios</b> sobre el ecuador; cobertura amplia (TV); <b>alta latencia (~250 ms)</b></td></tr>
+<tr><td><b>HEO</b></td><td>Highly Elliptical Orbit</td><td>~36.000 km</td><td><b>Elípticas</b>: largas permanencias sobre zonas <b>polares</b>; latencia variable</td></tr>
+<tr><td><b>MEO</b></td><td>Medium Earth Orbit</td><td><b>2.000 – 36.000 km</b></td><td>Intermedia; <b>GPS, Galileo</b>; menos latencia que GEO pero requiere constelaciones</td></tr>
+<tr><td><b>LEO</b></td><td>Low Earth Orbit</td><td><b>200 – 2.000 km</b></td><td><b>Baja latencia (~20-40 ms)</b>; internet (<b>Starlink</b>), requieren muchas unidades</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>Parabólica</b>: refleja y concentra la señal en el <b>LNB</b> (Low Noise Block), que convierte las señales de alta frecuencia a una frecuencia transmisible por cable.</li>
+</ul>
+<h2 id="s2">3. Equipos terminales, de interconexión y conmutación</h2>
+<div class="tw"><table><tr><th>Tipo</th><th>Nombre completo</th><th>Función</th><th>Ejemplos</th></tr>
+<tr><td><b>DTE</b></td><td>Data Terminal Equipment</td><td><b>Origina o consume</b> los datos (genera, procesa o muestra)</td><td>Ordenador, terminal, router, impresora</td></tr>
+<tr><td><b>DCE</b></td><td>Data Circuit-terminating Equipment</td><td><b>Establece, mantiene y finaliza el enlace físico</b>; adapta la señal al canal</td><td>Módem, switch, multiplexor</td></tr>
+</table></div>
+<ul>
+<li>La distinción DTE/DCE es relevante en <b>enlaces serie punto a punto (RS-232)</b>: determina la dirección del <b>reloj</b> y si se necesita cable cruzado. Los equipos de interconexión (switches, routers, hubs, bridge) y los dominios de colisión/difusión se estudian en otro tema.</li>
+</ul>
+<h2 id="s3">4. Redes de comunicaciones</h2>
+<h3>4.1 Clasificación</h3>
+<div class="tw"><table><tr><th>Criterio</th><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>Tamaño / cobertura</b></td><td><b>PAN</b></td><td>Pocos metros; móviles, tablets, auriculares: <b>Bluetooth, USB</b></td></tr>
+<tr><td></td><td><b>LAN</b></td><td>Espacio reducido (oficina, edificio); <b>altas velocidades</b></td></tr>
+<tr><td></td><td><b>MAN</b></td><td><b>Ciudad o área metropolitana</b>, conecta varias LAN; operadores o entidades públicas</td></tr>
+<tr><td></td><td><b>WAN</b></td><td>Gran alcance, interconecta MAN o LAN a nivel nacional/internacional: <b>Internet</b></td></tr>
+<tr><td><b>Topología</b></td><td><b>Bus</b></td><td>Canal único compartido; Ethernet antigua</td></tr>
+<tr><td></td><td><b>Estrella</b></td><td>Nodo central (<b>hub o switch</b>); <b>la más usada en LAN</b> por facilidad de gestión</td></tr>
+<tr><td></td><td><b>Anillo</b></td><td>Circuito cerrado; datos en <b>una única dirección</b></td></tr>
+<tr><td></td><td><b>Malla</b></td><td>Cada nodo conectado a varios: <b>alta redundancia y tolerancia a fallos</b>; redes críticas y backbone</td></tr>
+<tr><td></td><td><b>Árbol</b></td><td>Jerárquica basada en la estrella</td></tr>
+<tr><td></td><td><b>Híbrida</b></td><td>Combinación de varias</td></tr>
+<tr><td><b>Método de conmutación</b></td><td>(ver punto 6)</td><td></td></tr>
+<tr><td><b>Medio de transmisión</b></td><td><b>Alámbricas</b></td><td>Cobre o fibra</td></tr>
+<tr><td></td><td><b>Inalámbricas</b></td><td>Wi-Fi, radio, infrarrojos, satélite</td></tr>
+<tr><td><b>Tipo de conexión</b></td><td><b>Punto a punto</b></td><td>Conexión directa entre dos dispositivos</td></tr>
+<tr><td></td><td><b>Multipunto</b></td><td>Varios dispositivos comparten el canal</td></tr>
+</table></div>
+<h3>4.2 Protocolos de comunicaciones. Redes de transporte</h3>
+<ul>
+<li><b>Protocolo</b>: conjunto de <b>normas y convenciones</b> para el intercambio de datos: cómo se establece la conexión, se estructura la información, se controla el flujo y se detectan/corrigen errores; independiente del medio, tecnología o fabricante.</li>
+<li>Existen protocolos en distintos niveles de <b>OSI/TCP-IP</b>: físicos (Ethernet, Wi-Fi), de red (<b>IP, MPLS</b>) y de aplicación (HTTP, FTP). Aquí: <b>ATM, MPLS, xDSL, PON, VLAN, VPN</b>.</li>
+</ul>
+<h3>4.2.1 ATM</h3>
+<ul>
+<li><b>ATM</b> (Modo de Transferencia Asíncrono): tecnología de conmutación de paquetes para voz, vídeo y datos a <b>alta velocidad y baja latencia</b>. Usa <b>celdas de longitud fija de 53 bytes</b>: <b>5 bytes de cabecera</b> (conmutación y control) + <b>48 bytes de carga útil</b>. El tamaño fijo reduce la latencia y simplifica la conmutación.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de celda</th><th>Tráfico</th></tr>
+<tr><td><b>UNI</b> (User Network Interface)</td><td><b>Usuario ↔ switch ATM</b></td></tr>
+<tr><td><b>NNI</b> (Network-Network Interface)</td><td><b>Entre switches ATM</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Capa ATM</th><th>Función</th></tr>
+<tr><td><b>Física</b></td><td>Características eléctricas, ópticas y de sincronización (cobre, fibra, inalámbrico); se divide en <b>PMD</b> (física) y <b>TC</b> (enlace)</td></tr>
+<tr><td><b>ATM</b></td><td><b>Encaminamiento de celdas</b>, identificación de circuitos virtuales y gestión de tráfico; usa <b>VPI/VCI</b> (Virtual Path / Virtual Channel Identifier)</td></tr>
+<tr><td><b>AAL</b> (ATM Adaptation Layer)</td><td><b>Adapta distintos tipos de tráfico</b> al formato de celdas. Según la ITU: AAL 0 · <b>AAL 1: CBR</b> · <b>AAL 2: rt-VBR</b> · <b>AAL 3/4: nrt-VBR</b> · <b>AAL 5: nrt-VBR</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Conexión</th><th>Descripción</th></tr>
+<tr><td><b>PVC</b> (Permanent Virtual Circuit)</td><td>Circuito virtual <b>permanente preconfigurado</b>; camino fijo; <b>los más comunes</b> (simplicidad, control centralizado)</td></tr>
+<tr><td><b>SVC</b> (Switched Virtual Circuit)</td><td>Circuito <b>conmutado dinámicamente, bajo demanda</b>; como una llamada telefónica</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Servicio QoS</th><th>Nombre</th><th>Descripción</th></tr>
+<tr><td><b>CBR</b></td><td>Constant Bit Rate</td><td>Tasa <b>constante</b>; voz o vídeo en tiempo real; garantiza ancho de banda</td></tr>
+<tr><td><b>VBR</b></td><td>Variable Bit Rate</td><td>Tasa <b>variable</b>; sensible al retardo (<b>rt-VBR</b>) o no (<b>nrt-VBR</b>); ancho de banda medio garantizado</td></tr>
+<tr><td><b>ABR</b></td><td>Available Bit Rate</td><td>Aprovecha el ancho de banda <b>libre</b>; se adapta a la congestión</td></tr>
+<tr><td><b>UBR</b></td><td>Unspecified Bit Rate</td><td><b>No garantiza</b> ancho de banda ni retardo; datos sin prioridad</td></tr>
+</table></div>
+<h3>4.2.2 MPLS</h3>
+<ul>
+<li><b>MPLS</b>: tecnología de encaminamiento y conmutación que combina <b>encaminamiento IP + conmutación a nivel de enlace</b>. Se asigna una <b>etiqueta (label)</b> al paquete al entrar en la red; los routers intermedios (<b>LSR</b>, Label Switch Router) deciden por la etiqueta sin examinar la cabecera IP completa.</li>
+</ul>
+<div class="tw"><table><tr><th>Elemento</th><th>Función</th></tr>
+<tr><td><b>LER</b> (Label Edge Router)</td><td>Router de <b>borde</b>: <b>inserta la etiqueta</b> en el paquete</td></tr>
+<tr><td><b>LSR</b> (Label Switch Router)</td><td>Router intermedio: conmuta <b>según la etiqueta</b></td></tr>
+<tr><td><b>LSP</b> (Label Switched Path)</td><td><b>Camino virtual</b> predeterminado</td></tr>
+</table></div>
+<ul>
+<li>Uso: <b>redes troncales</b> de operadores y grandes corporaciones (eficiencia, flexibilidad, múltiples tipos de tráfico).</li>
+</ul>
+<h3>4.2.3 xDSL</h3>
+<ul>
+<li><b>xDSL</b> (Digital Subscriber Line): datos digitales de alta velocidad sobre <b>pares de cobre telefónicos</b> existentes. Hoy se sustituye por redes <b>PON</b>. Separa la <b>voz (frecuencias bajas)</b> de los datos (altas) con modulación y un <b>filtro (splitter)</b> en ambos extremos. En la central, el <b>DSLAM</b> (Digital Subscriber Line Access Multiplexer) concentra las conexiones y las interconecta con la WAN.</li>
+</ul>
+<div class="tw"><table><tr><th>Tecnología</th><th>Significado</th><th>Características</th></tr>
+<tr><td><b>ADSL</b></td><td>Asymmetric DSL</td><td><b>Más bajada que subida</b>; usuarios domésticos</td></tr>
+<tr><td><b>ADSL2/2+</b></td><td>Evolución de ADSL</td><td>Más velocidad y alcance; <b>ADSL2+ hasta 24 Mbps</b></td></tr>
+<tr><td><b>VDSL</b></td><td>Very High Bit Rate DSL</td><td>Hasta <b>100 Mbps</b>, alcance limitado (~<b>1,5 km</b>)</td></tr>
+<tr><td><b>SDSL</b></td><td>Symmetric DSL</td><td><b>Subida = bajada</b>; entornos profesionales</td></tr>
+<tr><td><b>G.SHDSL</b></td><td>Single-pair High-speed DSL</td><td>Variante <b>simétrica estandarizada</b>; empresas</td></tr>
+</table></div>
+<h3>4.2.4 Redes PON</h3>
+<ul>
+<li><b>PON</b> (Passive Optical Network): red de acceso de <b>fibra óptica con componentes pasivos</b> (sin alimentación eléctrica) que distribuye la señal desde un punto central a múltiples usuarios; alta velocidad y bajo mantenimiento. Comunicación <b>punto a multipunto</b> sobre un único par de fibras.</li>
+</ul>
+<div class="tw"><table><tr><th>Componente</th><th>Función</th></tr>
+<tr><td><b>OLT</b> (Optical Line Terminal)</td><td>En la <b>central del operador</b>; controla y gestiona el tráfico</td></tr>
+<tr><td><b>Splitters (divisores ópticos)</b></td><td><b>Pasivos</b>; reparten la señal entre usuarios; configuraciones <b>1:2, 1:4, 1:8, 1:16, 1:32, 1:64</b>…</td></tr>
+<tr><td><b>ONT/ONU</b> (Optical Network Terminal/Unit)</td><td>En el <b>domicilio o empresa</b>; convierte la señal óptica en eléctrica</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Estándar PON</th><th>Nombre</th><th>Características</th></tr>
+<tr><td><b>APON</b></td><td>ATM PON</td><td>Basado en <b>ATM</b>; primer estándar comercial; <b>622 Mbps</b> bajada / <b>155 Mbps</b> subida</td></tr>
+<tr><td><b>BPON</b></td><td>Broadband PON</td><td>Evolución de APON; vídeo y QoS; 622 / 155 Mbps</td></tr>
+<tr><td><b>EPON</b></td><td>Ethernet PON</td><td>Basado en Ethernet, <b>IEEE 802.3ah</b>; hasta <b>1,25 Gbps simétricos</b></td></tr>
+<tr><td><b>GPON</b></td><td>Gigabit PON</td><td><b>ITU-T G.984</b>; <b>2,5 Gbps</b> bajada / <b>1,25 Gbps</b> subida</td></tr>
+<tr><td><b>XG-PON</b></td><td>10-Gigabit PON</td><td>Hasta <b>10 Gbps</b> de bajada; evolución de GPON (<b>G.987</b>)</td></tr>
+<tr><td><b>NG-PON2</b></td><td>Next-Generation PON 2</td><td>Multiplexación óptica <b>WDM</b>; altas velocidades y flexibilidad</td></tr>
+</table></div>
+<ul>
+<li><b>GPON</b>: el más extendido para <b>FTTH</b> (fibra hasta el hogar). <b>Bajada: TDM</b>; <b>subida: TDMA</b>. Longitudes de onda: <b>1480-1500 nm</b> bajada, <b>1260-1360 nm</b> subida. Las redes PON se basan en el uso de <b>WDM</b>.</li>
+</ul>
+<h3>4.2.5 SONET / SDH</h3>
+<ul>
+<li><b>SONET</b> (Synchronous Optical Network, estándar <b>ANSI</b>, EE. UU.) y <b>SDH</b> (Synchronous Digital Hierarchy, equivalente internacional de la <b>ITU-T</b>): transmisión a alta velocidad sobre <b>fibra óptica</b> en <b>redes troncales</b>; <b>interoperables</b>. Objetivo: <b>multiplexación síncrona</b> de varios flujos digitales en un canal óptico (mejor que <b>PDH</b>: gestión de ancho de banda, sincronización precisa, extracción de canales individuales).</li>
+<li>Unidad básica de SDH: <b>STM-1 = 155,52 Mbps</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Nivel SDH</th><th>Velocidad</th><th>Equivalente SONET</th></tr>
+<tr><td><b>STM-1</b></td><td>155,52 Mbps</td><td>STS-3</td></tr>
+<tr><td><b>STM-4</b></td><td>622,08 Mbps</td><td>STS-12</td></tr>
+<tr><td><b>STM-16</b></td><td>2,488 Gbps</td><td>STS-48</td></tr>
+<tr><td><b>STM-64</b></td><td>9,953 Gbps</td><td>STS-192</td></tr>
+</table></div>
+<ul>
+<li>Desplazado por <b>MPLS y DWDM</b>, pero vigente en infraestructuras críticas por su robustez.</li>
+</ul>
+<h3>4.2.6 Redes virtuales: VLAN</h3>
+<ul>
+<li><b>VLAN</b> (Virtual Local Area Network): <b>red lógica dentro de una red física</b>; agrupa dispositivos independientemente de su ubicación y divide una LAN en subredes <b>aisladas</b>. Se definen en <b>switches gestionables</b> con un <b>ID de VLAN</b> por puerto o dispositivo.</li>
+<li>Ventajas: <b>segmentación del tráfico</b> · <b>mejor rendimiento</b> (se reduce el <b>dominio de broadcast</b>) · <b>mayor seguridad</b> (comunicación entre VLAN sólo mediante router/configuración explícita) · <b>flexibilidad</b> sin recablear.</li>
+<li>Se implementa con <b>IEEE 802.1Q</b>, que añade una <b>etiqueta en la cabecera Ethernet</b>. Tipos de asignación: por <b>puerto</b>, por <b>dirección MAC</b>, por <b>protocolo</b> o por <b>política</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo de VLAN</th><th>Descripción</th></tr>
+<tr><td><b>Predeterminada (default)</b></td><td>Configurada por defecto en los switches, normalmente la <b>VLAN 1</b>; todos los puertos pertenecen a ella inicialmente</td></tr>
+<tr><td><b>Nativa (native)</b></td><td>En enlaces <b>troncales (trunk)</b>: la que se transmite <b>sin etiquetar</b> (sin 802.1Q); compatibilidad con equipos antiguos y protocolos de control. Por defecto suele ser la 1, pero se recomienda cambiarla a una no utilizada para evitar <b>VLAN hopping</b></td></tr>
+<tr><td><b>De datos o de usuario</b></td><td>Tráfico de usuarios finales (estaciones, teléfonos IP, impresoras); separa departamentos o zonas (p. ej. VLAN 10 administración, VLAN 20 informática)</td></tr>
+<tr><td><b>De administración</b></td><td>Dedicada al <b>acceso y gestión remota</b> de switches, routers y APs; separa el tráfico de gestión del de usuario</td></tr>
+</table></div>
+<h2 id="s4">5. Redes de conmutación y redes de difusión</h2>
+<ul>
+<li><b>Conmutación</b>: establecer un camino entre emisor y receptor a través de nodos intermedios (no es viable conectar cada dispositivo con todos). Dos técnicas: <b>circuitos</b> o <b>paquetes</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Aspecto</th><th>Conmutación de circuitos</th><th>Conmutación de paquetes</th></tr>
+<tr><td><b>Camino</b></td><td><b>Físico dedicado</b> establecido <b>antes</b> del intercambio y reservado durante toda la sesión</td><td>Sin camino previo; cada paquete se envía <b>de forma independiente</b></td></tr>
+<tr><td><b>Unidad</b></td><td>Flujo continuo</td><td><b>Paquetes de tamaño variable</b> con información de control (destino)</td></tr>
+<tr><td><b>Uso de recursos</b></td><td>Reservado aunque no se transmita</td><td><b>Compartidos</b>, se adapta al tráfico</td></tr>
+<tr><td><b>Ejemplos</b></td><td><b>RTC</b>, <b>RDSI</b>, <b>ATM</b></td><td><b>Internet</b>, <b>MPLS</b></td></tr>
+</table></div>
+<ul>
+<li>Conmutación de circuitos: <b>física</b> (canal real y continuo: red telefónica analógica) o <b>virtual</b> (circuitos virtuales sobre infraestructura compartida: <b>ATM, Frame Relay</b>).</li>
+<li><b>Datagrama</b>: unidad que se transmite <b>de forma autónoma, sin camino previo</b>; cada uno puede seguir <b>una ruta distinta y llegar en distinto orden</b>. Asociado a protocolos <b>no orientados a conexión</b> como <b>IP</b> (no garantiza orden ni entrega).</li>
+</ul>
+<h3>5.3 Redes de difusión</h3>
+<ul>
+<li>Un mismo mensaje puede ser recibido <b>simultáneamente por múltiples destinatarios</b> (transmisión compartida). Tres tipos de tráfico:</li>
+</ul>
+<div class="tw"><table><tr><th>Tipo</th><th>Destinatarios</th><th>Detalles</th></tr>
+<tr><td><b>Broadcast</b></td><td><b>Todos los nodos</b></td><td>Descubrimiento de dispositivos, <b>DHCP</b>. MAC de broadcast <b>FF:FF:FF:FF:FF:FF</b>; en IP, la dirección de broadcast de la subred (p. ej. 192.168.1.255). Inconveniente: consume recursos en todos los dispositivos, <b>congestión</b> en redes grandes</td></tr>
+<tr><td><b>Multicast</b></td><td><b>Grupo concreto</b> de nodos interesados</td><td>Eficiente (evita copias múltiples); rango <b>224.0.0.0/4</b> en IPv4</td></tr>
+<tr><td><b>Anycast</b></td><td><b>Un único nodo</b> del conjunto, el <b>más cercano o adecuado</b> según la métrica</td><td>Redes IP, servicios globales distribuidos como <b>servidores DNS</b></td></tr>
+</table></div>
+<h2 id="s5">6. Comunicaciones móviles e inalámbricas</h2>
+<h3>6.1 Diferencia entre móviles e inalámbricas</h3>
+<div class="tw"><table><tr><th>Característica</th><th>Inalámbricas</th><th>Móviles</th></tr>
+<tr><td><b>Cables físicos</b></td><td>No</td><td>No</td></tr>
+<tr><td><b>Dispositivo fijo</b></td><td>Sí</td><td>No necesariamente: el dispositivo es móvil</td></tr>
+<tr><td><b>Alcance típico</b></td><td>Corto o medio (Wi-Fi, Bluetooth)</td><td>Amplio (redes celulares, satélite)</td></tr>
+<tr><td><b>Gestión del movimiento</b></td><td>No es prioritaria</td><td><b>Fundamental (handover, roaming)</b></td></tr>
+<tr><td><b>Ejemplos</b></td><td>Wi-Fi, Bluetooth, Zigbee</td><td>3G, 4G, 5G, DECT</td></tr>
+</table></div>
+<ul>
+<li>Las <b>móviles son un subconjunto de las inalámbricas</b>.</li>
+</ul>
+<h3>6.2 Comunicaciones móviles</h3>
+<ul>
+<li>Dividen el terreno en <b>celdas o células hexagonales</b> de distinto tamaño. Gestionan <b>roaming</b> (conexión a una red distinta a la del operador habitual) y <b>handover</b> (traspaso automático de celda).</li>
+</ul>
+<div class="tw"><table><tr><th>Elemento de la red móvil</th><th>Función</th></tr>
+<tr><td><b>UE</b> (User Equipment)</td><td>Terminales: teléfonos, tablets, routers, sensores</td></tr>
+<tr><td><b>RAN</b> (Red de acceso radio)</td><td>Comunicación terminal-red: <b>estaciones base (eNodeB, gNodeB)</b> y antenas</td></tr>
+<tr><td><b>Red de núcleo (core)</b></td><td>Movilidad, <b>autenticación</b>, encaminamiento e interconexión con otras redes</td></tr>
+<tr><td><b>Subsistemas de control</b></td><td>Handover, asignación de recursos, sesiones y QoS</td></tr>
+<tr><td><b>Red de transporte</b></td><td>Enlaces de alta capacidad (fibra, radioenlaces)</td></tr>
+</table></div>
+<h3>6.2.1 Generaciones</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Generaciones de comunicaciones móviles</b></p>
+<div class="tw"><table><tr><th>Gen</th><th>Década</th><th>Tecnología principal</th><th>Servicios</th><th>Velocidad aprox.</th><th>Frecuencias</th><th>MUX</th></tr>
+<tr><td><b>1G</b></td><td>1980s</td><td><b>Analógica</b> (AMPS, TACS)</td><td>Voz analógica</td><td>Hasta 2,4 kbps</td><td>800-900 MHz</td><td><b>FDMA</b></td></tr>
+<tr><td><b>2G</b></td><td>1990s</td><td><b>GSM, CDMA</b>, GPRS (2.5G), EDGE</td><td><b>Voz digital, SMS</b></td><td>9,6 – 384 kbps</td><td>850-1900 MHz</td><td><b>TDMA y CDMA</b></td></tr>
+<tr><td><b>3G</b></td><td>2000s</td><td><b>UMTS, HSDPA</b> (HSPA+)</td><td>Internet móvil, videollamadas</td><td>Hasta 168 Mbps</td><td>900 y 2100 MHz</td><td><b>WCDMA</b></td></tr>
+<tr><td><b>4G</b></td><td>2010s</td><td><b>LTE, LTE-A</b></td><td>Banda ancha móvil, VoIP, streaming HD</td><td>Hasta <b>1 Gbps</b> (teórico)</td><td>800, 1500, 1800 MHz</td><td><b>OFDM</b></td></tr>
+<tr><td><b>5G</b></td><td>2020s</td><td><b>NR (New Radio)</b></td><td>IoT masivo, latencia ultrabaja, realidad aumentada</td><td><b>&gt;10 Gbps</b> (teórico)</td><td>3 bandas distintas</td><td>CDMA y BDMA</td></tr>
+</table></div>
+</div>
+<ul>
+<li>2G: paso de voz analógica a <b>digital</b>; 4G: acceso a Internet de alta velocidad; 5G: conectividad masiva y aplicaciones críticas en tiempo real.</li>
+</ul>
+<h3>6.2.2 5G</h3>
+<ul>
+<li>Plataforma versátil: <b>IoT, automatización industrial, coche conectado, realidad virtual/aumentada</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Característica 5G</th><th>Detalle</th></tr>
+<tr><td><b>Alta velocidad</b></td><td>Más de <b>10 Gbps</b> en condiciones ideales</td></tr>
+<tr><td><b>Baja latencia</b></td><td><b>1 ms o menos</b></td></tr>
+<tr><td><b>Gran capacidad</b></td><td>Hasta <b>un millón de dispositivos por km²</b></td></tr>
+<tr><td><b>Eficiencia energética</b></td><td>Optimiza el consumo</td></tr>
+<tr><td><b>NFV y SDN</b></td><td>Virtualización de funciones de red</td></tr>
+<tr><td><b>Edge computing</b></td><td>Procesamiento cerca del usuario</td></tr>
+<tr><td><b>Network slicing</b></td><td><b>Segmentación</b>: redes virtuales con prestaciones específicas por servicio</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Bandas 5G</th><th>Rango</th><th>Características</th></tr>
+<tr><td><b>Bajas</b></td><td>Sub-1 GHz</td><td><b>Gran cobertura</b>, zonas rurales; menor velocidad</td></tr>
+<tr><td><b>Medias</b></td><td>1 – 6 GHz (p. ej. <b>3,5 GHz</b>)</td><td>Equilibrio cobertura/capacidad</td></tr>
+<tr><td><b>Altas (milimétricas, mmWave)</b></td><td><b>&gt;24 GHz</b></td><td><b>Muy alta velocidad y baja latencia</b>, alcance corto; entornos urbanos densos</td></tr>
+</table></div>
+<ul>
+<li>Arquitectura: <b>5G NR</b> (acceso) + <b>5GC</b> (núcleo rediseñado). Despliegue: <b>NSA</b> (Non-Standalone: usa <b>núcleo LTE 4G</b> con estaciones 5G) o <b>SA</b> (Standalone: acceso y núcleo <b>nativos 5G</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Función del núcleo 5G</th><th>Cometido</th></tr>
+<tr><td><b>AMF</b></td><td>Gestión de <b>acceso y movilidad</b>; primer punto de contacto del terminal</td></tr>
+<tr><td><b>SMF</b></td><td>Gestión de <b>sesión</b> de datos</td></tr>
+<tr><td><b>UPF</b></td><td><b>Plano de usuario</b>: transporta el tráfico IP entre el usuario y redes externas</td></tr>
+<tr><td><b>AUSF</b></td><td><b>Autenticación</b>: verifica la identidad y autoriza el acceso</td></tr>
+<tr><td><b>PCF</b></td><td>Control de <b>políticas</b></td></tr>
+<tr><td><b>AF</b></td><td>Función de <b>aplicación</b></td></tr>
+<tr><td><b>UDM</b></td><td>Gestión unificada de <b>datos</b> (suscripción)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Característica</th><th>4G (LTE)</th><th>5G (NR)</th></tr>
+<tr><td><b>Despliegue</b></td><td>Desde 2010</td><td>Desde 2020</td></tr>
+<tr><td><b>Velocidad teórica</b></td><td>Hasta 1 Gbps</td><td>Más de 10 Gbps</td></tr>
+<tr><td><b>Latencia</b></td><td>~30-50 ms</td><td>~1 ms</td></tr>
+<tr><td><b>Dispositivos</b></td><td>Miles por km²</td><td><b>Millones</b> por km²</td></tr>
+<tr><td><b>Frecuencias</b></td><td>Sub-3 GHz</td><td>Sub-1 GHz, 1-6 GHz, &gt;24 GHz (mmWave)</td></tr>
+<tr><td><b>Arquitectura</b></td><td>Basada en LTE (<b>EPC</b>)</td><td>Núcleo independiente <b>5GC</b>, virtualización</td></tr>
+<tr><td><b>Casos de uso</b></td><td>Banda ancha móvil</td><td>IoT masivo, industria 4.0, vehículos conectados</td></tr>
+<tr><td><b>Network slicing</b></td><td>No disponible</td><td>Disponible</td></tr>
+<tr><td><b>Edge computing</b></td><td>Limitado</td><td>Integrado en el diseño</td></tr>
+</table></div>
+<h3>6.2.3 DECT</h3>
+<ul>
+<li><b>DECT</b>: estándar <b>europeo</b> de comunicaciones inalámbricas digitales de <b>corto alcance</b>, orientado a <b>telefonía fija inalámbrica</b> (hogares, oficinas, centralitas). Banda <b>1880 a 1900 MHz</b> (Europa). Varios terminales por base, llamadas internas y externas, <b>roaming interno y handover</b>. Acceso al medio: <b>TDMA</b>. Evoluciones: <b>DECT 6.0</b> (EE. UU.) y <b>DECT-ULE</b> (IoT, domótica).</li>
+</ul>
+<h3>6.3 Comunicaciones inalámbricas</h3>
+<ul>
+<li>Ondas electromagnéticas por el aire: <b>movilidad, flexibilidad y costes reducidos</b>, pero afectadas por obstáculos, interferencias y saturación.</li>
+</ul>
+<h3>6.3.1 Wi-Fi – IEEE 802.11</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Wi-Fi (IEEE 802.11)</b></p>
+<p>Tecnología más extendida para <b>redes de área local inalámbricas (WLAN)</b>, basada en el estándar <b>IEEE 802.11</b>. Bandas <b>2,4 GHz y 5 GHz</b>, más la de <b>6 GHz</b> del <b>Wi-Fi 6E</b>. Admite <b>roaming</b> dentro del área de cobertura (no confundir con el roaming móvil). Velocidad, cobertura y fiabilidad dependen del estándar 802.11 utilizado.</p>
+</div>
+<ul>
+<li><b>Acceso al medio: CSMA/CA</b> (Carrier Sense Multiple Access with Collision Avoidance): el dispositivo escucha el canal; si está libre transmite, si está ocupado espera un <b>tiempo aleatorio</b>. Evita colisiones, pero <b>no garantiza prioridad ni tiempos fijos</b>.</li>
+<li><b>Roaming</b>: estándar <b>802.11r</b>; el terminal pasa de un AP a otro de forma transparente (misma red); no todos los AP lo implementan.</li>
+<li><b>Redes mesh</b>: estándar <b>802.11s</b>; nodos interconectados que actúan como <b>repetidor y AP</b>; protocolo de encaminamiento <b>HWMP</b> (Hybrid Wireless Mesh Protocol).</li>
+</ul>
+<div class="tw"><table><tr><th>Arquitectura Wi-Fi</th><th>Descripción</th></tr>
+<tr><td><b>Infraestructura</b></td><td>Dispositivos conectados a un <b>punto de acceso (AP)</b> que coordina el tráfico; a partir de <b>8 ó 10 APs</b> se incluyen <b>controladoras hardware</b> (gestionan el tráfico y unen con la red cableada)</td></tr>
+<tr><td><b>Ad hoc (peer-to-peer)</b></td><td>Dispositivos se comunican <b>directamente</b>, sin AP; redes temporales</td></tr>
+</table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Estándares IEEE 802.11</b></p>
+<div class="tw"><table><tr><th>Nombre</th><th>Estándar</th><th>Velocidad</th><th>Frecuencia</th><th>Ancho de banda</th><th>Modulación</th><th>Técnica</th></tr>
+<tr><td><b>Wi-Fi 1</b></td><td><b>802.11b</b></td><td>1–11 Mbps</td><td>2.4 GHz</td><td>22 MHz</td><td>DBPSK, DQPSK, CCK</td><td>HR-DSSS</td></tr>
+<tr><td><b>Wi-Fi 2</b></td><td><b>802.11a</b></td><td>6–54 Mbps</td><td>5 GHz</td><td>5/10/20 MHz</td><td>64-QAM</td><td>OFDM</td></tr>
+<tr><td><b>Wi-Fi 3</b></td><td><b>802.11g</b></td><td>6–54 Mbps</td><td>2.4 GHz</td><td>5/10/20 MHz</td><td>64-QAM</td><td>ERP-OFDM</td></tr>
+<tr><td><b>Wi-Fi 4</b></td><td><b>802.11n</b></td><td>72–600 Mbps</td><td>2.4/5 GHz</td><td>20/40 MHz</td><td>64-QAM</td><td>HT-OFDM + <b>MIMO 4x4</b></td></tr>
+<tr><td><b>Wi-Fi 5</b></td><td><b>802.11ac</b></td><td>433 Mbps – 6.9 Gbps</td><td><b>5 GHz</b></td><td>20/40/80/80+80 MHz</td><td><b>256-QAM</b></td><td>VHT-OFDM + <b>MU-MIMO</b></td></tr>
+<tr><td><b>Wi-Fi 6 / 6E</b></td><td><b>802.11ax</b></td><td>600 Mbps – 9.6 Gbps</td><td>2.4/5/<b>6</b> GHz</td><td>20/40/80/80+80 MHz</td><td><b>1024-QAM</b></td><td>HE-OFDMA + MU-MIMO</td></tr>
+<tr><td><b>Wi-Fi 7</b></td><td><b>802.11be</b></td><td>Hasta <b>40 Gbps</b></td><td>2.4/5/6 GHz</td><td>Hasta <b>320 MHz</b></td><td><b>4096-QAM</b></td><td>MIMO 16x16, OFDMA avanzada</td></tr>
+</table></div>
+</div>
+<ul>
+<li><b>MIMO</b> (Multiple Input-Multiple Output): desde <b>802.11n</b>; varias antenas a la vez; aprovecha los rebotes por obstáculos combinándolos con la señal original.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Extensiones de 802.11</b></p>
+<div class="tw"><table><tr><th>Estándar</th><th>Descripción</th></tr>
+<tr><td><b>802.11e</b></td><td><b>QoS</b>: prioridad para tráfico multimedia (<b>WMM</b>)</td></tr>
+<tr><td><b>802.11f</b></td><td>Intercambio de información entre APs para itinerancia</td></tr>
+<tr><td><b>802.11i</b></td><td><b>Seguridad</b>: introduce <b>WPA2</b> con <b>AES</b></td></tr>
+<tr><td><b>802.11k</b></td><td>Medición del entorno para optimizar roaming y selección de AP</td></tr>
+<tr><td><b>802.11m</b></td><td>Mantenimiento y documentación de la familia</td></tr>
+<tr><td><b>802.11p</b></td><td>Comunicación <b>entre vehículos (V2V)</b> y con infraestructura (V2I)</td></tr>
+<tr><td><b>802.11r</b></td><td><b>Roaming rápido</b> (Fast Roaming)</td></tr>
+<tr><td><b>802.11s</b></td><td>Redes <b>mesh</b></td></tr>
+<tr><td><b>802.11u</b></td><td>Acceso a redes públicas externas</td></tr>
+<tr><td><b>802.11v</b></td><td>Gestión de red</td></tr>
+<tr><td><b>802.11ah</b></td><td><b>Wi-Fi HaLow</b>: IoT, bajo consumo, largo alcance</td></tr>
+</table></div>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Seguridad en redes Wi-Fi</b></p>
+<div class="tw"><table><tr><th>Tecnología</th><th>Características</th></tr>
+<tr><td><b>WEP</b> (obsoleto)</td><td>Inseguro; claves de <b>64 y 128 bits</b>; cifrado de flujo <b>RC4</b></td></tr>
+<tr><td><b>WPA</b></td><td>Mejora sobre WEP, hoy inseguro; claves de <b>128 bits</b>; <b>TKIP</b> o AES</td></tr>
+<tr><td><b>WPA2</b></td><td><b>El más común</b>, incluido en <b>802.11i</b>; <b>AES</b> con claves de <b>128 bits</b>; clave distinta por sesión y por usuario; conexión cifrada con IPSec</td></tr>
+<tr><td><b>WPA3</b></td><td><b>El más reciente</b>, más robusto; protección para <b>redes abiertas</b>; <b>AES</b> con claves de <b>128 y 256 bits</b></td></tr>
+</table></div>
+</div>
+<h3>6.3.2 WiMAX – IEEE 802.16</h3>
+<ul>
+<li><b>WiMAX</b> (Worldwide Interoperability for Microwave Access): acceso a Internet de banda ancha <b>a larga distancia</b>, ámbito <b>metropolitano o regional</b>; alternativa inalámbrica a ADSL, cable o fibra. Usa <b>OFDM</b> y soporta <b>QoS</b>. Hasta <b>70 Mbps</b>. Bandas licenciadas y no licenciadas, <b>2 a 11 GHz</b>.</li>
+</ul>
+<h3>6.3.3 Bluetooth – IEEE 802.15.1</h3>
+<ul>
+<li>Comunicación inalámbrica de <b>corto alcance</b> (móviles, auriculares, teclados, IoT). Estándar <b>IEEE 802.15.1</b>, hoy gestionado por el <b>Bluetooth SIG</b>. Banda <b>ISM 2,4 GHz</b>. Topología <b>piconet</b> (un <b>maestro</b> y varios <b>esclavos</b>); varias piconets forman una <b>scatternet</b>. Acceso: <b>FHSS</b> (Frequency Hopping Spread Spectrum), hasta <b>1600 saltos por segundo</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Versión</th><th>Año</th><th>Velocidad</th><th>Mejoras</th></tr>
+<tr><td><b>1.0/1.1</b></td><td>1999</td><td>721 kbps</td><td>Primera versión</td></tr>
+<tr><td><b>2.0 + EDR</b></td><td>2004</td><td>3 Mbps</td><td>Enhanced Data Rate</td></tr>
+<tr><td><b>3.0 + HS</b></td><td>2009</td><td>24 Mbps</td><td>High Speed mediante Wi-Fi (poco adoptado)</td></tr>
+<tr><td><b>4.0</b></td><td>2010</td><td>1 Mbps</td><td>Introduce <b>Bluetooth Low Energy (BLE)</b></td></tr>
+<tr><td><b>4.1 / 4.2</b></td><td>2013–14</td><td>1 Mbps</td><td>Mejoras en BLE, privacidad, <b>IPv6</b></td></tr>
+<tr><td><b>5.0 / 5.1 / 5.2</b></td><td>2016–20</td><td>2 Mbps</td><td>Mayor alcance, ubicación precisa, <b>audio LE</b></td></tr>
+<tr><td><b>5.3</b></td><td>2021</td><td>2 Mbps</td><td>Optimización de consumo</td></tr>
+</table></div>
+<h3>6.3.4 Zigbee – IEEE 802.15.4</h3>
+<ul>
+<li>Redes de <b>bajo consumo, bajo coste y corto alcance</b> para pequeños volúmenes de datos. <b>IEEE 802.15.4</b> define capas <b>física y MAC</b>; Zigbee añade <b>red, seguridad y aplicación</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Característica</th><th>Zigbee</th></tr>
+<tr><td><b>Frecuencia</b></td><td><b>2,4 GHz</b> (global); también <b>868 MHz</b> (Europa) y <b>915 MHz</b> (EE. UU.)</td></tr>
+<tr><td><b>Alcance</b></td><td><b>10 a 100 m</b>, ampliable con malla</td></tr>
+<tr><td><b>Velocidad</b></td><td>Hasta <b>250 kbps</b> en 2,4 GHz</td></tr>
+<tr><td><b>Topología</b></td><td>Estrella, árbol o <b>malla</b> (la más usada)</td></tr>
+<tr><td><b>Consumo</b></td><td>Extremadamente bajo (baterías durante años)</td></tr>
+<tr><td><b>Capacidad</b></td><td>Hasta <b>65.000 nodos</b> por red</td></tr>
+</table></div>
+<ul>
+<li>Aplicaciones: <b>domótica y edificios inteligentes</b>, sensores, seguridad, industria. Basados en 802.15.4: <b>Thread</b> (IoT doméstico, Google), <b>6LoWPAN</b> (IPv6 sobre 802.15.4), <b>MiWi</b>, <b>WirelessHART</b>, <b>ISA100.11a</b>. Gestión: <b>Connectivity Standards Alliance (CSA)</b> (antes Zigbee Alliance), que impulsa <b>Matter</b> (hogar inteligente).</li>
+</ul>
+<div class="pn"><a href="b4t5.html">← 4.5</a><a href="b4t7.html">4.7 →</a></div></main></div><script src="../app.js"></script></body></html>

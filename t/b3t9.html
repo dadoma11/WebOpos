@@ -1,0 +1,341 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloque 3 · Tema 9 · Oposiciones TAI</title><link rel="stylesheet" href="../style.css"><script>try{if(localStorage.getItem('theme'))document.documentElement.dataset.theme=localStorage.getItem('theme')}catch(e){}</script></head><body>
+<header class="top"><a class="logo" href="../index.html">TAI · Oposiciones</a><nav><a href="../index.html">Temario</a><a href="../practicas.html">Prácticas</a><button id="thm" title="Tema claro/oscuro">◐</button></nav></header>
+<div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Repositorios de software</a><a href="#s1">2. Generación de código y documentación</a><a href="#s2">3. Participantes en MÉTRICA v3</a><a href="#s3">4. Metodologías de desarrollo</a><a href="#s4">5. Pruebas de software</a><a href="#s5">6. Control de versiones</a><a href="#s6">7. Herramientas para mejorar la calidad del código</a><a href="#s7">8. Seguridad en el ciclo de vida (SDLC)</a><a href="#s8">9. Herramientas de seguimiento de errores (bug tracking)</a><a href="#s9">10. Plataformas de desarrollo colaborativo</a></aside>
+<main class="doc" data-key="b3t9"><div class="crumb">Bloque 3 · Tema 9</div><h1>Repositorios, metodologías, DevOps, pruebas, control de versiones y calidad de código</h1>
+<div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (3)</label>
+<a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema9.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema9.pdf">PDF móvil</a></div>
+<h2 id="s0">1. Repositorios de software</h2>
+<ul>
+<li><b>Repositorio</b>: espacio donde se guarda y gestiona el <b>código fuente con su historial de versiones</b>, documentación, configuración, pruebas y recursos. Base del trabajo en equipo, el control de versiones, la trazabilidad y la <b>integración continua</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Parte de un repositorio</th><th>Contenido</th></tr>
+<tr><td><b>Código fuente</b></td><td>Archivos del programa</td></tr>
+<tr><td><b>Configuración</b></td><td>Compilación y dependencias (<code>package.json</code>, <code>pom.xml</code>, <code>build.gradle</code>)</td></tr>
+<tr><td><b>Documentación</b></td><td>Manuales, API docs, <code>README.md</code>, <code>LICENSE</code></td></tr>
+<tr><td><b>Pruebas</b></td><td>Scripts y casos de prueba</td></tr>
+<tr><td><b>Historial de versiones</b></td><td>Cambios con autor, fecha y comentario</td></tr>
+<tr><td><b>Ramas (branches)</b></td><td>Versiones <b>paralelas</b> (funcionalidades, pruebas, mantenimiento)</td></tr>
+<tr><td><b>Commits</b></td><td>Unidades de cambio</td></tr>
+<tr><td><b>Etiquetas (tags)</b></td><td>Marcan versiones (<code>v1.0.0</code>)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th></th><th><b>Centralizado</b></th><th><b>Distribuido</b></th></tr>
+<tr><td><b>Ejemplos</b></td><td><b>Subversion (SVN)</b></td><td><b>Git, Mercurial</b></td></tr>
+<tr><td><b>Funcionamiento</b></td><td>Código e historial en un <b>servidor central</b>; hace falta conexión</td><td><b>Cada desarrollador clona el repositorio completo</b> con su historial</td></tr>
+<tr><td><b>Ventajas</b></td><td>Sencillo, control centralizado</td><td><b>Trabajo offline</b>, mejor rendimiento, <b>redundancia</b></td></tr>
+<tr><td><b>Inconvenientes</b></td><td>Dependencia del servidor, menos tolerancia a fallos</td><td></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Operación de sincronización</th><th>Descripción</th></tr>
+<tr><td><b>Pull / Fetch</b></td><td>Recupera los últimos cambios del remoto (<b>fetch</b> descarga sin integrar)</td></tr>
+<tr><td><b>Commit</b></td><td>Guarda los cambios locales en el historial (<b>snapshot</b>)</td></tr>
+<tr><td><b>Push</b></td><td>Envía los cambios locales al remoto</td></tr>
+<tr><td><b>Merge</b></td><td>Une cambios de distintas ramas o colaboradores</td></tr>
+<tr><td><b>Rebase</b></td><td><b>Reaplica</b> cambios locales sobre una base actualizada</td></tr>
+<tr><td><b>Pull request / Merge request</b></td><td>Solicitud de integrar cambios en la rama principal, tras <b>revisión</b></td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Refactorización</b></p>
+<p>Proceso de <b>modificar la estructura interna del código</b> para mejorar su <b>legibilidad, mantenibilidad o eficiencia</b>, <b>sin alterar su comportamiento observable</b>.</p>
+</div>
+<ul>
+<li><b>VCS (Version Control Systems)</b>: registro del historial, <b>comparación</b> entre versiones, <b>recuperación</b> de versiones anteriores, trabajo con <b>ramas</b>, <b>fusión</b> (merge) e integración con CI/CD.</li>
+</ul>
+<h2 id="s1">2. Generación de código y documentación</h2>
+<div class="tw"><table><tr><th>Técnica</th><th>Descripción</th></tr>
+<tr><td><b>Generación automática de código (scaffolding)</b></td><td>Crea automáticamente archivos y estructuras a partir de <b>plantillas o modelos</b>: controladores, modelos y vistas, acceso a BD, clases, tests, endpoints (desde <b>OpenAPI/Swagger</b>). Ahorra tiempo y da <b>consistencia</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Herramienta de scaffolding</th><th>Función</th></tr>
+<tr><td><b>Angular CLI</b></td><td>Proyectos Angular</td></tr>
+<tr><td><b>Spring Initializr</b></td><td>Estructura base de <b>Spring Boot</b></td></tr>
+<tr><td><b>Yeoman</b></td><td>Generador configurable con plantillas</td></tr>
+<tr><td><b>Rails generators</b></td><td><code>rails generate scaffold</code></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Documentación automática</th><th>Lenguaje</th><th>Descripción</th></tr>
+<tr><td><b>Javadoc</b></td><td><b>Java</b></td><td>HTML a partir de comentarios</td></tr>
+<tr><td><b>Sphinx</b></td><td><b>Python</b></td><td>HTML, PDF…</td></tr>
+<tr><td><b>Doxygen</b></td><td>C, C++, Java, otros</td><td>Documentación con <b>diagramas</b></td></tr>
+<tr><td><b>Typedoc</b></td><td><b>TypeScript</b></td><td>Documentación de proyectos TS</td></tr>
+</table></div>
+<ul>
+<li><b>Documentación como código (Docs-as-Code)</b>: la documentación se trata <b>como código fuente</b>: texto plano (<b>Markdown, AsciiDoc</b>), en repositorios, <b>versionada con Git</b>, editable por todo el equipo y generada en pipelines de <b>CI/CD</b>. <b>Markdown (.md)</b>: README y wikis de GitHub/GitLab · <b>AsciiDoc</b>: alternativa potente con diagramas.</li>
+</ul>
+<h3>Generación de código a partir de modelos (MDA)</h3>
+<ul>
+<li>Generan código (Java, C#, VB.NET…) a partir de <b>modelos UML</b>. <b>Ingeniería directa</b>: modelo → código · <b>inversa</b>: código → modelo · <b>sincronización bidireccional</b>. Fomentan el desarrollo basado en modelos (<b>MDA – Model Driven Architecture</b>).</li>
+</ul>
+<div class="tw"><table><tr><th>Herramienta</th><th>Características</th></tr>
+<tr><td><b>Altova UModel</b></td><td>Código <b>Java, C# y VB.NET</b>; ingeniería inversa; UML 2.x</td></tr>
+<tr><td><b>Enterprise Architect (Sparx Systems)</b></td><td>Múltiples lenguajes (Java, C#, C++, PHP, Python); directa e inversa; requisitos, pruebas y trazabilidad</td></tr>
+<tr><td><b>Modelio</b></td><td><b>Open source</b> y multiplataforma; UML, <b>BPMN</b>, MDA; código Java y C++</td></tr>
+<tr><td><b>Visual Paradigm</b></td><td>UML, BPMN, ERD, SysML, ArchiMate; sincronización de código; BD, DevOps, ágil</td></tr>
+<tr><td><b>IBM Rational Rhapsody</b></td><td>Sistemas <b>embebidos y de tiempo real</b>; C, C++, Ada, Java</td></tr>
+</table></div>
+<h2 id="s2">3. Participantes en MÉTRICA v3</h2>
+<div class="tw"><table><tr><th>Grupo</th><th>Participante</th><th>Responsabilidades</th></tr>
+<tr><td><b>Área de Sistemas de Información</b></td><td><b>Responsable del Sistema de Información</b></td><td>Dirige y supervisa; decisiones de planificación, alcance y calidad; representa al área técnica</td></tr>
+<tr><td></td><td><b>Jefe de Proyecto</b></td><td>Planifica, coordina y controla; tareas, tiempos, costes y recursos; <b>enlace entre desarrollo y responsables</b></td></tr>
+<tr><td></td><td><b>Consultor de SI</b></td><td>Apoyo técnico especializado: análisis, diseño, arquitectura, plataforma, seguridad</td></tr>
+<tr><td></td><td><b>Equipo de Proyecto</b></td><td>Ejecuta análisis, diseño, construcción y pruebas (analistas, programadores…); elabora documentación y manuales de usuario</td></tr>
+<tr><td><b>Área usuaria</b></td><td><b>Responsable del Área Usuaria</b></td><td>Representa a los usuarios finales; define objetivos funcionales y <b>valida requisitos</b></td></tr>
+<tr><td></td><td><b>Usuarios Expertos</b></td><td>Conocen los procesos; definen requisitos; <b>pruebas de aceptación</b></td></tr>
+<tr><td></td><td><b>Usuarios Finales</b></td><td>Usarán el sistema; pruebas piloto</td></tr>
+<tr><td><b>Apoyo</b></td><td><b>Equipo de Calidad</b></td><td>Normas, estándares y procedimientos; revisiones y auditorías</td></tr>
+<tr><td></td><td><b>Equipo de Formación</b></td><td>Planes de formación para usuarios finales (implantación)</td></tr>
+<tr><td></td><td><b>Equipo de Soporte Técnico</b></td><td>Soporte en instalación, configuración y uso; transición y mantenimiento</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Fase de MÉTRICA</th><th>Participantes principales</th></tr>
+<tr><td><b>Estudio de viabilidad</b></td><td>Responsable del SI, Responsable del Área Usuaria, Jefe de Proyecto</td></tr>
+<tr><td><b>Análisis</b></td><td>Equipo de Proyecto, Usuarios Expertos, Consultores</td></tr>
+<tr><td><b>Diseño</b></td><td>Equipo de Proyecto, Consultores, Responsable del SI</td></tr>
+<tr><td><b>Construcción</b></td><td>Equipo de Proyecto, Consultores, Jefe de Proyecto</td></tr>
+<tr><td><b>Pruebas</b></td><td>Equipo de Proyecto, Usuarios Expertos, Equipo de Calidad</td></tr>
+<tr><td><b>Implantación</b></td><td>Equipo de Proyecto, Usuarios Finales, Equipo de Formación, Soporte Técnico</td></tr>
+<tr><td><b>Mantenimiento</b></td><td>Equipo de Proyecto, Soporte Técnico, Responsable del SI</td></tr>
+</table></div>
+<h2 id="s3">4. Metodologías de desarrollo</h2>
+<h3>4.1 Modelo en cascada</h3>
+<ul>
+<li><b>Secuencial y lineal</b>: avanza de forma descendente por fases definidas, <b>sin posibilidad (o con gran dificultad) de retroceso</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Fase</th><th>Contenido</th></tr>
+<tr><td><b>1. Requisitos</b></td><td>Requisitos <b>funcionales y no funcionales</b></td></tr>
+<tr><td><b>2. Análisis</b></td><td>Viabilidad técnica y <b>modelo lógico</b> (qué debe hacer)</td></tr>
+<tr><td><b>3. Diseño</b></td><td>Arquitectura: <b>BD, estructura del software (módulos, interfaces), tecnologías</b></td></tr>
+<tr><td><b>4. Implementación</b></td><td>Codificación por módulos</td></tr>
+<tr><td><b>5. Pruebas</b></td><td><b>Unitarias, integración, sistema</b>; verificación y validación</td></tr>
+<tr><td><b>6. Despliegue</b></td><td>Puesta en producción</td></tr>
+<tr><td><b>7. Mantenimiento</b></td><td><b>Correctivo, evolutivo o adaptativo</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Ventajas</th><th>Inconvenientes</th></tr>
+<tr><td>Fácil de planificar y gestionar</td><td><b>Poca flexibilidad ante cambios</b></td></tr>
+<tr><td>Documentación completa: trazabilidad y control</td><td><b>El cliente no ve resultados hasta el final</b></td></tr>
+<tr><td>Adecuado con <b>requisitos estables</b></td><td>Errores tempranos se detectan <b>tarde</b></td></tr>
+<tr><td>Facilita incorporar nuevos miembros</td><td>No encaja en entornos dinámicos o de innovación rápida</td></tr>
+</table></div>
+<ul>
+<li>Cada fase se completa <b>antes de comenzar la siguiente</b>; planificación inicial exhaustiva; alta formalización y documentación.</li>
+</ul>
+<h3>4.2 Desarrollo ágil</h3>
+<ul>
+<li>Desarrollo <b>iterativo, incremental y flexible</b>: colaboración con el cliente, entrega continua y respuesta rápida al cambio.</li>
+</ul>
+<h3>4.2.1 Scrum</h3>
+<ul>
+<li><b>Marco de trabajo ágil (framework)</b>, no una metodología rígida: roles, eventos, artefactos y reglas. Trabajo en <b>sprints</b> de <b>1 a 4 semanas</b>, con un <b>incremento funcional</b> al final de cada uno.</li>
+</ul>
+<div class="tw"><table><tr><th>Rol</th><th>Responsabilidad</th></tr>
+<tr><td><b>Product Owner</b></td><td><b>Voz del cliente</b>; maximiza el valor; gestiona y <b>prioriza el Product Backlog</b>; decide <b>qué y en qué orden</b>, no cómo</td></tr>
+<tr><td><b>Scrum Master</b></td><td><b>Facilitador</b>; asegura que se siguen las prácticas; <b>elimina impedimentos</b></td></tr>
+<tr><td><b>Equipo de desarrollo</b></td><td>Multidisciplinar, <b>autónomo y autoorganizado</b>; decide <b>cómo</b> hacer el trabajo; entrega el incremento</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Evento</th><th>Descripción</th></tr>
+<tr><td><b>Sprint</b></td><td>Ciclo de duración fija (1–4 semanas); entrega producto «listo»; <b>todos los eventos ocurren dentro del sprint</b></td></tr>
+<tr><td><b>Sprint Planning</b></td><td>Planificación al inicio; todo el equipo Scrum; se selecciona del Product Backlog el <b>Sprint Backlog</b></td></tr>
+<tr><td><b>Daily Scrum</b></td><td>Reunión diaria de <b>máximo 15 minutos</b> del equipo de desarrollo</td></tr>
+<tr><td><b>Sprint Review</b></td><td>Al final; se presenta el incremento al Product Owner y partes interesadas; <b>feedback</b></td></tr>
+<tr><td><b>Sprint Retrospective</b></td><td>Reunión interna para analizar el proceso y <b>definir acciones de mejora</b></td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Artefacto</th><th>Descripción</th></tr>
+<tr><td><b>Product Backlog</b></td><td>Lista <b>priorizada</b> de funcionalidades y tareas pendientes; evoluciona</td></tr>
+<tr><td><b>Sprint Backlog</b></td><td>Tareas seleccionadas para el sprint + plan para ejecutarlas</td></tr>
+<tr><td><b>Incremento</b></td><td>Resultado <b>potencialmente entregable</b> que cumple la <b>«Definición de Hecho»</b></td></tr>
+</table></div>
+<ul>
+<li><b>Ventajas</b>: adaptación rápida a cambios, entrega temprana y frecuente de valor, colaboración, transparencia, mejora continua.</li>
+</ul>
+<h3>4.2.2 Kanban</h3>
+<ul>
+<li>Sistema <b>visual</b> de gestión del trabajo; <b>flujo continuo</b>, <b>sin iteraciones fijas ni roles específicos</b>. «Kanban» = <b>tarjeta visual</b> en japonés; creado por <b>Toyota en los años 40</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Principio de Kanban</th><th>Idea</th></tr>
+<tr><td><b>1. Visualizar el flujo</b></td><td><b>Tablero</b> con columnas (Por hacer, En curso, En revisión, Hecho) y <b>tarjetas</b></td></tr>
+<tr><td><b>2. Limitar el trabajo en curso (WIP)</b></td><td>Máximo de tareas por columna; evita sobrecarga y <b>cuellos de botella</b></td></tr>
+<tr><td><b>3. Gestionar el flujo</b></td><td>Flujo constante y predecible; medir el <b>lead time</b></td></tr>
+<tr><td><b>4. Políticas explícitas</b></td><td>Reglas compartidas por todo el equipo</td></tr>
+<tr><td><b>5. Ciclos de feedback</b></td><td>Reuniones periódicas (no formalizadas como en Scrum)</td></tr>
+<tr><td><b>6. Mejora continua (Kaizen)</b></td><td>Pequeños ajustes basados en métricas</td></tr>
+</table></div>
+<ul>
+<li><b>Ventajas</b>: flexibilidad ante cambios, visualización clara, identificación de cuellos de botella, entrega continua, <b>adopción progresiva</b>.</li>
+</ul>
+<h3>4.3 DevOps</h3>
+<ul>
+<li>Filosofía y prácticas que <b>integran desarrollo (Dev) y operaciones (Ops)</b> para acelerar la entrega de software de calidad. <b>Objetivos</b>: reducir el tiempo hasta producción, aumentar la frecuencia de versiones, mejorar calidad, estabilidad y seguridad, cultura colaborativa.</li>
+</ul>
+<div class="tw"><table><tr><th>Principio DevOps</th><th>Idea</th></tr>
+<tr><td><b>Automatización</b> del ciclo de vida</td><td>Compilación, pruebas, empaquetado, entrega y monitorización</td></tr>
+<tr><td><b>CI/CD</b></td><td>Entregas pequeñas, frecuentes y fiables</td></tr>
+<tr><td><b>Monitorización continua</b></td><td>Métricas de rendimiento, errores, disponibilidad</td></tr>
+<tr><td><b>Infraestructura como código (IaC)</b></td><td>Servidores, redes y recursos cloud con archivos declarativos</td></tr>
+<tr><td><b>Cultura de colaboración</b></td><td>Equipos multidisciplinares con responsabilidad compartida</td></tr>
+</table></div>
+<h3>4.4 Integración continua (CI)</h3>
+<ul>
+<li>Integrar <b>con frecuencia</b> los cambios en un repositorio central, donde se <b>compila y prueba automáticamente</b>. <b>Beneficios</b>: detección temprana de errores, revisión automática, menos conflictos en merges.</li>
+<li><b>Fases de CI</b>: (1) <b>commit</b> en Git → (2) <b>disparo automático del pipeline</b> → (3) <b>compilación</b> → (4) <b>pruebas unitarias y de integración</b> → (5) <b>informes</b>.</li>
+</ul>
+<h3>4.5 Entrega continua (CD)</h3>
+<div class="tw"><table><tr><th>Tipo</th><th>Descripción</th></tr>
+<tr><td><b>Continuous Delivery</b></td><td>Despliegue automático <b>hasta preproducción</b>; <b>pasar a producción es decisión manual</b></td></tr>
+<tr><td><b>Continuous Deployment</b></td><td>Llega <b>hasta producción sin intervención manual</b> si pasa las validaciones</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Herramienta de CD</th><th>Funcionalidad</th></tr>
+<tr><td><b>Spinnaker</b></td><td>Orquestación de despliegues <b>multicloud</b></td></tr>
+<tr><td><b>ArgoCD</b></td><td>Despliegue continuo en <b>Kubernetes</b> basado en <b>GitOps</b></td></tr>
+<tr><td><b>Octopus Deploy</b></td><td>Despliegues en entornos empresariales</td></tr>
+<tr><td><b>AWS CodeDeploy</b></td><td>Despliegue en la nube de Amazon</td></tr>
+<tr><td><b>Kubernetes + Helm</b></td><td>Microservicios y contenedores</td></tr>
+</table></div>
+<h3>4.6 Herramientas CI/CD</h3>
+<div class="tw"><table><tr><th>Herramienta</th><th>Tipo</th><th>Características</th></tr>
+<tr><td><b>Jenkins</b></td><td>CI/CD</td><td>Extensible con <b>cientos de plugins</b></td></tr>
+<tr><td><b>GitHub Actions</b></td><td>CI/CD</td><td>Integrada en GitHub; <b>pipelines en YAML</b>; gratuita para OSS</td></tr>
+<tr><td><b>GitLab CI/CD</b></td><td>CI/CD</td><td>Fichero <b><code>.gitlab-ci.yml</code></b></td></tr>
+<tr><td><b>CircleCI</b></td><td>CI/CD</td><td>Rápida, escalable, basada en contenedores</td></tr>
+<tr><td><b>Travis CI</b></td><td>CI/CD</td><td>Proyectos open source, YAML</td></tr>
+<tr><td><b>Bamboo</b></td><td>CI/CD</td><td><b>Atlassian</b>; integración con Jira y Bitbucket</td></tr>
+<tr><td><b>Azure Pipelines</b></td><td>CI/CD</td><td>Parte de <b>Azure DevOps</b></td></tr>
+<tr><td><b>TeamCity</b></td><td>CI/CD</td><td><b>JetBrains</b></td></tr>
+<tr><td><b>Bitbucket Pipelines</b></td><td>CI/CD</td><td>Repos de Bitbucket</td></tr>
+<tr><td><b>Spinnaker</b></td><td>CD</td><td>Multicloud</td></tr>
+<tr><td><b>Argo CD</b></td><td>CD</td><td><b>GitOps</b>, Kubernetes</td></tr>
+</table></div>
+<ul>
+<li><b>Pipeline CI/CD</b>: CI (commit → pipeline automático → compilar → pruebas → artefactos) + CD (validaciones y calidad → despliegue en pruebas o producción → monitorización y notificación).</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Gulp</b></p>
+<p>Sistema de construcción basado en <b>JavaScript</b> que <b>automatiza tareas del desarrollo web</b>: <b>minificación</b> de JS y CSS, compilación de <b>Sass o LESS</b> a CSS, <b>concatenación</b> de archivos, <b>optimización de imágenes</b> y <b>recarga automática del navegador (live reload)</b>. Tareas programadas como funciones JavaScript.</p>
+</div>
+<h2 id="s4">5. Pruebas de software</h2>
+<div class="tw"><table><tr><th>Tipo de prueba</th><th>Descripción</th><th>Herramientas</th></tr>
+<tr><td><b>Unitarias</b></td><td>Unidades individuales (funciones, métodos, clases) <b>de forma aislada</b>, con <b>mocks o stubs</b>; detectan errores pronto</td><td><b>JUnit</b> (Java), <b>NUnit</b> (.NET), <b>pytest</b> (Python), <b>Jest</b> (JS), <b>xUnit</b></td></tr>
+<tr><td><b>Integración</b></td><td>Los módulos <b>interactúan correctamente</b> al integrarse</td><td><b>Postman, REST Assured</b> (APIs)</td></tr>
+<tr><td><b>Sistema</b></td><td><b>Sistema completo</b> como unidad; escenarios reales; incluyen <b>no funcionales</b> (rendimiento, carga, compatibilidad, seguridad)</td><td><b>Selenium</b> (web), <b>Apache JMeter</b> (carga), <b>SoapUI</b> (servicios web), <b>Cypress</b> (end-to-end)</td></tr>
+<tr><td><b>Aceptación</b></td><td>El sistema cumple los <b>requisitos del usuario/cliente</b> y está listo para producción. <b>Alfa</b>: usuarios internos o testers en entorno <b>controlado</b> · <b>Beta</b>: usuarios finales en entornos <b>reales</b></td><td><b>Cucumber</b> (BDD), <b>FitNesse</b></td></tr>
+<tr><td><b>Migración</b></td><td>Al trasladar un sistema o datos de una plataforma origen a otra destino: <b>sin pérdida, alteración ni corrupción</b>. Fases: <b>pre-migración, durante, post-migración</b></td><td>Scripts de validación <b>SQL</b>, herramientas <b>ETL (Talend, Pentaho, Informatica)</b>, comparadores de BD (Redgate, DataGrip), Selenium/Postman</td></tr>
+<tr><td><b>Regresión</b></td><td>Verificar que lo existente <b>sigue funcionando tras cambios</b>; buscan <b>errores colaterales</b>; automatizables en CI</td><td>JUnit, pytest, NUnit, Selenium, Cypress, Jenkins, GitHub Actions</td></tr>
+<tr><td><b>Implantación</b></td><td>Instalación correcta en <b>producción o preproducción</b></td><td><b>Ansible, Puppet, Chef</b>, Docker/Kubernetes, <b>Zabbix, Prometheus, Nagios</b></td></tr>
+<tr><td><b>Rendimiento</b></td><td>Respuesta <b>dentro de los tiempos</b> especificados bajo carga normal; CPU, memoria, red, transacciones por segundo</td><td><b>JMeter, Gatling, Apache Benchmark (ab)</b>, Dynatrace, New Relic</td></tr>
+<tr><td><b>Sobrecarga</b></td><td>Comportamiento bajo <b>condiciones extremas</b>; busca el <b>punto de ruptura</b> y cómo falla y se recupera</td><td>JMeter, <b>Locust</b> (Python), <b>BlazeMeter</b>, <b>Artillery</b> (Node.js)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Subtipos</th><th></th></tr>
+<tr><td><b>Regresión</b></td><td><b>Parcial</b> (solo lo relacionado con los cambios) · <b>Completa</b> (todos los casos) · <b>Selectiva</b> (subconjuntos críticos)</td></tr>
+<tr><td><b>Implantación</b></td><td>Pruebas de <b>instalación</b>, de <b>configuración</b> (parámetros, variables, rutas) y de <b>entorno</b> (hardware, red, permisos)</td></tr>
+<tr><td><b>Rendimiento</b></td><td><b>Latencia</b> (tiempo de respuesta), <b>throughput</b> (operaciones por unidad de tiempo), <b>eficiencia</b> (uso de recursos)</td></tr>
+<tr><td><b>Sobrecarga</b></td><td>Carga extrema sostenida, <b>picos de usuarios concurrentes</b>, indisponibilidad parcial de servicios</td></tr>
+</table></div>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Selenium WebDriver</b></p>
+<p>Herramienta de <b>automatización de pruebas funcionales de aplicaciones web</b>: simula a un <b>usuario real</b> en un navegador (formularios, botones, enlaces). Funciones: pruebas en distintos navegadores (<b>Chrome, Firefox, Edge</b>), simular clics, escritura y navegación, integrarse con <b>JUnit, TestNG o pytest</b>, usarse en <b>CI/CD</b>.</p>
+</div>
+<h2 id="s5">6. Control de versiones</h2>
+<div class="tw"><table><tr><th>Sistema</th><th>Tipo</th><th>Características</th></tr>
+<tr><td><b>Git</b></td><td><b>Distribuido</b></td><td>Copia completa en cada desarrollador; rápido, flexible, <b>offline</b>; <b>el más utilizado</b>; plataformas: <b>GitHub, GitLab, Bitbucket</b></td></tr>
+<tr><td><b>SVN (Apache Subversion)</b></td><td><b>Centralizado</b></td><td>Servidor central; requiere conexión</td></tr>
+<tr><td><b>Mercurial</b></td><td>Distribuido</td><td>Similar a Git con interfaz más sencilla; usado en <b>Python y Mozilla</b></td></tr>
+<tr><td><b>CVS</b></td><td>Centralizado</td><td>Uno de los <b>primeros VCS</b>; en desuso (sustituido por SVN y Git)</td></tr>
+<tr><td><b>TFS (Team Foundation Server)</b></td><td>De <b>Microsoft</b></td><td>Hoy <b>Azure DevOps Server</b> (local) / <b>Azure DevOps Services</b> (nube): <b>TFVC y Git</b>, boards, backlogs, CI/CD, seguimiento de errores</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Flujo de trabajo con Git</th><th>Descripción</th></tr>
+<tr><td><b>Git Flow</b></td><td>Basado en ramas con roles: <b>main/master</b> (versiones estables), <b>develop</b> (desarrollo), <b>feature/</b> (nuevas funcionalidades), <b>release/</b> (candidatas), <b>hotfix/</b> (correcciones urgentes)</td></tr>
+<tr><td><b>Trunk-Based Development</b></td><td>Se trabaja sobre la <b>rama principal</b>; <b>ramas cortas</b> que se integran rápido; compatible con CI/CD</td></tr>
+<tr><td><b>GitHub Flow</b></td><td>Ramas cortas desde main, integradas por <b>pull requests</b></td></tr>
+<tr><td><b>Forking Workflow</b></td><td>Cada colaborador trabaja en un <b>fork</b> (open source)</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Plataforma</th><th>Características</th></tr>
+<tr><td><b>GitHub</b></td><td>Hospedaje Git en la nube; <b>pull requests, issues, wiki, Actions</b>; muy activa en open source</td></tr>
+<tr><td><b>GitLab</b></td><td>Open source y cloud; <b>CI/CD integrado</b>; ciclo de vida completo; ideal para <b>autoalojado</b></td></tr>
+<tr><td><b>Bitbucket</b></td><td><b>Atlassian</b> (Jira, Trello); <b>Bitbucket Pipelines</b>; antes Git o Mercurial</td></tr>
+</table></div>
+<h3>6.3 Comandos básicos de Git</h3>
+<div class="tw"><table><tr><th>Grupo</th><th>Comando</th><th>Función</th></tr>
+<tr><td><b>Estado</b></td><td><code>git status</code></td><td>Estado: modificados, staging, sin seguimiento</td></tr>
+<tr><td></td><td><code>git log</code></td><td>Historial de commits (hash, autor, fecha, mensaje)</td></tr>
+<tr><td></td><td><code>git diff</code></td><td>Diferencias; <code>--staged</code> = cambios en staging pendientes de commit</td></tr>
+<tr><td><b>Guardar</b></td><td><code>git add &lt;archivo&gt;</code></td><td>Añade al <b>área de staging</b></td></tr>
+<tr><td></td><td><code>git commit -m "mensaje"</code></td><td>Registra en el historial (<b>snapshot</b>)</td></tr>
+<tr><td></td><td><code>git commit -am</code></td><td>Añade y hace commit de archivos <b>modificados (no nuevos)</b></td></tr>
+<tr><td><b>Ramas</b></td><td><code>git branch</code></td><td>Lista ramas / <code>git branch &lt;nombre&gt;</code> crea una</td></tr>
+<tr><td></td><td><code>git checkout &lt;rama&gt;</code></td><td>Cambia de rama; <code>checkout -b</code> <b>crea y cambia</b></td></tr>
+<tr><td></td><td><code>git merge &lt;rama&gt;</code></td><td>Fusiona una rama en la actual</td></tr>
+<tr><td><b>Remoto</b></td><td><code>git clone &lt;url&gt;</code></td><td>Clona un repositorio remoto</td></tr>
+<tr><td></td><td><code>git remote -v</code></td><td>Muestra los remotos</td></tr>
+<tr><td></td><td><code>git fetch</code></td><td>Descarga cambios <b>sin integrar</b></td></tr>
+<tr><td></td><td><code>git pull</code></td><td>Descarga <b>e integra</b></td></tr>
+<tr><td></td><td><code>git push</code></td><td>Envía los commits al remoto</td></tr>
+<tr><td><b>Otros</b></td><td><code>git init</code></td><td>Inicializa un repositorio local</td></tr>
+<tr><td></td><td><code>git reset</code></td><td>Revierte cambios del staging o del historial</td></tr>
+<tr><td></td><td><code>git revert &lt;hash&gt;</code></td><td><b>Nuevo commit</b> que revierte uno anterior</td></tr>
+<tr><td></td><td><code>git stash</code></td><td>Guarda cambios temporalmente sin commit</td></tr>
+<tr><td></td><td><code>git tag</code></td><td>Etiqueta un commit (versiones)</td></tr>
+</table></div>
+<h2 id="s6">7. Herramientas para mejorar la calidad del código</h2>
+<div class="tw"><table><tr><th>Categoría</th><th>Herramienta</th><th>Descripción</th></tr>
+<tr><td><b>Linters</b> (errores de sintaxis, malas prácticas, estilo)</td><td><b>ESLint</b></td><td>JavaScript (y TypeScript con plugins; <b>tslint deprecado</b>)</td></tr>
+<tr><td></td><td><b>pylint, flake8</b></td><td>Python</td></tr>
+<tr><td></td><td><b>stylelint</b></td><td>CSS</td></tr>
+<tr><td></td><td><b>Checkstyle</b></td><td>Java</td></tr>
+<tr><td><b>Análisis estático</b> (sin ejecutar el código)</td><td><b>SonarQube</b></td><td>Bugs, vulnerabilidades, <b>code smells</b>, cobertura de pruebas, <b>deuda técnica</b>; <b>Quality Gates</b> (umbrales obligatorios que pueden bloquear despliegues en CI/CD)</td></tr>
+<tr><td></td><td><b>PMD</b> (Java)</td><td>Código duplicado, variables no usadas, expresiones innecesarias</td></tr>
+<tr><td></td><td><b>FindBugs / SpotBugs</b> (Java)</td><td>Errores comunes en <b>bytecode</b> (null, colecciones)</td></tr>
+<tr><td><b>Duplicación y complejidad</b> (complejidad ciclomática)</td><td><b>CPD (Copy/Paste Detector)</b></td><td>Incluido en PMD</td></tr>
+<tr><td></td><td><b>SonarQube</b>, <b>CodeClimate</b></td><td>Métricas de duplicación y complejidad; puntuación de mantenibilidad</td></tr>
+<tr><td><b>Complementarias</b></td><td><b>Prettier</b></td><td>Formateador de estilo consistente</td></tr>
+<tr><td></td><td><b>EditorConfig</b></td><td>Reglas de formato comunes entre editores</td></tr>
+<tr><td></td><td><b>Husky + lint-staged</b></td><td>Ejecutan linters antes de cada commit (<b>Git hooks</b>)</td></tr>
+</table></div>
+<h2 id="s7">8. Seguridad en el ciclo de vida (SDLC)</h2>
+<ul>
+<li><b>SDLC (Software Development Life Cycle)</b>: marco estructurado de fases desde la concepción hasta la retirada.</li>
+</ul>
+<div class="tw"><table><tr><th>Fase del SDLC</th><th>Contenido</th></tr>
+<tr><td><b>1. Planificación</b></td><td>Objetivos, recursos, plazos, riesgos; <b>viabilidad</b> técnica, económica y operativa</td></tr>
+<tr><td><b>2. Análisis de requisitos</b></td><td>Necesidades funcionales y no funcionales</td></tr>
+<tr><td><b>3. Diseño</b></td><td>Arquitectura, estructura de datos, interfaces, componentes, tecnologías</td></tr>
+<tr><td><b>4. Implementación</b></td><td>Codificación + pruebas unitarias</td></tr>
+<tr><td><b>5. Pruebas</b></td><td>Integración, sistema, aceptación, seguridad, rendimiento</td></tr>
+<tr><td><b>6. Despliegue</b></td><td>Producción, gradual o completa</td></tr>
+<tr><td><b>7. Mantenimiento</b></td><td>Corregir, actualizar, adaptar</td></tr>
+</table></div>
+<ul>
+<li><b>Secure SDLC</b>: integra la seguridad en <b>cada fase</b>: análisis de riesgos en requisitos, revisión de diseño, <b>SAST, DAST</b>, auditorías y despliegue/mantenimiento seguros.</li>
+</ul>
+<div class="tw"><table><tr><th>Técnica</th><th>Qué analiza</th><th>Cuándo</th><th>Herramientas</th></tr>
+<tr><td><b>SAST</b> (Static Application Security Testing)</td><td><b>Código fuente, bytecode o binarios sin ejecutar</b>; inyecciones SQL, errores de validación</td><td><b>Durante el desarrollo</b>, tras escribir el código</td><td><b>SonarQube, Checkmarx, Fortify SCA</b></td></tr>
+<tr><td><b>DAST</b> (Dynamic Application Security Testing)</td><td>La aplicación <b>en ejecución</b>, simulando un atacante externo (<b>black-box</b>); inyecciones, autenticación, configuraciones inseguras</td><td>En <b>pruebas o staging</b>, tras la implementación</td><td><b>OWASP ZAP, Burp Suite, AppScan</b></td></tr>
+<tr><td><b>SCA</b> (Software Composition Analysis)</td><td><b>Dependencias y librerías de terceros</b>; versiones vulnerables, <b>licencias incompatibles</b>, componentes desactualizados</td><td>Desarrollo y mantenimiento</td><td><b>OWASP Dependency-Check, Snyk, Black Duck</b></td></tr>
+</table></div>
+<h2 id="s8">9. Herramientas de seguimiento de errores (bug tracking)</h2>
+<ul>
+<li>Registrar, clasificar, asignar, priorizar y seguir errores e incidencias: control de calidad, ciclo de vida de errores, colaboración y <b>trazabilidad</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Herramienta</th><th>Características</th></tr>
+<tr><td><b>MantisBT</b></td><td>Software libre, web, muy ligero; estados, asignaciones, filtros</td></tr>
+<tr><td><b>Jira</b> (Atlassian)</td><td>Muy popular; bugs + gestión ágil (<b>scrum, kanban</b>); integración con Bitbucket, Confluence, GitHub; workflows y SLA</td></tr>
+<tr><td><b>Bugzilla</b> (Mozilla)</td><td>Veterano y robusto; usado en <b>Firefox y LibreOffice</b>; búsquedas avanzadas</td></tr>
+<tr><td><b>Redmine</b></td><td>Gestor de proyectos con módulo de errores; control de versiones, <b>Gantt</b>, wiki, foros</td></tr>
+<tr><td><b>YouTrack</b> (JetBrains)</td><td>Moderna para equipos ágiles; integración con IDEs JetBrains, GitHub, GitLab</td></tr>
+</table></div>
+<h2 id="s9">10. Plataformas de desarrollo colaborativo</h2>
+<ul>
+<li>Entornos integrados en la nube para compartir código, colaborar, gestionar versiones y tareas y automatizar integración y entrega.</li>
+</ul>
+<div class="tw"><table><tr><th>Funcionalidad</th><th>Descripción</th></tr>
+<tr><td><b>Repositorios de código</b></td><td>Git; acceso por <b>HTTPS, SSH</b> o web</td></tr>
+<tr><td><b>Gestión de incidencias (issues)</b></td><td>Errores, mejoras y tareas asociadas a commits y ramas; etiquetas, prioridades, estados</td></tr>
+<tr><td><b>CI/CD</b></td><td>Pipelines en YAML (<code>.github/workflows</code>, <code>.gitlab-ci.yml</code>)</td></tr>
+<tr><td><b>Documentación y wikis</b></td><td>Docs-as-code, Markdown</td></tr>
+<tr><td><b>Revisión de cambios</b></td><td><b>Pull requests</b> (GitHub) / <b>Merge requests</b> (GitLab, Bitbucket); aprobaciones antes de fusionar</td></tr>
+<tr><td><b>Gestión de proyectos</b></td><td>Boards <b>Kanban</b>, <b>milestones</b>, asignaciones y notificaciones</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Plataforma</th><th>Características clave</th></tr>
+<tr><td><b>GitHub</b></td><td>La más usada en <b>open source</b>; issues, pull requests, Actions, wikis; integra Jira, Slack, VS Code</td></tr>
+<tr><td><b>GitLab</b></td><td>Integral: Git, CI/CD, planificación, seguridad; integra Jenkins, Kubernetes, Mattermost</td></tr>
+<tr><td><b>Bitbucket</b></td><td>Integración con <b>Jira y Trello</b>; Bitbucket Pipelines; integra Bamboo</td></tr>
+<tr><td><b>Azure DevOps</b></td><td>Suite de <b>Microsoft</b>: Git/TFVC, boards, repos, pipelines</td></tr>
+<tr><td><b>SourceForge</b></td><td>Plataforma clásica de open source</td></tr>
+<tr><td><b>Gitea</b></td><td>Alternativa <b>ligera y autoalojada</b> compatible con Git</td></tr>
+</table></div>
+<div class="pn"><a href="b3t8.html">← 3.8</a><a href="b4t1.html">4.1 →</a></div></main></div><script src="../app.js"></script></body></html>
