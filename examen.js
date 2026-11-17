@@ -8,6 +8,7 @@ function esc(s){return String(s).replace(/[&<>]/g,function(c){return{'&':'&amp;'
 function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function fmt(s){var m=Math.floor(s/60),x=s%60;return (m<10?'0':'')+m+':'+(x<10?'0':'')+x}
 function hist(){try{return JSON.parse(LS.g(uk('ex_hist'))||'[]')}catch(e){return[]}}
+function seen(){try{return JSON.parse(LS.g(uk('ex_seen'))||'{}')}catch(e){return{}}}
 function fails(){try{return JSON.parse(LS.g(uk('ex_fail'))||'{}')}catch(e){return{}}}
 Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()})]).then(function(a){
  Q=a[0].map(function(q,i){q.id=i;return q});T=a[1];config()});
@@ -22,25 +23,25 @@ function config(){clearInterval(tick);cur=null;
  h+='</section><section class="pcard"><h2>2 · Opciones</h2><div class="row">'
   +'<label class="f">Nº de preguntas<input type="number" id="n" min="1" max="500" value="'+n+'"></label>'
   +'<label class="f">Tiempo (min, 0 = sin límite)<input type="number" id="mins" min="0" max="300" value="'+mins+'"></label>'
-  +'<label class="f">Filtro<select id="flt"><option value="all">Todas las preguntas</option><option value="ei">Solo EXAMEN + IMPORTANTE</option><option value="x">Solo EXAMEN</option><option value="i">Solo IMPORTANTE</option>'+(nf?'<option value="fail">Solo mis falladas ('+nf+')</option>':'')+'</select></label></div>'
+  +'<label class="f">Banco<select id="bank"><option value="all">Anki + generadas del resumen</option><option value="anki">Solo Anki</option><option value="gen">Solo generadas</option></select></label><label class="f">Filtro<select id="flt"><option value="all">Todas las preguntas</option><option value="ei">Solo EXAMEN + IMPORTANTE</option><option value="x">Solo EXAMEN</option><option value="i">Solo IMPORTANTE</option>'+(nf?'<option value="fail">Solo mis falladas ('+nf+')</option>':'')+'</select></label></div>'
   +'<label class="tchk"><input type="checkbox" id="shf" checked> Mezclar el orden de las opciones</label> <label class="tchk"><input type="checkbox" id="prio" checked> Dar prioridad a EXAMEN/IMPORTANTE al sortear</label>'
   +'<div class="row"><button id="start" class="go">▶ Empezar examen</button><span id="avail" class="sub"></span></div></section>';
  var hs=hist();if(hs.length){h+='<section class="pcard"><h2>Historial</h2><div class="hist">'+hs.slice(-10).reverse().map(function(x){return '<div><b class="'+(x.nota>=5?'ok':'ko')+'">'+x.nota.toFixed(2)+'</b> · '+new Date(x.t).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'})+' · ✔'+x.a+' ✘'+x.e+' ○'+x.b+' de '+x.n+'</div>'}).join('')+'</div></section>'}
  app.innerHTML=h;
  function pool(){var ks=$$('.tk:checked').map(function(c){return c.value}),f=$('#flt').value;
-  return Q.filter(function(q){if(ks.indexOf(q.k)<0)return false;if(f==='ei')return q.x||q.i;if(f==='x')return q.x;if(f==='i')return q.i;if(f==='fail')return !!fl[q.id];return true})}
- function av(){$('#avail').textContent=pool().length+' preguntas disponibles'}av();
+  var bk=$('#bank').value;return Q.filter(function(q){if(ks.indexOf(q.k)<0)return false;if(bk==='anki'&&q.g)return false;if(bk==='gen'&&!q.g)return false;if(f==='ei')return q.x||q.i;if(f==='x')return q.x;if(f==='i')return q.i;if(f==='fail')return !!fl[q.id];return true})}
+ function av(){var p=pool(),sn=seen();$('#avail').innerHTML=p.length+' disponibles · <b>'+p.filter(function(q){return !sn[q.id]}).length+'</b> aún sin ver <button id="fgt" class="lnk">olvidar vistas</button>';var f=$('#fgt');if(f)f.onclick=function(){LS.s(uk('ex_seen'),'{}');av()}}av();$('#bank').onchange=av;
  $$('.tk').forEach(function(c){c.onchange=av});$('#flt').onchange=av;
  $('#all').onclick=function(){$$('.tk').forEach(function(c){c.checked=true});av()};$('#none').onclick=function(){$$('.tk').forEach(function(c){c.checked=false});av()};
  $$('.bsel').forEach(function(b){b.onclick=function(){$$('.tk').forEach(function(c){c.checked=c.value.indexOf('b'+b.dataset.b+'t')===0});av()}});
  $('#n').oninput=function(){$('#mins').value=Math.max(1,Math.round($('#n').value*1.2))};
  $('#start').onclick=function(){var p=pool(),n=Math.max(1,Math.min(+$('#n').value||20,p.length));if(!p.length){alert('No hay preguntas con esos filtros');return}
   LS.s(uk('ex_cfg'),JSON.stringify({sel:$$('.tk:checked').map(function(c){return c.value}),n:+$('#n').value,mins:+$('#mins').value}));
-  var pr=$('#prio').checked,pick;
-  if(pr){var hi=shuf(p.filter(function(q){return q.x||q.i})),lo=shuf(p.filter(function(q){return !(q.x||q.i)}));
-   // sorteo ponderado: las marcadas tienen el doble de probabilidad
-   pick=[];var A=hi.slice(),B=lo.slice();while(pick.length<n&&(A.length||B.length)){var useA=A.length&&(!B.length||Math.random()<2*A.length/(2*A.length+B.length));pick.push(useA?A.shift():B.shift())}pick=shuf(pick)}
-  else pick=shuf(p).slice(0,n);
+  var pr=$('#prio').checked,sn=seen(),U=p.filter(function(q){return !sn[q.id]}),S=p.filter(function(q){return sn[q.id]});
+  function samp(arr,m){if(!pr)return shuf(arr).slice(0,m);var hi=shuf(arr.filter(function(q){return q.x||q.i})),lo=shuf(arr.filter(function(q){return !(q.x||q.i)})),r=[];
+   while(r.length<m&&(hi.length||lo.length)){var useA=hi.length&&(!lo.length||Math.random()<2*hi.length/(2*hi.length+lo.length));r.push(useA?hi.shift():lo.shift())}return r}
+  var pick=samp(U,n);if(pick.length<n)pick=pick.concat(samp(S,n-pick.length));pick=shuf(pick);
+  pick.forEach(function(q){sn[q.id]=1});LS.s(uk('ex_seen'),JSON.stringify(sn));
   start(pick,+$('#mins').value,$('#shf').checked)}}
 
 /* ---------- examen ---------- */

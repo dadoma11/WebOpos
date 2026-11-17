@@ -116,3 +116,4 @@ details{margin:.5rem 0}summary{cursor:pointer;color:var(--acd);font-weight:600}
 .tq{margin-top:2rem;border-top:2px solid var(--ac);padding-top:.5rem}.tqbar{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}.tqc{border:1px solid var(--bd);border-radius:10px;padding:.6rem .8rem;margin:.7rem 0;background:var(--card)}
 .tqpop{border:2px solid var(--ac);border-radius:12px;padding:.7rem .9rem;margin:1.2rem 0;background:color-mix(in srgb,var(--ac) 7%,var(--bg))}.tph{display:flex;justify-content:space-between;gap:.6rem;margin-bottom:.3rem}.tqpop.min>*:not(.tph):not(.row){display:none}.tqpop.min .row>button:not(.hd){display:none}
 .tqbar{position:static}
+.lnk{border:0;background:none;color:var(--ac);text-decoration:underline;font-size:.8rem;padding:0 .3rem}i.G{background:var(--code);border-radius:6px;padding:0 .4rem;font-style:normal;font-size:.72rem}
