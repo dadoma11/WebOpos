@@ -9,7 +9,7 @@ function shufQ(q){if(q._s)return q._s;var ord=q.o.map(function(_,i){return i});i
 function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
 function toks(s){return norm(s.replace(/<[^>]+>/g,' ')).split(/[^a-z0-9]+/).filter(function(w){return w.length>=4})}
 fetch(ROOT+'data/preguntas.json').then(function(r){return r.json()}).then(function(all){
- var qs=[];all.forEach(function(q,i){if(q.k===key){q.id=i;qs.push(q)}});if(!qs.length)return;
+ var qs=[];all.forEach(function(q,i){if(q.id===undefined)q.id=i;if(q.k===key){qs.push(q)}});if(!qs.length)return;
  /* 1. trocear el tema por encabezados h2/h3 */
  var kids=Array.prototype.slice.call(doc.children),chunks=[],c=null;
  kids.forEach(function(n){if(/^H[23]$/.test(n.tagName)){c={h:n,nodes:[n],end:n};chunks.push(c)}else if(c&&!n.classList.contains('sqlab')&&!n.classList.contains('pn')&&!n.classList.contains('tqpop')&&n.id!=='tqbar'){c.nodes.push(n);c.end=n}});
@@ -36,7 +36,7 @@ fetch(ROOT+'data/preguntas.json').then(function(r){return r.json()}).then(functi
    var card=document.createElement('div');card.className='tqpop';c.end.after(card);
    var q=shufQ(list[Math.floor(Math.random()*list.length)]),locked=false;
    function show(){
-    card.innerHTML='<div class="tph"><b>🧠 Repaso rápido · de lo que llevas leído (últimos '+g.length+' apartados)</b></div><div class="qmeta">'+(q.g?'<i class="G">generada</i> ':'')+(q.x?'<i class="E">EXAMEN</i> ':'')+(q.i?'<i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'+q.o.map(function(o,i){return '<div class="opt"><button class="pick" data-i="'+i+'"><span class="L">'+L[i]+'</span><span class="ot">'+o+'</span></button></div>'}).join('')+'</div><div class="fb" hidden></div>';
+    card.innerHTML='<div class="tph"><b>🧠 Repaso rápido · de lo que llevas leído (últimos '+g.length+' apartados)</b></div><div class="qmeta">'+(q.g===1?'<i class="G">generada</i> ':'')+(q.x?'<i class="E">EXAMEN</i> ':'')+(q.i?'<i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'+q.o.map(function(o,i){return '<div class="opt"><button class="pick" data-i="'+i+'"><span class="L">'+L[i]+'</span><span class="ot">'+o+'</span></button></div>'}).join('')+'</div><div class="fb" hidden></div>';
     Array.prototype.forEach.call(card.querySelectorAll('.pick'),function(b){b.onclick=function(){if(locked)return;locked=true;var i=+b.dataset.i;
      Array.prototype.forEach.call(card.querySelectorAll('.opt'),function(e,j){e.classList.add(j===q.c?'good':'dim');if(j===i&&i!==q.c)e.classList.add('bad')});
      var fb=card.querySelector('.fb');fb.hidden=false;fb.innerHTML=(i===q.c?'<span class="ok">✔ Correcto.</span> ':'<span class="ko">✘ Incorrecto.</span> ')+'Correcta: <b>'+L[q.c]+'</b>. '+(q.e||'')+(q.p?' <small><i>('+esc(q.p)+')</i></small>':'')}})}
