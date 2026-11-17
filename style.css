@@ -88,3 +88,4 @@ details{margin:.5rem 0}summary{cursor:pointer;color:var(--acd);font-weight:600}
 .elist{margin:.6rem 0;border:1px solid var(--bd);border-radius:8px;padding:.4rem .7rem;background:var(--bg)}.elist summary{font-weight:700;cursor:pointer}.elist ol{margin:.4rem 0;padding-left:1.3rem}.elist li{margin:.25rem 0;font-size:.9rem}.elist a{text-decoration:none;color:var(--fg)}.elist a:hover{color:var(--acd)}.lst{color:#2e9d5b;font-weight:800;display:inline-block;width:1em}
 .rld{font-weight:800}
 .vtag{font-size:.7rem;background:var(--Ib);color:var(--I);padding:1px 8px;border-radius:9px;font-weight:700}
+.datw{margin:.3rem 0}.dath{max-height:340px;overflow:auto}.dath .sqlres{margin:.2rem 0}.dath b{display:block;margin-top:.4rem}

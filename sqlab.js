@@ -6,10 +6,11 @@ var SQL,base,cfg,done=JSON.parse(LS.g('sqldone')||'{}'),waiters=[],loading=false
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function load(cb){if(cfg&&SQL)return cb();waiters.push(cb);if(loading)return;loading=true;
  var sc=document.createElement('script');sc.src=ROOT+'vendor/sql-wasm.js';
- sc.onload=function(){Promise.all([initSqlJs({locateFile:function(f){return ROOT+'vendor/'+f}}),fetch(ROOT+'data/sql.json').then(function(r){return r.json()})]).then(function(a){SQL=a[0];base=a[1];var sv=LS.g('sqlcfg2');try{cfg=sv?JSON.parse(sv):JSON.parse(JSON.stringify(base))}catch(e){cfg=JSON.parse(JSON.stringify(base))}waiters.forEach(function(f){f()});waiters=[]})};
+ sc.onload=function(){var g=document.createElement('script');g.src=ROOT+'sqlgen.js';g.onload=go;document.head.appendChild(g)};
+ function go(){Promise.all([initSqlJs({locateFile:function(f){return ROOT+'vendor/'+f}}),fetch(ROOT+'data/sql.json').then(function(r){return r.json()})]).then(function(a){SQL=a[0];base=a[1];var sv=LS.g('sqlcfg2');try{cfg=sv?JSON.parse(sv):JSON.parse(JSON.stringify(base))}catch(e){cfg=JSON.parse(JSON.stringify(base))}waiters.forEach(function(f){f()});waiters=[]})}
  document.head.appendChild(sc)}
 function save(){LS.s('sqlcfg2',JSON.stringify(cfg))}
-function fresh(){var d=new SQL.Database();d.run(cfg.schema);return d}
+function fresh(data){var d=new SQL.Database();d.run(cfg.schema);if(data)d.run(data);return d}
 /* ---------- esquema ---------- */
 function info(db){var out={};var t=db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY rowid");
  (t.length?t[0].values:[]).forEach(function(r){var n=r[0],o={name:n,cols:[],fks:[],uq:{}};
@@ -49,29 +50,34 @@ function resTable(r){if(!r.length)return '<p class="sub">Ejecutado correctamente
 function sig(r,ordered){var l=r.length?r[r.length-1]:null;if(!l)return 'NONE';var rows=l.values.map(function(v){return JSON.stringify(v.map(function(c){return typeof c==='number'?Math.round(c*1e4)/1e4:c}))});if(!ordered)rows.sort();return JSON.stringify(rows)}
 function exec(db,sql,verify){var r=db.exec(sql);if(verify)r=db.exec(verify);return r}
 /* ---------- tarjeta de ejercicio ---------- */
-function eff(ex){var i=+(LS.g('sqlvar_'+ex.id)||0),v=ex.variantes&&i>0?ex.variantes[i-1]:null;if(!v)return ex;var o={};for(var k in ex)o[k]=ex[k];for(var k2 in v)o[k2]=v[k2];if(!v.verify)delete o.verify;o._v=i;return o}
-function card(ex0,blk){var ex=eff(ex0),nv=(ex0.variantes||[]).length;var d=document.createElement('div');d.className='ex';d.dataset.id=ex0.id;
+var gcache={};
+function hasGen(ex){return !!(window.SQLGEN&&SQLGEN.G[ex.id])}
+function eff(ex){var seed=+(LS.g('sqlvar_'+ex.id)||0);if(!hasGen(ex)||seed<=0)return ex;var k=ex.id+'#'+seed;if(gcache[k])return gcache[k];
+ for(var t=0;t<25;t++){var sd=seed*31+t;try{var v=SQLGEN.G[ex.id](SQLGEN.R(sd)),data=SQLGEN.data(SQLGEN.R(sd+1)),db=fresh(data),r=db.exec(v.solution);if(v.verify)r=db.exec(v.verify);db.close();var l=r.length?r[r.length-1]:null;if(l&&l.values.length){var o={};for(var a in ex)o[a]=ex[a];o.statement=v.statement;o.solution=v.solution;if(v.verify)o.verify=v.verify;else delete o.verify;o.data=data;o._v=seed;return gcache[k]=o}}catch(e){}}
+ return ex}
+function card(ex0,blk){var ex=eff(ex0),nv=hasGen(ex0)?1:0;var d=document.createElement('div');d.className='ex';d.dataset.id=ex0.id;
  var stars='★★★'.slice(0,ex.nivel||1);
- d.innerHTML='<div class="exh"><span class="lv" title="Dificultad">'+stars+'</span><b>'+esc(ex.title)+'</b>'+(nv?'<span class="vtag">Variante '+((ex._v||0)+1)+'/'+(nv+1)+'</span>':'')+'<span class="st">'+(done[ex.id]?'✔':'')+'</span></div><p class="stm">'+esc(ex.statement)+'</p>'+
- '<details class="erdw" open><summary>📐 Esquema de la BD de este ejercicio</summary><div class="erdhost"></div></details>'+
+ d.innerHTML='<div class="exh"><span class="lv" title="Dificultad">'+stars+'</span><b>'+esc(ex.title)+'</b>'+(nv?'<span class="vtag" title="Cada ↻ genera otra variante con otros parámetros y otros datos">'+(ex._v?'Variante #'+ex._v:'Original')+'</span>':'')+'<span class="st">'+(done[ex.id]?'✔':'')+'</span></div><p class="stm">'+esc(ex.statement)+'</p>'+
+ '<details class="erdw" open><summary>📐 Esquema de la BD de este ejercicio</summary><div class="erdhost"></div></details><details class="datw"><summary>📊 Ver los datos de las tablas'+(ex.data?' (cambian en cada variante)':'')+'</summary><div class="dath"></div></details>'+
  '<textarea spellcheck="false" placeholder="Escribe aquí tu SQL (Ctrl+Enter para ejecutar)"></textarea>'+
- '<div class="row"><button class="run">▶ Ejecutar</button><button class="chk">✔ Comprobar</button><button class="hnt">💡 Pista</button><button class="sol">👁 Solución</button><button class="edt" title="Editar ejercicio">✏️</button><button class="rld" title="'+(nv?'Nueva variante de este ejercicio':'Reiniciar ejercicio')+'">↻</button><span class="vd"></span></div><div class="hn" hidden></div><div class="so" hidden></div><div class="o"></div><div class="edf" hidden></div>';
+ '<div class="row"><button class="run">▶ Ejecutar</button><button class="chk">✔ Comprobar</button><button class="hnt">💡 Pista</button><button class="sol">👁 Solución</button><button class="edt" title="Editar ejercicio">✏️</button><button class="rld" title="'+(nv?'Generar otra variante (otros parámetros y otros datos)':'Reiniciar ejercicio')+'">↻</button><span class="vd"></span></div><div class="hn" hidden></div><div class="so" hidden></div><div class="o"></div><div class="edf" hidden></div>';
  var ta=d.querySelector('textarea');ta.value=LS.g('sqldraft_'+ex.id)||'';ta.oninput=function(){LS.s('sqldraft_'+ex.id,ta.value)};
- var db0=fresh(),inf=info(db0),nm=mentioned(inf,ex);if(!nm.length)nm=Object.keys(inf);
+ var db0=fresh(ex.data),inf=info(db0),nm=mentioned(inf,ex);if(!nm.length)nm=Object.keys(inf);
  d.querySelector('.erdhost').innerHTML=diagram(inf,nm,'Tablas implicadas');
- function run(chk){var o=d.querySelector('.o'),v=d.querySelector('.vd');v.textContent='';try{var db=fresh();var r=exec(db,ta.value,ex.verify&&chk?ex.verify:null);
-   o.innerHTML=resTable(r);if(chk){var d2=fresh(),s=exec(d2,ex.solution,ex.verify),ord=/order by/i.test(ex.solution)&&!ex.verify;var ok=sig(r,ord)===sig(s,ord);v.innerHTML=ok?'<span class="ok">✔ Correcto</span>':'<span class="ko">✘ No coincide con el resultado esperado</span>';
+ function run(chk){var o=d.querySelector('.o'),v=d.querySelector('.vd');v.textContent='';try{var db=fresh(ex.data);var r=exec(db,ta.value,ex.verify&&chk?ex.verify:null);
+   o.innerHTML=resTable(r);if(chk){var d2=fresh(ex.data),s=exec(d2,ex.solution,ex.verify),ord=/order by/i.test(ex.solution)&&!ex.verify;var ok=sig(r,ord)===sig(s,ord);v.innerHTML=ok?'<span class="ok">✔ Correcto</span>':'<span class="ko">✘ No coincide con el resultado esperado</span>';
     if(ok){done[ex.id]=1;LS.s('sqldone',JSON.stringify(done));d.querySelector('.st').textContent='✔';progress(blk);listStatus(blk)}}
   }catch(x){o.innerHTML='<div class="out ko">'+esc(x.message)+'</div>'}}
+ d.querySelector('.datw').ontoggle=function(){var h=d.querySelector('.dath');if(!this.open||h.dataset.ok)return;h.dataset.ok=1;try{var dbx=fresh(ex.data),o='';nm.forEach(function(n){o+='<b>'+esc(n)+'</b>'+resTable(dbx.exec('SELECT * FROM '+n))});h.innerHTML=o}catch(e){h.textContent=e.message}};
  d.querySelector('.run').onclick=function(){run(false)};d.querySelector('.chk').onclick=function(){run(true)};
  ta.onkeydown=function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run(false)}};
  d.querySelector('.hnt').onclick=function(){var h=d.querySelector('.hn');h.hidden=!h.hidden;h.textContent='💡 '+(ex.hint||'Sin pista.')};
  d.querySelector('.sol').onclick=function(){var s=d.querySelector('.so');if(!s.hidden){s.hidden=true;return}s.hidden=false;
   var html='<div class="out">'+esc(ex.solution)+'</div>';
-  try{var db=fresh();db.exec(ex.solution);var inf2=info(db),n2=Object.keys(inf2).filter(function(n){return !inf[n]||nm.indexOf(n)>=0});
+  try{var db=fresh(ex.data);db.exec(ex.solution);var inf2=info(db),n2=Object.keys(inf2).filter(function(n){return !inf[n]||nm.indexOf(n)>=0});
    var newt=Object.keys(inf2).filter(function(n){return !inf[n]});if(newt.length||/alter|index/i.test(ex.solution)){var names=nm.filter(function(n){return inf2[n]}).concat(newt);html+=diagram(inf2,names,'Estructura resultante tras la solución')}}catch(e){}
   if(ex.verify)html+='<div class="sub">Comprobación: <code>'+esc(ex.verify)+'</code></div>';s.innerHTML=html;bindDl(s)};
- d.querySelector('.rld').onclick=function(){LS.d('sqldraft_'+ex.id);delete done[ex.id];LS.s('sqldone',JSON.stringify(done));if(nv){var cur=+(LS.g('sqlvar_'+ex.id)||0),n;do{n=Math.floor(Math.random()*(nv+1))}while(n===cur&&nv>0);LS.s('sqlvar_'+ex.id,String(n));var nd=card(ex0,blk);d.replaceWith(nd);progress(blk);listStatus(blk);return}ta.value='';d.querySelector('.st').textContent='';d.querySelector('.o').innerHTML='';d.querySelector('.vd').textContent='';d.querySelector('.hn').hidden=true;d.querySelector('.so').hidden=true;progress(blk);listStatus(blk)};
+ d.querySelector('.rld').onclick=function(){LS.d('sqldraft_'+ex.id);delete done[ex.id];LS.s('sqldone',JSON.stringify(done));if(nv){LS.s('sqlvar_'+ex.id,String(1+Math.floor(Math.random()*999999)));var nd=card(ex0,blk);d.replaceWith(nd);progress(blk);listStatus(blk);return}ta.value='';d.querySelector('.st').textContent='';d.querySelector('.o').innerHTML='';d.querySelector('.vd').textContent='';d.querySelector('.hn').hidden=true;d.querySelector('.so').hidden=true;progress(blk);listStatus(blk)};
  var ef=d.querySelector('.edf');d.querySelector('.edt').onclick=function(){ef.hidden=!ef.hidden;if(ef.hidden)return;
   ef.innerHTML='<label class="f">Categoría<select class="e_cat">'+Object.keys(CATS).map(function(k){return '<option value="'+k+'"'+(k===ex.cat?' selected':'')+'>'+CATS[k]+'</option>'}).join('')+'</select></label><label class="f">Título<input type="text" class="e_t" value="'+esc(ex.title)+'"></label><label class="f">Enunciado<textarea class="e_s" style="min-height:60px">'+esc(ex.statement)+'</textarea></label><label class="f">Solución<textarea class="e_so" style="min-height:70px">'+esc(ex.solution)+'</textarea></label><label class="f">Comprobación opcional (SELECT que se ejecuta tras el script)<textarea class="e_v" style="min-height:44px">'+esc(ex.verify||'')+'</textarea></label><label class="f">Pista<input type="text" class="e_h" value="'+esc(ex.hint||'')+'"></label><label class="f">Tablas a mostrar en el esquema (separadas por coma; vacío = automático)<input type="text" class="e_tb" value="'+esc(ex.tablas||'')+'"></label><div class="row"><button class="e_ok">Guardar</button><button class="e_del">Borrar ejercicio</button></div>';
   ef.querySelector('.e_ok').onclick=function(){ex.cat=ef.querySelector('.e_cat').value;ex.title=ef.querySelector('.e_t').value;ex.statement=ef.querySelector('.e_s').value;ex.solution=ef.querySelector('.e_so').value;ex.verify=ef.querySelector('.e_v').value||undefined;ex.hint=ef.querySelector('.e_h').value;ex.tablas=ef.querySelector('.e_tb').value||undefined;save();blk.render()};
@@ -92,7 +98,7 @@ function mount(el){var cats=(el.dataset.cats||'').split(',').filter(Boolean),all
   var lh='<details class="elist" open><summary>📋 Listado de enunciados ('+vis.length+')</summary><ol>'+vis.map(function(e){return '<li data-id="'+e.id+'"><a href="#" data-id="'+e.id+'"><span class="lst">'+(done[e.id]?'✔':'○')+'</span> <b>'+esc(e.title)+'</b> — '+esc(eff(e).statement.length>110?eff(e).statement.slice(0,110)+'…':eff(e).statement)+'</a></li>'}).join('')+'</ol><div class="row"><button class="rall2" title="Nueva variante de todos los ejercicios de este bloque">↻ Nuevas variantes de todos</button></div></details>';
   el.querySelector('.erdw').insertAdjacentHTML('beforebegin',lh);
   Array.prototype.forEach.call(el.querySelectorAll('.elist a'),function(a){a.onclick=function(ev){ev.preventDefault();var t=el.querySelector('.ex[data-id="'+a.dataset.id+'"]');if(t){t.scrollIntoView({behavior:'smooth',block:'start'})}}});
-  el.querySelector('.rall2').onclick=function(){if(!confirm('¿Generar una variante nueva de todos los ejercicios de este bloque? Se borrarán tus respuestas y marcas.'))return;vis.forEach(function(e){LS.d('sqldraft_'+e.id);delete done[e.id];if(e.variantes&&e.variantes.length)LS.s('sqlvar_'+e.id,String(Math.floor(Math.random()*(e.variantes.length+1))))});LS.s('sqldone',JSON.stringify(done));blk.render()};
+  el.querySelector('.rall2').onclick=function(){if(!confirm('¿Generar una variante nueva de todos los ejercicios de este bloque? Se borrarán tus respuestas y marcas.'))return;vis.forEach(function(e){LS.d('sqldraft_'+e.id);delete done[e.id];if(hasGen(e))LS.s('sqlvar_'+e.id,String(1+Math.floor(Math.random()*999999)))});LS.s('sqldone',JSON.stringify(done));blk.render()};
   var inf=info(fresh());el.querySelector('.fullerd').innerHTML=diagram(inf,Object.keys(inf),'Base de datos de prácticas: tablas, claves y relaciones');bindDl(el);
   var box=el.querySelector('.exs');blk.list.filter(function(e){return all?(!cur||e.cat===cur):true}).forEach(function(e){box.appendChild(card(e,blk))});progress(blk);
   Array.prototype.forEach.call(el.querySelectorAll('.exlist button'),function(b){b.onclick=function(){el.dataset.cur=b.dataset.c;blk.render()}});
