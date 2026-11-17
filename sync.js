@@ -9,7 +9,7 @@ function tok(){return LS.g('tai_token')}
 function jget(k,d){try{return JSON.parse(LS.g(k)||'')}catch(e){return d}}
 /* claves sincronizables (nunca sql*, lab_*, tai_*) */
 function keys(){var u=user(),out=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
- if(k==='done'||/^pq_/.test(k)||(u&&k.indexOf(u+':ex_')===0))out.push(k)}}catch(e){}return out}
+ if(k==='done'||/^pq_/.test(k)||(u&&(k.indexOf(u+':ex_')===0||k.indexOf(u+':notes_')===0)))out.push(k)}}catch(e){}return out}
 function snapshot(){var o={};keys().forEach(function(k){o[k.replace(user()+':','@:')]=jget(k,null)});return o}
 function restore(o){Object.keys(o).forEach(function(k){LS.s(k.indexOf('@:')===0?user()+':'+k.slice(2):k,JSON.stringify(o[k]))})}
 /* ---- fusión a 3 bandas: base (última sincronización), local, remoto ---- */
@@ -18,6 +18,7 @@ function mergeMap(b,l,r){b=b||{};l=l||{};r=r||{};var o={},ks={};[b,l,r].forEach(
  Object.keys(ks).forEach(function(k){var lc=!eq(l[k],b[k]),v=lc?l[k]:r[k];if(v!==undefined)o[k]=v});return o}
 function mergeKey(k,b,l,r){
  if(l===null||l===undefined)return r;if(r===null||r===undefined)return l;
+ if(/^@:notes_/.test(k)){var no={},na={};Object.keys(l).concat(Object.keys(r)).forEach(function(i){na[i]=1});Object.keys(na).forEach(function(i){var x=l[i],y=r[i];no[i]=!x?y:!y?x:((x.u||0)>=(y.u||0)?x:y)});return no}
  if(/ex_srs$/.test(k)){var o={},all={};Object.keys(l).concat(Object.keys(r)).forEach(function(i){all[i]=1});Object.keys(all).forEach(function(i){var x=l[i],y=r[i];o[i]=!x?y:!y?x:(x[2]>=y[2]?x:y)});return o}
  if(/ex_hist$/.test(k)){var m={};(l||[]).concat(r||[]).forEach(function(h){m[h.t]=h});return Object.keys(m).map(Number).sort(function(a,b){return a-b}).map(function(t){return m[t]}).slice(-50)}
  if(/^pq_/.test(k))return (l.n||0)>=(r.n||0)?l:r;

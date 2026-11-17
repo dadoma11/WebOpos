@@ -12,7 +12,7 @@ fetch(ROOT+'data/preguntas.json').then(function(r){return r.json()}).then(functi
  var qs=[];all.forEach(function(q,i){if(q.id===undefined)q.id=i;if(q.k===key){qs.push(q)}});if(!qs.length)return;
  /* 1. trocear el tema por encabezados h2/h3 */
  var kids=Array.prototype.slice.call(doc.children),chunks=[],c=null;
- kids.forEach(function(n){if(/^H[23]$/.test(n.tagName)){c={h:n,nodes:[n],end:n};chunks.push(c)}else if(c&&!n.classList.contains('sqlab')&&!n.classList.contains('pn')&&!n.classList.contains('tqpop')&&n.id!=='tqbar'){c.nodes.push(n);c.end=n}});
+ kids.forEach(function(n){if(/^H[23]$/.test(n.tagName)){c={h:n,nodes:[n],end:n};chunks.push(c)}else if(c&&!n.classList.contains('sqlab')&&!n.classList.contains('mynote')&&!n.classList.contains('pn')&&!n.classList.contains('tqpop')&&n.id!=='tqbar'){c.nodes.push(n);c.end=n}});
  if(!chunks.length)return;
  chunks.forEach(function(c){var t=c.nodes.map(function(n){return n.textContent}).join(' ');c.tf={};var w=toks(t);c.len=w.length||1;w.forEach(function(x){c.tf[x]=(c.tf[x]||0)+1});c.qs=[]});
  var N=chunks.length,df={},avg=chunks.reduce(function(a,c){return a+c.len},0)/N;chunks.forEach(function(c){Object.keys(c.tf).forEach(function(w){df[w]=(df[w]||0)+1})});
@@ -20,12 +20,12 @@ fetch(ROOT+'data/preguntas.json').then(function(r){return r.json()}).then(functi
  qs.forEach(function(q){var words={};toks(q.q+' '+q.o[q.c]+' '+(q.e||'')).forEach(function(w){words[w]=1});var best=-1,bi=chunks.length-1;
   chunks.forEach(function(c,i){var s=0;Object.keys(words).forEach(function(w){var f=c.tf[w];if(!f)return;var idf=Math.log(1+(N-df[w]+.5)/(df[w]+.5));s+=idf*(f*2.2)/(f+1.2*(.25+.75*c.len/avg))});if(s>best){best=s;bi=i}});
   chunks[bi].qs.push(q)});
- var st=JSON.parse(LS.g(uk('tq_'+key))||'{}'),on=LS.g('tq_pop')!=='0',only=LS.g('tq_only')==='1';
+ var st=JSON.parse(LS.g(uk('tq_'+key))||'{}'),on=LS.g('tq_pop')==='1',only=LS.g('tq_only')==='1';
  function save(){LS.s(uk('tq_'+key),JSON.stringify(st))}
  /* 3. barra superior */
  var bar=document.createElement('div');bar.id='tqbar';bar.className='tqbar';var h1=doc.querySelector('h1');h1.parentNode.insertBefore(bar,h1.nextSibling);
  function stats(){
-  bar.innerHTML='<span>🧠 Repaso rápido: una pregunta al azar cada 5 apartados</span><label class="tchk"><input type="checkbox" id="tqon" '+(on?'checked':'')+'> Intercalar preguntas</label><label class="tchk"><input type="checkbox" id="tqo" '+(only?'checked':'')+'> Solo EXAMEN/IMPORTANTE</label><a class="chip" href="'+ROOT+'examinate.html?t='+key+'">⏱ Examen del tema</a>';
+  bar.innerHTML='<span>Repaso</span><label class="tchk"><input type="checkbox" id="tqon" '+(on?'checked':'')+'> Intercalar preguntas</label><label class="tchk"><input type="checkbox" id="tqo" '+(only?'checked':'')+'> Solo EXAMEN/IMPORTANTE</label><a class="chip" href="'+ROOT+'examinate.html?t='+key+'">⏱ Examen del tema</a>';
   bar.querySelector('#tqon').onchange=function(){on=this.checked;LS.s('tq_pop',on?'1':'0');build()};
   bar.querySelector('#tqo').onchange=function(){only=this.checked;LS.s('tq_only',only?'1':'0');build()}}
  /* 4. tarjetas emergentes tras cada fragmento */
