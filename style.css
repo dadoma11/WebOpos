@@ -177,7 +177,7 @@ body.hdr-off .toc{top:1rem}
 body.only .doc>.mynote.nh{display:none}
 /* modo concentración */
 .fexit{display:none}
-body.focus .top,body.focus .toc,body.focus .bar,body.focus .tqbar,body.focus .tqpop,body.focus .syncban{display:none!important}
+body.focus .top,body.focus .toc,body.focus .bar,body.focus .tqbar,body.focus .syncban{display:none!important}
 body.focus .layout{grid-template-columns:minmax(0,720px);padding-top:2rem}
 @media(max-width:860px){body.focus .layout{grid-template-columns:minmax(0,1fr)}}
 body.focus .doc{font-size:1.12rem;line-height:1.85}
