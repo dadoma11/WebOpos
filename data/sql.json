@@ -8,7 +8,25 @@
    "title": "WHERE y ORDER BY",
    "statement": "Nombre y salario de los empleados que cobran más de 2500, del que más cobra al que menos.",
    "solution": "SELECT Nombre, Salario FROM Empleados WHERE Salario > 2500 ORDER BY Salario DESC;",
-   "hint": "WHERE filtra filas; ORDER BY ... DESC ordena de mayor a menor."
+   "hint": "WHERE filtra filas; ORDER BY ... DESC ordena de mayor a menor.",
+   "variantes": [
+    {
+     "statement": "Nombre y salario de los empleados que cobran más de 2000, del que más cobra al que menos.",
+     "solution": "SELECT Nombre, Salario FROM Empleados WHERE Salario > 2000 ORDER BY Salario DESC;"
+    },
+    {
+     "statement": "Nombre y salario de los empleados que cobran menos de 3000, del que menos cobra al que más.",
+     "solution": "SELECT Nombre, Salario FROM Empleados WHERE Salario < 3000 ORDER BY Salario ASC;"
+    },
+    {
+     "statement": "Nombre y precio de los productos con precio superior a 100, del más caro al más barato.",
+     "solution": "SELECT Nombre, Precio FROM Productos WHERE Precio > 100 ORDER BY Precio DESC;"
+    },
+    {
+     "statement": "Nombre y stock de los productos con menos de 30 unidades, ordenados por stock ascendente.",
+     "solution": "SELECT Nombre, Stock FROM Productos WHERE Stock < 30 ORDER BY Stock ASC;"
+    }
+   ]
   },
   {
    "id": "e2",
@@ -17,7 +35,21 @@
    "title": "BETWEEN e IN",
    "statement": "Nombre y precio de los productos de categoría Redes o Cables cuyo precio esté entre 15 y 130 (ambos incluidos).",
    "solution": "SELECT Nombre, Precio FROM Productos WHERE Categoria IN ('Redes','Cables') AND Precio BETWEEN 15 AND 130;",
-   "hint": "BETWEEN es inclusivo en ambos extremos; IN comprueba pertenencia a una lista."
+   "hint": "BETWEEN es inclusivo en ambos extremos; IN comprueba pertenencia a una lista.",
+   "variantes": [
+    {
+     "statement": "Nombre y precio de los productos de categoría Perifericos o Energia con precio entre 100 y 250 (ambos incluidos).",
+     "solution": "SELECT Nombre, Precio FROM Productos WHERE Categoria IN ('Perifericos','Energia') AND Precio BETWEEN 100 AND 250;"
+    },
+    {
+     "statement": "Nombre y precio de los productos de categoría Cables o Perifericos con precio entre 20 y 50.",
+     "solution": "SELECT Nombre, Precio FROM Productos WHERE Categoria IN ('Cables','Perifericos') AND Precio BETWEEN 20 AND 50;"
+    },
+    {
+     "statement": "Nombre y stock de los productos de categoría Redes o Energia con stock entre 5 y 20.",
+     "solution": "SELECT Nombre, Stock FROM Productos WHERE Categoria IN ('Redes','Energia') AND Stock BETWEEN 5 AND 20;"
+    }
+   ]
   },
   {
    "id": "e3",
@@ -26,7 +58,21 @@
    "title": "LIKE",
    "statement": "Clientes cuyo nombre empieza por M y cuyo email termina en @gmail.com.",
    "solution": "SELECT * FROM Clientes WHERE Nombre LIKE 'M%' AND Email LIKE '%@gmail.com';",
-   "hint": "% = cualquier nº de caracteres; _ = exactamente uno."
+   "hint": "% = cualquier nº de caracteres; _ = exactamente uno.",
+   "variantes": [
+    {
+     "statement": "Clientes cuyo nombre empieza por L y cuyo email termina en @empresa.es.",
+     "solution": "SELECT * FROM Clientes WHERE Nombre LIKE 'L%' AND Email LIKE '%@empresa.es';"
+    },
+    {
+     "statement": "Clientes cuyo nombre tiene exactamente 5 letras (usa _) y de ciudad Sevilla o Bilbao.",
+     "solution": "SELECT * FROM Clientes WHERE Nombre LIKE '_____' AND Ciudad IN ('Sevilla','Bilbao');"
+    },
+    {
+     "statement": "Productos cuyo nombre contiene la palabra Cable o termina en 10m.",
+     "solution": "SELECT * FROM Productos WHERE Nombre LIKE '%Cable%' OR Nombre LIKE '%10m';"
+    }
+   ]
   },
   {
    "id": "e4",
@@ -35,7 +81,21 @@
    "title": "IS NULL",
    "statement": "Empleados que no tienen departamento asignado.",
    "solution": "SELECT * FROM Empleados WHERE DepartamentoID IS NULL;",
-   "hint": "Con NULL no sirve = ; hay que usar IS NULL."
+   "hint": "Con NULL no sirve = ; hay que usar IS NULL.",
+   "variantes": [
+    {
+     "statement": "Clientes que no tienen email registrado.",
+     "solution": "SELECT * FROM Clientes WHERE Email IS NULL;"
+    },
+    {
+     "statement": "Empleados que no tienen jefe (JefeID nulo).",
+     "solution": "SELECT * FROM Empleados WHERE JefeID IS NULL;"
+    },
+    {
+     "statement": "Empleados que sí tienen departamento asignado (usa IS NOT NULL).",
+     "solution": "SELECT * FROM Empleados WHERE DepartamentoID IS NOT NULL;"
+    }
+   ]
   },
   {
    "id": "e5",
@@ -44,7 +104,21 @@
    "title": "COUNT(*) frente a COUNT(columna)",
    "statement": "En una sola consulta, devuelve el número total de empleados y cuántos tienen departamento (COUNT(*) cuenta todas las filas; COUNT(columna) sólo las no NULL).",
    "solution": "SELECT COUNT(*), COUNT(DepartamentoID) FROM Empleados;",
-   "hint": "Prueba ambas funciones: no dan el mismo resultado si hay NULL."
+   "hint": "Prueba ambas funciones: no dan el mismo resultado si hay NULL.",
+   "variantes": [
+    {
+     "statement": "Devuelve en una sola consulta el número total de clientes y cuántos tienen email.",
+     "solution": "SELECT COUNT(*), COUNT(Email) FROM Clientes;"
+    },
+    {
+     "statement": "Devuelve el número total de empleados y cuántos tienen jefe asignado.",
+     "solution": "SELECT COUNT(*), COUNT(JefeID) FROM Empleados;"
+    },
+    {
+     "statement": "Devuelve cuántas filas tiene Pedidos y cuántos clientes distintos hay en ellas (COUNT(DISTINCT ...)).",
+     "solution": "SELECT COUNT(*), COUNT(DISTINCT ClienteID) FROM Pedidos;"
+    }
+   ]
   },
   {
    "id": "e6",
@@ -53,7 +127,25 @@
    "title": "GROUP BY",
    "statement": "Para cada departamento (DepartamentoID): número de empleados y salario medio.",
    "solution": "SELECT DepartamentoID, COUNT(*), AVG(Salario) FROM Empleados GROUP BY DepartamentoID;",
-   "hint": "GROUP BY agrupa; COUNT y AVG son funciones de agregación."
+   "hint": "GROUP BY agrupa; COUNT y AVG son funciones de agregación.",
+   "variantes": [
+    {
+     "statement": "Para cada categoría de producto: número de productos y precio medio.",
+     "solution": "SELECT Categoria, COUNT(*), AVG(Precio) FROM Productos GROUP BY Categoria;"
+    },
+    {
+     "statement": "Para cada estado de pedido: número de pedidos.",
+     "solution": "SELECT Estado, COUNT(*) FROM Pedidos GROUP BY Estado;"
+    },
+    {
+     "statement": "Para cada ciudad de cliente: número de clientes.",
+     "solution": "SELECT Ciudad, COUNT(*) FROM Clientes GROUP BY Ciudad;"
+    },
+    {
+     "statement": "Para cada cliente (ClienteID): número de pedidos realizados.",
+     "solution": "SELECT ClienteID, COUNT(*) FROM Pedidos GROUP BY ClienteID;"
+    }
+   ]
   },
   {
    "id": "e7",
@@ -62,7 +154,21 @@
    "title": "HAVING",
    "statement": "DepartamentoID de los departamentos cuyo salario medio supera 2800.",
    "solution": "SELECT DepartamentoID FROM Empleados GROUP BY DepartamentoID HAVING AVG(Salario) > 2800;",
-   "hint": "HAVING filtra grupos (después de agrupar); WHERE filtra filas (antes)."
+   "hint": "HAVING filtra grupos (después de agrupar); WHERE filtra filas (antes).",
+   "variantes": [
+    {
+     "statement": "Categorías de producto cuyo precio medio supera 100.",
+     "solution": "SELECT Categoria FROM Productos GROUP BY Categoria HAVING AVG(Precio) > 100;"
+    },
+    {
+     "statement": "ClienteID de los clientes que han hecho 2 pedidos o más.",
+     "solution": "SELECT ClienteID FROM Pedidos GROUP BY ClienteID HAVING COUNT(*) >= 2;"
+    },
+    {
+     "statement": "Categorías que tienen más de 1 producto.",
+     "solution": "SELECT Categoria FROM Productos GROUP BY Categoria HAVING COUNT(*) > 1;"
+    }
+   ]
   },
   {
    "id": "e8",
@@ -71,7 +177,21 @@
    "title": "LIMIT y orden",
    "statement": "Los 3 productos más caros (nombre y precio). En SQL Server se usaría TOP 3.",
    "solution": "SELECT Nombre, Precio FROM Productos ORDER BY Precio DESC LIMIT 3;",
-   "hint": "ORDER BY ... DESC y LIMIT (MySQL/PostgreSQL/SQLite)."
+   "hint": "ORDER BY ... DESC y LIMIT (MySQL/PostgreSQL/SQLite).",
+   "variantes": [
+    {
+     "statement": "Los 2 productos más baratos (nombre y precio).",
+     "solution": "SELECT Nombre, Precio FROM Productos ORDER BY Precio ASC LIMIT 2;"
+    },
+    {
+     "statement": "Los 3 empleados mejor pagados (nombre y salario).",
+     "solution": "SELECT Nombre, Salario FROM Empleados ORDER BY Salario DESC LIMIT 3;"
+    },
+    {
+     "statement": "Los 2 pedidos más recientes (PedidoID y Fecha).",
+     "solution": "SELECT PedidoID, Fecha FROM Pedidos ORDER BY Fecha DESC LIMIT 2;"
+    }
+   ]
   },
   {
    "id": "e9",
@@ -80,7 +200,21 @@
    "title": "INNER JOIN",
    "statement": "Nombre de cada empleado junto al nombre de su departamento (sólo los que tienen departamento).",
    "solution": "SELECT e.Nombre, d.Nombre FROM Empleados e INNER JOIN Departamentos d ON e.DepartamentoID = d.DepartamentoID;",
-   "hint": "INNER JOIN sólo devuelve filas con coincidencia en ON."
+   "hint": "INNER JOIN sólo devuelve filas con coincidencia en ON.",
+   "variantes": [
+    {
+     "statement": "Nombre de cada departamento junto al nombre de sus empleados (sólo departamentos con empleados).",
+     "solution": "SELECT d.Nombre, e.Nombre FROM Departamentos d INNER JOIN Empleados e ON e.DepartamentoID = d.DepartamentoID;"
+    },
+    {
+     "statement": "Cada pedido (PedidoID) con el nombre del cliente que lo hizo.",
+     "solution": "SELECT p.PedidoID, c.Nombre FROM Pedidos p INNER JOIN Clientes c ON c.ClienteID = p.ClienteID;"
+    },
+    {
+     "statement": "Nombre de cada empleado con la ciudad de su departamento (sólo los que tienen departamento).",
+     "solution": "SELECT e.Nombre, d.Ciudad FROM Empleados e INNER JOIN Departamentos d ON d.DepartamentoID = e.DepartamentoID;"
+    }
+   ]
   },
   {
    "id": "e10",
@@ -89,7 +223,21 @@
    "title": "LEFT JOIN",
    "statement": "Todos los empleados con el nombre de su departamento; los que no tienen, con NULL (Elena).",
    "solution": "SELECT e.Nombre, d.Nombre FROM Empleados e LEFT JOIN Departamentos d ON e.DepartamentoID = d.DepartamentoID;",
-   "hint": "LEFT JOIN conserva todas las filas de la tabla izquierda."
+   "hint": "LEFT JOIN conserva todas las filas de la tabla izquierda.",
+   "variantes": [
+    {
+     "statement": "Todos los clientes con el número de su pedido; los clientes sin pedidos deben aparecer con NULL (Irene).",
+     "solution": "SELECT c.Nombre, p.PedidoID FROM Clientes c LEFT JOIN Pedidos p ON p.ClienteID = c.ClienteID;"
+    },
+    {
+     "statement": "Todos los departamentos con el nombre de sus empleados; los departamentos sin empleados aparecen con NULL.",
+     "solution": "SELECT d.Nombre, e.Nombre FROM Departamentos d LEFT JOIN Empleados e ON e.DepartamentoID = d.DepartamentoID;"
+    },
+    {
+     "statement": "Todos los productos con el PedidoID de las líneas en que aparecen; los no pedidos, con NULL.",
+     "solution": "SELECT pr.Nombre, l.PedidoID FROM Productos pr LEFT JOIN LineasPedido l ON l.ProductoID = pr.ProductoID;"
+    }
+   ]
   },
   {
    "id": "e11",
@@ -98,7 +246,21 @@
    "title": "LEFT JOIN + IS NULL (antijoin)",
    "statement": "Departamentos que no tienen ningún empleado (resuélvelo con LEFT JOIN). Pista: inserta antes un departamento nuevo en el mismo script para que el resultado no sea vacío.",
    "solution": "INSERT INTO Departamentos VALUES (5,'Legal','Madrid');\nSELECT d.Nombre FROM Departamentos d LEFT JOIN Empleados e ON e.DepartamentoID = d.DepartamentoID WHERE e.EmpleadoID IS NULL;",
-   "hint": "Tras el LEFT JOIN, las filas sin pareja tienen NULL en las columnas de la derecha."
+   "hint": "Tras el LEFT JOIN, las filas sin pareja tienen NULL en las columnas de la derecha.",
+   "variantes": [
+    {
+     "statement": "Clientes que nunca han hecho un pedido (resuélvelo con LEFT JOIN ... IS NULL).",
+     "solution": "SELECT c.Nombre FROM Clientes c LEFT JOIN Pedidos p ON p.ClienteID = c.ClienteID WHERE p.PedidoID IS NULL;"
+    },
+    {
+     "statement": "Productos que nunca se han pedido (con LEFT JOIN). Inserta antes un producto nuevo en el mismo script: INSERT INTO Productos VALUES (8,'Patch panel',35,12,'Cables');",
+     "solution": "INSERT INTO Productos VALUES (8,'Patch panel',35,12,'Cables');\nSELECT pr.Nombre FROM Productos pr LEFT JOIN LineasPedido l ON l.ProductoID = pr.ProductoID WHERE l.PedidoID IS NULL;"
+    },
+    {
+     "statement": "Empleados que no son jefe de nadie (con LEFT JOIN de Empleados consigo misma).",
+     "solution": "SELECT e.Nombre FROM Empleados e LEFT JOIN Empleados s ON s.JefeID = e.EmpleadoID WHERE s.EmpleadoID IS NULL;"
+    }
+   ]
   },
   {
    "id": "e12",
@@ -107,7 +269,21 @@
    "title": "Auto-join",
    "statement": "Nombre de cada empleado y nombre de su jefe (sólo los que tienen jefe).",
    "solution": "SELECT e.Nombre, j.Nombre FROM Empleados e JOIN Empleados j ON e.JefeID = j.EmpleadoID;",
-   "hint": "Une la tabla consigo misma con dos alias distintos."
+   "hint": "Une la tabla consigo misma con dos alias distintos.",
+   "variantes": [
+    {
+     "statement": "Nombre de cada empleado y el salario de su jefe (sólo los que tienen jefe).",
+     "solution": "SELECT e.Nombre, j.Salario FROM Empleados e JOIN Empleados j ON e.JefeID = j.EmpleadoID;"
+    },
+    {
+     "statement": "Empleados que cobran más que su jefe (nombre).",
+     "solution": "SELECT e.Nombre FROM Empleados e JOIN Empleados j ON e.JefeID = j.EmpleadoID WHERE e.Salario > j.Salario;"
+    },
+    {
+     "statement": "Nombre de cada jefe y el número de empleados que dependen directamente de él.",
+     "solution": "SELECT j.Nombre, COUNT(*) FROM Empleados e JOIN Empleados j ON e.JefeID = j.EmpleadoID GROUP BY j.EmpleadoID, j.Nombre;"
+    }
+   ]
   },
   {
    "id": "e13",
@@ -116,7 +292,21 @@
    "title": "JOIN de varias tablas",
    "statement": "Para cada línea de pedido: nombre del cliente, nombre del producto y cantidad.",
    "solution": "SELECT c.Nombre, pr.Nombre, l.Cantidad FROM LineasPedido l JOIN Pedidos p ON p.PedidoID = l.PedidoID JOIN Clientes c ON c.ClienteID = p.ClienteID JOIN Productos pr ON pr.ProductoID = l.ProductoID;",
-   "hint": "Encadena JOIN: líneas → pedidos → clientes y líneas → productos."
+   "hint": "Encadena JOIN: líneas → pedidos → clientes y líneas → productos.",
+   "variantes": [
+    {
+     "statement": "Para cada línea de pedido: PedidoID, nombre del producto y ciudad del cliente.",
+     "solution": "SELECT l.PedidoID, pr.Nombre, c.Ciudad FROM LineasPedido l JOIN Pedidos p ON p.PedidoID = l.PedidoID JOIN Clientes c ON c.ClienteID = p.ClienteID JOIN Productos pr ON pr.ProductoID = l.ProductoID;"
+    },
+    {
+     "statement": "Nombre del cliente y nombre del producto de las líneas de pedidos con estado Entregado.",
+     "solution": "SELECT c.Nombre, pr.Nombre FROM LineasPedido l JOIN Pedidos p ON p.PedidoID = l.PedidoID JOIN Clientes c ON c.ClienteID = p.ClienteID JOIN Productos pr ON pr.ProductoID = l.ProductoID WHERE p.Estado = 'Entregado';"
+    },
+    {
+     "statement": "Nombre del cliente, producto y cantidad de las líneas con cantidad mayor que 2.",
+     "solution": "SELECT c.Nombre, pr.Nombre, l.Cantidad FROM LineasPedido l JOIN Pedidos p ON p.PedidoID = l.PedidoID JOIN Clientes c ON c.ClienteID = p.ClienteID JOIN Productos pr ON pr.ProductoID = l.ProductoID WHERE l.Cantidad > 2;"
+    }
+   ]
   },
   {
    "id": "e14",
@@ -125,7 +315,21 @@
    "title": "JOIN + GROUP BY",
    "statement": "Total gastado (SUM de Cantidad*Precio) por cliente, ignorando los pedidos Cancelados. Muestra el nombre del cliente y el total.",
    "solution": "SELECT c.Nombre, SUM(l.Cantidad * pr.Precio) FROM Clientes c JOIN Pedidos p ON p.ClienteID = c.ClienteID JOIN LineasPedido l ON l.PedidoID = p.PedidoID JOIN Productos pr ON pr.ProductoID = l.ProductoID WHERE p.Estado <> 'Cancelado' GROUP BY c.ClienteID, c.Nombre;",
-   "hint": "Une 4 tablas, filtra con WHERE y agrupa por cliente."
+   "hint": "Une 4 tablas, filtra con WHERE y agrupa por cliente.",
+   "variantes": [
+    {
+     "statement": "Importe total (SUM de Cantidad*Precio) de cada pedido no cancelado: PedidoID y total.",
+     "solution": "SELECT p.PedidoID, SUM(l.Cantidad * pr.Precio) FROM Pedidos p JOIN LineasPedido l ON l.PedidoID = p.PedidoID JOIN Productos pr ON pr.ProductoID = l.ProductoID WHERE p.Estado <> 'Cancelado' GROUP BY p.PedidoID;"
+    },
+    {
+     "statement": "Unidades totales pedidas de cada producto (nombre y SUM de Cantidad), contando todos los pedidos.",
+     "solution": "SELECT pr.Nombre, SUM(l.Cantidad) FROM Productos pr JOIN LineasPedido l ON l.ProductoID = pr.ProductoID GROUP BY pr.ProductoID, pr.Nombre;"
+    },
+    {
+     "statement": "Número de pedidos entregados por cliente (nombre del cliente y COUNT).",
+     "solution": "SELECT c.Nombre, COUNT(*) FROM Clientes c JOIN Pedidos p ON p.ClienteID = c.ClienteID WHERE p.Estado = 'Entregado' GROUP BY c.ClienteID, c.Nombre;"
+    }
+   ]
   },
   {
    "id": "e15",
@@ -134,7 +338,17 @@
    "title": "FULL JOIN emulado con UNION",
    "statement": "Emula un FULL JOIN entre Empleados y Departamentos (nombre de empleado, nombre de departamento) con LEFT JOIN ... UNION ... LEFT JOIN invertido. Debe aparecer Elena (sin dpto) y los departamentos sin empleados.",
    "solution": "SELECT e.Nombre, d.Nombre FROM Empleados e LEFT JOIN Departamentos d ON e.DepartamentoID = d.DepartamentoID UNION SELECT e.Nombre, d.Nombre FROM Departamentos d LEFT JOIN Empleados e ON e.DepartamentoID = d.DepartamentoID;",
-   "hint": "MySQL no tiene FULL JOIN: LEFT JOIN UNION (LEFT JOIN al revés)."
+   "hint": "MySQL no tiene FULL JOIN: LEFT JOIN UNION (LEFT JOIN al revés).",
+   "variantes": [
+    {
+     "statement": "Emula un FULL JOIN entre Clientes y Pedidos (nombre del cliente, PedidoID) con LEFT JOIN ... UNION ... LEFT JOIN invertido.",
+     "solution": "SELECT c.Nombre, p.PedidoID FROM Clientes c LEFT JOIN Pedidos p ON p.ClienteID = c.ClienteID UNION SELECT c.Nombre, p.PedidoID FROM Pedidos p LEFT JOIN Clientes c ON p.ClienteID = c.ClienteID;"
+    },
+    {
+     "statement": "Emula un FULL JOIN entre Productos y LineasPedido (nombre del producto, PedidoID) con LEFT JOIN ... UNION ... LEFT JOIN invertido.",
+     "solution": "SELECT pr.Nombre, l.PedidoID FROM Productos pr LEFT JOIN LineasPedido l ON l.ProductoID = pr.ProductoID UNION SELECT pr.Nombre, l.PedidoID FROM LineasPedido l LEFT JOIN Productos pr ON l.ProductoID = pr.ProductoID;"
+    }
+   ]
   },
   {
    "id": "e16",
@@ -143,7 +357,21 @@
    "title": "Subconsulta escalar",
    "statement": "Empleados cuyo salario es mayor que el salario medio de toda la empresa.",
    "solution": "SELECT Nombre FROM Empleados WHERE Salario > (SELECT AVG(Salario) FROM Empleados);",
-   "hint": "La subconsulta escalar devuelve un único valor."
+   "hint": "La subconsulta escalar devuelve un único valor.",
+   "variantes": [
+    {
+     "statement": "Productos cuyo precio es mayor que el precio medio de todos los productos.",
+     "solution": "SELECT Nombre FROM Productos WHERE Precio > (SELECT AVG(Precio) FROM Productos);"
+    },
+    {
+     "statement": "Empleados que cobran menos que la media de la empresa.",
+     "solution": "SELECT Nombre FROM Empleados WHERE Salario < (SELECT AVG(Salario) FROM Empleados);"
+    },
+    {
+     "statement": "Producto(s) con el precio máximo (con subconsulta con MAX).",
+     "solution": "SELECT Nombre FROM Productos WHERE Precio = (SELECT MAX(Precio) FROM Productos);"
+    }
+   ]
   },
   {
    "id": "e17",
@@ -152,7 +380,21 @@
    "title": "IN con subconsulta",
    "statement": "Nombre de los clientes que han hecho al menos un pedido.",
    "solution": "SELECT Nombre FROM Clientes WHERE ClienteID IN (SELECT ClienteID FROM Pedidos);",
-   "hint": "IN (SELECT ...) comprueba pertenencia a una lista de valores."
+   "hint": "IN (SELECT ...) comprueba pertenencia a una lista de valores.",
+   "variantes": [
+    {
+     "statement": "Nombre de los productos que se han pedido al menos una vez.",
+     "solution": "SELECT Nombre FROM Productos WHERE ProductoID IN (SELECT ProductoID FROM LineasPedido);"
+    },
+    {
+     "statement": "Nombre de los departamentos que tienen algún empleado.",
+     "solution": "SELECT Nombre FROM Departamentos WHERE DepartamentoID IN (SELECT DepartamentoID FROM Empleados);"
+    },
+    {
+     "statement": "Clientes que tienen algún pedido Pendiente (nombre).",
+     "solution": "SELECT Nombre FROM Clientes WHERE ClienteID IN (SELECT ClienteID FROM Pedidos WHERE Estado = 'Pendiente');"
+    }
+   ]
   },
   {
    "id": "e18",
@@ -161,7 +403,21 @@
    "title": "NOT EXISTS",
    "statement": "Nombre de los clientes que no han hecho ningún pedido.",
    "solution": "SELECT Nombre FROM Clientes c WHERE NOT EXISTS (SELECT 1 FROM Pedidos p WHERE p.ClienteID = c.ClienteID);",
-   "hint": "EXISTS / NOT EXISTS: subconsulta correlacionada con la fila externa."
+   "hint": "EXISTS / NOT EXISTS: subconsulta correlacionada con la fila externa.",
+   "variantes": [
+    {
+     "statement": "Nombre de los productos que nunca se han pedido (inserta antes uno nuevo: INSERT INTO Productos VALUES (8,'Patch panel',35,12,'Cables');).",
+     "solution": "INSERT INTO Productos VALUES (8,'Patch panel',35,12,'Cables');\nSELECT Nombre FROM Productos p WHERE NOT EXISTS (SELECT 1 FROM LineasPedido l WHERE l.ProductoID = p.ProductoID);"
+    },
+    {
+     "statement": "Departamentos sin empleados (inserta antes: INSERT INTO Departamentos VALUES (5,'Legal','Madrid');).",
+     "solution": "INSERT INTO Departamentos VALUES (5,'Legal','Madrid');\nSELECT Nombre FROM Departamentos d WHERE NOT EXISTS (SELECT 1 FROM Empleados e WHERE e.DepartamentoID = d.DepartamentoID);"
+    },
+    {
+     "statement": "Clientes que han hecho algún pedido (con EXISTS).",
+     "solution": "SELECT Nombre FROM Clientes c WHERE EXISTS (SELECT 1 FROM Pedidos p WHERE p.ClienteID = c.ClienteID);"
+    }
+   ]
   },
   {
    "id": "e19",
@@ -170,7 +426,21 @@
    "title": "Subconsulta correlacionada",
    "statement": "Empleados que cobran más que la media de su propio departamento (Nombre).",
    "solution": "SELECT Nombre FROM Empleados e WHERE Salario > (SELECT AVG(Salario) FROM Empleados WHERE DepartamentoID = e.DepartamentoID);",
-   "hint": "La subconsulta se ejecuta por cada fila de la externa y usa su DepartamentoID."
+   "hint": "La subconsulta se ejecuta por cada fila de la externa y usa su DepartamentoID.",
+   "variantes": [
+    {
+     "statement": "Productos que cuestan más que la media de su categoría (nombre).",
+     "solution": "SELECT Nombre FROM Productos p WHERE Precio > (SELECT AVG(Precio) FROM Productos WHERE Categoria = p.Categoria);"
+    },
+    {
+     "statement": "Empleados que cobran menos que la media de su departamento (nombre; los que tienen departamento nulo no entran).",
+     "solution": "SELECT Nombre FROM Empleados e WHERE Salario < (SELECT AVG(Salario) FROM Empleados WHERE DepartamentoID = e.DepartamentoID);"
+    },
+    {
+     "statement": "Clientes con más pedidos que la media de pedidos por cliente (con pedidos): nombre.",
+     "solution": "SELECT Nombre FROM Clientes c WHERE (SELECT COUNT(*) FROM Pedidos p WHERE p.ClienteID = c.ClienteID) > (SELECT COUNT(*) * 1.0 / COUNT(DISTINCT ClienteID) FROM Pedidos);"
+    }
+   ]
   },
   {
    "id": "e20",
@@ -179,7 +449,21 @@
    "title": "Subconsulta en FROM",
    "statement": "Con una subconsulta en el FROM (tabla derivada): número de pedidos por cliente (ClienteID) y, de ellos, sólo los clientes con 2 pedidos o más.",
    "solution": "SELECT ClienteID, n FROM (SELECT ClienteID, COUNT(*) AS n FROM Pedidos GROUP BY ClienteID) WHERE n >= 2;",
-   "hint": "Una tabla derivada necesita alias en MySQL; en SQLite no es obligatorio."
+   "hint": "Una tabla derivada necesita alias en MySQL; en SQLite no es obligatorio.",
+   "variantes": [
+    {
+     "statement": "Con una tabla derivada: número de productos por categoría y, de ellos, sólo las categorías con 2 productos o más (Categoria, n).",
+     "solution": "SELECT Categoria, n FROM (SELECT Categoria, COUNT(*) AS n FROM Productos GROUP BY Categoria) WHERE n >= 2;"
+    },
+    {
+     "statement": "Con una tabla derivada: salario medio por departamento y, de ellos, sólo los que superen 2800 (DepartamentoID, m).",
+     "solution": "SELECT DepartamentoID, m FROM (SELECT DepartamentoID, AVG(Salario) AS m FROM Empleados GROUP BY DepartamentoID) WHERE m > 2800;"
+    },
+    {
+     "statement": "Con una tabla derivada: pedidos por estado y sólo los estados con 2 pedidos o más (Estado, n).",
+     "solution": "SELECT Estado, n FROM (SELECT Estado, COUNT(*) AS n FROM Pedidos GROUP BY Estado) WHERE n >= 2;"
+    }
+   ]
   },
   {
    "id": "e21",
@@ -189,7 +473,24 @@
    "statement": "Crea una vista llamada VistaEmpleadosMadrid con Nombre y Salario de los empleados de departamentos de Madrid. Una vista es una consulta almacenada, no guarda datos.",
    "solution": "CREATE VIEW VistaEmpleadosMadrid AS SELECT e.Nombre, e.Salario FROM Empleados e JOIN Departamentos d ON d.DepartamentoID = e.DepartamentoID WHERE d.Ciudad = 'Madrid';",
    "hint": "CREATE VIEW nombre AS SELECT ...;",
-   "verify": "SELECT * FROM VistaEmpleadosMadrid;"
+   "verify": "SELECT * FROM VistaEmpleadosMadrid;",
+   "variantes": [
+    {
+     "statement": "Crea una vista llamada VistaEmpleadosMadrid con Nombre y Salario de los empleados de departamentos de Madrid.",
+     "solution": "CREATE VIEW VistaEmpleadosMadrid AS SELECT e.Nombre, e.Salario FROM Empleados e JOIN Departamentos d ON d.DepartamentoID = e.DepartamentoID WHERE d.Ciudad = 'Madrid';",
+     "verify": "SELECT * FROM VistaEmpleadosMadrid;"
+    },
+    {
+     "statement": "Crea una vista llamada VistaPedidosPendientes con PedidoID, Fecha y nombre del cliente de los pedidos Pendientes.",
+     "solution": "CREATE VIEW VistaPedidosPendientes AS SELECT p.PedidoID, p.Fecha, c.Nombre FROM Pedidos p JOIN Clientes c ON c.ClienteID = p.ClienteID WHERE p.Estado = 'Pendiente';",
+     "verify": "SELECT * FROM VistaPedidosPendientes;"
+    },
+    {
+     "statement": "Crea una vista llamada VistaProductosCaros con Nombre y Precio de los productos que cuestan más de 100.",
+     "solution": "CREATE VIEW VistaProductosCaros AS SELECT Nombre, Precio FROM Productos WHERE Precio > 100;",
+     "verify": "SELECT * FROM VistaProductosCaros;"
+    }
+   ]
   },
   {
    "id": "e22",
@@ -199,7 +500,19 @@
    "statement": "Crea la tabla Proveedores (ProveedorID entero clave primaria, Nombre texto NOT NULL, Email texto UNIQUE, Valoracion entero con CHECK entre 1 y 5).",
    "solution": "CREATE TABLE Proveedores (ProveedorID INTEGER PRIMARY KEY, Nombre TEXT NOT NULL, Email TEXT UNIQUE, Valoracion INTEGER CHECK (Valoracion BETWEEN 1 AND 5));",
    "hint": "PRIMARY KEY, NOT NULL, UNIQUE y CHECK se escriben tras el tipo.",
-   "verify": "INSERT INTO Proveedores VALUES (1,'ACME','a@acme.es',4); SELECT * FROM Proveedores;"
+   "verify": "INSERT INTO Proveedores VALUES (1,'ACME','a@acme.es',4); SELECT * FROM Proveedores;",
+   "variantes": [
+    {
+     "statement": "Crea la tabla Contratos (ContratoID entero clave primaria, Titulo texto NOT NULL, Codigo texto UNIQUE, Importe real con CHECK mayor que 0).",
+     "solution": "CREATE TABLE Contratos (ContratoID INTEGER PRIMARY KEY, Titulo TEXT NOT NULL, Codigo TEXT UNIQUE, Importe REAL CHECK (Importe > 0));",
+     "verify": "INSERT INTO Contratos VALUES (1,'Mantenimiento','C-1',500.0); SELECT * FROM Contratos;"
+    },
+    {
+     "statement": "Crea la tabla Sedes (SedeID entero clave primaria, Nombre texto NOT NULL UNIQUE, Plantas entero con CHECK entre 1 y 50).",
+     "solution": "CREATE TABLE Sedes (SedeID INTEGER PRIMARY KEY, Nombre TEXT NOT NULL UNIQUE, Plantas INTEGER CHECK (Plantas BETWEEN 1 AND 50));",
+     "verify": "INSERT INTO Sedes VALUES (1,'Central',12); SELECT * FROM Sedes;"
+    }
+   ]
   },
   {
    "id": "e23",
@@ -209,7 +522,24 @@
    "statement": "Añade a Clientes una columna Telefono de tipo TEXT.",
    "solution": "ALTER TABLE Clientes ADD COLUMN Telefono TEXT;",
    "hint": "ALTER TABLE ... ADD COLUMN ...",
-   "verify": "SELECT Nombre, Telefono FROM Clientes;"
+   "verify": "SELECT Nombre, Telefono FROM Clientes;",
+   "variantes": [
+    {
+     "statement": "Añade a Productos una columna Proveedor de tipo TEXT.",
+     "solution": "ALTER TABLE Productos ADD COLUMN Proveedor TEXT;",
+     "verify": "SELECT Nombre, Proveedor FROM Productos;"
+    },
+    {
+     "statement": "Añade a Empleados una columna Activo de tipo INTEGER con valor por defecto 1.",
+     "solution": "ALTER TABLE Empleados ADD COLUMN Activo INTEGER DEFAULT 1;",
+     "verify": "SELECT Nombre, Activo FROM Empleados;"
+    },
+    {
+     "statement": "Renombra la tabla Clientes como Customers.",
+     "solution": "ALTER TABLE Clientes RENAME TO Customers;",
+     "verify": "SELECT COUNT(*) FROM Customers;"
+    }
+   ]
   },
   {
    "id": "e24",
@@ -219,7 +549,24 @@
    "statement": "Crea un índice llamado idx_pedidos_cliente sobre Pedidos(ClienteID). Acelera las búsquedas y los JOIN por esa columna, a costa de ralentizar las escrituras.",
    "solution": "CREATE INDEX idx_pedidos_cliente ON Pedidos(ClienteID);",
    "hint": "CREATE INDEX nombre ON tabla(columna);",
-   "verify": "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_pedidos_cliente';"
+   "verify": "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_pedidos_cliente';",
+   "variantes": [
+    {
+     "statement": "Crea un índice llamado idx_empleados_dep sobre Empleados(DepartamentoID).",
+     "solution": "CREATE INDEX idx_empleados_dep ON Empleados(DepartamentoID);",
+     "verify": "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_empleados_dep';"
+    },
+    {
+     "statement": "Crea un índice ÚNICO llamado idx_clientes_email sobre Clientes(Email).",
+     "solution": "CREATE UNIQUE INDEX idx_clientes_email ON Clientes(Email);",
+     "verify": "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_clientes_email';"
+    },
+    {
+     "statement": "Crea un índice compuesto llamado idx_prod_cat_precio sobre Productos(Categoria, Precio).",
+     "solution": "CREATE INDEX idx_prod_cat_precio ON Productos(Categoria, Precio);",
+     "verify": "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_prod_cat_precio';"
+    }
+   ]
   },
   {
    "id": "e25",
@@ -229,7 +576,19 @@
    "statement": "Crea la tabla Suministra para la relación N:M entre Proveedores y Productos: columnas ProveedorID y ProductoID (enteros) con clave primaria compuesta (ProveedorID, ProductoID) y claves foráneas. (Crea antes Proveedores con ProveedorID INTEGER PRIMARY KEY en el mismo script.)",
    "solution": "CREATE TABLE Proveedores (ProveedorID INTEGER PRIMARY KEY);\nCREATE TABLE Suministra (ProveedorID INTEGER REFERENCES Proveedores(ProveedorID), ProductoID INTEGER REFERENCES Productos(ProductoID), PRIMARY KEY (ProveedorID, ProductoID));",
    "hint": "Una relación N:M se convierte en una tabla intermedia con la PK compuesta por las dos FK.",
-   "verify": "INSERT INTO Proveedores VALUES (1); INSERT INTO Suministra VALUES (1,1); SELECT COUNT(*) FROM Suministra; SELECT name FROM pragma_table_info('Suministra') ORDER BY name;"
+   "verify": "INSERT INTO Proveedores VALUES (1); INSERT INTO Suministra VALUES (1,1); SELECT COUNT(*) FROM Suministra; SELECT name FROM pragma_table_info('Suministra') ORDER BY name;",
+   "variantes": [
+    {
+     "statement": "Crea la tabla Autores (AutorID entero PK) y la tabla Libros (LibroID entero PK, AutorID entero con FK a Autores): relación 1:N en el mismo script.",
+     "solution": "CREATE TABLE Autores (AutorID INTEGER PRIMARY KEY);\nCREATE TABLE Libros (LibroID INTEGER PRIMARY KEY, AutorID INTEGER REFERENCES Autores(AutorID));",
+     "verify": "INSERT INTO Autores VALUES (1); INSERT INTO Libros VALUES (1,1); SELECT COUNT(*) FROM Libros; SELECT name FROM pragma_table_info('Libros') ORDER BY name;"
+    },
+    {
+     "statement": "Crea la tabla Alumnos (AlumnoID PK), Asignaturas (AsigID PK) y la intermedia Matriculas con PK compuesta (AlumnoID, AsigID) y FKs a ambas (relación N:M).",
+     "solution": "CREATE TABLE Alumnos (AlumnoID INTEGER PRIMARY KEY);\nCREATE TABLE Asignaturas (AsigID INTEGER PRIMARY KEY);\nCREATE TABLE Matriculas (AlumnoID INTEGER REFERENCES Alumnos(AlumnoID), AsigID INTEGER REFERENCES Asignaturas(AsigID), PRIMARY KEY (AlumnoID, AsigID));",
+     "verify": "INSERT INTO Alumnos VALUES (1); INSERT INTO Asignaturas VALUES (1); INSERT INTO Matriculas VALUES (1,1); SELECT COUNT(*) FROM Matriculas; SELECT name FROM pragma_table_info('Matriculas') ORDER BY name;"
+    }
+   ]
   },
   {
    "id": "e26",
@@ -239,7 +598,24 @@
    "statement": "Inserta un cliente nuevo: ClienteID 6, Nombre Pedro, Ciudad Madrid, Email pedro@gmail.com.",
    "solution": "INSERT INTO Clientes (ClienteID, Nombre, Ciudad, Email) VALUES (6, 'Pedro', 'Madrid', 'pedro@gmail.com');",
    "hint": "INSERT INTO tabla (cols) VALUES (...);",
-   "verify": "SELECT * FROM Clientes ORDER BY ClienteID;"
+   "verify": "SELECT * FROM Clientes ORDER BY ClienteID;",
+   "variantes": [
+    {
+     "statement": "Inserta un producto nuevo: ProductoID 8, Nombre Patch panel, Precio 35, Stock 12, Categoria Cables.",
+     "solution": "INSERT INTO Productos (ProductoID, Nombre, Precio, Stock, Categoria) VALUES (8, 'Patch panel', 35, 12, 'Cables');",
+     "verify": "SELECT * FROM Productos ORDER BY ProductoID;"
+    },
+    {
+     "statement": "Inserta un departamento nuevo: DepartamentoID 5, Nombre Legal, Ciudad Bilbao.",
+     "solution": "INSERT INTO Departamentos (DepartamentoID, Nombre, Ciudad) VALUES (5, 'Legal', 'Bilbao');",
+     "verify": "SELECT * FROM Departamentos ORDER BY DepartamentoID;"
+    },
+    {
+     "statement": "Inserta dos clientes de una vez (multi-fila): (6,'Pedro','Madrid',NULL) y (7,'Sofía','Bilbao','sofia@gmail.com').",
+     "solution": "INSERT INTO Clientes VALUES (6,'Pedro','Madrid',NULL),(7,'Sofía','Bilbao','sofia@gmail.com');",
+     "verify": "SELECT * FROM Clientes ORDER BY ClienteID;"
+    }
+   ]
   },
   {
    "id": "e27",
@@ -249,7 +625,24 @@
    "statement": "Sube un 10 % el salario de los empleados del departamento 2 (Redes). Sin WHERE se actualizarían todas las filas.",
    "solution": "UPDATE Empleados SET Salario = Salario * 1.10 WHERE DepartamentoID = 2;",
    "hint": "UPDATE ... SET col = expresión WHERE ...;",
-   "verify": "SELECT EmpleadoID, Salario FROM Empleados ORDER BY EmpleadoID;"
+   "verify": "SELECT EmpleadoID, Salario FROM Empleados ORDER BY EmpleadoID;",
+   "variantes": [
+    {
+     "statement": "Sube un 20 % el precio de los productos de la categoría Redes.",
+     "solution": "UPDATE Productos SET Precio = Precio * 1.20 WHERE Categoria = 'Redes';",
+     "verify": "SELECT ProductoID, Precio FROM Productos ORDER BY ProductoID;"
+    },
+    {
+     "statement": "Pon el estado Entregado a todos los pedidos Pendientes del cliente 3.",
+     "solution": "UPDATE Pedidos SET Estado = 'Entregado' WHERE Estado = 'Pendiente' AND ClienteID = 3;",
+     "verify": "SELECT PedidoID, Estado FROM Pedidos ORDER BY PedidoID;"
+    },
+    {
+     "statement": "Asigna el departamento 1 a los empleados que no tienen departamento.",
+     "solution": "UPDATE Empleados SET DepartamentoID = 1 WHERE DepartamentoID IS NULL;",
+     "verify": "SELECT EmpleadoID, DepartamentoID FROM Empleados ORDER BY EmpleadoID;"
+    }
+   ]
   },
   {
    "id": "e28",
@@ -259,7 +652,24 @@
    "statement": "Borra primero las líneas y luego los pedidos con estado Cancelado (en ese orden, por las claves foráneas).",
    "solution": "DELETE FROM LineasPedido WHERE PedidoID IN (SELECT PedidoID FROM Pedidos WHERE Estado = 'Cancelado');\nDELETE FROM Pedidos WHERE Estado = 'Cancelado';",
    "hint": "Borra primero la tabla hija; DELETE sin WHERE vacía la tabla.",
-   "verify": "SELECT (SELECT COUNT(*) FROM Pedidos), (SELECT COUNT(*) FROM LineasPedido);"
+   "verify": "SELECT (SELECT COUNT(*) FROM Pedidos), (SELECT COUNT(*) FROM LineasPedido);",
+   "variantes": [
+    {
+     "statement": "Borra los productos de la categoría Energia (ningún pedido los usa antes de la línea 7: borra primero sus líneas).",
+     "solution": "DELETE FROM LineasPedido WHERE ProductoID IN (SELECT ProductoID FROM Productos WHERE Categoria = 'Energia');\nDELETE FROM Productos WHERE Categoria = 'Energia';",
+     "verify": "SELECT (SELECT COUNT(*) FROM Productos), (SELECT COUNT(*) FROM LineasPedido);"
+    },
+    {
+     "statement": "Borra los empleados que cobran menos de 2200.",
+     "solution": "DELETE FROM Empleados WHERE Salario < 2200;",
+     "verify": "SELECT COUNT(*) FROM Empleados;"
+    },
+    {
+     "statement": "Borra los clientes sin ningún pedido.",
+     "solution": "DELETE FROM Clientes WHERE ClienteID NOT IN (SELECT ClienteID FROM Pedidos);",
+     "verify": "SELECT ClienteID FROM Clientes ORDER BY 1;"
+    }
+   ]
   },
   {
    "id": "e29",
@@ -269,7 +679,19 @@
    "statement": "Crea la tabla ResumenCiudad (Ciudad TEXT, N INTEGER) y rellénala con el número de clientes por ciudad usando INSERT ... SELECT.",
    "solution": "CREATE TABLE ResumenCiudad (Ciudad TEXT, N INTEGER);\nINSERT INTO ResumenCiudad SELECT Ciudad, COUNT(*) FROM Clientes GROUP BY Ciudad;",
    "hint": "INSERT INTO destino SELECT ... copia filas de una consulta.",
-   "verify": "SELECT * FROM ResumenCiudad;"
+   "verify": "SELECT * FROM ResumenCiudad;",
+   "variantes": [
+    {
+     "statement": "Crea la tabla ResumenEstado (Estado TEXT, N INTEGER) y rellénala con el número de pedidos por estado usando INSERT ... SELECT.",
+     "solution": "CREATE TABLE ResumenEstado (Estado TEXT, N INTEGER);\nINSERT INTO ResumenEstado SELECT Estado, COUNT(*) FROM Pedidos GROUP BY Estado;",
+     "verify": "SELECT * FROM ResumenEstado;"
+    },
+    {
+     "statement": "Crea la tabla CopiaCaros (Nombre TEXT, Precio REAL) y rellénala con los productos de precio mayor que 100 usando INSERT ... SELECT.",
+     "solution": "CREATE TABLE CopiaCaros (Nombre TEXT, Precio REAL);\nINSERT INTO CopiaCaros SELECT Nombre, Precio FROM Productos WHERE Precio > 100;",
+     "verify": "SELECT * FROM CopiaCaros;"
+    }
+   ]
   },
   {
    "id": "e30",
@@ -279,7 +701,14 @@
    "statement": "Crea un trigger descontar_stock que, tras insertar una fila en LineasPedido, reste NEW.Cantidad al Stock del producto correspondiente.",
    "solution": "CREATE TRIGGER descontar_stock AFTER INSERT ON LineasPedido BEGIN UPDATE Productos SET Stock = Stock - NEW.Cantidad WHERE ProductoID = NEW.ProductoID; END;",
    "hint": "AFTER INSERT ... BEGIN ... END; NEW.columna es la fila insertada.",
-   "verify": "INSERT INTO LineasPedido VALUES (6,5,4); SELECT ProductoID, Stock FROM Productos ORDER BY ProductoID;"
+   "verify": "INSERT INTO LineasPedido VALUES (6,5,4); SELECT ProductoID, Stock FROM Productos ORDER BY ProductoID;",
+   "variantes": [
+    {
+     "statement": "Crea un trigger sumar_stock que, tras ELIMINAR una fila de LineasPedido (AFTER DELETE), devuelva OLD.Cantidad al Stock del producto correspondiente.",
+     "solution": "CREATE TRIGGER sumar_stock AFTER DELETE ON LineasPedido BEGIN UPDATE Productos SET Stock = Stock + OLD.Cantidad WHERE ProductoID = OLD.ProductoID; END;",
+     "verify": "DELETE FROM LineasPedido WHERE PedidoID = 6 AND ProductoID = 2; SELECT ProductoID, Stock FROM Productos ORDER BY ProductoID;"
+    }
+   ]
   },
   {
    "id": "e31",
@@ -289,7 +718,14 @@
    "statement": "Crea la tabla LogSalarios (EmpleadoID INTEGER, Antiguo REAL, Nuevo REAL) y un trigger log_salario que tras UPDATE del Salario en Empleados guarde el valor antiguo (OLD) y el nuevo (NEW).",
    "solution": "CREATE TABLE LogSalarios (EmpleadoID INTEGER, Antiguo REAL, Nuevo REAL);\nCREATE TRIGGER log_salario AFTER UPDATE OF Salario ON Empleados BEGIN INSERT INTO LogSalarios VALUES (OLD.EmpleadoID, OLD.Salario, NEW.Salario); END;",
    "hint": "OLD = valores antes del cambio; NEW = valores después.",
-   "verify": "UPDATE Empleados SET Salario = Salario + 100 WHERE EmpleadoID IN (1,2); SELECT * FROM LogSalarios ORDER BY EmpleadoID;"
+   "verify": "UPDATE Empleados SET Salario = Salario + 100 WHERE EmpleadoID IN (1,2); SELECT * FROM LogSalarios ORDER BY EmpleadoID;",
+   "variantes": [
+    {
+     "statement": "Crea la tabla LogPrecios (ProductoID INTEGER, Antiguo REAL, Nuevo REAL) y un trigger log_precio que tras UPDATE del Precio en Productos guarde el valor antiguo (OLD) y el nuevo (NEW).",
+     "solution": "CREATE TABLE LogPrecios (ProductoID INTEGER, Antiguo REAL, Nuevo REAL);\nCREATE TRIGGER log_precio AFTER UPDATE OF Precio ON Productos BEGIN INSERT INTO LogPrecios VALUES (OLD.ProductoID, OLD.Precio, NEW.Precio); END;",
+     "verify": "UPDATE Productos SET Precio = Precio + 5 WHERE ProductoID IN (1,2); SELECT * FROM LogPrecios ORDER BY ProductoID;"
+    }
+   ]
   },
   {
    "id": "e32",
@@ -299,7 +735,19 @@
    "statement": "Mueve 5 unidades de stock del producto 1 al producto 2 dentro de una transacción (BEGIN ... COMMIT). Ambos UPDATE se aplican o ninguno.",
    "solution": "BEGIN;\nUPDATE Productos SET Stock = Stock - 5 WHERE ProductoID = 1;\nUPDATE Productos SET Stock = Stock + 5 WHERE ProductoID = 2;\nCOMMIT;",
    "hint": "BEGIN; ...; COMMIT; (en SQL Server: BEGIN TRANSACTION).",
-   "verify": "SELECT ProductoID, Stock FROM Productos WHERE ProductoID IN (1,2) ORDER BY 1;"
+   "verify": "SELECT ProductoID, Stock FROM Productos WHERE ProductoID IN (1,2) ORDER BY 1;",
+   "variantes": [
+    {
+     "statement": "Mueve 3 unidades de stock del producto 3 al producto 4 dentro de una transacción (BEGIN ... COMMIT).",
+     "solution": "BEGIN;\nUPDATE Productos SET Stock = Stock - 3 WHERE ProductoID = 3;\nUPDATE Productos SET Stock = Stock + 3 WHERE ProductoID = 4;\nCOMMIT;",
+     "verify": "SELECT ProductoID, Stock FROM Productos WHERE ProductoID IN (3,4) ORDER BY 1;"
+    },
+    {
+     "statement": "En una transacción, sube un 10 % el salario de los empleados del departamento 3 y confirma con COMMIT.",
+     "solution": "BEGIN;\nUPDATE Empleados SET Salario = Salario * 1.10 WHERE DepartamentoID = 3;\nCOMMIT;",
+     "verify": "SELECT EmpleadoID, Salario FROM Empleados ORDER BY 1;"
+    }
+   ]
   },
   {
    "id": "e33",
@@ -309,7 +757,19 @@
    "statement": "Dentro de una transacción borra todos los pedidos y deshaz el cambio con ROLLBACK. Al final deben seguir existiendo.",
    "solution": "BEGIN;\nDELETE FROM Pedidos;\nROLLBACK;",
    "hint": "ROLLBACK revierte todo lo hecho desde el BEGIN.",
-   "verify": "SELECT COUNT(*) FROM Pedidos;"
+   "verify": "SELECT COUNT(*) FROM Pedidos;",
+   "variantes": [
+    {
+     "statement": "Dentro de una transacción borra todos los clientes y deshaz el cambio con ROLLBACK.",
+     "solution": "BEGIN;\nDELETE FROM Clientes;\nROLLBACK;",
+     "verify": "SELECT COUNT(*) FROM Clientes;"
+    },
+    {
+     "statement": "Dentro de una transacción pon a 0 el stock de todos los productos y deshaz el cambio con ROLLBACK.",
+     "solution": "BEGIN;\nUPDATE Productos SET Stock = 0;\nROLLBACK;",
+     "verify": "SELECT SUM(Stock) FROM Productos;"
+    }
+   ]
   },
   {
    "id": "e34",
@@ -319,7 +779,14 @@
    "statement": "En una transacción: sube 1 el stock de todos los productos, crea un SAVEPOINT sp1, pon el stock del producto 1 a 0, vuelve con ROLLBACK TO sp1 y confirma con COMMIT. Debe quedar el stock original +1.",
    "solution": "BEGIN;\nUPDATE Productos SET Stock = Stock + 1;\nSAVEPOINT sp1;\nUPDATE Productos SET Stock = 0 WHERE ProductoID = 1;\nROLLBACK TO sp1;\nCOMMIT;",
    "hint": "SAVEPOINT permite deshacer sólo una parte de la transacción.",
-   "verify": "SELECT ProductoID, Stock FROM Productos ORDER BY 1;"
+   "verify": "SELECT ProductoID, Stock FROM Productos ORDER BY 1;",
+   "variantes": [
+    {
+     "statement": "En una transacción: pon el precio de todos los productos a 1, SAVEPOINT sp1, borra los pedidos, ROLLBACK TO sp1 y COMMIT. Deben quedar los pedidos y los precios a 1.",
+     "solution": "BEGIN;\nUPDATE Productos SET Precio = 1;\nSAVEPOINT sp1;\nDELETE FROM Pedidos;\nROLLBACK TO sp1;\nCOMMIT;",
+     "verify": "SELECT (SELECT COUNT(*) FROM Pedidos), (SELECT SUM(Precio) FROM Productos);"
+    }
+   ]
   },
   {
    "id": "e35",
@@ -328,7 +795,21 @@
    "title": "Selección (σ)",
    "statement": "Selección: filas de Empleados con Salario > 3000.",
    "solution": "SELECT * FROM Empleados WHERE Salario > 3000;",
-   "hint": "La selección σ es el WHERE."
+   "hint": "La selección σ es el WHERE.",
+   "variantes": [
+    {
+     "statement": "Selección: filas de Productos con Precio > 100.",
+     "solution": "SELECT * FROM Productos WHERE Precio > 100;"
+    },
+    {
+     "statement": "Selección: filas de Pedidos con Estado = 'Pendiente'.",
+     "solution": "SELECT * FROM Pedidos WHERE Estado = 'Pendiente';"
+    },
+    {
+     "statement": "Selección con dos condiciones: empleados con Salario > 2500 y DepartamentoID = 3.",
+     "solution": "SELECT * FROM Empleados WHERE Salario > 2500 AND DepartamentoID = 3;"
+    }
+   ]
   },
   {
    "id": "e36",
@@ -337,7 +818,17 @@
    "title": "Proyección (π)",
    "statement": "Proyección sobre la columna Ciudad de Clientes, sin duplicados (el álgebra relacional elimina repetidas).",
    "solution": "SELECT DISTINCT Ciudad FROM Clientes;",
-   "hint": "La proyección π es SELECT; en álgebra no hay duplicados: DISTINCT."
+   "hint": "La proyección π es SELECT; en álgebra no hay duplicados: DISTINCT.",
+   "variantes": [
+    {
+     "statement": "Proyección sobre la columna Estado de Pedidos, sin duplicados.",
+     "solution": "SELECT DISTINCT Estado FROM Pedidos;"
+    },
+    {
+     "statement": "Proyección sobre la columna Categoria de Productos, sin duplicados.",
+     "solution": "SELECT DISTINCT Categoria FROM Productos;"
+    }
+   ]
   },
   {
    "id": "e37",
@@ -346,7 +837,17 @@
    "title": "Unión (∪)",
    "statement": "Unión de las ciudades de Clientes y las de Departamentos.",
    "solution": "SELECT Ciudad FROM Clientes UNION SELECT Ciudad FROM Departamentos;",
-   "hint": "UNION elimina duplicados; UNION ALL no."
+   "hint": "UNION elimina duplicados; UNION ALL no.",
+   "variantes": [
+    {
+     "statement": "Unión de los nombres de Clientes y los nombres de Empleados.",
+     "solution": "SELECT Nombre FROM Clientes UNION SELECT Nombre FROM Empleados;"
+    },
+    {
+     "statement": "Unión de los ClienteID de Pedidos con los ClienteID de Clientes de Madrid.",
+     "solution": "SELECT ClienteID FROM Pedidos UNION SELECT ClienteID FROM Clientes WHERE Ciudad = 'Madrid';"
+    }
+   ]
   },
   {
    "id": "e38",
@@ -355,7 +856,17 @@
    "title": "Diferencia (−)",
    "statement": "Ciudades que tienen Clientes pero no tienen ningún Departamento.",
    "solution": "SELECT Ciudad FROM Clientes EXCEPT SELECT Ciudad FROM Departamentos;",
-   "hint": "EXCEPT (MINUS en Oracle)."
+   "hint": "EXCEPT (MINUS en Oracle).",
+   "variantes": [
+    {
+     "statement": "Productos que nunca se han pedido, con diferencia: ProductoID de Productos menos ProductoID de LineasPedido (inserta antes un producto: INSERT INTO Productos VALUES (8,'Patch panel',35,12,'Cables');).",
+     "solution": "INSERT INTO Productos VALUES (8,'Patch panel',35,12,'Cables');\nSELECT ProductoID FROM Productos EXCEPT SELECT ProductoID FROM LineasPedido;"
+    },
+    {
+     "statement": "ClienteID de Clientes que no aparecen en Pedidos (diferencia).",
+     "solution": "SELECT ClienteID FROM Clientes EXCEPT SELECT ClienteID FROM Pedidos;"
+    }
+   ]
   },
   {
    "id": "e39",
@@ -364,7 +875,17 @@
    "title": "Intersección (∩)",
    "statement": "Ciudades que tienen a la vez Clientes y Departamentos.",
    "solution": "SELECT Ciudad FROM Clientes INTERSECT SELECT Ciudad FROM Departamentos;",
-   "hint": "INTERSECT."
+   "hint": "INTERSECT.",
+   "variantes": [
+    {
+     "statement": "ClienteID que aparecen a la vez en pedidos Entregados y en pedidos Cancelados (intersección).",
+     "solution": "SELECT ClienteID FROM Pedidos WHERE Estado = 'Entregado' INTERSECT SELECT ClienteID FROM Pedidos WHERE Estado = 'Cancelado';"
+    },
+    {
+     "statement": "ProductoID que aparecen en las líneas de los pedidos 1 y 4 a la vez (intersección).",
+     "solution": "SELECT ProductoID FROM LineasPedido WHERE PedidoID = 1 INTERSECT SELECT ProductoID FROM LineasPedido WHERE PedidoID = 4;"
+    }
+   ]
   },
   {
    "id": "e40",
@@ -373,7 +894,17 @@
    "title": "Producto cartesiano (×)",
    "statement": "Producto cartesiano entre Departamentos y Clientes: devuelve DepartamentoID y ClienteID de todas las combinaciones.",
    "solution": "SELECT d.DepartamentoID, c.ClienteID FROM Departamentos d CROSS JOIN Clientes c;",
-   "hint": "CROSS JOIN o FROM A, B sin condición: n×m filas."
+   "hint": "CROSS JOIN o FROM A, B sin condición: n×m filas.",
+   "variantes": [
+    {
+     "statement": "Producto cartesiano entre Departamentos y Productos: DepartamentoID y ProductoID de todas las combinaciones.",
+     "solution": "SELECT d.DepartamentoID, p.ProductoID FROM Departamentos d CROSS JOIN Productos p;"
+    },
+    {
+     "statement": "Producto cartesiano entre Clientes y Productos: ClienteID y ProductoID de todas las combinaciones.",
+     "solution": "SELECT c.ClienteID, p.ProductoID FROM Clientes c CROSS JOIN Productos p;"
+    }
+   ]
   }
  ]
 }
