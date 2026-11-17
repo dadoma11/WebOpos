@@ -18,7 +18,8 @@ G.e3=function(r){var t=r.int(0,3);
  var l=r.pick(['a','e','o','r']);return{statement:'Empleados cuyo nombre tiene como segunda letra una «'+l+'» (usa _).',solution:'SELECT * FROM Empleados WHERE Nombre LIKE '+Q('_'+l+'%')+';'}};
 G.e4=function(r){var o=r.pick([['Clientes','Email','email'],['Empleados','JefeID','jefe'],['Empleados','DepartamentoID','departamento']]),nn=r.f()<.4;
  return{statement:o[0]+' que '+(nn?'sí tienen':'no tienen')+' '+o[2]+' ('+o[1]+(nn?' IS NOT NULL':' IS NULL')+').',solution:'SELECT * FROM '+o[0]+' WHERE '+o[1]+(nn?' IS NOT NULL;':' IS NULL;')}};
-G.e5=function(r){if(r.f()<.6){var o=r.pick([['Clientes','Email'],['Empleados','JefeID'],['Empleados','DepartamentoID']]);return{statement:'En una sola consulta: número total de filas de '+o[0]+' y cuántas tienen '+o[1]+' no nulo.',solution:'SELECT COUNT(*), COUNT('+o[1]+') FROM '+o[0]+';'}}
+G.e5=function(r){var o5=G.e5b(r);return o5};
+G.e5b=function(r){if(r.f()<.6){var o=r.pick([['Clientes','Email'],['Empleados','JefeID'],['Empleados','DepartamentoID']]);return{statement:'En una sola consulta: número total de filas de '+o[0]+' y cuántas tienen '+o[1]+' no nulo.',solution:'SELECT COUNT(*), COUNT('+o[1]+') FROM '+o[0]+';'}}
  var p=r.pick([['Pedidos','ClienteID'],['Productos','Categoria'],['Clientes','Ciudad']]);return{statement:'En una sola consulta: número de filas de '+p[0]+' y número de valores distintos de '+p[1]+' (COUNT(DISTINCT ...)).',solution:'SELECT COUNT(*), COUNT(DISTINCT '+p[1]+') FROM '+p[0]+';'}};
 var CNT=[['COUNT(*)','número de filas']];
 G.e6=function(r){var S=r.pick([['Productos','Categoria',[['COUNT(*)','número de productos'],['AVG(Precio)','precio medio'],['SUM(Stock)','stock total'],['MAX(Precio)','precio máximo'],['MIN(Precio)','precio mínimo']]],['Pedidos','Estado',CNT],['Pedidos','ClienteID',CNT],['Clientes','Ciudad',CNT],['Empleados','DepartamentoID',[['COUNT(*)','número de empleados'],['AVG(Salario)','salario medio'],['MAX(Salario)','salario máximo'],['MIN(Salario)','salario mínimo'],['SUM(Salario)','masa salarial']]],['LineasPedido','ProductoID',[['SUM(Cantidad)','unidades pedidas'],['COUNT(*)','número de líneas']]]]);
@@ -130,5 +131,113 @@ function DATA(r){var o=[],i;
  var ln=[[1,1],[1,3],[2,2],[2,5],[3,6],[4,4],[4,3],[5,1],[5,7],[6,2]];ln.forEach(function(l){o.push('UPDATE LineasPedido SET Cantidad = '+r.int(1,30)+' WHERE PedidoID = '+l[0]+' AND ProductoID = '+l[1]+';')});
  [1,2,3,4].forEach(function(d){o.push('UPDATE Departamentos SET Ciudad = '+Q(r.pick(CIU))+' WHERE DepartamentoID = '+d+';')});
  return o.join('\n')}
-window.SQLGEN={R:R,G:G,data:DATA};
+
+/* mutaciones de una solución SQL para fabricar opciones incorrectas */
+var POOLS=[CAT,EST,CIU,['Madrid','Sevilla','Valencia','Bilbao'],['gmail.com','empresa.es','correo.com']];
+function segs(sql){var out=[],re=/'(?:[^']|'')*'/g,last=0,m;while((m=re.exec(sql))){if(m.index>last)out.push({c:1,v:sql.slice(last,m.index)});out.push({c:0,v:m[0]});last=m.index+m[0].length}if(last<sql.length)out.push({c:1,v:sql.slice(last)});return out}
+function MUT(sql){var S=segs(sql),res=[],F='';
+ function add(i,start,len,rep,desc,force){var c=S[i].v,nv=c.slice(0,start)+rep+c.slice(start+len),t=S.map(function(x,k){return k===i?nv:x.v}).join('');if(t!==sql)res.push({sql:t,desc:desc,force:!!force,fam:F})}
+ function each(re,fn,force){S.forEach(function(sg,i){if(!sg.c)return;var m;re.lastIndex=0;while((m=re.exec(sg.v))){var o=fn(m);if(o){(Array.isArray(o)?o:[o]).forEach(function(x){add(i,m.index+(x.off||0),x.len!==undefined?x.len:m[0].length,x.rep,x.desc,force||x.force)})}if(m[0].length===0)re.lastIndex++}})}
+ var OP={'>':'<','<':'>','>=':'>','<=':'<','<>':'=','=':'<>'};
+ F='op';
+ each(/(\s)(>=|<=|<>|>|<|=)(?=\s)/g,function(m){return{off:1,len:m[2].length,rep:OP[m[2]],desc:'Cambia el operador «'+m[2]+'» por «'+OP[m[2]]+'»'}});
+ F='ord';
+ each(/\b(ASC|DESC)\b/g,function(m){var n=m[1]==='ASC'?'DESC':'ASC';return{rep:n,desc:'Ordena al revés: «'+n+'» en lugar de «'+m[1]+'»'}});
+ F='join';
+ each(/\b(INNER |LEFT |CROSS )?JOIN\b/g,function(m){var a=m[1]?m[1].trim():'';var alts=a==='INNER'?['LEFT JOIN']:a==='LEFT'?['INNER JOIN']:a==='CROSS'?['INNER JOIN']:['LEFT JOIN'];return alts.map(function(x){return{rep:x,desc:'Usa «'+x+'» en lugar de «'+(a?a+' ':'')+'JOIN»: cambia qué filas sin pareja se devuelven'}})});
+ F='nul';
+ each(/\bIS (NOT )?NULL\b/g,function(m){var n=m[1]?'IS NULL':'IS NOT NULL';return{rep:n,desc:'Invierte la condición: «'+n+'» en lugar de «'+m[0]+'»'}});
+ F='neg';
+ each(/\b(NOT )?(IN|EXISTS|LIKE)\b(?= ?[(']| \()/g,function(m){var n=m[1]?m[2]:'NOT '+m[2];return{rep:n,desc:'Invierte la condición: «'+n+'» en lugar de «'+m[0]+'»'}});
+ var AG={AVG:['MAX','SUM','MIN'],SUM:['AVG','MAX'],MAX:['MIN','AVG'],MIN:['MAX','AVG']};
+ F='agg';
+ each(/\b(AVG|SUM|MAX|MIN)\(/g,function(m){return AG[m[1]].map(function(x){return{rep:x+'(',desc:'Usa «'+x+'» en lugar de «'+m[1]+'»'}})});
+ F='cnt';
+ each(/COUNT\((?!\*|DISTINCT)([^)]+)\)/g,function(m){return{rep:'COUNT(*)',desc:'Usa «COUNT(*)» en lugar de «COUNT('+m[1]+')»: cuenta también los NULL'}});
+ F='cntd';
+ each(/COUNT\(DISTINCT ([^)]+)\)/g,function(m){return{rep:'COUNT('+m[1]+')',desc:'Quita DISTINCT: cuenta valores repetidos'}});
+ var SO={'UNION ALL':['UNION','INTERSECT'],'UNION':['UNION ALL','INTERSECT','EXCEPT'],'INTERSECT':['UNION','EXCEPT'],'EXCEPT':['INTERSECT','UNION']};
+ F='setop';
+ each(/\b(UNION ALL|UNION|INTERSECT|EXCEPT)\b/g,function(m){return SO[m[1]].map(function(x){return{rep:x,desc:'Usa «'+x+'» en lugar de «'+m[1]+'»'}})});
+ F='dist';
+ each(/\bSELECT DISTINCT\b/g,function(){return{rep:'SELECT',desc:'Quita DISTINCT: aparecen valores repetidos'}});
+ F='num';
+ each(/\b\d+(?:\.\d+)?\b/g,function(m){var v=parseFloat(m[0]);if(/\d{4}-/.test(m.input.slice(Math.max(0,m.index-5),m.index+6)))return null;var alts=m[0].indexOf('.')>=0?[(v+0.05).toFixed(2),(v-0.05).toFixed(2)]:v>=20?[String(Math.round(v*1.4/5)*5),String(Math.round(v*0.6/5)*5),String(Math.round(v*1.15/5)*5+5)]:[String(v+1),String(v>1?v-1:v+2),String(v*2),String(v+3)];return alts.slice(0,2).map(function(x){return{rep:x,desc:'Cambia el valor «'+m[0]+'» por «'+x+'»'}})});
+ F='str';
+ S.forEach(function(sg,i){if(sg.c)return;var q=sg.v.slice(1,-1);POOLS.forEach(function(p){var k=p.indexOf(q);if(k>=0)p.filter(function(x){return x!==q}).slice(0,2).forEach(function(x){add(i,0,sg.v.length,"'"+x+"'",'Usa «'+x+'» en lugar de «'+q+'»')})})});
+ F='commit';
+ each(/\bCOMMIT\b/g,function(){return{rep:'ROLLBACK',desc:'Termina con «ROLLBACK»: deshace los cambios en vez de confirmarlos'}});
+ F='rbto';
+ each(/\bROLLBACK TO (\w+)/g,function(m){return{rep:'RELEASE '+m[1],desc:'«RELEASE» conserva los cambios del savepoint en vez de deshacerlos'}});
+ F='rb';
+ each(/\bROLLBACK;/g,function(){return{rep:'COMMIT;',desc:'«COMMIT» confirma los cambios en lugar de deshacerlos'}});
+ F='trig';
+ each(/\bAFTER (INSERT|DELETE)\b/g,function(m){var n=m[1]==='INSERT'?'DELETE':'INSERT';return{rep:'AFTER '+n,desc:'El trigger se dispara con «'+n+'» en lugar de «'+m[1]+'»'}});
+ F='before';
+ each(/\bBEFORE\b/g,function(){return{rep:'AFTER',desc:'Usa «AFTER» en lugar de «BEFORE»'}});
+ F='arith';
+ each(/ (\+|-|\*) /g,function(m){if(m[1]==='*'&&/SELECT(?: DISTINCT)?$/.test(m.input.slice(0,m.index)))return null;var n={'+':'-','-':'+','*':'/'}[m[1]];return{off:1,len:1,rep:n,desc:'Cambia «'+m[1]+'» por «'+n+'»'}});
+ F='where';
+ (function(){var re=/ WHERE (?:[^;')]|'[^']*')*?(?= GROUP BY| ORDER BY| LIMIT|;|\)|$)/g,m;F='where';while((m=re.exec(sql))){var t=sql.slice(0,m.index)+sql.slice(m.index+m[0].length);if(t!==sql)res.push({sql:t,desc:'Sin cláusula WHERE: no filtra las filas',force:false,fam:F});if(!m[0].length)re.lastIndex++}})();
+ F='cntstar';each(/\bSELECT \*/g,function(){return{rep:'SELECT COUNT(*)',desc:'Cuenta las filas en vez de mostrarlas'}});
+ F='eqnull';each(/\bIS NOT NULL\b/g,function(){return{rep:'<> NULL',desc:'«<> NULL» nunca es verdadero: para nulos se usa IS NOT NULL'}});each(/\bIS NULL\b/g,function(){return{rep:'= NULL',desc:'«= NULL» nunca es verdadero: para nulos se usa IS NULL'}});
+ F='new';
+ each(/\bNEW\./g,function(){return{rep:'OLD.',desc:'Usa «OLD» (valor anterior) en lugar de «NEW»'}});
+ F='old';
+ each(/\bOLD\./g,function(){return{rep:'NEW.',desc:'Usa «NEW» (valor nuevo) en lugar de «OLD»'}});
+ F='pk';
+ each(/\bINTEGER PRIMARY KEY\b/g,function(){return{rep:'INTEGER',desc:'Sin PRIMARY KEY: la columna no es clave primaria',force:1}},1);
+ F='uq';
+ each(/ UNIQUE\b/g,function(){return{rep:'',desc:'Sin UNIQUE: se permiten valores repetidos',force:1}},1);
+ F='nn';
+ each(/ NOT NULL\b/g,function(){return{rep:'',desc:'Sin NOT NULL: se permiten nulos',force:1}},1);
+ F='ck';
+ each(/ CHECK \((?:[^()]|\([^()]*\))*\)/g,function(){return{rep:'',desc:'Sin CHECK: no se valida el rango',force:1}},1);
+ F='fk';
+ each(/ REFERENCES \w+\(\w+\)/g,function(){return{rep:'',desc:'Sin REFERENCES: no hay clave foránea (no se garantiza la integridad referencial)',force:1}},1);
+ F='idx';
+ each(/CREATE UNIQUE INDEX/g,function(){return{rep:'CREATE INDEX',desc:'Índice no único: permite valores repetidos',force:1}},1);
+ F='idx2';
+ each(/CREATE INDEX/g,function(){return{rep:'CREATE UNIQUE INDEX',desc:'Índice único: impide valores repetidos (no es lo que se pide)',force:1}},1);
+ F='int';
+ each(/\bINTEGER\b(?! PRIMARY)/g,function(){return{rep:'TEXT',desc:'Tipo TEXT en lugar de INTEGER',force:1}},1);
+ F='addc';
+ each(/\bADD COLUMN\b/g,function(){return{rep:'DROP COLUMN',desc:'«DROP COLUMN» elimina una columna en vez de añadirla',force:1}},1);
+ F='ren';
+ each(/\bRENAME TO\b/g,function(){return{rep:'ADD COLUMN',desc:'«ADD COLUMN» no renombra la tabla',force:1}},1);
+ 
+ F='lk';S.forEach(function(sg,i){if(sg.c)return;var q=sg.v.slice(1,-1);if(!/[%_]/.test(q))return;var core=q.replace(/[%_]/g,''),alts=[];if(/%/.test(q)){alts=['%'+core+'%',q.charAt(0)==='%'?core+'%':'%'+core]}else{alts=[q+'_',q.replace('_','')]}alts.forEach(function(x){if(x!==q)add(i,0,sg.v.length,"'"+x+"'",'Usa el patrón «'+x+'» en lugar de «'+q+'»')})});
+ F='grp';each(/ GROUP BY [\w.]+(?:, ?[\w.]+)*/g,function(){return{rep:'',desc:'Sin GROUP BY: agrega todas las filas en una sola'}});
+ F='nobegin';each(/\bBEGIN;\n/g,function(){return{rep:'',desc:'Sin BEGIN: no hay transacción',force:1}},1);
+ F='norb';each(/\nROLLBACK;/g,function(){return{rep:'',desc:'Sin ROLLBACK: los cambios se quedan aplicados'}});
+ F='rj';each(/\bLEFT JOIN\b/g,function(){return[{rep:'RIGHT JOIN',desc:'Usa «RIGHT JOIN» en lugar de «LEFT JOIN»: conserva la tabla de la derecha'}]});
+ return res}
+
+/* elige 3 opciones incorrectas válidas ejecutándolas sobre la BD de la variante */
+function sigOf(r,ord){var l=r.length?r[r.length-1]:null;if(!l)return 'NONE';var rows=l.values.map(function(v){return JSON.stringify(v.map(function(c){return typeof c==='number'?Math.round(c*1e4)/1e4:c}))});if(!ord)rows.sort();return JSON.stringify(rows)}
+function runSig(mk,sql,verify){var d=mk();try{var r=d.exec(sql);if(verify)r=d.exec(verify);return{sig:sigOf(r,/order by/i.test(sql)&&!verify)}}catch(e){return{err:e.message}}finally{d.close()}}
+function distract(ex,mk,seed,k){k=k||3;var good=runSig(mk,ex.solution,ex.verify),rng=R(seed*7+3),W=(ex.wrong||[]).map(function(w,i){return{sql:w.sql,desc:w.desc,force:!!w.force,fam:'w'+i}}),c=W.concat(shuffle(rng,MUT(ex.solution))),out=[],seen={},used={},fams={};used[ex.solution]=1;
+ var cache={};function ev(m){return cache[m.sql]||(cache[m.sql]=runSig(mk,m.sql,ex.verify))}
+ function take(pred,onefam){for(var i=0;i<c.length&&out.length<k;i++){var m=c[i];if(used[m.sql])continue;if(onefam&&fams[m.fam])continue;var x=ev(m);if(pred(m,x)){used[m.sql]=1;fams[m.fam]=1;if(x.sig)seen[x.sig]=1;out.push({sql:m.sql,desc:m.desc})}}}
+ take(function(m,x){return !x.err&&x.sig!==good.sig&&!seen[x.sig]&&!m.force},1);
+ take(function(m,x){return m.force},1);
+ take(function(m,x){return !x.err&&x.sig!==good.sig&&!seen[x.sig]&&!m.force},0);
+ take(function(m,x){return !x.err&&x.sig!==good.sig&&!m.force},0);
+ take(function(m,x){return m.force&&!x.err},0);
+ take(function(m,x){return !!x.err&&!m.force},0);
+ if(out.length<k){var ln=ex.solution.split('\n');if(ln.length>1)for(var q=ln.length-1;q>=0&&out.length<k;q--){var t2=ln.filter(function(_,j){return j!==q}).join('\n');if(!used[t2]){used[t2]=1;out.push({sql:t2,desc:'Le falta la sentencia «'+ln[q].replace(/;\s*$/,'')+'»'})}}}
+ if(out.length<k&&/^\s*SELECT/i.test(ex.solution)){var n=0;while(out.length<k&&n<3){n++;var t=ex.solution.replace(/;\s*$/,'')+(n===1?' LIMIT 1;':n===2?' ORDER BY 1 DESC LIMIT 2;':' LIMIT 3;');if(!used[t]){used[t]=1;out.push({sql:t,desc:'Devuelve sólo unas pocas filas (LIMIT) en lugar de todas las pedidas'})}}}
+ while(out.length<k){var f='SELECT '+(out.length+1)+';';if(!used[f]){used[f]=1;out.push({sql:f,desc:'No hace lo que pide el enunciado'})}else out.push({sql:'SELECT '+(out.length+7)+';',desc:'No hace lo que pide el enunciado'})}
+ return out}
+
+var W={};
+(function(){function W(id,fn){var g=G[id];G[id]=function(r){return fn(g(r),r)}}
+ W('e5',function(o,r){var m=/SELECT COUNT\(\*\), COUNT\((DISTINCT )?(\w+)\) FROM (\w+);/.exec(o.solution);if(m){var c=m[2],t=m[3],d=m[1]||'';o.wrong=[{sql:'SELECT COUNT('+d+c+'), COUNT(*) FROM '+t+';',desc:'Las dos funciones están intercambiadas'},{sql:'SELECT COUNT(*), COUNT(*) FROM '+t+';',desc:'Cuenta dos veces todas las filas (COUNT(*) cuenta también los NULL)'},{sql:'SELECT COUNT(*) - COUNT('+d+c+'), COUNT('+d+c+') FROM '+t+';',desc:'La primera columna resta en vez de contar todas las filas'},{sql:'SELECT COUNT('+c+'), COUNT(DISTINCT '+c+') FROM '+t+';',desc:'No cuenta el total de filas'}]}return o});
+ W('e6',function(o,r){var m=/FROM (\w+) GROUP BY (\w+);/.exec(o.solution);if(m){var alt={Productos:'ProductoID',Pedidos:'PedidoID',Clientes:'ClienteID',Empleados:'EmpleadoID',LineasPedido:'PedidoID'}[m[1]];o.wrong=[{sql:o.solution.replace('GROUP BY '+m[2],'GROUP BY '+alt),desc:'Agrupa por otra columna ('+alt+')'},{sql:o.solution.replace(/SELECT /,'SELECT DISTINCT ').replace(/, [^F]*FROM/,' FROM').replace(/ GROUP BY \w+/,''),desc:'No calcula las agregaciones: sólo lista los valores'}]}return o});
+ W('e24',function(o,r){var m=/CREATE (UNIQUE )?INDEX (\w+) ON (\w+)\(([^)]+)\);/.exec(o.solution);if(m){var u=m[1]||'',n=m[2],t=m[3],c=m[4];o.wrong=[{sql:'CREATE '+u+'INDEX '+n+' ON '+t+'('+c.split(',')[0]+'ID);',desc:'Indexa una columna que no es la pedida',force:1},{sql:'CREATE '+u+'INDEX '+n+'_2 ON '+t+'('+c+');',desc:'El índice tiene otro nombre distinto del pedido'},{sql:'CREATE TABLE '+n+' ('+c.split(',')[0]+' INTEGER);',desc:'Crea una tabla, no un índice'}]}return o});
+ W('e36',function(o,r){var m=/SELECT DISTINCT (\w+) FROM (\w+);/.exec(o.solution);if(m){var c=m[1],t=m[2];o.wrong=[{sql:'SELECT COUNT(DISTINCT '+c+') FROM '+t+';',desc:'Devuelve cuántos valores distintos hay, no los valores'},{sql:'SELECT '+c+', COUNT(*) FROM '+t+' GROUP BY '+c+' HAVING COUNT(*) > 1;',desc:'Sólo los valores repetidos y su recuento'},{sql:'SELECT DISTINCT '+c+' FROM '+t+' ORDER BY '+c+' DESC LIMIT 1;',desc:'Sólo un valor (el último)'}]}return o});
+ W('e40',function(o,r){var m=/SELECT (\w)\.(\w+), (\w)\.(\w+) FROM (\w+) (\w) CROSS JOIN (\w+) (\w);/.exec(o.solution);if(m){o.wrong=[{sql:'SELECT '+m[1]+'.'+m[2]+', '+m[3]+'.'+m[4]+' FROM '+m[5]+' '+m[6]+' INNER JOIN '+m[7]+' '+m[8]+' ON '+m[1]+'.'+m[2]+' = '+m[3]+'.'+m[4]+';',desc:'INNER JOIN con condición: sólo las parejas que coinciden'},{sql:'SELECT '+m[1]+'.'+m[2]+', '+m[3]+'.'+m[4]+' FROM '+m[5]+' '+m[6]+' LEFT JOIN '+m[7]+' '+m[8]+' ON '+m[1]+'.'+m[2]+' = '+m[3]+'.'+m[4]+';',desc:'LEFT JOIN con condición: no es un producto cartesiano'},{sql:'SELECT COUNT(*) FROM '+m[5]+' '+m[6]+' CROSS JOIN '+m[7]+' '+m[8]+';',desc:'Sólo cuenta las combinaciones'},{sql:'SELECT '+m[1]+'.'+m[2]+', '+m[3]+'.'+m[4]+' FROM '+m[5]+' '+m[6]+', '+m[7]+' '+m[8]+' WHERE '+m[1]+'.'+m[2]+' = '+m[3]+'.'+m[4]+';',desc:'Con WHERE se filtran las combinaciones'}]}return o});
+ W('e23',function(o,r){var m;if((m=/ALTER TABLE (\w+) ADD COLUMN (\w+) (\w+)( DEFAULT \d+)?;/.exec(o.solution))){o.wrong=[{sql:'ALTER TABLE '+m[1]+' ADD '+m[2]+'_x '+m[3]+(m[4]||'')+';',desc:'La columna se llama distinto',force:1},{sql:'ALTER TABLE '+m[1]+' DROP COLUMN '+m[2]+';',desc:'Intenta eliminar una columna',force:1},{sql:'CREATE TABLE '+m[1]+' ('+m[2]+' '+m[3]+');',desc:'Intenta crear la tabla de nuevo',force:1}]}else if((m=/ALTER TABLE (\w+) RENAME TO (\w+);/.exec(o.solution))){o.wrong=[{sql:'ALTER TABLE '+m[2]+' RENAME TO '+m[1]+';',desc:'Renombra en sentido inverso (la tabla nueva no existe)',force:1},{sql:'ALTER TABLE '+m[1]+' RENAME COLUMN '+m[1]+'ID TO '+m[2]+'ID;',desc:'Renombra una columna, no la tabla',force:1},{sql:'DROP TABLE '+m[1]+';',desc:'Elimina la tabla',force:1}]}return o});
+ })();
+window.SQLGEN={R:R,G:G,data:DATA,MUT:MUT,shuffle:shuffle,distract:distract};
 })();
