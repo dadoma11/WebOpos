@@ -13,4 +13,4 @@ ALLOWED_ORIGINS = "https://dadoma11.github.io"
 # "1" = cualquiera puede crear cuenta; "0" = cerrado
 ALLOW_REGISTER = "1"
 # Si pones un texto aquí, hará falta para crear cuenta (código de invitación)
-INVITE_CODE = ""
+INVITE_CODE = "TAI-U7ESG4"
