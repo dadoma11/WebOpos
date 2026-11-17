@@ -29,10 +29,11 @@ var isLogin=/login\.html$/.test(location.pathname);
 var s=session();
 if(!isLogin&&!s){location.replace(ROOT+'login.html?next='+encodeURIComponent(location.pathname.split('/').pop()+location.search+location.hash));document.documentElement.style.visibility='hidden';return}
 if(isLogin&&s){var nx=new URLSearchParams(location.search).get('next');if(!nx||/^(https?:)?\/\//.test(nx)||nx.indexOf('..')>=0)nx='index.html';location.replace(ROOT+nx);return}
+if(!isLogin&&!/sync\.html$/.test(location.pathname)&&LS.g('tai_token')){var sc=document.createElement('script');sc.src=ROOT+'sync.js';document.head.appendChild(sc)}
 document.addEventListener('DOMContentLoaded',function(){var nav=document.querySelector('.top nav');if(!nav||isLogin)return;
  var has=function(h){return nav.querySelector('a[href$="'+h+'"]')};
  var th=nav.querySelector('#thm');
- [['examinate.html','📝 Examínate'],['laboratorio.html','🧪 Lab SQL']].forEach(function(p){if(has(p[0]))return;var a=document.createElement('a');a.href=ROOT+p[0];a.textContent=p[1];nav.insertBefore(a,th)});
+ [['examinate.html','📝 Examínate'],['laboratorio.html','🧪 Lab SQL'],['sync.html','☁ Sync']].forEach(function(p){if(has(p[0]))return;var a=document.createElement('a');a.href=ROOT+p[0];a.textContent=p[1];nav.insertBefore(a,th)});
  var cur=location.pathname.split('/').pop();Array.prototype.forEach.call(nav.querySelectorAll('a'),function(a){if(a.getAttribute('href').split('/').pop()===cur)a.className='cur'});
  var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.textContent='Salir · '+(users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)});
 })();

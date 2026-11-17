@@ -79,7 +79,7 @@ function start(list,mins,shuffleOpts){
  var items=list.map(function(q){var ord=q.o.map(function(_,i){return i});
   if(shuffleOpts&&!/anteriores|ninguna de|ambas|todas las|ninguna es|ambos/i.test(q.o.join(' ')))ord=shuf(ord);
   return {q:q,ord:ord,ans:-1,flag:false}});
- cur={items:items,i:0,total:mins*60,left:mins*60,t0:Date.now()};render();
+ window.__inExam=true;cur={items:items,i:0,total:mins*60,left:mins*60,t0:Date.now()};render();
  clearInterval(tick);tick=setInterval(function(){if(!cur||cur.done)return;var el=Math.round((Date.now()-cur.t0)/1000);cur.left=cur.total?cur.total-el:el;var t=$('#clock');if(t)t.textContent=fmt(Math.abs(cur.left));
   if(cur.total&&cur.left<=60&&t)t.classList.add('ko');if(cur.total&&cur.left<=0){finish(true)}},500)}
 function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q;
@@ -95,7 +95,7 @@ function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q;
  $('#prev').onclick=function(){c.i--;render()};$('#next').onclick=function(){c.i++;render()};
  $('#clr').onclick=function(){it.ans=-1;render()};$('#flag').onclick=function(){it.flag=!it.flag;render()};
  $('#fin').onclick=function(){var b=c.items.filter(function(x){return x.ans<0}).length;if(!b||confirm('Te quedan '+b+' sin contestar (no restan). ¿Terminar el examen?'))finish(false)}}
-function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;clearInterval(tick);
+function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam=false;clearInterval(tick);
  var A=0,E=0,B=0,per={},fl=fails();
  c.items.forEach(function(it){var q=it.q,b=q.k.charAt(1);per[b]=per[b]||{a:0,e:0,b:0};
   if(it.ans<0){B++;per[b].b++}else if(it.ord[it.ans]===q.c){A++;per[b].a++;delete fl[q.id]}else{E++;per[b].e++;fl[q.id]=1}});
@@ -118,5 +118,6 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;clearInterval(t
  rev();$('#onlyw').onchange=rev;
  $('#again').onclick=config;
  $('#rf').onclick=function(){var l=c.items.filter(function(it){return !(it.ans>=0&&it.ord[it.ans]===it.q.c)}).map(function(it){return it.q});if(!l.length){alert('No hay falladas 🎉');return}start(shuf(l),c.total?Math.ceil(c.total/60*l.length/N):0,true)}}
+function cfgDone(){window.__inExam=false}
 window.addEventListener('beforeunload',function(e){if(cur&&!cur.done){e.preventDefault();e.returnValue=''}});
 })();
