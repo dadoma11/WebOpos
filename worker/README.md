@@ -4,8 +4,7 @@ Cuentas, sesiones con IP y sincronización del progreso (sin SQL).
 ```bash
 cd worker
 npx wrangler login
-npx wrangler d1 create webopos          # copia el database_id en wrangler.toml
-npx wrangler d1 execute webopos --remote --file=schema.sql
+# (la base D1 «webopos» y sus tablas ya están creadas; el id ya está en wrangler.toml)
 npx wrangler deploy                     # imprime https://webopos-api.<tu-subdominio>.workers.dev
 ```
 Después pon esa URL en `auth.js`: `var CFG={apiUrl:"https://webopos-api.….workers.dev"};` y sube el cambio.

@@ -5,7 +5,7 @@ compatibility_date = "2025-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "webopos"
-database_id = "REEMPLAZA_CON_EL_ID_DE_TU_D1"
+database_id = "beba35b4-bfbc-4ab6-bb0d-a7d4c8f46c29"
 
 [vars]
 # Orígenes que pueden usar la API (tu web). Separa con comas.
