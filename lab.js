@@ -37,7 +37,37 @@ var THEMES={
    for(i=1;i<=P;i++)o.push("INSERT INTO Proyectos VALUES("+i+","+sq('Proyecto '+pn[i-1])+","+g.i(10,200)*1000+")");
    for(i=1;i<=E;i++){var u={};for(var k=g.i(0,2);k>0;k--){var p=g.i(1,P);if(u[p])continue;u[p]=1;o.push("INSERT INTO Asignaciones VALUES("+i+","+p+","+g.i(5,120)+")")}}return o.join(';')}}
 };
-function randomDb(theme,seed){var T=THEMES[theme],d=new (A.SQL().Database)();d.run(T.schema);d.run(T.data(mk(seed)));return d}
+var LEVELS=['Básico','Intermedio','Avanzado','Experto'];
+function extend(d,lv,g){if(lv<1)return;var q1=function(sql){var r=d.exec(sql);return r.length?r[0].values:[]},cnt=function(t){return q1('SELECT COUNT(*) FROM "'+t+'"')[0][0]};
+ var inf=A.info(d),ts=Object.keys(inf).filter(function(n){var p=inf[n].cols.filter(function(c){return c.pk});return p.length===1}),T1=ts[0],T2=ts[1]||ts[0],T3=ts[2]||ts[0],
+  pk=function(t){return inf[t].cols.filter(function(c){return c.pk})[0].n},n1=cnt(T1),n2=cnt(T2),n3=cnt(T3),o=[];
+ var tg=['urgente','revisado','destacado','archivo','nuevo','externo','interno'];
+ // Intermedio: etiquetas N:M + notas 1:N
+ o.push('CREATE TABLE Etiquetas(EtiquetaID INTEGER PRIMARY KEY,Nombre TEXT NOT NULL UNIQUE)');
+ for(var i=0;i<tg.length;i++)o.push('INSERT INTO Etiquetas VALUES('+(i+1)+','+sq(tg[i])+')');
+ o.push('CREATE TABLE '+T1+'_Etiquetas('+pk(T1)+'_Ref INTEGER REFERENCES '+T1+'('+pk(T1)+'),EtiquetaID INTEGER REFERENCES Etiquetas(EtiquetaID),PRIMARY KEY('+pk(T1)+'_Ref,EtiquetaID))');
+ for(i=1;i<=n1;i++){var u={};for(var k=g.i(0,3);k>0;k--){var e=g.i(1,7);if(u[e])continue;u[e]=1;o.push('INSERT INTO '+T1+'_Etiquetas VALUES('+i+','+e+')')}}
+ o.push('CREATE TABLE Notas_'+T2+'(NotaID INTEGER PRIMARY KEY,'+pk(T2)+'_Ref INTEGER NOT NULL REFERENCES '+T2+'('+pk(T2)+'),Texto TEXT,Fecha TEXT)');
+ for(i=1;i<=Math.max(6,n2*2);i++)o.push('INSERT INTO Notas_'+T2+' VALUES('+i+','+g.i(1,n2)+','+sq(g.p(['Revisar','Pendiente de datos','Todo correcto','Consultar','Duplicado?']))+','+sq(date(g,2025,2026))+')');
+ if(lv>=2){ // Avanzado: regiones jerárquicas, usuarios, registro (tabla de hechos con 3 FKs)
+  o.push('CREATE TABLE Regiones(RegionID INTEGER PRIMARY KEY,Nombre TEXT NOT NULL,PadreID INTEGER REFERENCES Regiones(RegionID))');
+  var rg=['España','Norte','Sur','Centro','Galicia','Andalucía','Madrid','Cataluña'],par=[null,1,1,1,2,3,4,2];for(i=0;i<rg.length;i++)o.push('INSERT INTO Regiones VALUES('+(i+1)+','+sq(rg[i])+','+(par[i]||'NULL')+')');
+  o.push('CREATE TABLE Usuarios(UsuarioID INTEGER PRIMARY KEY,Nombre TEXT NOT NULL,Email TEXT UNIQUE,RegionID INTEGER REFERENCES Regiones(RegionID))');
+  var NU=g.i(8,12);for(i=1;i<=NU;i++)o.push('INSERT INTO Usuarios VALUES('+i+','+sq(g.p(NOM)+' '+g.p(APE))+','+sq('usr'+i+'@corp.es')+','+g.i(1,8)+')');
+  o.push('CREATE TABLE Registro(RegistroID INTEGER PRIMARY KEY,UsuarioID INTEGER NOT NULL REFERENCES Usuarios(UsuarioID),'+pk(T3)+'_Ref INTEGER REFERENCES '+T3+'('+pk(T3)+'),Accion TEXT,Fecha TEXT)');
+  for(i=1;i<=g.i(20,32);i++)o.push('INSERT INTO Registro VALUES('+i+','+g.i(1,NU-1)+','+(g.n(.1)?'NULL':g.i(1,n3))+','+sq(g.p(['alta','baja','consulta','modificación']))+','+sq(date(g,2025,2026))+')');
+  o.push('ALTER TABLE '+T1+' ADD COLUMN RegionID INTEGER REFERENCES Regiones(RegionID)');o.push('UPDATE '+T1+' SET RegionID=(abs(random())%8)+1')}
+ if(lv>=3){ // Experto: permisos N:M, supervisor (auto-relación), valoraciones (PK compuesta), documentos
+  o.push('CREATE TABLE Permisos(PermisoID INTEGER PRIMARY KEY,Nombre TEXT NOT NULL UNIQUE)');['leer','escribir','borrar','administrar'].forEach(function(p,i){o.push('INSERT INTO Permisos VALUES('+(i+1)+','+sq(p)+')')});
+  o.push('CREATE TABLE UsuarioPermiso(UsuarioID INTEGER REFERENCES Usuarios(UsuarioID),PermisoID INTEGER REFERENCES Permisos(PermisoID),Desde TEXT,PRIMARY KEY(UsuarioID,PermisoID))');
+  for(i=1;i<=NU;i++){var u2={};for(k=g.i(1,3);k>0;k--){var p=g.i(1,4);if(u2[p])continue;u2[p]=1;o.push('INSERT INTO UsuarioPermiso VALUES('+i+','+p+','+sq(date(g,2024,2026))+')')}}
+  o.push('ALTER TABLE Usuarios ADD COLUMN SupervisorID INTEGER REFERENCES Usuarios(UsuarioID)');o.push('UPDATE Usuarios SET SupervisorID=(UsuarioID+1)/2 WHERE UsuarioID>1 AND (UsuarioID+1)/2<>UsuarioID');
+  o.push('CREATE TABLE Valoraciones(UsuarioID INTEGER REFERENCES Usuarios(UsuarioID),'+pk(T1)+'_Ref INTEGER REFERENCES '+T1+'('+pk(T1)+'),Puntos INTEGER CHECK(Puntos BETWEEN 1 AND 5),Comentario TEXT,PRIMARY KEY(UsuarioID,'+pk(T1)+'_Ref))');
+  for(i=1;i<=g.i(14,24);i++){var uu=g.i(1,NU),tt=g.i(1,n1);o.push('INSERT OR IGNORE INTO Valoraciones VALUES('+uu+','+tt+','+g.i(1,5)+','+(g.n(.3)?'NULL':sq(g.p(['Muy bien','Regular','Mejorable','Excelente'])))+')')}
+  o.push('CREATE TABLE Documentos(DocumentoID INTEGER PRIMARY KEY,UsuarioID INTEGER NOT NULL REFERENCES Usuarios(UsuarioID),'+pk(T2)+'_Ref INTEGER REFERENCES '+T2+'('+pk(T2)+'),Titulo TEXT NOT NULL,TamanoKB INTEGER)');
+  for(i=1;i<=g.i(10,18);i++)o.push('INSERT INTO Documentos VALUES('+i+','+g.i(1,NU)+','+(g.n(.15)?'NULL':g.i(1,n2))+','+sq('Doc_'+g.i(100,999))+','+g.i(5,5000)+')')}
+ o.forEach(function(x){d.run(x)})}
+function randomDb(theme,seed,lv){var T=THEMES[theme],d=new (A.SQL().Database)(),g=mk(seed);d.run(T.schema);d.run(T.data(g));extend(d,lv||0,mk(seed+7));return d}
 /* ---------- utilidades de BD ---------- */
 function Q(sql){var r=db.exec(sql);return r.length?r[0].values:[]}
 function val(sql){var r=Q(sql);return r.length?r[0][0]:null}
@@ -89,7 +119,7 @@ var GEN={
   var f=function(r){return fv(r[0])+' → '+r[1]},o=[f(g[0]),f(g[g.length-1]),f(g[1]),f([g[0][0],g[0][1]+1])];if(g[g.length-1][1]===g[0][1])return null;
   return {q:'¿Cuál es la primera fila de '+code('SELECT '+c+', COUNT(*) FROM '+t+' GROUP BY '+c+' ORDER BY COUNT(*) DESC;')+'? (formato valor → nº de filas)',o:o,e:'GROUP BY agrupa por '+c+'; ORDER BY COUNT(*) DESC deja arriba el grupo más numeroso: '+f(g[0])+'.'}}
 };
-var NAMES=Object.keys(GEN);window.LABGEN={GEN:GEN,setDb:function(t,s){setDb(randomDb(t,s),t)}};var lastT='';
+var NAMES=Object.keys(GEN);window.LABGEN={GEN:GEN,setDb:function(t,s,l){setDb(randomDb(t,s,l),t)}};var lastT='';
 var WT={count:1,pk:1,fk:1,agg:3,distinct:2,where:3,nulls:3,join:3,orphans:3,order:2,group:3};
 function wpick(){var b=[];NAMES.forEach(function(n){if(n===lastT)return;for(var k=0;k<WT[n];k++)b.push(n)});return pick(b)}
 function makeQ(){for(var i=0;i<80;i++){var n=wpick(),q;try{q=GEN[n]()}catch(e){q=null}if(q&&q.o&&q.o.length===4){q.type=n;lastT=n;return q}}return null}
@@ -97,16 +127,16 @@ function makeQ(){for(var i=0;i<80;i++){var n=wpick(),q;try{q=GEN[n]()}catch(e){q
 function setDb(d,lbl){if(db)try{db.close()}catch(e){}db=d;label=lbl;hist=[];renderAll()}
 function renderAll(){var inf=A.info(db),names=Object.keys(inf),h='';
  h+='<div class="labban">🔒 Todo vive solo en la memoria de esta pestaña: lo que subas o ejecutes <b>no se guarda</b> y se borra al cerrar sesión, recargar o cerrar la pestaña.</div>';
- h+='<section class="pcard"><h2>1 · Base de datos</h2><div class="row"><label class="f">Tema aleatorio<select id="th">'+Object.keys(THEMES).map(function(k){return '<option value="'+k+'">'+THEMES[k].n+'</option>'}).join('')+'</select></label><button id="rnd" class="go">🎲 Nueva BD aleatoria</button><label class="chip">⬆ Subir la mía<input id="up" type="file" multiple accept=".sqlite,.sqlite3,.db,.sql,.csv" hidden></label><button id="dlb">⬇ Descargar .sqlite</button></div>'
+ h+='<section class="pcard"><h2>1 · Base de datos</h2><div class="row"><label class="f">Dificultad<select id="lv">'+LEVELS.map(function(l,i){return '<option value="'+i+'">'+["🟢 ","🟡 ","🟠 ","🔴 "][i]+l+' ('+["3-4","6-7","10-11","14-15"][i]+' tablas)</option>'}).join('')+'</select></label><label class="f">Tema aleatorio<select id="th">'+Object.keys(THEMES).map(function(k){return '<option value="'+k+'">'+THEMES[k].n+'</option>'}).join('')+'</select></label><button id="rnd" class="go">🎲 Nueva BD aleatoria</button><label class="chip">⬆ Subir la mía<input id="up" type="file" multiple accept=".sqlite,.sqlite3,.db,.sql,.csv" hidden></label><button id="dlb">⬇ Descargar .sqlite</button></div>'
   +'<p class="sub">Subir: <b>.sqlite/.db</b> (base completa), <b>.sql</b> (script CREATE/INSERT) o <b>.csv</b> (se crea una tabla con el nombre del archivo; puedes subir varios). Actual: <b>'+esc(label)+'</b> · '+names.length+' tabla(s).</p><div id="upm"></div>'
   +'<div class="tchips">'+names.map(function(n){return '<button class="tb" data-t="'+esc(n)+'">'+esc(n)+' <small>('+val("SELECT COUNT(*) FROM "+qi(n))+')</small></button>'}).join('')+'</div>'
-  +'<div id="erd">'+A.diagram(inf,names.slice(0,14),'Esquema de la BD ('+label+')')+'</div></section>';
+  +'<div id="erd">'+A.diagram(inf,names.slice(0,18),'Esquema de la BD ('+label+')')+'</div></section>';
  h+='<section class="pcard"><h2>2 · Consola SQL</h2><textarea id="cin" spellcheck="false">'+esc(names.length?'SELECT * FROM '+names[0]+' LIMIT 20;':'-- crea una tabla o sube una BD')+'</textarea><div class="row"><button id="run" class="go">▶ Ejecutar (Ctrl+Enter)</button><button id="hb">↶ Historial</button><span class="sub">Puedes usar INSERT, UPDATE, DELETE, CREATE, DROP… sin miedo: afectan solo a esta copia en memoria.</span></div><div id="hl" hidden></div><div id="out"></div></section>';
  h+='<section class="pcard"><h2>3 · Test aleatorio sobre esta BD</h2><p class="sub">Las preguntas se <b>generan analizando el esquema y los datos</b> de la BD cargada (también la que subas) y la respuesta correcta se calcula ejecutando las consultas. Siempre 4 opciones.</p><div id="tq"></div></section>';
  h+='<p class="sub">Más ejercicios de SQL con enunciados y variantes ilimitadas: <a href="practicas.html#sql">Prácticas SQL</a>.</p>';
  app.innerHTML=h;A.bindDl(app);
- $('#rnd').onclick=function(){setDb(randomDb($('#th').value,Math.floor(Math.random()*1e9)),THEMES[$('#th').value].n+' (aleatoria)')};
- $('#th').value=window._lt||'tienda';$('#th').onchange=function(){window._lt=$('#th').value};
+ $('#rnd').onclick=function(){var lv=+$('#lv').value;setDb(randomDb($('#th').value,Math.floor(Math.random()*1e9),lv),THEMES[$('#th').value].n+' · '+LEVELS[lv]+' (aleatoria)')};
+ $('#th').value=window._lt||'tienda';$('#lv').value=window._lv||0;$('#lv').onchange=function(){window._lv=$('#lv').value;$('#rnd').click()};$('#th').onchange=function(){window._lt=$('#th').value};
  $('#dlb').onclick=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([db.export()],{type:'application/x-sqlite3'}));a.download='mi_bd.sqlite';a.click()};
  $('#up').onchange=function(){upload(this.files);this.value=''};
  $$('.tb').forEach(function(b){b.onclick=function(){$('#cin').value='SELECT * FROM '+qi(b.dataset.t)+' LIMIT 50;';run()}});
@@ -115,7 +145,7 @@ function renderAll(){var inf=A.info(db),names=Object.keys(inf),h='';
  nextQ()}
 function run(){var sql=$('#cin').value,o=$('#out');if(!sql.trim())return;hist.push(sql);var t0=performance.now();
  try{var r=db.exec(sql);o.innerHTML=A.resTable(r)+'<div class="sub">'+Math.round(performance.now()-t0)+' ms</div>';
-  if(/\b(create|drop|alter)\b/i.test(sql)){var inf=A.info(db),nm=Object.keys(inf);$('#erd').innerHTML=A.diagram(inf,nm.slice(0,14),'Esquema de la BD ('+label+')');A.bindDl($('#erd'));$('.tchips').innerHTML=nm.map(function(n){return '<button class="tb" data-t="'+esc(n)+'">'+esc(n)+'</button>'}).join('');$$('.tb').forEach(function(b){b.onclick=function(){$('#cin').value='SELECT * FROM '+qi(b.dataset.t)+' LIMIT 50;';run()}})}}
+  if(/\b(create|drop|alter)\b/i.test(sql)){var inf=A.info(db),nm=Object.keys(inf);$('#erd').innerHTML=A.diagram(inf,nm.slice(0,18),'Esquema de la BD ('+label+')');A.bindDl($('#erd'));$('.tchips').innerHTML=nm.map(function(n){return '<button class="tb" data-t="'+esc(n)+'">'+esc(n)+'</button>'}).join('');$$('.tb').forEach(function(b){b.onclick=function(){$('#cin').value='SELECT * FROM '+qi(b.dataset.t)+' LIMIT 50;';run()}})}}
  catch(x){o.innerHTML='<div class="out ko">'+esc(x.message)+'</div>'}}
 function csv(text,name){var rows=[],row=[],f='',q=false;text=text.replace(/^﻿/,'');var sep=(text.split('\n')[0].match(/;/g)||[]).length>(text.split('\n')[0].match(/,/g)||[]).length?';':',';
  for(var i=0;i<text.length;i++){var ch=text[i];if(q){if(ch==='"'){if(text[i+1]==='"'){f+='"';i++}else q=false}else f+=ch}else if(ch==='"')q=true;else if(ch===sep){row.push(f);f=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(f);f='';if(row.length>1||row[0]!=='')rows.push(row);row=[]}else f+=ch}
