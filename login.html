@@ -3,18 +3,17 @@
 <main class="practicas"><section class="pcard" style="max-width:420px;margin:2rem auto"><h1 style="margin-top:0">🔐 Acceso</h1>
 <div class="row" id="tabs"><button id="tl" class="on">Entrar</button><button id="tr">Crear cuenta</button></div>
 <form id="f"><label class="f" id="ul">Usuario<input id="u" autocomplete="username" required></label><label class="f">Contraseña<input id="p" type="password" autocomplete="current-password" required minlength="6"></label><label class="f" id="p2w" hidden>Repite la contraseña<input id="p2" type="password" autocomplete="new-password"></label>
-<div class="row"><button id="go" type="submit">Entrar</button></div><div id="msg" class="ko"></div><p id="rec" class="sub" hidden><button type="button" id="recb" class="lnk">¿Olvidaste la contraseña?</button></p></form>
+<label class="f" id="invw" hidden>Código de invitación<input id="inv" autocomplete="off"></label>
+<div class="row"><button id="go" type="submit">Entrar</button></div><div id="msg" class="ko"></div></form>
 <p class="sub">Las cuentas y la sesión se guardan <b>solo en este dispositivo</b> (la contraseña se almacena con PBKDF2, nunca en claro). La web es estática, así que no hay servidor ni sesiones por IP: es un acceso para separar tu progreso y tus resultados de los de otras personas que usen este navegador, no una barrera de seguridad real.</p></section></main>
 <script>
 var reg=false,$=function(i){return document.getElementById(i)};
 function mode(r){reg=r;$('tl').className=r?'':'on';$('tr').className=r?'on':'';$('p2w').hidden=!r;$('p2').required=r;$('go').textContent=r?'Crear cuenta':'Entrar';$('p').autocomplete=r?'new-password':'current-password';$('msg').textContent=''}
-if(AUTH.remote){$('ul').firstChild.nodeValue='Correo electrónico';$('u').type='email';$('u').autocomplete='email';$('rec').hidden=false;
- $('recb').onclick=function(){var e=$('u').value.trim();if(!e){$('msg').textContent='Escribe tu correo arriba';return}AUTH.recover(e).then(function(){$('msg').className='ok';$('msg').textContent='Si el correo existe, te hemos enviado un enlace para cambiar la contraseña.'}).catch(function(x){$('msg').textContent=x.message})};
- var sp=document.querySelector('.pcard>p.sub:last-of-type');if(sp)sp.innerHTML='Cuenta <b>única para todos tus dispositivos</b>: entra con el mismo correo en el PC y en el móvil y tu progreso (curva del olvido, temas estudiados, exámenes) se sincroniza solo. <b>Nada de SQL se guarda ni se sincroniza.</b>'}
+if(AUTH.remote){var sp=document.querySelector('.pcard>p.sub:last-of-type');if(sp)sp.innerHTML='Cuenta <b>única para todos tus dispositivos</b>: entra con el mismo usuario en el PC y en el móvil y tu progreso (curva del olvido, temas estudiados, exámenes) se sincroniza solo. <b>Nada de SQL se guarda ni se sincroniza.</b> Se anotan la IP y el dispositivo de cada sesión y puedes cerrarlas desde ☁ Sync.'}
 $('tl').onclick=function(){mode(false)};$('tr').onclick=function(){mode(true)};
 if(!AUTH.remote&&!Object.keys(JSON.parse(localStorage.getItem('tai_users')||'{}')).length)mode(true);
 $('thm').onclick=function(){var d=document.documentElement,c=d.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'),n=c==='dark'?'light':'dark';d.dataset.theme=n;try{localStorage.setItem('theme',n)}catch(e){}};
 $('f').onsubmit=function(e){e.preventDefault();$('msg').textContent='';
  if(reg&&$('p').value!==$('p2').value){$('msg').textContent='Las contraseñas no coinciden';return}
- $('go').disabled=true;(reg?AUTH.register:AUTH.login)($('u').value,$('p').value).then(function(){var nx=new URLSearchParams(location.search).get('next');if(!nx||/^(https?:)?\/\//.test(nx)||nx.indexOf('..')>=0)nx='index.html';location.replace(nx)}).catch(function(x){$('msg').textContent=x.message;$('go').disabled=false})};
+ $('go').disabled=true;(reg?AUTH.register($('u').value,$('p').value,$('inv').value):AUTH.login($('u').value,$('p').value)).then(function(){var nx=new URLSearchParams(location.search).get('next');if(!nx||/^(https?:)?\/\//.test(nx)||nx.indexOf('..')>=0)nx='index.html';location.replace(nx)}).catch(function(x){$('msg').textContent=x.message;if(/invitaci/i.test(x.message))$('invw').hidden=false;$('go').disabled=false})};
 </script></body></html>

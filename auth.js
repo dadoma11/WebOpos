@@ -2,39 +2,35 @@
 (function(){
 var LS={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},d:function(k){try{localStorage.removeItem(k)}catch(e){}}};
 var ROOT=(document.currentScript&&document.currentScript.src||'').replace(/auth\.js.*$/,'');
-/*CFG*/var CFG={supabaseUrl:"",supabaseKey:""};/*ENDCFG*/
-var REMOTE=!!(CFG.supabaseUrl&&CFG.supabaseKey),DAYS=30,ITER=150000;
+/*CFG*/var CFG={apiUrl:""};/*ENDCFG*/
+var REMOTE=!!CFG.apiUrl,DAYS=30,ITER=150000;
 function users(){try{return JSON.parse(LS.g('tai_users')||'{}')}catch(e){return{}}}
 function b2h(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0')}).join('')}
 function h2b(h){var a=new Uint8Array(h.length/2);for(var i=0;i<a.length;i++)a[i]=parseInt(h.substr(i*2,2),16);return a}
 function derive(pw,salt,it){return crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveBits']).then(function(k){return crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:salt,iterations:it},k,256)}).then(b2h)}
 function session(){try{var s=JSON.parse(LS.g('tai_sess')||'null');if(s&&s.exp>Date.now()&&(REMOTE?s.remote:(!s.remote&&users()[s.user])))return s}catch(e){}return null}
-/* ---- cuentas reales en servidor (Supabase) ---- */
-function sb(path,opt,tk){opt=opt||{};opt.headers=Object.assign({apikey:CFG.supabaseKey,'Content-Type':'application/json'},opt.headers||{});if(tk)opt.headers.Authorization='Bearer '+tk;
- return fetch(CFG.supabaseUrl.replace(/\/$/,'')+path,opt).then(function(r){return r.text().then(function(t){var j={};try{j=JSON.parse(t)}catch(e){}if(!r.ok){var m=j.msg||j.error_description||j.message||j.error||('Error '+r.status);throw new Error(sbMsg(m))}return j})})}
-function sbMsg(m){m=String(m);if(/invalid login/i.test(m))return 'Correo o contraseña incorrectos';if(/already registered|already been registered/i.test(m))return 'Ese correo ya tiene cuenta: usa «Entrar»';if(/password should be at least/i.test(m))return 'La contraseña necesita al menos 6 caracteres';if(/email not confirmed/i.test(m))return 'Falta confirmar el correo: revisa tu bandeja de entrada';if(/rate limit/i.test(m))return 'Demasiados intentos. Espera unos minutos';if(/valid email|invalid format/i.test(m))return 'Correo no válido';return m}
-function startRemote(j,email){var u=(j.user&&j.user.email||email||'').toLowerCase(),s={remote:1,user:u,name:u,uid:j.user&&j.user.id,access:j.access_token,refresh:j.refresh_token,at:Date.now()+(j.expires_in||3600)*1000-60000,t:Date.now(),exp:Date.now()+DAYS*864e5};LS.s('tai_sess',JSON.stringify(s));return s}
-function accessToken(){var s=session();if(!s||!s.remote)return Promise.reject(new Error('Sin sesión'));if(s.at>Date.now())return Promise.resolve(s.access);
- return sb('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:s.refresh})}).then(function(j){var n=startRemote(j,s.user);n.exp=s.exp;LS.s('tai_sess',JSON.stringify(n));return n.access})}
-function startSession(u){var s={user:u,tok:b2h(crypto.getRandomValues(new Uint8Array(16))),t:Date.now(),exp:Date.now()+DAYS*864e5};LS.s('tai_sess',JSON.stringify(s));return s}
+/* ---- cuentas reales en servidor (Cloudflare Worker) ---- */
+function api(path,opt,tk){opt=opt||{};opt.headers=Object.assign({'Content-Type':'application/json'},opt.headers||{});if(tk)opt.headers.Authorization='Bearer '+tk;
+ return fetch(CFG.apiUrl.replace(/\/$/,'')+path,opt).then(function(r){return r.text().then(function(t){var j={};try{j=JSON.parse(t)}catch(e){}if(!r.ok){var e=new Error(j.error||('Error '+r.status));e.status=r.status;e.body=j;throw e}return j})},function(){throw new Error('No se pudo conectar con el servidor')})}
+function startRemote(j){var s={remote:1,user:String(j.user).toLowerCase(),name:j.user,token:j.token,t:Date.now(),exp:Date.now()+DAYS*864e5};LS.s('tai_sess',JSON.stringify(s));return s}
+function accessToken(){var s=session();return s&&s.remote?Promise.resolve(s.token):Promise.reject(new Error('Sin sesión'))}
 function wipeLab(){try{Object.keys(sessionStorage).forEach(function(k){if(/^lab_/.test(k))sessionStorage.removeItem(k)})}catch(e){}
  try{Object.keys(localStorage).forEach(function(k){if(/^lab_/.test(k))localStorage.removeItem(k)})}catch(e){}
  try{window.dispatchEvent(new Event('tai-logout'))}catch(e){}}
 var AUTH=window.AUTH={
  user:function(){var s=session();return s&&s.user},
- remote:REMOTE,cfg:CFG,accessToken:accessToken,uid:function(){var s=session();return s&&s.uid},
- recover:function(e){return sb('/auth/v1/recover',{method:'POST',body:JSON.stringify({email:(e||'').trim()})})},
- register:function(u,pw){if(REMOTE){u=(u||'').trim().toLowerCase();if(!/^\S+@\S+\.\S+$/.test(u))return Promise.reject(new Error('Escribe un correo válido'));return sb('/auth/v1/signup',{method:'POST',body:JSON.stringify({email:u,password:pw})}).then(function(j){if(!j.access_token)throw new Error('Cuenta creada. Confirma el correo que te hemos enviado y luego pulsa «Entrar».');return startRemote(j,u)})}
+ remote:REMOTE,cfg:CFG,accessToken:accessToken,api:function(p,o){return accessToken().then(function(t){return api(p,o,t)})},
+ register:function(u,pw,inv){if(REMOTE)return api('/api/register',{method:'POST',body:JSON.stringify({user:u,password:pw,invite:inv||''})}).then(startRemote);
   u=(u||'').trim();if(!/^[\w.\-áéíóúñÁÉÍÓÚÑ ]{3,24}$/.test(u))return Promise.reject(new Error('Usuario de 3 a 24 caracteres (letras, números, . _ -)'));
   if((pw||'').length<6)return Promise.reject(new Error('La contraseña necesita al menos 6 caracteres'));
   var k=u.toLowerCase(),us=users();if(us[k])return Promise.reject(new Error('Ese usuario ya existe en este dispositivo'));
   var salt=crypto.getRandomValues(new Uint8Array(16));return derive(pw,salt,ITER).then(function(h){us[k]={name:u,salt:b2h(salt),hash:h,it:ITER,created:Date.now()};LS.s('tai_users',JSON.stringify(us));return startSession(k)})},
- login:function(u,pw){if(REMOTE){u=(u||'').trim().toLowerCase();return sb('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email:u,password:pw})}).then(function(j){return startRemote(j,u)})}
+ login:function(u,pw){if(REMOTE)return api('/api/login',{method:'POST',body:JSON.stringify({user:u,password:pw})}).then(startRemote);
   var k=(u||'').trim().toLowerCase(),us=users(),r=us[k];var fail=new Error('Usuario o contraseña incorrectos');
   var att=JSON.parse(LS.g('tai_att')||'{"n":0,"t":0}');if(att.n>=5&&Date.now()-att.t<60000)return Promise.reject(new Error('Demasiados intentos. Espera un minuto.'));
   if(!r){att.n++;att.t=Date.now();LS.s('tai_att',JSON.stringify(att));return Promise.reject(fail)}
   return derive(pw,h2b(r.salt),r.it).then(function(h){if(h!==r.hash){att.n++;att.t=Date.now();LS.s('tai_att',JSON.stringify(att));throw fail}LS.d('tai_att');return startSession(k)})},
- logout:function(){wipeLab();LS.d('tai_sess');location.href=ROOT+'login.html'},
+ logout:function(){wipeLab();var s=session();if(s&&s.remote)try{fetch(CFG.apiUrl.replace(/\/$/,'')+'/api/logout',{method:'POST',headers:{Authorization:'Bearer '+s.token},keepalive:true})}catch(e){}LS.d('tai_sess');location.href=ROOT+'login.html'},
  key:function(n){return (AUTH.user()||'anon')+':'+n}
 };
 var isLogin=/login\.html$/.test(location.pathname);
@@ -47,5 +43,5 @@ document.addEventListener('DOMContentLoaded',function(){var nav=document.querySe
  var th=nav.querySelector('#thm');
  [['examinate.html','📝 Examínate'],['laboratorio.html','🧪 Lab SQL'],['sync.html','☁ Sync']].forEach(function(p){if(has(p[0]))return;var a=document.createElement('a');a.href=ROOT+p[0];a.textContent=p[1];nav.insertBefore(a,th)});
  var cur=location.pathname.split('/').pop();Array.prototype.forEach.call(nav.querySelectorAll('a'),function(a){if(a.getAttribute('href').split('/').pop()===cur)a.className='cur'});
- var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.textContent='Salir · '+(REMOTE?s.name.split('@')[0]:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)});
+ var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.textContent='Salir · '+(REMOTE?s.name:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)});
 })();

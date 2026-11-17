@@ -1,0 +1,16 @@
+name = "webopos-api"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "webopos"
+database_id = "REEMPLAZA_CON_EL_ID_DE_TU_D1"
+
+[vars]
+# Orígenes que pueden usar la API (tu web). Separa con comas.
+ALLOWED_ORIGINS = "https://dadoma11.github.io"
+# "1" = cualquiera puede crear cuenta; "0" = cerrado
+ALLOW_REGISTER = "1"
+# Si pones un texto aquí, hará falta para crear cuenta (código de invitación)
+INVITE_CODE = ""

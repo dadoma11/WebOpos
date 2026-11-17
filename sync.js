@@ -34,19 +34,22 @@ function findGist(){var id=LS.g('tai_gist');if(id)return Promise.resolve(id);
 function fname(){return 'u_'+user()+'.json'}
 function pull(id){return gh('/gists/'+id).then(function(g){var f=g.files&&g.files[fname()];if(!f)return null;if(f.truncated)throw new Error('Archivo demasiado grande');try{return JSON.parse(f.content)}catch(e){return null}})}
 function push(id,data){var f={};f[fname()]={content:JSON.stringify({v:1,t:Date.now(),data:data})};return gh('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:f})})}
-/* ---- backend Supabase (cuentas reales, mismo para todos) ---- */
 function R(){return window.AUTH&&AUTH.remote}
-function rest(path,opt){return AUTH.accessToken().then(function(t){opt=opt||{};opt.headers=Object.assign({apikey:AUTH.cfg.supabaseKey,Authorization:'Bearer '+t,'Content-Type':'application/json'},opt.headers||{});
- return fetch(AUTH.cfg.supabaseUrl.replace(/\/$/,'')+'/rest/v1'+path,opt).then(function(r){if(r.status===401)throw new Error('Sesión caducada: vuelve a entrar');if(!r.ok)throw new Error('Servidor respondió '+r.status+(r.status===404?' (¿falta ejecutar supabase.sql?)':''));return r.status===204?null:r.json()})})}
-function pullR(){return rest('/sync_data?select=data&limit=1').then(function(l){return l&&l[0]?{data:(l[0].data||{}).data||l[0].data}:null})}
-function pushR(data){return rest('/sync_data',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_id:AUTH.uid(),data:{v:1,data:data},updated_at:new Date().toISOString()})})}
 var busy=false;
+function syncRemote(){var u=user(),revk='tai_rev_'+u;
+ function attempt(n){return AUTH.api('/api/data').then(function(rem){var loc=snapshot(),base=jget('tai_syncbase_'+u,null),merged=rem.data?mergeAll(base,loc,rem.data):loc,changedLocal=!eq(merged,loc),needPush=!rem.data||!eq(merged,rem.data);
+  if(changedLocal)restore(merged);
+  if(!needPush){LS.s('tai_syncbase_'+u,JSON.stringify(merged));return {changed:changedLocal,pushed:false}}
+  return AUTH.api('/api/data',{method:'PUT',body:JSON.stringify({rev:rem.rev,data:merged})}).then(function(){LS.s('tai_syncbase_'+u,JSON.stringify(merged));return {changed:changedLocal,pushed:true}},function(e){if(e.status===409&&n<2)return attempt(n+1);throw e})})}
+ return attempt(0)}
 function syncNow(){if(!user()||(!R()&&!tok()))return Promise.reject(new Error('Sin conectar'));if(busy)return Promise.resolve({busy:true});busy=true;
- return (R()?Promise.resolve(0):findGist()).then(function(id){return (R()?pullR():pull(id)).then(function(rem){
+ var fin=function(r){LS.s('tai_synctime',String(Date.now()));busy=false;return r},fail=function(e){busy=false;throw e};
+ if(R())return syncRemote().then(fin,fail);
+ return findGist().then(function(id){return pull(id).then(function(rem){
   var loc=snapshot(),base=jget('tai_syncbase_'+user(),null),merged=rem&&rem.data?mergeAll(base,loc,rem.data):loc,changedLocal=!eq(merged,loc),needPush=!rem||!eq(merged,rem.data);
   if(changedLocal)restore(merged);
-  var p=needPush?(R()?pushR(merged):push(id,merged)):Promise.resolve();
-  return p.then(function(){LS.s('tai_syncbase_'+user(),JSON.stringify(merged));LS.s('tai_synctime',String(Date.now()));busy=false;return {changed:changedLocal,pushed:needPush}})})}).catch(function(e){busy=false;throw e})}
+  var p=needPush?push(id,merged):Promise.resolve();
+  return p.then(function(){LS.s('tai_syncbase_'+user(),JSON.stringify(merged));return {changed:changedLocal,pushed:needPush}})})}).then(fin,fail)}
 var SYNC=window.SYNC={remote:function(){return !!R()},connected:function(){return !!(R()?user():tok())},syncNow:syncNow,
  connect:function(t){LS.s('tai_token',t.trim());LS.d('tai_gist');return gh('/user').then(function(u){LS.s('tai_ghuser',u.login);return syncNow()}).catch(function(e){LS.d('tai_token');throw e})},
  disconnect:function(){LS.d('tai_token');LS.d('tai_gist');LS.d('tai_ghuser')},
@@ -57,7 +60,8 @@ var SYNC=window.SYNC={remote:function(){return !!R()},connected:function(){retur
 if(!user()||(!R()&&!tok()))return;
 var last='';function sig(){return JSON.stringify(snapshot())}
 function banner(){if(document.getElementById('syncban'))return;var d=document.createElement('div');d.id='syncban';d.className='syncban';d.innerHTML='☁ Datos actualizados desde otro dispositivo. <button>Recargar</button>';d.querySelector('button').onclick=function(){location.reload()};document.body.appendChild(d)}
-function auto(){if(window.__inExam)return;syncNow().then(function(r){last=sig();if(r&&r.changed)banner()}).catch(function(){})}
-document.addEventListener('DOMContentLoaded',function(){last=sig();setTimeout(auto,300);setInterval(function(){if(!window.__inExam&&sig()!==last)auto()},45000)});
+function auto(){if(window.__inExam)return;syncNow().then(function(r){last=sig();if(r&&r.changed)banner()}).catch(function(e){if(R()&&e&&e.status===401){LS.d('tai_sess');location.replace((document.currentScript&&0)||new URL('login.html',document.querySelector('script[src*="auth.js"]').src).href)}})}
+function boot(){last=sig();setTimeout(auto,300);setInterval(function(){if(!window.__inExam&&sig()!==last)auto()},45000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&sig()!==last)auto()});
 })();
