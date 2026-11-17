@@ -2,34 +2,6 @@
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
 var ls={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},d:function(k){try{localStorage.removeItem(k)}catch(e){}}};
-/* ---------- SQL ---------- */
-var SQL,db,base,cfg,cur=0;
-function resTable(r){if(!r.length)return '<p class="sub">Sin filas.</p>';var o='';r.forEach(function(x){o+='<table><tr>'+x.columns.map(function(c){return '<th>'+esc(c)+'</th>'}).join('')+'</tr>'+x.values.map(function(v){return '<tr>'+v.map(function(c){return '<td>'+(c===null?'<i>NULL</i>':esc(c))+'</td>'}).join('')+'</tr>'}).join('')+'</table>'});return o}
-function newDb(){if(db)db.close();db=new SQL.Database();db.run(cfg.schema)}
-function norm(r){return JSON.stringify(r.length?r[r.length-1].values.map(function(v){return JSON.stringify(v)}).sort():[])}
-function renderList(){$('exlist').innerHTML=cfg.exercises.map(function(e,i){return '<button class="'+(i===cur?'on':'')+'" data-i="'+i+'">'+(i+1)+'. '+esc(e.title)+'</button>'}).join('');
- Array.prototype.forEach.call($('exlist').children,function(b){b.onclick=function(){cur=+b.dataset.i;show()}})}
-function show(){var e=cfg.exercises[cur];renderList();if(!e){$('stmt').innerHTML='<i>No hay ejercicios.</i>';return}
- $('stmt').innerHTML='<b>'+esc(e.title)+'</b><br>'+esc(e.statement);$('hint').textContent=e.hint||'(sin pista)';$('sol').textContent=e.solution;$('sqlout').innerHTML='';$('verdict').textContent='';$('sqlin').value='';
- $('ed_title').value=e.title;$('ed_st').value=e.statement;$('ed_sol').value=e.solution;$('ed_hint').value=e.hint||''}
-function run(check){try{newDb();var r=db.exec($('sqlin').value);$('sqlout').innerHTML='<div class="sqlres">'+resTable(r)+'</div>';
-  if(check){var e=cfg.exercises[cur];var s=db.exec(e.solution);$('verdict').innerHTML=norm(r)===norm(s)?'<span class="ok">✔ Correcto: el resultado coincide</span>':'<span class="ko">✘ El resultado no coincide con el esperado</span>'}}
- catch(x){$('sqlout').innerHTML='<div class="out ko">'+esc(x.message)+'</div>';$('verdict').textContent=''}}
-function save(){ls.s('sqlcfg',JSON.stringify(cfg))}
-function initSql(){
- var saved=ls.g('sqlcfg');
- fetch('data/sql.json').then(function(r){return r.json()}).then(function(j){base=j;cfg=saved?JSON.parse(saved):JSON.parse(JSON.stringify(j));
-  initSqlJs({locateFile:function(f){return 'vendor/'+f}}).then(function(m){SQL=m;newDb();$('schema').value=cfg.schema;show();
-   $('run').onclick=function(){run(false)};$('check').onclick=function(){run(true)};
-   $('schemaSave').onclick=function(){try{cfg.schema=$('schema').value;newDb();save();$('schemaMsg').innerHTML='<span class="ok">Esquema guardado</span>'}catch(x){$('schemaMsg').innerHTML='<span class="ko">'+esc(x.message)+'</span>'}};
-   $('tables').onclick=function(){newDb();$('sqlout').innerHTML='<div class="sqlres">'+resTable(db.exec("SELECT name AS tabla, sql FROM sqlite_master WHERE type='table'"))+'</div>'};
-   $('edSave').onclick=function(){var e=cfg.exercises[cur]||(cfg.exercises[cur]={});e.id=e.id||('x'+Date.now());e.title=$('ed_title').value;e.statement=$('ed_st').value;e.solution=$('ed_sol').value;e.hint=$('ed_hint').value;save();show()};
-   $('edNew').onclick=function(){cfg.exercises.push({id:'x'+Date.now(),title:'Nuevo ejercicio',statement:'Escribe el enunciado',solution:'SELECT 1;',hint:''});cur=cfg.exercises.length-1;save();show();$('edit').open=true};
-   $('edDel').onclick=function(){if(cfg.exercises.length&&confirm('¿Borrar este ejercicio?')){cfg.exercises.splice(cur,1);cur=0;save();show()}};
-   $('exp').onclick=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(cfg,null,1)],{type:'application/json'}));a.download='sql.json';a.click()};
-   $('imp').onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{cfg=JSON.parse(r.result);save();cur=0;newDb();$('schema').value=cfg.schema;show()}catch(x){alert('JSON no válido')}};r.readAsText(f)};
-   $('reset').onclick=function(){if(confirm('Se perderán tus cambios locales y se recargarán los ejercicios originales del repositorio.')){ls.d('sqlcfg');cfg=JSON.parse(JSON.stringify(base));cur=0;newDb();$('schema').value=cfg.schema;show()}};
-  })})}
 /* ---------- Subnetting ---------- */
 function ip2n(s){var p=s.trim().split('.');if(p.length!==4)return null;var n=0;for(var i=0;i<4;i++){var v=+p[i];if(!/^\d+$/.test(p[i])||v>255)return null;n=n*256+v}return n}
 function n2ip(n){return [n>>>24&255,n>>>16&255,n>>>8&255,n&255].join('.')}
@@ -55,7 +27,7 @@ function hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){re
 function hash(){var t=new TextEncoder().encode($('ht').value),a=$('ha').value;crypto.subtle.digest(a,t).then(function(d){$('hout').textContent=a+':\n'+hex(d)+'\n\nLongitud: '+d.byteLength*8+' bits'})}
 function b64(enc){try{$('hout').textContent=enc?btoa(unescape(encodeURIComponent($('ht').value))):decodeURIComponent(escape(atob($('ht').value)))}catch(e){$('hout').textContent='Entrada no válida'}}
 document.addEventListener('DOMContentLoaded',function(){
- initSql();$('sub').onclick=subnet;$('ip').oninput=subnet;$('nsub').oninput=subnet;subnet();
+$('sub').onclick=subnet;$('ip').oninput=subnet;$('nsub').oninput=subnet;subnet();
  ['cd','cb','ch','co'].forEach(function(i){$(i).oninput=function(){conv(i)}});$('cd').value=192;conv('cd');
  ['rl','rn','rs'].forEach(function(i){$(i).oninput=raid});raid();
  $('hgo').onclick=hash;$('benc').onclick=function(){b64(true)};$('bdec').onclick=function(){b64(false)};

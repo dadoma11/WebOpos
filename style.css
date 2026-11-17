@@ -73,3 +73,15 @@ details{margin:.5rem 0}summary{cursor:pointer;color:var(--acd);font-weight:600}
  .pn{position:fixed;left:0;right:0;bottom:0;z-index:25;margin:0;padding:.55rem .8rem .55rem 7.2rem;background:var(--card);border-top:1px solid var(--bd)}
 }
 @media(max-width:860px){.toc.open .tochead::after{content:"✕ Cerrar";float:right;font-weight:600;color:var(--acd)}.toc.open .tochead{padding:.4rem 0;cursor:pointer}}
+/* SQL integrado */
+.sqlab{background:var(--card);border:1px solid var(--ac);border-radius:12px;padding:.9rem 1rem;margin:1.6rem 0}
+.sqlh{display:flex;justify-content:space-between;gap:.5rem;font-size:1.05rem;margin-bottom:.2rem}.bp{font-size:.8rem;color:var(--acd);font-weight:700}
+.ex{border-top:1px dashed var(--bd);padding:.8rem 0;margin-top:.5rem}.exh{display:flex;gap:.5rem;align-items:center}.lv{color:var(--E);letter-spacing:1px;font-size:.8rem}.st{color:#2e9d5b;font-weight:800;margin-left:auto}.stm{margin:.3rem 0}
+.sqlab textarea{width:100%;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;min-height:84px;margin:.3rem 0}
+.hn,.so{background:var(--code);border-radius:8px;padding:.5rem .7rem;margin:.4rem 0}.hn{border-left:4px solid var(--E)}
+.erd{border:1px solid var(--bd);border-radius:8px;margin:.5rem 0;overflow:hidden}.erdh{display:flex;justify-content:space-between;align-items:center;padding:.3rem .6rem;background:var(--code);font-size:.85rem}.erdh button{padding:.15rem .5rem;font-size:.75rem}
+.erdb{overflow-x:auto;padding:.3rem}.erdb svg{display:block;max-width:none}.lgd{font-size:.75rem;color:var(--mu);padding:.3rem .6rem;border-top:1px solid var(--bd)}.fkc{color:var(--E)}
+.erdw>summary{font-weight:600}.vd{font-weight:700}
+.tryb{margin-left:.4rem;padding:.05rem .5rem;font-size:.75rem;border-color:var(--ac);color:var(--acd)}.tryw{margin:.4rem 0;padding:.5rem;border:1px dashed var(--ac);border-radius:8px;background:var(--card)}.tryw textarea{width:100%;min-height:70px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.edf{padding:.5rem;border:1px dashed var(--bd);border-radius:8px;margin-top:.4rem}
+@media(max-width:860px){.sqlab{padding:.7rem .6rem}.erdb svg{zoom:.8}}
