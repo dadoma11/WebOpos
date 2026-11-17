@@ -12,6 +12,7 @@ function session(){try{var s=JSON.parse(LS.g('tai_sess')||'null');if(s&&s.exp>Da
 /* ---- cuentas reales en servidor (Cloudflare Worker) ---- */
 function api(path,opt,tk){opt=opt||{};opt.headers=Object.assign({'Content-Type':'application/json'},opt.headers||{});if(tk)opt.headers.Authorization='Bearer '+tk;
  return fetch(CFG.apiUrl.replace(/\/$/,'')+path,opt).then(function(r){return r.text().then(function(t){var j={};try{j=JSON.parse(t)}catch(e){}if(!r.ok){var e=new Error(j.error||('Error '+r.status));e.status=r.status;e.body=j;throw e}return j})},function(){throw new Error('No se pudo conectar con el servidor')})}
+function devId(){var d=LS.g('tai_dev');if(!d||!/^[a-f0-9]{16,64}$/.test(d)){d=b2h(crypto.getRandomValues(new Uint8Array(16)));LS.s('tai_dev',d)}return d}
 function startRemote(j){var s={remote:1,user:String(j.user).toLowerCase(),name:j.user,token:j.token,t:Date.now(),exp:Date.now()+DAYS*864e5};LS.s('tai_sess',JSON.stringify(s));return s}
 function accessToken(){var s=session();return s&&s.remote?Promise.resolve(s.token):Promise.reject(new Error('Sin sesión'))}
 function wipeLab(){try{Object.keys(sessionStorage).forEach(function(k){if(/^lab_/.test(k))sessionStorage.removeItem(k)})}catch(e){}
@@ -20,12 +21,12 @@ function wipeLab(){try{Object.keys(sessionStorage).forEach(function(k){if(/^lab_
 var AUTH=window.AUTH={
  user:function(){var s=session();return s&&s.user},
  remote:REMOTE,cfg:CFG,accessToken:accessToken,api:function(p,o){return accessToken().then(function(t){return api(p,o,t)})},
- register:function(u,pw,inv){if(REMOTE)return api('/api/register',{method:'POST',body:JSON.stringify({user:u,password:pw,invite:inv||''})}).then(startRemote);
+ register:function(u,pw,inv){if(REMOTE)return api('/api/register',{method:'POST',body:JSON.stringify({user:u,password:pw,invite:inv||'',dev:devId()})}).then(startRemote);
   u=(u||'').trim();if(!/^[\w.\-áéíóúñÁÉÍÓÚÑ ]{3,24}$/.test(u))return Promise.reject(new Error('Usuario de 3 a 24 caracteres (letras, números, . _ -)'));
   if((pw||'').length<6)return Promise.reject(new Error('La contraseña necesita al menos 6 caracteres'));
   var k=u.toLowerCase(),us=users();if(us[k])return Promise.reject(new Error('Ese usuario ya existe en este dispositivo'));
   var salt=crypto.getRandomValues(new Uint8Array(16));return derive(pw,salt,ITER).then(function(h){us[k]={name:u,salt:b2h(salt),hash:h,it:ITER,created:Date.now()};LS.s('tai_users',JSON.stringify(us));return startSession(k)})},
- login:function(u,pw){if(REMOTE)return api('/api/login',{method:'POST',body:JSON.stringify({user:u,password:pw})}).then(startRemote);
+ login:function(u,pw){if(REMOTE)return api('/api/login',{method:'POST',body:JSON.stringify({user:u,password:pw,dev:devId()})}).then(startRemote);
   var k=(u||'').trim().toLowerCase(),us=users(),r=us[k];var fail=new Error('Usuario o contraseña incorrectos');
   var att=JSON.parse(LS.g('tai_att')||'{"n":0,"t":0}');if(att.n>=5&&Date.now()-att.t<60000)return Promise.reject(new Error('Demasiados intentos. Espera un minuto.'));
   if(!r){att.n++;att.t=Date.now();LS.s('tai_att',JSON.stringify(att));return Promise.reject(fail)}

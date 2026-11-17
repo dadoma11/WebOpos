@@ -26,10 +26,12 @@ async function tooMany(env, k, max, windowMs) {
 }
 const note = (env, k) => env.DB.prepare('INSERT INTO attempts(k,t) VALUES(?,?)').bind(k, Date.now()).run();
 
-async function newSession(env, req, uid) {
+async function newSession(env, req, uid, dev) {
+  dev = String(dev || '').replace(/[^a-f0-9]/gi, '').slice(0, 64);
+  if (dev) await env.DB.prepare('DELETE FROM sessions WHERE user_id=? AND dev=?').bind(uid, dev).run(); // una sesión por equipo
   const raw = new Uint8Array(32); crypto.getRandomValues(raw); const token = b64u(raw), now = Date.now();
-  await env.DB.prepare('INSERT INTO sessions(token_hash,user_id,ip,ua,country,created,last,expires) VALUES(?,?,?,?,?,?,?,?)')
-    .bind(await sha256(token), uid, req.headers.get('CF-Connecting-IP') || '', (req.headers.get('User-Agent') || '').slice(0, 200), (req.cf && req.cf.country) || '', now, now, now + SESSION_DAYS * DAY).run();
+  await env.DB.prepare('INSERT INTO sessions(token_hash,user_id,ip,ua,country,created,last,expires,dev) VALUES(?,?,?,?,?,?,?,?,?)')
+    .bind(await sha256(token), uid, req.headers.get('CF-Connecting-IP') || '', (req.headers.get('User-Agent') || '').slice(0, 200), (req.cf && req.cf.country) || '', now, now, now + SESSION_DAYS * DAY, dev).run();
   return token;
 }
 async function auth(env, req) {
@@ -59,7 +61,7 @@ export default {
         catch (e) { return json({ error: 'Ese usuario ya existe' }, 409, H); }
         await note(env, 'reg:' + ip);
         const u = await env.DB.prepare('SELECT id FROM users WHERE name=?').bind(name).first();
-        return json({ token: await newSession(env, req, u.id), user: name }, 200, H);
+        return json({ token: await newSession(env, req, u.id, b.dev), user: name }, 200, H);
       }
       if (p === '/api/login' && m === 'POST') {
         const b = await req.json(), name = String(b.user || '').trim(), pw = String(b.password || ''), k = 'login:' + ip + ':' + name.toLowerCase();
@@ -67,7 +69,7 @@ export default {
         const u = await env.DB.prepare('SELECT id,name,salt,hash FROM users WHERE name=?').bind(name).first();
         const calc = await pbkdf2(pw, u ? unhex(u.salt) : new Uint8Array(16));
         if (!u || !same(calc, u.hash)) { await note(env, k); return json({ error: 'Usuario o contraseña incorrectos' }, 401, H); }
-        return json({ token: await newSession(env, req, u.id), user: u.name }, 200, H);
+        return json({ token: await newSession(env, req, u.id, b.dev), user: u.name }, 200, H);
       }
       const a = await auth(env, req);
       if (!a) return json({ error: 'Sesión no válida o caducada' }, 401, H);
@@ -86,7 +88,7 @@ export default {
         return json({ rev: rev + 1 }, 200, H);
       }
       if (p === '/api/sessions' && m === 'GET') {
-        const l = await env.DB.prepare('SELECT id,ip,ua,country,created,last FROM sessions WHERE user_id=? AND expires>? ORDER BY last DESC').bind(a.uid, Date.now()).all();
+        const l = await env.DB.prepare('SELECT id,ip,ua,country,created,last,dev FROM sessions WHERE user_id=? AND expires>? ORDER BY last DESC').bind(a.uid, Date.now()).all();
         return json({ sessions: l.results.map((s) => ({ ...s, current: s.id === a.sid })) }, 200, H);
       }
       const dm = /^\/api\/sessions\/(\d+)$/.exec(p);
