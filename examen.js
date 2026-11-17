@@ -14,7 +14,7 @@ Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fet
 
 /* ---------- configuración ---------- */
 function config(){clearInterval(tick);cur=null;
- var cfg=JSON.parse(LS.g(uk('ex_cfg'))||'{}'),sel=cfg.sel||T.map(function(t){return t.key}),n=cfg.n||20,mins=cfg.mins==null?Math.round(n*1.2):cfg.mins;
+ var cfg=JSON.parse(LS.g(uk('ex_cfg'))||'{}'),tp=new URLSearchParams(location.search).get('t'),sel=(tp&&T.some(function(t){return t.key===tp})?[tp]:null)||cfg.sel||T.map(function(t){return t.key}),n=cfg.n||20,mins=cfg.mins==null?Math.round(n*1.2):cfg.mins;
  var cnt={};Q.forEach(function(q){cnt[q.k]=(cnt[q.k]||0)+1});var fl=fails(),nf=Object.keys(fl).length;
  var h='<p class="sub">'+Q.length+' preguntas tipo test de tus Anki (4 opciones). <b>Nota = (aciertos − errores/3) sobre 10</b>: cada error resta 1/3 de acierto y las no contestadas no puntúan.</p>';
  h+='<section class="pcard"><h2>1 · Temas</h2><div class="row"><button id="all">Todos</button><button id="none">Ninguno</button>'+[1,2,3,4].map(function(b){return '<button class="bsel" data-b="'+b+'">Bloque '+b+'</button>'}).join('')+'</div>';
