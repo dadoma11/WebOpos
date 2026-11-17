@@ -2,7 +2,7 @@
 (function(){
 var LS={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},d:function(k){try{localStorage.removeItem(k)}catch(e){}}};
 var ROOT=(document.currentScript&&document.currentScript.src||'').replace(/auth\.js.*$/,'');
-/*CFG*/var CFG={apiUrl:""};/*ENDCFG*/
+/*CFG*/var CFG={apiUrl:"https://webopos-api.ddominguezm02.workers.dev"};/*ENDCFG*/
 var REMOTE=!!CFG.apiUrl,DAYS=30,ITER=150000;
 function users(){try{return JSON.parse(LS.g('tai_users')||'{}')}catch(e){return{}}}
 function b2h(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0')}).join('')}
