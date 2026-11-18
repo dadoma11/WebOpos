@@ -251,6 +251,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .rate button{flex:1 1 120px;min-height:48px;font-weight:600}.rate .r1{border-color:var(--ko);color:var(--ko)}.rate .r2{border-color:var(--warn)}.rate .r3{border-color:var(--ok);color:var(--ok)}
 /* reproductor TTS */
 .ttsb.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+tr.tts-now{background:color-mix(in srgb,var(--ac) 20%,transparent);box-shadow:none}
 .tts-now{background:color-mix(in srgb,var(--ac) 14%,transparent);box-shadow:-6px 0 0 color-mix(in srgb,var(--ac) 14%,transparent),6px 0 0 color-mix(in srgb,var(--ac) 14%,transparent);border-radius:4px;transition:background .25s}
 .ttsp{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--bd);box-shadow:0 -8px 24px -12px rgba(0,0,0,.3);padding-bottom:env(safe-area-inset-bottom)}
 .ttsp .tbar{height:3px;background:color-mix(in srgb,var(--fg) 10%,transparent)}.ttsp .tbar i{display:block;height:100%;background:var(--ac);transition:width .3s}

@@ -7,7 +7,19 @@ var LS={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
 var KEY=doc.dataset.key,rate=parseFloat(LS.g('tts_rate'))||1,voiceName=LS.g('tts_voice')||'',onlyKey=LS.g('tts_only')==='1';
 var units=[],chunks=[],ci=0,playing=false,gen=0,player=null,voices=[];
 function clean(n){var c=n.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('.nb,.mynote,script,style,svg'),function(x){x.remove()});return c.textContent.replace(/\s+/g,' ').trim()}
-function say(t){return t.replace(/\bp\.\s?ej\./gi,'por ejemplo').replace(/\bart\.\s?(\d)/gi,'artículo $1').replace(/\barts\.\s?(\d)/gi,'artículos $1').replace(/\bapdo\./gi,'apartado').replace(/\bLO\s(\d)/g,'Ley Orgánica $1').replace(/\bRD\s(\d)/g,'Real Decreto $1').replace(/\bCE\b/g,'Constitución Española').replace(/→/g,', ').replace(/[•·]/g,', ').replace(/\s[–—-]\s/g,', ').replace(/[“”«»]/g,'"').replace(/\(([^)]{0,80})\)/g,', $1, ')}
+function say(t){return t.replace(/\bp\.\s?ej\./gi,'por ejemplo').replace(/\bart\.\s?(\d)/gi,'artículo $1').replace(/\barts\.\s?(\d)/gi,'artículos $1').replace(/\bapdo\./gi,'apartado').replace(/\bLO\s(\d)/g,'Ley Orgánica $1').replace(/\bRD\s(\d)/g,'Real Decreto $1').replace(/\bCE\b/g,'Constitución Española').replace(/→/g,', ')
+ .replace(/≠/g,' distinto de ').replace(/≥/g,' mayor o igual que ').replace(/≤/g,' menor o igual que ').replace(/(\d)\s?%/g,'$1 por ciento').replace(/\s=\s/g,' igual a ').replace(/\s\/\s/g,' o ').replace(/\bvs\.?\s/gi,'frente a ').replace(/\betc\./gi,'etcétera').replace(/[•·]/g,', ').replace(/\s[–—-]\s/g,', ').replace(/[“”«»]/g,'"').replace(/\(([^)]{0,80})\)/g,', $1, ').replace(/\s+,/g,',').replace(/,(\s*,)+/g,',').replace(/,\s*\./g,'.').replace(/\s{2,}/g,' ')}
+function cellTxt(c){var t=clean(c);if(/^[–—-]*$/.test(t))return '';if(/^[✔✓]$/.test(t))return 'sí';if(/^[✘✗×]$/.test(t))return 'no';return t}
+function tableUnits(n){var tb=n.tagName==='TABLE'?n:n.querySelector('table');if(!tb)return;var rows=Array.prototype.slice.call(tb.querySelectorAll('tr'));if(!rows.length)return;
+ var head=null,first=rows[0];if(first.querySelector('th')){head=Array.prototype.map.call(first.children,cellTxt);rows=rows.slice(1)}
+ var cols=head?head.length:(rows[0]?rows[0].children.length:0),nh=head?head.filter(Boolean):[];
+ units.push({el:n,kind:'t',txt:'Tabla'+(rows.length?' de '+rows.length+(rows.length===1?' fila':' filas'):'')+(nh.length>1?', con las columnas: '+nh.slice(0,-1).join(', ')+' y '+nh[nh.length-1]:'')+'.'});
+ rows.forEach(function(tr){var cells=Array.prototype.map.call(tr.children,cellTxt),t;
+  if(tr.querySelector('th')&&!tr.querySelector('td')){t=cells.filter(Boolean).join(', ')}
+  else if(cells.length===1){t=cells[0]}
+  else if(cells.length===2){t=(cells[0]&&cells[1])?cells[0]+': '+cells[1]:(cells[0]||cells[1])}
+  else{var parts=[];cells.forEach(function(c,i){if(!c)return;if(i===0)parts.push(c);else parts.push(head&&head[i]?head[i]+': '+c:c)});t=parts.join('. ')}
+  if(t)units.push({el:tr,kind:'r',txt:t})})}
 function build(){units=[];var last=null;
  Array.prototype.forEach.call(doc.children,function(n){
   var tag=n.tagName,cls=n.classList;
@@ -19,7 +31,7 @@ function build(){units=[];var last=null;
   else if(tag==='P'||tag==='UL'||tag==='OL'||tag==='BLOCKQUOTE'){t=clean(n)}
   else if(cls.contains('tw')||tag==='TABLE'){t=null;kind='t'}
   if(!t&&kind!=='t')return;
-  if(kind==='t'){if(!onlyKey)units.push({el:n,txt:'Aquí hay una tabla; consúltala en pantalla.',kind:'t'});return}
+  if(kind==='t'){if(!onlyKey)tableUnits(n);return}
   units.push({el:n,txt:t,kind:kind})});
  if(onlyKey){var out=[];units.forEach(function(u,i){if(u.kind==='E'||u.kind==='I'){var p=out[out.length-1];var h=null;for(var j=i-1;j>=0;j--){if(units[j].kind==='h'){h=units[j];break}}if(h&&out.indexOf(h)<0)out.push(h);out.push(u)}});units=out}
  chunks=[];units.forEach(function(u,ui){var s=say(u.txt),parts=s.match(/[^.!?;:]+[.!?;:]*\s*/g)||[s],cur='';
