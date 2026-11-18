@@ -142,7 +142,7 @@ body.hdr-off .top{transform:translateY(-100%)}
 .card .n{display:inline-block;align-self:flex-start;background:color-mix(in srgb,var(--ac) 14%,transparent);padding:1px 8px;border-radius:8px}
 .card.done{opacity:.6}
 /* lector */
-.layout{grid-template-columns:250px minmax(0,1080px);justify-content:center;gap:2.4rem;max-width:1500px}
+.layout{grid-template-columns:clamp(200px,18vw,300px) minmax(0,1fr);justify-content:stretch;gap:clamp(1.2rem,3vw,3rem);max-width:none;padding:1rem clamp(1rem,3vw,3.5rem)}
 .toc{border-right:0;border-left:2px solid var(--bd);padding:.2rem 0 .2rem .9rem;font-size:.84rem;top:4rem}
 body.hdr-off .toc{top:1rem}
 .toc a{border-left:0;padding:.28rem 0;line-height:1.3}.toc a:hover{color:var(--acd)}
@@ -178,7 +178,7 @@ body.only .doc>.mynote.nh{display:none}
 /* modo concentración */
 .fexit{display:none}
 body.focus .top,body.focus .toc,body.focus .bar,body.focus .tqbar,body.focus .syncban{display:none!important}
-body.focus .layout{grid-template-columns:minmax(0,860px);padding-top:2rem}
+body.focus .layout{grid-template-columns:minmax(0,1fr);padding-top:2rem;padding-left:clamp(1rem,8vw,12rem);padding-right:clamp(1rem,8vw,12rem)}
 @media(max-width:860px){body.focus .layout{grid-template-columns:minmax(0,1fr)}}
 body.focus .doc{font-size:1.12rem;line-height:1.85}
 body.focus .doc .crumb{opacity:.7}
