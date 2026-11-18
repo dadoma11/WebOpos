@@ -50,11 +50,16 @@ function srsPanel(){var m=srsAll(),now=Date.now(),ids=Object.keys(m);
 function dueCount(){var m=srsAll(),now=Date.now(),n=0;Object.keys(m).forEach(function(i){if(Qm[i]&&Rt(m[i],now)<0.9)n++});return n}
 
 /* ---------- panel de hoy + estadísticas + puntos débiles ---------- */
+function examLine(goal){var cfg=cfgGet(),d=cfg.exdate,sn=seen(),unseen=Q.filter(function(q){return !sn[q.id]}).length,h='<div class="row sm"><label class="f sm">📅 Fecha del examen<input type="date" id="exd" value="'+(d||'')+'"></label>';
+ if(d){var left=Math.ceil((new Date(d+'T00:00:00')-new Date(ds()+'T00:00:00'))/864e5);
+  if(left>0){var need=Math.max(5,Math.ceil(unseen/left));h+='<span class="pill">⏳ Faltan <b>'+left+'</b> días</span><span class="pill">Para ver todo el banco: <b>'+need+'</b>/día'+(need!==goal?' <button id="usegoal" class="lnk">usar</button>':'')+'</span>'}
+  else h+='<span class="pill">'+(left===0?'🎯 ¡Es hoy! Mucha suerte':'Fecha pasada')+'</span>'}
+ return h+'</div>'}
 function heroCard(){var cfg=cfgGet(),goal=cfg.goal||30,dm=days(),today=dm[ds()]||0,st=streak(),due=dueCount();
  var left=Math.max(0,goal-today);
  return '<section class="pcard hero">'+ring(today/goal,today+'/'+goal,'hoy',today>=goal?'done':'')
   +'<div class="hbody"><h2>Plan de hoy</h2><div class="chips"><span class="pill">🔥 Racha: <b>'+st+'</b> '+(st===1?'día':'días')+'</span><span class="pill">🧠 <b>'+due+'</b> para repasar</span><span class="pill">'+(left?'Te faltan <b>'+left+'</b> para tu objetivo':'✅ Objetivo cumplido')+'</span></div>'
-  +'<div class="row"><button id="plan" class="go big">▶ '+(left?'Empezar plan de hoy':'Seguir practicando')+'</button><label class="f sm">Objetivo diario<input type="number" id="goal" min="5" max="500" value="'+goal+'"></label></div></div></section>'}
+  +examLine(goal)+'<div class="row"><button id="plan" class="go big">▶ '+(left?'Empezar plan de hoy':'Seguir practicando')+'</button><label class="f sm">Objetivo diario<input type="number" id="goal" min="5" max="500" value="'+goal+'"></label></div></div></section>'}
 function statsCard(){var hs=hist(),m=srsAll(),ids=Object.keys(m),tot=0,ok=0;ids.forEach(function(i){tot+=m[i][3];ok+=m[i][3]-m[i][4]});
  var last5=hs.slice(-5),avg=last5.length?last5.reduce(function(a,x){return a+x.nota},0)/last5.length:null;
  var h='<section class="pcard"><h2>📊 Tu progreso</h2><div class="tiles">'
@@ -108,6 +113,7 @@ function config(){clearInterval(tick);cur=null;view=null;window.__inExam=false;i
  $$('input[name=mode]').forEach(function(r){r.onchange=function(){var m=curMode();if(m==='sim'){$('#n').value=80;$('#mins').value=90;$('#study').checked=false}else if(m==='flash'||m==='listen'){$('#mins').value=0}else if(m==='weak'){var w=weakTopics().slice(0,5).map(function(x){return x.t.key});$$('.tk').forEach(function(c){c.checked=w.indexOf(c.value)>=0});av()}}});
  function go(o){cfgSet({sel:o.keys,n:o.n,mins:o.mins,mode:o.mode,pen:o.penK,study:o.study});launch(o)}
  $('#start').onclick=function(){go({keys:keysSel(),flt:$('#flt').value,bank:$('#bank').value,mode:curMode(),n:+$('#n').value||20,mins:+$('#mins').value||0,penK:$('#pen').value,pen:$('#pen').value==='0'?0:1/(+$('#pen').value),shuf:$('#shf').checked,prio:$('#prio').checked,study:$('#study').checked})};
+ var exd=$('#exd');if(exd)exd.onchange=function(){cfgSet({exdate:exd.value});config()};var ug=$('#usegoal');if(ug)ug.onclick=function(){var d=cfgGet().exdate,sn=seen(),u=Q.filter(function(q){return !sn[q.id]}).length,l=Math.ceil((new Date(d+'T00:00:00')-new Date(ds()+'T00:00:00'))/864e5);cfgSet({goal:Math.min(500,Math.max(5,Math.ceil(u/l)))});config()};
  $('#goal').onchange=function(){cfgSet({goal:Math.max(5,+$('#goal').value||30)});config()};
  $('#plan').onclick=function(){var g=cfgGet().goal||30,left=g-(days()[ds()]||0),k=T.map(function(t){return t.key}),cs=cfgGet().sel;if(cs&&cs.length)k=cs;
   launch({keys:k,flt:'all',bank:'all',mode:'srs',n:Math.max(10,Math.min(left>0?left:15,100)),mins:0,penK:'3',pen:1/3,shuf:true,prio:true,study:true,tag:'plan'})};
