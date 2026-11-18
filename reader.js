@@ -63,4 +63,9 @@ window.addEventListener('scroll',function(){if(!tick){tick=true;requestAnimation
 function jump(){var m=/^#n-(.+)$/.exec(location.hash);if(!m)return;var t=doc.querySelector('[data-nid="'+m[1].replace(/"/g,'')+'"]');if(!t)return;
  t.scrollIntoView({block:'center'});t.classList.add('flash');setTimeout(function(){t.classList.remove('flash')},2200)}
 setTimeout(jump,250);
+/* ---- ?buscar=palabras (desde Examínate): salta al párrafo del temario que mejor coincide ---- */
+function finder(){var m=/[?&]buscar=([^&#]+)/.exec(location.search);if(!m)return;var words;try{words=decodeURIComponent(m[1].replace(/\+/g,' ')).toLowerCase().split(/[^a-záéíóúñü0-9]+/).filter(function(w){return w.length>3})}catch(e){return}
+ if(!words.length)return;var best=null,bs=0;Array.prototype.forEach.call(doc.querySelectorAll('p,li,td,.box'),function(n){if(n.closest('.mynote,.bar'))return;var t=' '+n.textContent.toLowerCase()+' ',sc=0;words.forEach(function(w){if(t.indexOf(w)>=0)sc++});if(n.classList.contains('box'))sc*=0.9;if(sc>bs){bs=sc;best=n}});
+ if(best&&bs>=2){var tgt=best.closest('li,tr,.box')||best;tgt.scrollIntoView({block:'center'});tgt.classList.add('flash');setTimeout(function(){tgt.classList.remove('flash')},3500)}}
+setTimeout(finder,350);
 })();

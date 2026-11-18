@@ -3,7 +3,7 @@ var ls={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
 var t=document.getElementById('thm');if(t)t.onclick=function(){var d=document.documentElement,c=d.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'),n=c==='dark'?'light':'dark';d.dataset.theme=n;ls.s('theme',n)};
 var done=JSON.parse(ls.g('done')||'{}');
 var doc=document.querySelector('.doc');
-if(doc){var rs=document.createElement('script');rs.src=(document.currentScript&&document.currentScript.src||'').replace(/app\.js.*$/,'')+'reader.js';document.body.appendChild(rs);var key=doc.dataset.key,cb=document.getElementById('done'),on=document.getElementById('only');
+if(doc){var rs=document.createElement('script');rs.src=(document.currentScript&&document.currentScript.src||'').replace(/app\.js.*$/,'')+'reader.js';document.body.appendChild(rs);var ts=document.createElement('script');ts.src=rs.src.replace('reader.js','tts.js');document.body.appendChild(ts);var key=doc.dataset.key,cb=document.getElementById('done'),on=document.getElementById('only');
  cb.checked=!!done[key];cb.onchange=function(){done[key]=cb.checked;ls.s('done',JSON.stringify(done))};
  on.checked=ls.g('only')==='1';function ap(){document.body.classList.toggle('only',on.checked)}ap();on.onchange=function(){ls.s('only',on.checked?'1':'0');ap()};
  if(location.hash){var el=document.querySelector(location.hash);if(el)el.scrollIntoView()}}

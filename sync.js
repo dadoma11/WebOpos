@@ -22,7 +22,8 @@ function mergeKey(k,b,l,r){
  if(/ex_srs$/.test(k)){var o={},all={};Object.keys(l).concat(Object.keys(r)).forEach(function(i){all[i]=1});Object.keys(all).forEach(function(i){var x=l[i],y=r[i];o[i]=!x?y:!y?x:(x[2]>=y[2]?x:y)});return o}
  if(/ex_hist$/.test(k)){var m={};(l||[]).concat(r||[]).forEach(function(h){m[h.t]=h});return Object.keys(m).map(Number).sort(function(a,b){return a-b}).map(function(t){return m[t]}).slice(-50)}
  if(/^pq_/.test(k))return (l.n||0)>=(r.n||0)?l:r;
- if(k==='done'||/ex_(seen|fail)$/.test(k))return mergeMap(b,l,r);
+ if(/ex_days$/.test(k)){var dd={};Object.keys(l).concat(Object.keys(r)).forEach(function(i){dd[i]=Math.max(l[i]||0,r[i]||0)});return dd}
+ if(k==='done'||/ex_(seen|fail|flag)$/.test(k))return mergeMap(b,l,r);
  return eq(l,(b||{}))?r:l}                                     // ex_cfg y resto: gana el cambio local si lo hay
 function mergeAll(base,loc,rem){var o={},ks={};[loc,rem].forEach(function(m){Object.keys(m||{}).forEach(function(k){ks[k]=1})});
  Object.keys(ks).forEach(function(k){var v=mergeKey(k,(base||{})[k],(loc||{})[k],(rem||{})[k]);if(v!==undefined)o[k]=v});return o}
