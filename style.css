@@ -418,3 +418,14 @@ body.recall .doc li b.rv,body.recall .doc p b.rv,body.recall .doc td b.rv{cursor
 .qn.p2{box-shadow:inset 0 -3px 0 var(--ac)}
 @media(max-width:700px){.simparts,.simres{grid-template-columns:1fr}.tpc{grid-template-columns:auto 2.2rem 1fr auto}.tpc .tm{display:none}.seg.big span{min-width:0}}
 .fgrp .row{align-items:flex-start}.fgrp .f{flex:1;min-width:200px}
+/* supuesto práctico: preguntas | enunciado | base de datos */
+main.exm.wide,main.practicas.wide{max-width:1700px}
+.casegrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:1rem;align-items:start}
+.casegrid.c3{grid-template-columns:minmax(0,1fr) minmax(0,.9fr) minmax(0,1.15fr)}
+.casegrid aside{position:sticky;top:.7rem;max-height:calc(100vh - 1.4rem);overflow:auto;border:1px solid var(--bd);border-radius:14px;background:var(--card);padding:.9rem 1rem;font-size:.9rem;line-height:1.5}
+.casegrid aside h3{margin:.1rem 0 .5rem;font-size:1rem}.casegrid .cq .pcard{margin-top:0}
+.casegrid .dbt{margin:.7rem 0}.casegrid .dbt h4{margin:0 0 .25rem;font-size:.82rem;letter-spacing:.04em;color:var(--ac)}
+.casegrid .dbt table{font-size:.78rem;border-collapse:collapse;width:100%}.casegrid .dbt th,.casegrid .dbt td{border:1px solid var(--bd);padding:.2rem .4rem;text-align:left;white-space:nowrap}
+.casegrid .dbt th{background:color-mix(in srgb,var(--ac) 18%,var(--card))}.casegrid .dbt small{color:var(--mu)}.nl{color:var(--mu);font-size:.72rem}
+.casegrid .tw{overflow-x:auto}.casegrid table.tn{border-collapse:collapse;font-size:.82rem;margin:.5rem 0}.casegrid table.tn th,.casegrid table.tn td{border:1px solid var(--bd);padding:.25rem .5rem;text-align:left}.casegrid table.tn th{background:color-mix(in srgb,var(--ac) 18%,var(--card))}
+@media(max-width:1100px){.casegrid,.casegrid.c3{grid-template-columns:1fr}.casegrid aside{position:static;max-height:none}.casegrid .ce{order:-1}}

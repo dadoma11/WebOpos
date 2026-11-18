@@ -2,7 +2,7 @@
 var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var LS={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 var uk=function(n){return (window.AUTH&&AUTH.key?AUTH.key(n):n)};
-var app=$('#app'),Q=[],Qm={},T=[],cur=null,tick=null,view=null,S=window.speechSynthesis||null;
+var app=$('#app'),CS=[],Q=[],Qm={},T=[],cur=null,tick=null,view=null,S=window.speechSynthesis||null;
 var BL={1:'Bloque 1 · Organización del Estado y Administración',2:'Bloque 2 · Sistemas y comunicaciones (base)',3:'Bloque 3 · Datos y programación',4:'Bloque 4 · Redes, seguridad y sistemas'};
 var DAY=864e5;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -19,7 +19,7 @@ function streak(){var m=days(),d=new Date(),s=0;if(!m[ds(d)])d.setDate(d.getDate
 function topicOf(k){return T.filter(function(t){return t.key===k})[0]||{t:'?',b:+k.charAt(1),title:''}}
 function tshort(k){var t=topicOf(k).title||'';t=t.split(/[:(]/)[0].trim();return t.length>64?t.slice(0,62)+'…':t}
 function qlink(q){return 't/'+q.k+'.html?buscar='+encodeURIComponent(q.q+' '+q.o[q.c])}
-Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()})]).then(function(a){
+Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()}),fetch('data/casos.json').then(function(r){return r.json()}).catch(function(){return []})]).then(function(a){CS=a[2]||[];
  Q=a[0].map(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q;return q});T=a[1];config()});
 
 /* ---------- Curva del olvido ---------- */
@@ -81,7 +81,7 @@ function weakCard(){var w=weakTopics(),h='<section class="pcard"><h2>🎯 Tus pu
 
 /* ---------- configuración ---------- */
 var MODES=[['rnd','🎲','Aleatorio','Prioriza las que no has visto'],['srs','🧠','Repaso inteligente','Lo que estás a punto de olvidar'],['weak','🎯','Puntos débiles','Tus temas más flojos y falladas'],['sim','🏛','Simulacro','80 de teoría + 20 de supuesto práctico, como el examen'],['flash','🃏','Flashcards','Sin opciones: recuerda y autoevalúate'],['listen','🎧','Modo escucha','Te lee las preguntas; respondes A–D']];
-function config(){clearInterval(tick);cur=null;view=null;window.__inExam=false;if(S)S.cancel();
+function config(){var mm=document.querySelector('main');if(mm)mm.classList.remove('wide');clearInterval(tick);cur=null;view=null;window.__inExam=false;if(S)S.cancel();
  var cfg=cfgGet(),tp=new URLSearchParams(location.search).get('t'),sel=(tp&&T.some(function(t){return t.key===tp})?[tp]:null)||cfg.sel||T.map(function(t){return t.key}),n=cfg.n||20,mins=cfg.mins==null?Math.round(n*1.2):cfg.mins,mode=cfg.mode||'rnd',pen=cfg.pen||'3';
  var cnt={};Q.forEach(function(q){cnt[q.k]=(cnt[q.k]||0)+1});var fl=fails(),nf=Object.keys(fl).length,fg=flags(),ng=Object.keys(fg).length;
  var h='<p class="sub lead">'+Q.length+' preguntas tipo test (Anki + redactadas del temario + automáticas, 4 opciones). La nota por defecto es <b>(aciertos − errores/3) sobre 10</b>; puedes cambiar la penalización en las opciones.</p>';
@@ -94,7 +94,8 @@ function config(){clearInterval(tick);cur=null;view=null;window.__inExam=false;i
  h+='<section class="pcard" id="secsim" hidden><h2>🏛 Simulacro del examen oficial</h2><p class="sub">Un solo ejercicio de <b>120 min</b> con dos partes. Cada parte se puntúa de 0 a 50 y necesitas 25 en cada una.</p>'
   +'<div class="simparts"><div class="sp"><b>Parte 1 · Teoría</b><span>80 preguntas</span><small>Los 4 bloques (22 · 12 · 22 · 24 según nº de temas) · cada error resta 1/3</small></div><div class="sp"><b>Parte 2 · Supuesto práctico</b><span>20 preguntas</span><small>Al final, del bloque que elijas · cada error resta 1/3</small></div></div>'
   +'<h3>Supuesto práctico</h3><div class="seg big"><label><input type="radio" name="sup" value="3"'+(sc.sup!=='4'?' checked':'')+'><span><b>Bloque III</b><small>Desarrollo de sistemas</small></span></label><label><input type="radio" name="sup" value="4"'+(sc.sup==='4'?' checked':'')+'><span><b>Bloque IV</b><small>Sistemas y comunicaciones</small></span></label></div>'
-  +'<h3>Dificultad</h3><div class="seg"><label><input type="radio" name="dif" value="easy"'+(sc.dif==='easy'?' checked':'')+'><span>Más fáciles</span></label><label><input type="radio" name="dif" value="mid"'+(!sc.dif||sc.dif==='mid'?' checked':'')+'><span>Equilibrada</span></label><label><input type="radio" name="dif" value="hard"'+(sc.dif==='hard'?' checked':'')+'><span>Más difíciles</span></label></div><p class="sub">Fáciles, medias y difíciles van intercaladas. La dificultad se estima por la redacción de la pregunta y, si ya la has contestado, por tus fallos.</p>'
+  +'<label class="f" style="margin-top:.6rem;max-width:460px">Caso práctico<select id="casesel"></select></label>'
+  +'<h3>Dificultad de la teoría</h3><div class="seg"><label><input type="radio" name="dif" value="easy"'+(sc.dif==='easy'?' checked':'')+'><span>Más fáciles</span></label><label><input type="radio" name="dif" value="mid"'+(!sc.dif||sc.dif==='mid'?' checked':'')+'><span>Equilibrada</span></label><label><input type="radio" name="dif" value="hard"'+(sc.dif==='hard'?' checked':'')+'><span>Más difíciles</span></label></div><p class="sub">Fáciles, medias y difíciles van intercaladas. La dificultad se estima por la redacción de la pregunta y, si ya la has contestado, por tus fallos.</p>'
   +'<p class="sub">Puntuación: acierto +1, error −1/3, blanco 0. Las notas de corte de la última convocatoria (2026) quedaron en 24 puntos directos en teoría y 9,67 en el supuesto; aquí se usa el 30 % de cada parte como mínimo (24 y 6).</p>'
   +'<div class="row"><button id="startsim" class="go big">▶ Empezar simulacro (120 min)</button></div></section>';
  h+='<div id="secpr"><section class="pcard"><h2>2 · Temas <small id="tsum" class="sub"></small></h2><div class="row"><button id="all">Todos</button><button id="none">Ninguno</button><span class="sub">Marca un bloque entero o abre sus temas. La barra de cada tema es tu porcentaje de acierto.</span></div>';
@@ -120,8 +121,10 @@ function config(){clearInterval(tick);cur=null;view=null;window.__inExam=false;i
  $('#n').oninput=function(){$('#mins').value=Math.max(1,Math.round($('#n').value*1.2))};
  function curMode(){return $('input[name=mode]:checked').value}
  function setMode(){var m=curMode(),sim=m==='sim';$('#secsim').hidden=!sim;$('#secpr').hidden=sim}
+ function fillCases(){var b=document.querySelector('input[name=sup]:checked').value,sc=cfgGet().sim||{},h='<option value="">Aleatorio</option>'+CS.filter(function(c){return c.b==b}).map(function(c){return '<option value="'+c.id+'"'+(sc.cs===c.id?' selected':'')+'>'+esc(c.title)+(c.db?' · con base de datos':'')+'</option>'}).join('');$('#casesel').innerHTML=h}
+ fillCases();$$('input[name=sup]').forEach(function(r){r.onchange=fillCases});
  $$('input[name=mode]').forEach(function(r){r.onchange=function(){var m=curMode();setMode();if(m==='flash'||m==='listen'){$('#mins').value=0}else if(m==='weak'){var w=weakTopics().slice(0,5).map(function(x){return x.t.key});$$('.tk').forEach(function(c){c.checked=w.indexOf(c.value)>=0});av()}}});setMode();
- $('#startsim').onclick=function(){var o={sup:document.querySelector('input[name=sup]:checked').value,dif:document.querySelector('input[name=dif]:checked').value};cfgSet({sim:o,mode:'sim'});simulacro(o)};
+ $('#startsim').onclick=function(){var o={sup:document.querySelector('input[name=sup]:checked').value,dif:document.querySelector('input[name=dif]:checked').value,cs:$('#casesel').value};cfgSet({sim:o,mode:'sim'});simulacro(o)};
  function go(o){cfgSet({sel:o.keys,n:o.n,mins:o.mins,mode:o.mode,pen:o.penK,study:o.study});launch(o)}
  $('#start').onclick=function(){go({keys:keysSel(),flt:$('#flt').value,bank:$('#bank').value,mode:curMode(),n:+$('#n').value||20,mins:+$('#mins').value||0,penK:document.querySelector('input[name=pen]:checked').value,pen:document.querySelector('input[name=pen]:checked').value==='0'?0:1/(+document.querySelector('input[name=pen]:checked').value),shuf:$('#shf').checked,prio:$('#prio').checked,study:$('#study').checked})};
  var exd=$('#exd');if(exd)exd.onchange=function(){cfgSet({exdate:exd.value});config()};var ug=$('#usegoal');if(ug)ug.onclick=function(){var d=cfgGet().exdate,sn=seen(),u=Q.filter(function(q){return !sn[q.id]}).length,l=Math.ceil((new Date(d+'T00:00:00')-new Date(ds()+'T00:00:00'))/864e5);cfgSet({goal:Math.min(500,Math.max(5,Math.ceil(u/l)))});config()};
@@ -175,10 +178,11 @@ function weave(lv){var tot=lv.map(function(x){return x.length}),N=tot[0]+tot[1]+
 function simBuild(o){var mix=MIX[o.dif]||MIX.mid,alloc={1:22,2:12,3:22,4:24},t1=[],used={};
  var lv1=[[],[],[]];[1,2,3,4].forEach(function(b){var pool=Q.filter(function(q){return q.k.charAt(1)==b}),r=pickMix(pool,alloc[b],mix);r.forEach(function(x,i){x.forEach(function(q){used[q.id]=1});lv1[i]=lv1[i].concat(x)})});
  var p1=weave(lv1.map(shuf));
- var pool2=Q.filter(function(q){return q.k.charAt(1)==o.sup&&!used[q.id]}),ap=pool2.filter(applied);if(ap.length>=60)pool2=ap;
- var p2=weave(pickMix(pool2,20,mix));return {list:p1.concat(p2),parts:p1.map(function(){return 1}).concat(p2.map(function(){return 2})),sup:o.sup}}
+ var cl=CS.filter(function(c){return c.b==o.sup}),cs=cl.filter(function(c){return c.id===o.cs})[0]||shuf(cl)[0];
+ var p2=cs.qs.map(function(x,i){return {id:'c:'+cs.id+':'+i,q:x.q,o:x.o,c:x.c,e:x.e,k:'b'+cs.b+'caso',cs:cs.title,n:i+1,x:0,i:0}});
+ return {list:p1.concat(p2),parts:p1.map(function(){return 1}).concat(p2.map(function(){return 2})),cs:cs}}
 function simulacro(o){var r=simBuild(o),sn=seen();r.list.forEach(function(q){sn[q.id]=1});jset('ex_seen',sn);
- start(r.list,120,true,{pen:1/3,study:false,mode:'sim',parts:r.parts,sim:o})}
+ start(r.list,120,true,{pen:1/3,study:false,mode:'sim',parts:r.parts,sim:o,cs:r.cs})}
 function simScore(c){var p={1:{a:0,e:0,n:0},2:{a:0,e:0,n:0}};c.items.forEach(function(it){var x=p[it.part||1];x.n++;if(it.ans>=0){if(it.ord[it.ans]===it.q.c)x.a++;else x.e++}});
  function g(x){var d=x.a-x.e/3,M=.3*x.n;return {d:d,n:x.n,a:x.a,e:x.e,g:d>=M?25+25*(d-M)/(x.n-M):25*Math.max(d,0)/M}}
  var a=g(p[1]),b=g(p[2]);return {p1:a,p2:b,total:a.g+b.g,ok1:a.g>=25,ok2:b.g>=25}}
@@ -188,20 +192,24 @@ function start(list,mins,shuffleOpts,o){o=o||{};var fg=flags();
  var items=list.map(function(q){var ord=q.o.map(function(_,i){return i});
   if(shuffleOpts&&!/anteriores|ninguna de|ambas|todas las|ninguna es|ambos/i.test(q.o.join(' ')))ord=shuf(ord);
   return {q:q,ord:ord,ans:-1,flag:!!fg[q.id],part:0}});items.forEach(function(it,i){it.part=(o.parts&&o.parts[i])||1});
- window.__inExam=true;view='exam';cur={items:items,i:0,total:mins*60,left:mins*60,t0:Date.now(),pen:o.pen==null?1/3:o.pen,study:!!o.study,mode:o.mode||'rnd',sim:o.sim||null};render();
+ window.__inExam=true;view='exam';cur={items:items,i:0,total:mins*60,left:mins*60,t0:Date.now(),pen:o.pen==null?1/3:o.pen,study:!!o.study,mode:o.mode||'rnd',sim:o.sim||null,cs:o.cs||null};render();
  clearInterval(tick);tick=setInterval(function(){if(!cur||cur.done)return;var el=Math.round((Date.now()-cur.t0)/1000);cur.left=cur.total?cur.total-el:el;var t=$('#clock');if(t)t.textContent=fmt(Math.abs(cur.left));
   if(cur.total&&cur.left<=60&&t)t.classList.add('ko');if(cur.total&&cur.left<=0){finish(true)}},500)}
+function dbHtml(db){return db.map(function(t){return '<div class="dbt"><h4>'+t.name+'</h4><div class="tw"><table><tr>'+t.cols.map(function(c){var pk=t.pk.indexOf(c)>=0,fk=t.fk[c];return '<th'+(fk?' title="Clave foránea → '+esc(fk)+'"':'')+'>'+(pk?'🔑 ':'')+c+(fk?' ↗':'')+'</th>'}).join('')+'</tr>'+t.rows.map(function(r){return '<tr>'+r.map(function(v){return '<td>'+(v===null?'<i class="nl">NULL</i>':esc(v))+'</td>'}).join('')+'</tr>'}).join('')+'</table></div>'+(Object.keys(t.fk).length?'<small>'+Object.keys(t.fk).map(function(k){return k+' → '+t.fk[k]}).join(' · ')+'</small>':'')+'</div>'}).join('')+'<p class="sub">🔑 clave primaria · ↗ clave foránea</p>'}
+function caseWrap(c,card){var cs=c.cs;return '<div class="casegrid'+(cs.db?' c3':'')+'"><div class="cq">'+card+'</div><aside class="ce"><h3>📋 '+esc(cs.title)+'</h3>'+cs.enun+'</aside>'+(cs.db?'<aside class="cd"><h3>🗄 Base de datos</h3>'+dbHtml(cs.db)+'</aside>':'')+'</div>'}
+function qa(q){return q.cs?'':'<a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a>'}
 function setFlag(it,v){it.flag=v;var f=flags();if(v)f[it.q.id]=1;else delete f[it.q.id];jset('ex_flag',f)}
 function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans>=0;
  var ans=c.items.filter(function(x){return x.ans>=0}).length,nfl=c.items.filter(function(x){return x.flag}).length;
  var h='<div class="exbar"><b>Pregunta '+(c.i+1)+' / '+c.items.length+'</b><span>'+ans+' contestadas'+(nfl?' · ⚑ '+nfl:'')+'</span><span class="clk">⏱ <b id="clock">'+fmt(Math.abs(c.left))+'</b>'+(c.total?'':' (sin límite)')+'</span><button id="fin" class="go">Terminar</button></div><div class="pbar"><i style="width:'+(ans/c.items.length*100)+'%"></i></div>';
  h+='<div class="qgrid">'+c.items.map(function(x,i){var st='';if(c.study&&x.ans>=0)st=x.ord[x.ans]===x.q.c?' okk':' koo';return '<button class="qn'+(x.part===2?' p2':'')+(i===c.i?' cur':'')+(x.ans>=0?' ans':'')+st+(x.flag?' flg':'')+'" data-i="'+i+'">'+(i+1)+'</button>'}).join('')+'</div>';
- var tp=topicOf(q.k);
- h+='<section class="pcard qcard"><div class="qmeta">'+(c.sim?'<i class="ptag">'+(it.part===2?'Parte 2 · Supuesto práctico':'Parte 1 · Teoría')+'</i> ':'')+'B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>'+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
+ var tp=topicOf(q.k),h0=h;h='';
+ h+='<section class="pcard qcard"><div class="qmeta">'+(c.sim?'<i class="ptag">'+(it.part===2?'Parte 2 · Supuesto práctico':'Parte 1 · Teoría')+'</i> ':'')+(q.cs?'<b>'+esc(q.cs)+'</b> · pregunta '+q.n+' de 20':'B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>')+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
   +it.ord.map(function(oi,p){var cl=it.ans===p?' sel':'';if(lock){if(oi===q.c)cl=' good';else if(it.ans===p)cl=' bad'}return '<div class="opt'+cl+'"><button class="pick" data-p="'+p+'"><span class="L">'+L[p]+'</span><span class="ot">'+q.o[oi]+'</span></button></div>'}).join('')
   +'</div>';
- if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+(q.e?esc(q.e):'')+' <a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a></div>';
+ if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+(q.e?esc(q.e):'')+' '+qa(q)+'</div>';
  h+='<div class="row nav"><button id="prev"'+(c.i?'':' disabled')+'>← Anterior</button><button id="clr"'+(lock?' disabled':'')+'>Borrar respuesta</button><button id="flag">'+(it.flag?'🚩 Quitar marca':'⚑ Marcar')+'</button><button id="next"'+(c.i<c.items.length-1?'':' disabled')+'>Siguiente →</button></div><p class="hint">Atajos: 1-4 o A-D responden · ← → navegan · F marca</p></section>';
+ h=h0+(it.part===2&&c.cs?caseWrap(c,h):h);var mm=document.querySelector('main');if(mm)mm.classList.toggle('wide',it.part===2&&!!c.cs);
  app.innerHTML=h;
  $$('.pick').forEach(function(b){b.onclick=function(){if(lock)return;it.ans=+b.dataset.p;render()}});
  $$('.qn').forEach(function(b){b.onclick=function(){c.i=+b.dataset.i;render()}});
@@ -211,9 +219,9 @@ function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans
 function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam=false;view='res';clearInterval(tick);
  var A=0,E=0,B=0,per={},pt={},fl=fails();
  c.items.forEach(function(it){var q=it.q,b=q.k.charAt(1);per[b]=per[b]||{a:0,e:0,b:0};pt[q.k]=pt[q.k]||{a:0,e:0,b:0};
-  if(it.ans<0){B++;per[b].b++;pt[q.k].b++}else if(it.ord[it.ans]===q.c){A++;per[b].a++;pt[q.k].a++;delete fl[q.id]}else{E++;per[b].e++;pt[q.k].e++;fl[q.id]=1}});
+  if(it.ans<0){B++;per[b].b++;pt[q.k].b++}else if(it.ord[it.ans]===q.c){A++;per[b].a++;pt[q.k].a++;if(!q.cs)delete fl[q.id]}else{E++;per[b].e++;pt[q.k].e++;if(!q.cs)fl[q.id]=1}});
  jset('ex_fail',fl);
- var sm=srsAll(),nw=Date.now();c.items.forEach(function(it){if(it.ans>=0)srsUpd(sm,it.q.id,it.ord[it.ans]===it.q.c,nw)});jset('ex_srs',sm);addDay(A+E);
+ var sm=srsAll(),nw=Date.now();c.items.forEach(function(it){if(it.ans>=0&&!it.q.cs)srsUpd(sm,it.q.id,it.ord[it.ans]===it.q.c,nw)});jset('ex_srs',sm);addDay(A+E);
  var N=c.items.length,pts=A-E*c.pen,nota=Math.max(0,pts/N*10),notaSin=A/N*10,S2=c.sim?simScore(c):null;if(S2)nota=S2.total/10;
  var hs=hist();hs.push({t:Date.now(),a:A,e:E,b:B,n:N,nota:nota,m:c.mode});jset('ex_hist',hs.slice(-50));
  var used=Math.round((Date.now()-c.t0)/1000),pen=c.pen?(c.pen===1/3?'1/3':'1/4'):'';
@@ -221,15 +229,15 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
   +(S2?'<p>Total: <b>'+S2.total.toFixed(1)+'</b> / 100 · '+(S2.ok1&&S2.ok2?'<b class="ok">APTO</b>':'<b class="ko">NO APTO</b>')+'</p>':'<p>'+(c.pen?'Puntos: <b>'+pts.toFixed(2)+'</b> sobre '+N+' <small>(= '+A+' aciertos − '+E+' errores × '+pen+')</small>':'Sin penalización: <b>'+A+'</b> de '+N)+'</p>')+(!S2&&c.pen?'<p class="sub">Sin penalización tendrías un <b>'+notaSin.toFixed(2)+'</b>.</p>':'')+'</div></div>'
   +(S2?'<div class="simres">'+[['Parte 1 · Teoría',S2.p1,S2.ok1],['Parte 2 · Supuesto práctico',S2.p2,S2.ok2]].map(function(r){return '<div class="sp '+(r[2]?'g':'b')+'"><b>'+r[0]+'</b><span>'+r[1].g.toFixed(1)+' / 50</span><small>'+r[1].a+' ✔ · '+r[1].e+' ✘ · '+r[1].d.toFixed(2)+' puntos directos de '+r[1].n+' (mínimo 25 / 50)</small></div>'}).join('')+'</div><p class="sub">Cada parte vale 50: 25 en el mínimo (30 % de los puntos directos) y el resto proporcional. En el examen real el supuesto solo se corrige si superas la primera parte.</p>':'')
   +'<div class="stats"><span class="ok">✔ '+A+' aciertos</span><span class="ko">✘ '+E+' errores</span><span>○ '+B+' en blanco</span><span>⏱ '+fmt(used)+'</span></div>'
-  +'<h3>Por tema</h3><div class="ptl">'+Object.keys(pt).sort().map(function(k){var x=pt[k],tot=x.a+x.e+x.b,tpc=topicOf(k);return '<div class="wk"><div class="wkt"><b>'+tpc.t+'</b> '+esc(tpc.title.length>48?tpc.title.slice(0,46)+'…':tpc.title)+'</div><div class="wkb"><i class="'+(x.a/tot>=.75?'g':x.a/tot>=.5?'m':'b')+'" style="width:'+Math.round(x.a/tot*100)+'%"></i></div><span class="wkp">'+x.a+'/'+tot+'</span></div>'}).join('')+'</div>'
+  +'<h3>Por tema</h3><div class="ptl">'+Object.keys(pt).sort().map(function(k){var x=pt[k],tot=x.a+x.e+x.b,tpc=k.indexOf('caso')>0?{t:'📋',title:'Supuesto práctico'}:topicOf(k);return '<div class="wk"><div class="wkt"><b>'+tpc.t+'</b> '+esc(tpc.title.length>48?tpc.title.slice(0,46)+'…':tpc.title)+'</div><div class="wkb"><i class="'+(x.a/tot>=.75?'g':x.a/tot>=.5?'m':'b')+'" style="width:'+Math.round(x.a/tot*100)+'%"></i></div><span class="wkp">'+x.a+'/'+tot+'</span></div>'}).join('')+'</div>'
   +'<table class="pt"><tr><th>Bloque</th><th>✔</th><th>✘</th><th>○</th></tr>'+Object.keys(per).sort().map(function(b){return '<tr><td>Bloque '+b+'</td><td>'+per[b].a+'</td><td>'+per[b].e+'</td><td>'+per[b].b+'</td></tr>'}).join('')+'</table>'
   +'<div class="row"><button id="again" class="go">Nuevo examen</button><button id="rf">Repetir solo las falladas/en blanco</button>'+(c.items.some(function(x){return x.flag})?'<button id="rm">Repasar las marcadas ⚑</button>':'')+'<button id="fcf">🃏 Flashcards de las falladas</button></div></section>';
  h+='<section class="pcard"><h2>Revisión</h2><div class="row"><label class="tchk"><input type="checkbox" id="onlyw" checked> Solo errores y en blanco</label><label class="tchk"><input type="checkbox" id="onlym"> Solo marcadas ⚑</label></div><div id="rev"></div></section>';
  app.innerHTML=h;window.scrollTo(0,0);
  function rev(){var w=$('#onlyw').checked,mk=$('#onlym').checked,L='ABCD';$('#rev').innerHTML=c.items.map(function(it,i){var q=it.q,ok=it.ans>=0&&it.ord[it.ans]===q.c;if(mk&&!it.flag)return '';if(w&&ok&&!mk)return '';
-  return '<div class="rv '+(ok?'g':it.ans<0?'n':'b')+'"><div class="qmeta">#'+(i+1)+' · B'+q.k.charAt(1)+' · Tema '+topicOf(q.k).t+' · '+esc(tshort(q.k))+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'<button class="fgb" data-i="'+i+'">'+(it.flag?'🚩':'⚑')+'</button></div><p class="qq">'+q.q+'</p>'
+  return '<div class="rv '+(ok?'g':it.ans<0?'n':'b')+'"><div class="qmeta">#'+(i+1)+' · '+(q.cs?esc(q.cs):'B'+q.k.charAt(1)+' · Tema '+topicOf(q.k).t+' · '+esc(tshort(q.k)))+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'<button class="fgb" data-i="'+i+'">'+(it.flag?'🚩':'⚑')+'</button></div><p class="qq">'+q.q+'</p>'
    +it.ord.map(function(oi,p){var good=oi===q.c,mine=p===it.ans;return '<div class="ro'+(good?' good':mine?' bad':'')+'"><b>'+L[p]+')</b> '+q.o[oi]+(good?' ✔':'')+(mine&&!good?' ✘ <small>(tu respuesta)</small>':'')+'</div>'}).join('')
-   +(it.ans<0?'<div class="sub">Sin contestar</div>':'')+'<div class="why">'+(q.e||'')+' <a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a></div></div>'}).join('')||'<p class="ok">¡Nada que mostrar con este filtro! 🎉</p>';
+   +(it.ans<0?'<div class="sub">Sin contestar</div>':'')+'<div class="why">'+(q.e||'')+' '+qa(q)+'</div></div>'}).join('')||'<p class="ok">¡Nada que mostrar con este filtro! 🎉</p>';
   $$('.fgb').forEach(function(b){b.onclick=function(){var it=c.items[+b.dataset.i];setFlag(it,!it.flag);b.textContent=it.flag?'🚩':'⚑'}})}
  rev();$('#onlyw').onchange=rev;$('#onlym').onchange=rev;
  $('#again').onclick=config;
@@ -244,7 +252,7 @@ function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res
   var h='<div class="exbar"><b>Tarjeta '+(i+1)+' / '+list.length+'</b><span>✔ '+res.ok+' · ~ '+res.dd+' · ✘ '+res.ko+'</span><button id="fx">Salir</button></div><div class="pbar"><i style="width:'+(i/list.length*100)+'%"></i></div>'
    +'<section class="pcard fcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>'+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p>';
   if(!shown)h+='<div class="row"><button id="show" class="go big">Mostrar respuesta</button></div><p class="hint">Piensa la respuesta antes de destaparla · Espacio o Intro</p>';
-  else h+='<div class="fans"><b>'+q.o[q.c]+'</b>'+(q.e?'<p>'+esc(q.e)+'</p>':'')+'<a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a></div><p class="sub">¿Qué tal la recordabas?</p><div class="row rate"><button class="r1" data-r="1">✘ No la sabía <small>(1)</small></button><button class="r2" data-r="2">~ Dudosa <small>(2)</small></button><button class="r3" data-r="3">✔ La sabía <small>(3)</small></button></div>';
+  else h+='<div class="fans"><b>'+q.o[q.c]+'</b>'+(q.e?'<p>'+esc(q.e)+'</p>':'')+''+qa(q)+'</div><p class="sub">¿Qué tal la recordabas?</p><div class="row rate"><button class="r1" data-r="1">✘ No la sabía <small>(1)</small></button><button class="r2" data-r="2">~ Dudosa <small>(2)</small></button><button class="r3" data-r="3">✔ La sabía <small>(3)</small></button></div>';
   h+='</section>';app.innerHTML=h;
   var sh=$('#show');if(sh)sh.onclick=function(){shown=true;draw()};$('#fx').onclick=function(){if(confirm('¿Salir de las flashcards?')){end(true)}};
   $$('.rate button').forEach(function(b){b.onclick=function(){rate(+b.dataset.r)}})}
