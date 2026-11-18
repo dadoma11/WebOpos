@@ -17,6 +17,7 @@ function ds(d){d=d||new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1))
 function addDay(n){var m=days(),k=ds();m[k]=(m[k]||0)+n;jset('ex_days',m)}
 function streak(){var m=days(),d=new Date(),s=0;if(!m[ds(d)])d.setDate(d.getDate()-1);while(m[ds(d)]>0){s++;d.setDate(d.getDate()-1)}return s}
 function topicOf(k){return T.filter(function(t){return t.key===k})[0]||{t:'?',b:+k.charAt(1),title:''}}
+function tshort(k){var t=topicOf(k).title||'';t=t.split(/[:(]/)[0].trim();return t.length>64?t.slice(0,62)+'…':t}
 function qlink(q){return 't/'+q.k+'.html?buscar='+encodeURIComponent(q.q+' '+q.o[q.c])}
 Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()})]).then(function(a){
  Q=a[0].map(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q;return q});T=a[1];config()});
@@ -148,7 +149,7 @@ function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans
  var h='<div class="exbar"><b>Pregunta '+(c.i+1)+' / '+c.items.length+'</b><span>'+ans+' contestadas'+(nfl?' · ⚑ '+nfl:'')+'</span><span class="clk">⏱ <b id="clock">'+fmt(Math.abs(c.left))+'</b>'+(c.total?'':' (sin límite)')+'</span><button id="fin" class="go">Terminar</button></div><div class="pbar"><i style="width:'+(ans/c.items.length*100)+'%"></i></div>';
  h+='<div class="qgrid">'+c.items.map(function(x,i){var st='';if(c.study&&x.ans>=0)st=x.ord[x.ans]===x.q.c?' okk':' koo';return '<button class="qn'+(i===c.i?' cur':'')+(x.ans>=0?' ans':'')+st+(x.flag?' flg':'')+'" data-i="'+i+'">'+(i+1)+'</button>'}).join('')+'</div>';
  var tp=topicOf(q.k);
- h+='<section class="pcard qcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
+ h+='<section class="pcard qcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>'+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
   +it.ord.map(function(oi,p){var cl=it.ans===p?' sel':'';if(lock){if(oi===q.c)cl=' good';else if(it.ans===p)cl=' bad'}return '<div class="opt'+cl+'"><button class="pick" data-p="'+p+'"><span class="L">'+L[p]+'</span><span class="ot">'+q.o[oi]+'</span></button></div>'}).join('')
   +'</div>';
  if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+(q.e?esc(q.e):'')+' <a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a></div>';
@@ -177,7 +178,7 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
  h+='<section class="pcard"><h2>Revisión</h2><div class="row"><label class="tchk"><input type="checkbox" id="onlyw" checked> Solo errores y en blanco</label><label class="tchk"><input type="checkbox" id="onlym"> Solo marcadas ⚑</label></div><div id="rev"></div></section>';
  app.innerHTML=h;window.scrollTo(0,0);
  function rev(){var w=$('#onlyw').checked,mk=$('#onlym').checked,L='ABCD';$('#rev').innerHTML=c.items.map(function(it,i){var q=it.q,ok=it.ans>=0&&it.ord[it.ans]===q.c;if(mk&&!it.flag)return '';if(w&&ok&&!mk)return '';
-  return '<div class="rv '+(ok?'g':it.ans<0?'n':'b')+'"><div class="qmeta">#'+(i+1)+' · B'+q.k.charAt(1)+' · Tema '+topicOf(q.k).t+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'<button class="fgb" data-i="'+i+'">'+(it.flag?'🚩':'⚑')+'</button></div><p class="qq">'+q.q+'</p>'
+  return '<div class="rv '+(ok?'g':it.ans<0?'n':'b')+'"><div class="qmeta">#'+(i+1)+' · B'+q.k.charAt(1)+' · Tema '+topicOf(q.k).t+' · '+esc(tshort(q.k))+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'<button class="fgb" data-i="'+i+'">'+(it.flag?'🚩':'⚑')+'</button></div><p class="qq">'+q.q+'</p>'
    +it.ord.map(function(oi,p){var good=oi===q.c,mine=p===it.ans;return '<div class="ro'+(good?' good':mine?' bad':'')+'"><b>'+L[p]+')</b> '+q.o[oi]+(good?' ✔':'')+(mine&&!good?' ✘ <small>(tu respuesta)</small>':'')+'</div>'}).join('')
    +(it.ans<0?'<div class="sub">Sin contestar</div>':'')+'<div class="why">'+(q.e||'')+' <a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a></div></div>'}).join('')||'<p class="ok">¡Nada que mostrar con este filtro! 🎉</p>';
   $$('.fgb').forEach(function(b){b.onclick=function(){var it=c.items[+b.dataset.i];setFlag(it,!it.flag);b.textContent=it.flag?'🚩':'⚑'}})}
@@ -192,7 +193,7 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
 function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res={ok:0,dd:0,ko:0};
  function draw(){if(i>=list.length)return end();var q=list[i],tp=topicOf(q.k);
   var h='<div class="exbar"><b>Tarjeta '+(i+1)+' / '+list.length+'</b><span>✔ '+res.ok+' · ~ '+res.dd+' · ✘ '+res.ko+'</span><button id="fx">Salir</button></div><div class="pbar"><i style="width:'+(i/list.length*100)+'%"></i></div>'
-   +'<section class="pcard fcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p>';
+   +'<section class="pcard fcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>'+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p>';
   if(!shown)h+='<div class="row"><button id="show" class="go big">Mostrar respuesta</button></div><p class="hint">Piensa la respuesta antes de destaparla · Espacio o Intro</p>';
   else h+='<div class="fans"><b>'+q.o[q.c]+'</b>'+(q.e?'<p>'+esc(q.e)+'</p>':'')+'<a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a></div><p class="sub">¿Qué tal la recordabas?</p><div class="row rate"><button class="r1" data-r="1">✘ No la sabía <small>(1)</small></button><button class="r2" data-r="2">~ Dudosa <small>(2)</small></button><button class="r3" data-r="3">✔ La sabía <small>(3)</small></button></div>';
   h+='</section>';app.innerHTML=h;
@@ -217,7 +218,7 @@ function listen(list,o){if(!S){alert('Tu navegador no admite lectura en voz alta
  function readQ(){var it=items[i],t='Pregunta '+(i+1)+'. '+it.q.q.replace(/<[^>]+>/g,'')+'. ';it.ord.forEach(function(oi,p){t+='Opción '+L[p]+': '+it.q.o[oi].replace(/<[^>]+>/g,'')+'. '});say(t)}
  function draw(){if(i>=items.length)return end();got=false;var it=items[i],q=it.q;
   app.innerHTML='<div class="exbar"><b>🎧 Pregunta '+(i+1)+' / '+items.length+'</b><span>✔ '+res.a+' · ✘ '+res.e+'</span><button id="lx">Salir</button></div><div class="pbar"><i style="width:'+(i/items.length*100)+'%"></i></div>'
-   +'<section class="pcard qcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+topicOf(q.k).t+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
+   +'<section class="pcard qcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+topicOf(q.k).t+' · '+esc(tshort(q.k))+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
    +it.ord.map(function(oi,p){return '<div class="opt"><button class="pick" data-p="'+p+'"><span class="L">'+L[p]+'</span><span class="ot">'+q.o[oi]+'</span></button></div>'}).join('')+'</div>'
    +'<div class="row nav"><button id="rep">🔁 Repetir</button><button id="skip">⏭ Siguiente</button><label class="f sm">Velocidad<select id="spd">'+[0.8,1,1.2,1.5,1.8].map(function(x){return '<option value="'+x+'"'+(x===(parseFloat(LS.g('tts_rate'))||1)?' selected':'')+'>'+x+'×</option>'}).join('')+'</select></label></div>'
    +'<label class="tchk"><input type="checkbox" id="auto"'+(auto?' checked':'')+'> Pasar sola a la siguiente tras la corrección</label><p class="hint">Pulsa A–D (o 1–4) para responder · R repite · N salta</p><div id="lfb"></div></section>';
