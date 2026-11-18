@@ -43,6 +43,24 @@ async function auth(env, req) {
   return { sid: s.sid, uid: s.uid, name: s.name, th };
 }
 
+
+const CODE_CH = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const newCode = () => [...crypto.getRandomValues(new Uint8Array(6))].map((x) => CODE_CH[x % CODE_CH.length]).join('');
+const ROOM_TTL = 3 * DAY, MAX_PLAYERS = 4;
+async function roomView(env, room, a) {
+  const pl = (await env.DB.prepare('SELECT user_id,name,answers,ok,err,done,joined FROM room_players WHERE code=? ORDER BY joined').bind(room.code).all()).results;
+  const me = pl.find((x) => x.user_id === a.uid); let mine = {}; try { mine = me ? JSON.parse(me.answers) : {}; } catch (e) {}
+  const host = await env.DB.prepare('SELECT name FROM users WHERE id=?').bind(room.host_id).first();
+  const players = pl.map((x) => {
+    let ans = {}; try { ans = JSON.parse(x.answers); } catch (e) {}
+    const o = { name: x.name, host: x.user_id === room.host_id, me: x.user_id === a.uid, ok: x.ok, err: x.err, answered: Object.keys(ans).length, done: !!x.done };
+    if (x.user_id === a.uid) o.answers = ans; else { o.answers = {}; for (const k of Object.keys(ans)) if (k in mine) o.answers[k] = ans[k]; } // la respuesta del otro solo se ve cuando ya has respondido tú
+    return o;
+  });
+  const qids = JSON.parse(room.qids);
+  return { code: room.code, title: room.title || '', n: qids.length, secs: room.secs, pen: room.pen, started: room.started, now: Date.now(), host: host ? host.name : '', isHost: room.host_id === a.uid, joined: !!me, full: pl.length >= MAX_PLAYERS, qids: me ? qids : undefined, players };
+}
+
 export default {
   async fetch(req, env) {
     const H = cors(req, env), url = new URL(req.url), p = url.pathname, m = req.method;
@@ -93,6 +111,52 @@ export default {
       }
       const dm = /^\/api\/sessions\/(\d+)$/.exec(p);
       if (dm && m === 'DELETE') { await env.DB.prepare('DELETE FROM sessions WHERE id=? AND user_id=?').bind(+dm[1], a.uid).run(); return json({ ok: 1 }, 200, H); }
+      if (p === '/api/rooms' && m === 'POST') { // crear sala de test conjunto
+        if (await tooMany(env, 'room:' + a.uid, 15, 3600000)) return json({ error: 'Demasiadas salas creadas. Espera un poco.' }, 429, H);
+        const b = await req.json(), qids = [...new Set((Array.isArray(b.qids) ? b.qids : []).map(Number).filter((n) => Number.isInteger(n) && n >= 0))].slice(0, 200);
+        if (qids.length < 3) return json({ error: 'Hacen falta al menos 3 preguntas' }, 400, H);
+        const secs = Math.min(Math.max(b.secs | 0, 0), 14400), pen = [0, 3, 4].includes(b.pen | 0) ? b.pen | 0 : 3, title = String(b.title || '').slice(0, 80), now = Date.now();
+        await env.DB.prepare('DELETE FROM room_players WHERE code IN (SELECT code FROM rooms WHERE created<?)').bind(now - ROOM_TTL).run();
+        await env.DB.prepare('DELETE FROM rooms WHERE created<?').bind(now - ROOM_TTL).run();
+        let code = '', ok = false;
+        for (let i = 0; i < 5 && !ok; i++) { code = newCode(); try { await env.DB.prepare('INSERT INTO rooms(code,host_id,title,qids,secs,pen,created) VALUES(?,?,?,?,?,?,?)').bind(code, a.uid, title, JSON.stringify(qids), secs, pen, now).run(); ok = true; } catch (e) {} }
+        if (!ok) return json({ error: 'No se pudo crear la sala' }, 500, H);
+        await env.DB.prepare('INSERT INTO room_players(code,user_id,name,joined,last) VALUES(?,?,?,?,?)').bind(code, a.uid, a.name, now, now).run();
+        await note(env, 'room:' + a.uid);
+        return json({ code }, 200, H);
+      }
+      const rm = /^\/api\/rooms\/([A-Za-z0-9]{6})(?:\/(join|start|progress))?$/.exec(p);
+      if (rm) {
+        const code = rm[1].toUpperCase(), act = rm[2], room = await env.DB.prepare('SELECT * FROM rooms WHERE code=?').bind(code).first();
+        if (!room || room.created < Date.now() - ROOM_TTL) return json({ error: 'Esa sala no existe o ha caducado' }, 404, H);
+        if (!act && m === 'GET') return json(await roomView(env, room, a), 200, H);
+        if (act === 'join' && m === 'POST') {
+          const cnt = (await env.DB.prepare('SELECT COUNT(*) n FROM room_players WHERE code=?').bind(code).first()).n, me = await env.DB.prepare('SELECT 1 x FROM room_players WHERE code=? AND user_id=?').bind(code, a.uid).first();
+          if (!me) {
+            if (room.started) return json({ error: 'La sala ya ha empezado' }, 409, H);
+            if (cnt >= MAX_PLAYERS) return json({ error: 'La sala está llena' }, 409, H);
+            const now = Date.now(); await env.DB.prepare('INSERT INTO room_players(code,user_id,name,joined,last) VALUES(?,?,?,?,?)').bind(code, a.uid, a.name, now, now).run();
+          }
+          return json(await roomView(env, room, a), 200, H);
+        }
+        if (act === 'start' && m === 'POST') {
+          if (room.host_id !== a.uid) return json({ error: 'Solo quien creó la sala puede empezar' }, 403, H);
+          if (!room.started) { await env.DB.prepare('UPDATE rooms SET started=? WHERE code=? AND started IS NULL').bind(Date.now(), code).run(); room.started = Date.now(); }
+          return json(await roomView(env, (await env.DB.prepare('SELECT * FROM rooms WHERE code=?').bind(code).first()), a), 200, H);
+        }
+        if (act === 'progress' && (m === 'PUT' || m === 'POST')) {
+          const me = await env.DB.prepare('SELECT 1 x FROM room_players WHERE code=? AND user_id=?').bind(code, a.uid).first();
+          if (!me) return json({ error: 'No estás en esta sala' }, 403, H);
+          if (!room.started) return json({ error: 'La sala aún no ha empezado' }, 409, H);
+          const txt = await req.text(); if (txt.length > 20000) return json({ error: 'Demasiados datos' }, 413, H);
+          const b = JSON.parse(txt), cur = await env.DB.prepare('SELECT answers FROM room_players WHERE code=? AND user_id=?').bind(code, a.uid).first(); let ans = {}; try { ans = JSON.parse(cur.answers); } catch (e) {}
+          const allowed = new Set(JSON.parse(room.qids).map(String)); let n = Object.keys(ans).length;
+          for (const [k, v] of Object.entries(b.answers || {})) { if (!(k in ans) && allowed.has(k) && Number.isInteger(v) && v >= -1 && v <= 3 && n++ < 200) ans[k] = v; } // una respuesta dada no se puede cambiar
+          await env.DB.prepare('UPDATE room_players SET answers=?,ok=?,err=?,done=?,last=? WHERE code=? AND user_id=?')
+            .bind(JSON.stringify(ans), 0, 0, Object.keys(ans).length >= allowed.size ? 1 : 0, Date.now(), code, a.uid).run();
+          return json(await roomView(env, room, a), 200, H);
+        }
+      }
       return json({ error: 'No encontrado' }, 404, H);
     } catch (e) { return json({ error: 'Error del servidor' }, 500, H); }
   },

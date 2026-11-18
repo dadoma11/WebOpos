@@ -378,3 +378,10 @@ body:has(main.doc) .top nav{align-items:center}body:has(main.doc) .top .lgo{widt
 .card .m i.I:before{--m:var(--i-star)}
 @media(max-width:960px){.hx h1 .bk{width:64px}}
 .hx-t{position:relative;z-index:2}.hx-art img{height:270px}
+/* test conjunto */
+.sala .pl{display:inline-block;padding:.1rem .6rem;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid var(--bd);background:var(--glass)}.sala .pl.me{border-color:var(--ac);background:rgba(139,92,246,.2)}
+.sala .pls{display:flex;gap:.4rem;flex-wrap:wrap;margin:.3rem 0}.sala .lnk-box{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 .4rem}.sala .lnk-box input{flex:1;min-width:220px;padding:.6rem .8rem;border:1px solid var(--bd);border-radius:10px;background:var(--glass);color:var(--fg)}
+.sala .opt .pick{align-items:center}.sala .opt .who{margin-left:auto;display:flex;gap:.3rem;flex-wrap:wrap}.sala .wait{padding:.8rem 1rem;border-radius:12px;background:var(--glass);border:1px dashed var(--ac)}
+.sala .big{font-size:2rem;margin:.2rem 0}.sala .f{display:flex;flex-direction:column;gap:.2rem;font-size:.85rem;color:var(--mu)}.sala .f input,.sala .f select{padding:.5rem;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--fg)}
+:root{--i-users:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3.2'/><path d='M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5a3.2 3.2 0 0 1 0 6M18 14c2 .6 3.5 2.6 3.5 5'/></svg>")}
+.top nav a[data-i=users]:before{--m:var(--i-users)}
