@@ -385,3 +385,6 @@ body:has(main.doc) .top nav{align-items:center}body:has(main.doc) .top .lgo{widt
 .sala .big{font-size:2rem;margin:.2rem 0}.sala .f{display:flex;flex-direction:column;gap:.2rem;font-size:.85rem;color:var(--mu)}.sala .f input,.sala .f select{padding:.5rem;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--fg)}
 :root{--i-users:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3.2'/><path d='M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5a3.2 3.2 0 0 1 0 6M18 14c2 .6 3.5 2.6 3.5 5'/></svg>")}
 .top nav a[data-i=users]:before{--m:var(--i-users)}
+/* modo recordar */
+body.recall .doc li b:not(.rv),body.recall .doc p b:not(.rv),body.recall .doc td b:not(.rv){color:transparent!important;background:color-mix(in srgb,var(--ac) 30%,transparent);border-radius:4px;cursor:pointer;user-select:none;-webkit-user-select:none;text-shadow:none}
+body.recall .doc li b.rv,body.recall .doc p b.rv,body.recall .doc td b.rv{cursor:pointer;outline:1px dashed var(--ac);outline-offset:1px;border-radius:3px}
