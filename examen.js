@@ -2,7 +2,7 @@
 var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var LS={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 var uk=function(n){return (window.AUTH&&AUTH.key?AUTH.key(n):n)};
-var app=$('#app'),CS=[],Q=[],Qm={},T=[],cur=null,tick=null,view=null,S=window.speechSynthesis||null;
+var app=$('#app'),Q=[],Qm={},T=[],cur=null,tick=null,view=null,S=window.speechSynthesis||null;
 var BL={1:'Bloque 1 · Organización del Estado y Administración',2:'Bloque 2 · Sistemas y comunicaciones (base)',3:'Bloque 3 · Datos y programación',4:'Bloque 4 · Redes, seguridad y sistemas'};
 var DAY=864e5;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -19,7 +19,7 @@ function streak(){var m=days(),d=new Date(),s=0;if(!m[ds(d)])d.setDate(d.getDate
 function topicOf(k){return T.filter(function(t){return t.key===k})[0]||{t:'?',b:+k.charAt(1),title:''}}
 function tshort(k){var t=topicOf(k).title||'';t=t.split(/[:(]/)[0].trim();return t.length>64?t.slice(0,62)+'…':t}
 function qlink(q){return 't/'+q.k+'.html?buscar='+encodeURIComponent(q.q+' '+q.o[q.c])}
-Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()}),fetch('data/casos.json').then(function(r){return r.json()}).catch(function(){return []})]).then(function(a){CS=a[2]||[];
+Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()})]).then(function(a){
  Q=a[0].map(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q;return q});T=a[1];config()});
 
 /* ---------- Curva del olvido ---------- */
@@ -121,7 +121,7 @@ function config(){var mm=document.querySelector('main');if(mm)mm.classList.remov
  $('#n').oninput=function(){$('#mins').value=Math.max(1,Math.round($('#n').value*1.2))};
  function curMode(){return $('input[name=mode]:checked').value}
  function setMode(){var m=curMode(),sim=m==='sim';$('#secsim').hidden=!sim;$('#secpr').hidden=sim}
- function fillCases(){var b=document.querySelector('input[name=sup]:checked').value,sc=cfgGet().sim||{},h='<option value="">Aleatorio</option>'+CS.filter(function(c){return c.b==b}).map(function(c){return '<option value="'+c.id+'"'+(sc.cs===c.id?' selected':'')+'>'+esc(c.title)+(c.db?' · con base de datos':'')+'</option>'}).join('');$('#casesel').innerHTML=h}
+ function fillCases(){var b=document.querySelector('input[name=sup]:checked').value,sc=cfgGet().sim||{},h='<option value="">Aleatorio (nuevo cada vez)</option>'+CASOS.info.filter(function(c){return c.b==b}).map(function(c){return '<option value="'+c.id+'"'+(sc.cs===c.id?' selected':'')+'>'+esc(c.t)+(c.db?' · con base de datos':'')+'</option>'}).join('');$('#casesel').innerHTML=h}
  fillCases();$$('input[name=sup]').forEach(function(r){r.onchange=fillCases});
  $$('input[name=mode]').forEach(function(r){r.onchange=function(){var m=curMode();setMode();if(m==='flash'||m==='listen'){$('#mins').value=0}else if(m==='weak'){var w=weakTopics().slice(0,5).map(function(x){return x.t.key});$$('.tk').forEach(function(c){c.checked=w.indexOf(c.value)>=0});av()}}});setMode();
  $('#startsim').onclick=function(){var o={sup:document.querySelector('input[name=sup]:checked').value,dif:document.querySelector('input[name=dif]:checked').value,cs:$('#casesel').value};cfgSet({sim:o,mode:'sim'});simulacro(o)};
@@ -178,7 +178,7 @@ function weave(lv){var tot=lv.map(function(x){return x.length}),N=tot[0]+tot[1]+
 function simBuild(o){var mix=MIX[o.dif]||MIX.mid,alloc={1:22,2:12,3:22,4:24},t1=[],used={};
  var lv1=[[],[],[]];[1,2,3,4].forEach(function(b){var pool=Q.filter(function(q){return q.k.charAt(1)==b}),r=pickMix(pool,alloc[b],mix);r.forEach(function(x,i){x.forEach(function(q){used[q.id]=1});lv1[i]=lv1[i].concat(x)})});
  var p1=weave(lv1.map(shuf));
- var cl=CS.filter(function(c){return c.b==o.sup}),cs=cl.filter(function(c){return c.id===o.cs})[0]||shuf(cl)[0];
+ var cs=CASOS.gen(o.sup,o.cs||null);
  var p2=cs.qs.map(function(x,i){return {id:'c:'+cs.id+':'+i,q:x.q,o:x.o,c:x.c,e:x.e,k:'b'+cs.b+'caso',cs:cs.title,n:i+1,x:0,i:0}});
  return {list:p1.concat(p2),parts:p1.map(function(){return 1}).concat(p2.map(function(){return 2})),cs:cs}}
 function simulacro(o){var r=simBuild(o),sn=seen();r.list.forEach(function(q){sn[q.id]=1});jset('ex_seen',sn);
