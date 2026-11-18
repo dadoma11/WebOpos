@@ -4,7 +4,7 @@
 <div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción a los periféricos</a><a href="#s1">1.2 Conectividad: interfaces físicas y lógicas</a><a href="#s2">2. Conectividad de periféricos</a><a href="#s3">3. Administración de periféricos</a><a href="#s4">4. Periféricos de impresión</a><a href="#s5">5. Periféricos de almacenamiento</a><a href="#s6">6. Periféricos de visualización y digitalización</a></aside>
 <main class="doc" data-key="b2t2"><div class="crumb">Bloque 2 · Tema 2</div><h1>Periféricos: conectividad, administración, impresión, almacenamiento y visualización</h1>
 <div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
-<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (12)</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (13)</label>
 <a class="chip" href="../pdf/pc/Resumen_Bloque2_Tema2.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque2_Tema2.pdf">PDF móvil</a><a class="chip" href="../pdf/completo/b2t2.pdf">📄 PDF completo</a></div>
 <h2 id="s0">1. Introducción a los periféricos</h2>
 <ul>
@@ -34,11 +34,11 @@
 <div class="tw"><table><tr><th>Interfaz</th><th>Tipo</th><th>Velocidad</th></tr>
 <tr><td><b>USB 2.0</b></td><td>Serie</td><td><b>480 Mbps</b></td></tr>
 <tr><td><b>USB 3.x</b></td><td>Serie</td><td>Hasta <b>20 Gbps</b></td></tr>
-<tr><td><b>HDMI 2.0</b></td><td>Serie</td><td>Hasta <b>18 Gbps</b></td></tr>
-<tr><td><b>DisplayPort 1.4</b></td><td>Serie</td><td>Hasta <b>32 Gbps</b></td></tr>
+<tr><td><b>HDMI 2.1</b></td><td>Serie</td><td>Hasta <b>48 Gbps</b> (4K a 120 Hz u 8K a 60 Hz)</td></tr>
+<tr><td><b>DisplayPort 2.1</b></td><td>Serie</td><td>Hasta <b>80 Gbps</b> (8K a 60 Hz, 4K a más de 240 Hz)</td></tr>
 <tr><td><b>SATA III</b></td><td>Serie</td><td><b>600 MB/s</b></td></tr>
-<tr><td><b>NVMe (PCIe 4.0)</b></td><td>Serie</td><td>Hasta <b>7.000 MB/s</b></td></tr>
-<tr><td><b>Thunderbolt 4</b></td><td>Serie</td><td>Hasta <b>40 Gbps</b></td></tr>
+<tr><td><b>NVMe (PCIe 4.0 / 5.0)</b></td><td>Serie</td><td>Hasta <b>7.000 MB/s</b> (PCIe 4.0) / <b>~14.000 MB/s</b> (PCIe 5.0)</td></tr>
+<tr><td><b>Thunderbolt 4 / 5</b></td><td>Serie</td><td>Hasta <b>40 Gbps</b> (TB4) o <b>80 Gbps</b>, 120 Gbps en modo ráfaga (TB5); vídeo, datos y energía (hasta <b>240 W</b>)</td></tr>
 <tr><td><b>PS/2</b></td><td>Paralelo</td><td>Baja (legacy)</td></tr>
 <tr><td><b>VGA</b></td><td>Analógica</td><td>640×480 a 1920×1080</td></tr>
 </table></div>
@@ -77,7 +77,7 @@
 </div>
 <div class="tw"><table><tr><th>Interfaz</th><th>Uso principal</th></tr>
 <tr><td><b>USB</b></td><td>E/S general: teclados, ratones, almacenamiento, impresoras, cámaras</td></tr>
-<tr><td><b>USB Type-C</b></td><td>Conector <b>reversible</b>: USB 3.x, <b>USB4</b>, <b>DisplayPort</b> y carga <b>Power Delivery (hasta 100 W)</b></td></tr>
+<tr><td><b>USB Type-C</b></td><td>Conector <b>reversible</b>: USB 3.x, <b>USB4</b>, <b>DisplayPort</b> y carga <b>Power Delivery (hasta 240 W)</b> con USB PD 3.1 (modo Extended Power Range)</td></tr>
 <tr><td><b>HDMI</b></td><td>Salida de <b>vídeo y audio digital</b> para monitores, proyectores, TV</td></tr>
 <tr><td><b>DisplayPort</b></td><td>Vídeo de <b>alto rendimiento</b></td></tr>
 <tr><td><b>Thunderbolt</b></td><td><b>Datos, vídeo y energía</b></td></tr>
@@ -90,7 +90,7 @@
 <tr><td><b>PS/2</b></td><td>Teclados y ratones</td><td>Sustituida por <b>USB</b>; aún en BIOS y entornos seguros</td></tr>
 <tr><td><b>VGA</b></td><td>Salida de vídeo <b>analógica</b></td><td>Sustituida por <b>HDMI/DisplayPort</b>; proyectores antiguos</td></tr>
 <tr><td><b>Puerto serie (RS-232)</b></td><td>Módems, terminales, impresoras antiguas</td><td>Aún en <b>robótica, industria</b> y configuración de redes</td></tr>
-<tr><td><b>Puerto paralelo (LPT)</b></td><td>Impresoras y escáneres antiguos</td><td><b>Totalmente obsoleto</b> en uso doméstico</td></tr>
+<tr><td><b>Puerto paralelo (LPT)</b></td><td>Impresoras antiguas (su nombre proviene de «Line Printer»)</td><td><b>Totalmente obsoleto</b> en uso doméstico</td></tr>
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Interfaces de red y almacenamiento</b></p>
@@ -98,13 +98,13 @@
 </div>
 <div class="tw"><table><tr><th>Interfaz</th><th>Características</th></tr>
 <tr><td><b>SATA (Serial ATA)</b></td><td>HDD, SSD y ópticas; hasta <b>600 MB/s</b> (SATA III); muy extendido</td></tr>
-<tr><td><b>NVMe</b></td><td>SSD de alto rendimiento; bus <b>PCIe</b>; hasta <b>7.000 MB/s</b></td></tr>
+<tr><td><b>NVMe</b></td><td>SSD de alto rendimiento; bus <b>PCIe</b>; hasta <b>7.000 MB/s</b> en PCIe 4.0 y hasta <b>~14.000 MB/s</b> en PCIe 5.0</td></tr>
 <tr><td><b>SCSI</b></td><td>Discos y cintas empresariales; rápido y robusto; <b>sustituido por SAS</b></td></tr>
 <tr><td><b>SAS (Serial Attached SCSI)</b></td><td>Servidores; <b>más fiable y rápido que SATA</b>; soporta discos <b>dual-port</b></td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Inalámbrica</th><th>Uso</th><th>Características</th></tr>
-<tr><td><b>Bluetooth</b></td><td>Ratones, teclados, auriculares, impresoras</td><td><b>Bajo consumo</b>, rango corto (<b>~10 m</b>)</td></tr>
-<tr><td><b>Wi-Fi</b></td><td>Redes locales y NAS</td><td><b>Alta velocidad</b>; compatible con IPv4/IPv6</td></tr>
+<tr><td><b>Bluetooth 5.x</b></td><td>Ratones, teclados, auriculares, impresoras</td><td><b>Bajo consumo</b>, rango corto (<b>~10 m</b>); incluye perfil <b>LE Audio</b> (audio de bajo consumo, desde Bluetooth 5.2)</td></tr>
+<tr><td><b>Wi-Fi (5 / 6 / 6E / 7)</b></td><td>Redes locales y NAS</td><td><b>Alta velocidad</b> (Wi-Fi 7: hasta <b>46 Gbps</b> teóricos); compatible con IPv4/IPv6</td></tr>
 <tr><td><b>NFC</b></td><td>Tarjetas, móviles</td><td>Rango <b>&lt; 10 cm</b>; identificación y <b>pagos</b></td></tr>
 </table></div>
 <ul>
@@ -213,8 +213,18 @@
 <h3>5.1 HDD</h3>
 <ul>
 <li><b>No volátil y magnético</b>. <b>Platos</b> metálicos, <b>cabezas</b> en brazo mecánico, <b>motor</b> (<b>5.400–10.000 RPM</b>) y <b>controlador</b>.</li>
-<li><b>Organización lógica</b>: <b>pistas</b> (circunferencias concéntricas), <b>sectores</b> (unidad mínima, ej. <b>512 B</b>), <b>cilindros</b> (pistas alineadas verticalmente) y <b>clústeres</b> (sectores gestionados por el sistema de archivos).</li>
-<li><b>Capacidad</b>: <b>500 GB a más de 20 TB</b>. <b>Interfaces</b>: <b>SATA III</b> (habitual) y <b>SAS</b> (profesional). <b>Ventajas</b>: gran capacidad y <b>bajo coste por GB</b>. <b>Inconvenientes</b>: mecánicos, <b>más lentos y frágiles</b> que los SSD.</li>
+</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Organización lógica del HDD</b></p>
+<ul>
+<li><b>Pistas</b>: circunferencias concéntricas en cada cara del plato.</li>
+<li><b>Sectores</b>: divisiones de las pistas (<b>unidad mínima</b> de lectura). Los discos actuales usan de forma nativa sectores de <b>4 KB</b> (<b>Advanced Format</b>), aunque muchos emulan sectores de <b>512 B</b> (modo «<b>512e</b>») por compatibilidad con sistemas y programas antiguos.</li>
+<li><b>Cilindros</b>: pistas alineadas verticalmente entre platos.</li>
+<li><b>Clústeres</b>: agrupaciones de sectores gestionadas por el <b>sistema de archivos</b>.</li>
+</ul>
+</div>
+<ul>
+<li><b>Capacidad</b>: <b>500 GB hasta 32 TB</b> en gama profesional con tecnología <b>HAMR</b> (hoja de ruta anunciada a 36-40 TB). <b>Interfaces</b>: <b>SATA III</b> (habitual) y <b>SAS</b> (profesional). <b>Ventajas</b>: gran capacidad y <b>bajo coste por GB</b>. <b>Inconvenientes</b>: mecánicos, <b>más lentos y frágiles</b> que los SSD.</li>
 </ul>
 <h3>5.2 SSD</h3>
 <ul>
@@ -225,7 +235,7 @@
 <div class="tw"><table><tr><th>Formato físico</th><th>Interfaz</th><th>Características</th></tr>
 <tr><td><b>2,5" SATA</b></td><td>SATA III</td><td>Portátiles y sobremesa; hasta <b>600 MB/s</b></td></tr>
 <tr><td><b>M.2 SATA</b></td><td>SATA sobre bus M.2</td><td>Igual que el anterior pero <b>más compacto</b></td></tr>
-<tr><td><b>M.2 NVMe</b></td><td><b>PCIe</b></td><td>Hasta <b>7.000 MB/s</b>; equipos modernos</td></tr>
+<tr><td><b>M.2 NVMe</b></td><td><b>PCIe</b></td><td>Hasta <b>7.000 MB/s</b> en PCIe 4.0 y hasta <b>~14.000 MB/s</b> en PCIe 5.0; equipos modernos</td></tr>
 <tr><td><b>U.2</b></td><td>PCIe</td><td>Alta velocidad; <b>servidores</b></td></tr>
 <tr><td><b>PCIe (tarjeta AIC)</b></td><td>PCIe x4 o superior</td><td>SSD como tarjeta de expansión; <b>máximo rendimiento</b></td></tr>
 </table></div>
@@ -260,7 +270,7 @@
 <tr><td><b>Disco duro externo (HDD)</b></td><td>Hasta <b>20 TB</b>, bajo coste/GB; frágil y lento</td><td>Backup de gran volumen</td></tr>
 <tr><td><b>SSD externo</b></td><td>Rápido, resistente; <b>mayor coste/GB</b></td><td>Transferencias rápidas, edición de vídeo</td></tr>
 <tr><td><b>Memoria USB (pendrive)</b></td><td>Compacta; <b>8 GB a 2 TB</b></td><td>Documentos, <b>arranque de sistemas</b></td></tr>
-<tr><td><b>SD/microSD</b></td><td>Cámaras, móviles, tablets, <b>Raspberry Pi</b>; requiere lector</td><td>Fotografía, embebidos</td></tr>
+<tr><td><b>SD/microSD</b></td><td>Cámaras, móviles, tablets, <b>Raspberry Pi</b>; requiere lector. Ya hay microSD de hasta <b>1,5 TB</b>; <b>SD Express</b> (bus PCIe/NVMe) hasta <b>~985 MB/s</b>, con microSD Express ya disponibles</td><td>Fotografía, embebidos</td></tr>
 </table></div>
 <div class="box I"><div class="t">IMPORTANTE</div>
 <p><b>Almacenamiento externo</b></p>
@@ -302,12 +312,13 @@
 <tr><td><b>LED</b></td><td>Variante de LCD con <b>retroiluminación LED</b>; más eficiente</td></tr>
 <tr><td><b>OLED</b></td><td><b>Iluminación por píxel</b>; mejor contraste y color; costosa</td></tr>
 <tr><td><b>IPS</b></td><td><b>Mejores ángulos de visión y color</b>; diseño</td></tr>
+<tr><td><b>VA</b></td><td><b>Mejor contraste</b> que IPS/TN; ángulos y respuesta intermedios; habitual en monitores curvos y de gran formato</td></tr>
 <tr><td><b>TN</b></td><td><b>Menor coste y respuesta rápida</b></td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Denominación</th><th>Resolución</th><th>Uso</th></tr>
 <tr><td><b>HD</b></td><td><b>1280×720</b></td><td>Básico</td></tr>
 <tr><td><b>Full HD (FHD)</b></td><td><b>1920×1080</b></td><td>Estándar en oficinas y hogar</td></tr>
-<tr><td><b>QHD / 2K</b></td><td><b>2560×1440</b></td><td>Diseño, juegos</td></tr>
+<tr><td><b>QHD / WQHD</b></td><td><b>2560×1440</b></td><td>Diseño, juegos avanzados</td></tr>
 <tr><td><b>4K / UHD</b></td><td><b>3840×2160</b></td><td>Vídeo y diseño profesional</td></tr>
 <tr><td><b>8K</b></td><td><b>7680×4320</b></td><td>Ultra-HD, cine</td></tr>
 </table></div>

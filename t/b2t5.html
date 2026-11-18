@@ -12,11 +12,11 @@
 </ul>
 <div class="tw"><table><tr><th>Etapa</th><th>Hito</th></tr>
 <tr><td><b>1960-70</b></td><td>Modelos <b>jerárquico (IMS)</b> y <b>en red (CODASYL)</b></td></tr>
-<tr><td><b>1970-80</b></td><td><b>Modelo relacional</b> de <b>E. F. Codd</b>; primeros SGBD relacionales (<b>Oracle, DB2</b>)</td></tr>
-<tr><td><b>1980-90</b></td><td>Interfaces gráficas, transacciones y estándar <b>SQL</b></td></tr>
+<tr><td><b>1970-80</b></td><td><b>Modelo relacional</b> de <b>E. F. Codd (1970)</b>; primeros SGBD relacionales (<b>Oracle, 1979</b>)</td></tr>
+<tr><td><b>1980-90</b></td><td>Interfaces gráficas, transacciones, <b>IBM DB2 (1983)</b> y consolidación de <b>SQL</b> como estándar</td></tr>
 <tr><td><b>1990-2000</b></td><td>SGBD <b>orientados a objetos</b>, integración con Java</td></tr>
 <tr><td><b>Años 2000</b></td><td><b>NoSQL</b> (escalabilidad y flexibilidad web)</td></tr>
-<tr><td><b>Actualidad</b></td><td>SGBD en la <b>nube</b>, <b>multimodelo</b>, <b>Big Data</b></td></tr>
+<tr><td><b>Actualidad</b></td><td>SGBD en la <b>nube</b>, <b>multimodelo</b>, <b>Big Data</b> y auge de las <b>bases de datos vectoriales</b> (pgvector, Pinecone, Weaviate, Milvus, Chroma) para IA generativa y búsqueda semántica (<b>RAG</b>)</td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Ventajas frente a archivos planos</th><th>Idea</th></tr>
 <tr><td><b>1. Independencia lógica y física</b></td><td>Los programas no dependen de la estructura física</td></tr>
@@ -46,7 +46,7 @@
 <tr><td><b>Clave foránea (foreign key)</b></td><td>Campo que <b>enlaza con la clave primaria de otra tabla</b>; garantiza la <b>integridad referencial</b> (ej.: <code>id_cliente</code> en Pedidos → Clientes)</td></tr>
 <tr><td><b>Dominio</b></td><td><b>Conjunto de valores válidos</b> de un atributo (ej.: edad 0-120)</td></tr>
 <tr><td><b>Grado</b></td><td><b>Número de atributos (columnas)</b> (Clientes con id, nombre, email → grado <b>3</b>)</td></tr>
-<tr><td><b>Cardinalidad</b></td><td><b>Número de tuplas (filas)</b> (250 registros → cardinalidad <b>250</b>)</td></tr>
+<tr><td><b>Cardinalidad</b></td><td><b>Número de tuplas (filas)</b> (250 registros → cardinalidad <b>250</b>); no confundir con la cardinalidad del modelo entidad-relación (1:1, 1:N, N:M), que indica cuántas instancias de una entidad se asocian con otra</td></tr>
 </table></div>
 <ul>
 <li><b>Normalización</b>: reduce la <b>redundancia</b>, asegura la <b>integridad</b> y mejora la eficiencia (1FN, 2FN, 3FN…).</li>
@@ -148,11 +148,12 @@
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>SGBD relacionales</b></p>
 <div class="tw"><table><tr><th>SGBD</th><th>Características</th></tr>
-<tr><td><b>MySQL</b></td><td><b>Código abierto</b>, ligero; desarrollo web (<b>LAMP</b>)</td></tr>
+<tr><td><b>MySQL</b></td><td><b>Código abierto</b>, ligero; desarrollo web (<b>LAMP</b>). Propiedad de <b>Oracle Corporation</b> desde que adquirió <b>Sun Microsystems (2010)</b>; ello motivó <b>MariaDB</b> como fork comunitario independiente</td></tr>
 <tr><td><b>PostgreSQL</b></td><td>Open Source, <b>avanzado, extensible</b>, fuerte cumplimiento de estándares; soluciones críticas</td></tr>
 <tr><td><b>Oracle Database</b></td><td><b>Comercial</b>, robusto; grandes volúmenes y seguridad avanzada</td></tr>
 <tr><td><b>SQL Server</b></td><td><b>Microsoft</b>; integrado con <b>.NET, Power BI y Azure</b></td></tr>
 <tr><td><b>MariaDB</b></td><td><b>Derivado de MySQL</b>; comunidad y compatibilidad</td></tr>
+<tr><td><b>SQLite</b></td><td><b>Motor embebido</b>, sin proceso servidor independiente; según sus desarrolladores, la BD <b>más desplegada del mundo</b> (apps móviles, navegadores, sistemas embebidos)</td></tr>
 </table></div>
 </div>
 <h2 id="s2">3. Bases de datos orientadas a objetos (SGBDOO)</h2>
@@ -188,7 +189,7 @@
 <h3>ORM (Object-Relational Mapping)</h3>
 <ul>
 <li>Técnica que <b>mapea clases con tablas relacionales</b>, para persistir objetos <b>sin escribir SQL a mano</b>. Automatiza la conversión objeto ↔ registro, hace <b>CRUD</b> (Crear, Leer, Actualizar, Eliminar), da <b>portabilidad</b> entre motores y más productividad.</li>
-<li><b>Ejemplos</b>: <b>Hibernate</b> (Java), <b>NHibernate</b> (C#/.NET), <b>Entity Framework</b> (ADO.NET, Microsoft), <b>ActiveRecord</b> (Ruby on Rails).</li>
+<li><b>Ejemplos</b>: <b>Hibernate</b> (Java), <b>NHibernate</b> (C#/.NET), <b>Entity Framework</b> (ADO.NET, Microsoft), <b>ActiveRecord</b> (Ruby on Rails), <b>SQLAlchemy y Django ORM</b> (Python), <b>Prisma</b> (Node.js/TypeScript).</li>
 </ul>
 <div class="tw"><table><tr><th>Lenguaje</th><th>Descripción</th></tr>
 <tr><td><b>OQL</b> (Object Query Language)</td><td>Estándar propuesto por <b>ODMG</b> (Object Data Management Group); parecido a SQL pero para objetos</td></tr>
@@ -210,8 +211,8 @@
 <p><b>SGBDOO de ejemplo</b></p>
 <div class="tw"><table><tr><th>SGBDOO</th><th>Descripción</th></tr>
 <tr><td><b>ObjectDB</b></td><td>Para <b>Java</b>, compatible con <b>JPA</b>; ligera y de alto rendimiento</td></tr>
-<tr><td><b>db4o</b></td><td>OODB para <b>Java y .NET</b>; almacena objetos <b>sin mapeo</b></td></tr>
-<tr><td><b>Versant</b></td><td>Robusta y escalable; aplicaciones industriales y científicas</td></tr>
+<tr><td><b>db4o</b></td><td>OODB para <b>Java y .NET</b>; almacenaba objetos <b>sin mapeo</b>. <b>Proyecto discontinuado</b>: Versant (propietaria desde 2008) dejó el soporte activo hacia 2014; no recomendado para nuevos desarrollos</td></tr>
+<tr><td><b>Versant</b></td><td>Robusta y escalable; aplicaciones industriales y científicas. Tras la adquisición de Versant Corporation por <b>Actian (2013)</b>, se comercializa como <b>Actian NoSQL Object Database</b></td></tr>
 <tr><td><b>Matisse</b></td><td>Orientado a objetos con integración <b>SQL y OQL</b></td></tr>
 </table></div>
 </div>

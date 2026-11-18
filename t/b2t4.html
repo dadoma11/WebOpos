@@ -29,7 +29,7 @@
 <tr><td><b>UMA / SMP</b></td><td><b>Misma memoria, mismo tiempo de acceso</b>, mismo bus; cada procesador con su caché</td></tr>
 <tr><td><b>NUMA</b></td><td>Cada procesador con <b>memoria propia</b> (accede a la de otros); <b>más rápida que UMA</b> y más ancho de banda</td></tr>
 <tr><td><b>DSM</b></td><td><b>Memoria compartida lógica</b> sobre máquinas físicas distribuidas (clúster)</td></tr>
-<tr><td><b>Memoria híbrida</b></td><td>Memoria global + memoria local</td></tr>
+<tr><td><b>Memoria híbrida</b></td><td>Memoria <b>global compartida</b> del sistema + memoria <b>local</b> para los datos de uso más frecuente</td></tr>
 </table></div>
 <h2 id="s1">2. Componentes internos</h2>
 <h3>2.1 Kernel</h3>
@@ -131,12 +131,13 @@
 <tr><td><b>FFS</b></td><td>Organización y rendimiento</td><td>BSD</td></tr>
 <tr><td><b>ZFS</b></td><td><b>Integridad de datos, compresión y snapshots</b></td><td>FreeBSD, Solaris</td></tr>
 <tr><td><b>HFS/HFS+</b></td><td>Sistema de Apple; HFS+ con journaling</td><td>macOS</td></tr>
+<tr><td><b>APFS</b></td><td>Por defecto en macOS e iOS desde 2017; optimizado para <b>SSD</b>, <b>cifrado nativo</b>, snapshots y clonación eficiente</td><td>macOS, iOS</td></tr>
 <tr><td><b>XFS</b></td><td><b>Alto rendimiento</b> en grandes volúmenes</td><td>Linux, especialmente Red Hat</td></tr>
 </table></div>
 <h3>Planificación de disco</h3>
 <div class="tw"><table><tr><th>Algoritmo</th><th>Descripción</th></tr>
 <tr><td><b>FCFS</b></td><td>Por <b>orden de llegada</b></td></tr>
-<tr><td><b>SSF / SSTF</b></td><td>Atiende la petición <b>más cercana</b> al cabezal; reduce tiempo medio pero puede causar <b>inanición</b></td></tr>
+<tr><td><b>SSTF</b> (Shortest Seek Time First)</td><td>Atiende la petición <b>más cercana</b> al cabezal; reduce tiempo medio pero puede causar <b>inanición</b></td></tr>
 <tr><td><b>SCAN</b> («ascensor»)</td><td>El cabezal avanza en una dirección atendiendo todo y al final <b>invierte el sentido</b></td></tr>
 <tr><td><b>C-SCAN</b></td><td>Como SCAN, pero al llegar al final <b>vuelve al inicio sin atender</b>; esperas más uniformes</td></tr>
 <tr><td><b>LOOK / C-LOOK</b></td><td>Optimizados: <b>no llegan hasta el final</b> si no hay peticiones</td></tr>
@@ -196,9 +197,12 @@
 <tr><td><b>Windows Vista</b></td><td>2007</td><td>Seguridad, interfaz <b>Aero</b></td></tr>
 <tr><td><b>Windows 7</b></td><td>2009</td><td>Éxito comercial</td></tr>
 <tr><td><b>Windows 8</b></td><td>2012</td><td>Interfaz táctil, tienda de aplicaciones</td></tr>
-<tr><td><b>Windows 10</b></td><td>2015</td><td>Actualizaciones continuas, <b>Edge</b></td></tr>
+<tr><td><b>Windows 10</b></td><td>2015</td><td>Actualizaciones continuas, <b>Edge</b>; soporte estándar finalizado el <b>14/10/2025</b></td></tr>
 <tr><td><b>Windows 11</b></td><td>2021</td><td>Interfaz renovada, productividad y seguridad</td></tr>
 </table></div>
+<ul>
+<li>El soporte estándar de <b>Windows 10 finalizó el 14 de octubre de 2025</b>: desde entonces solo recibe actualizaciones de seguridad mediante el programa de pago <b>ESU (Extended Security Updates)</b>; Microsoft recomienda migrar a <b>Windows 11</b>.</li>
+</ul>
 <div class="tw"><table><tr><th>Licencia cliente</th><th>Descripción</th></tr>
 <tr><td><b>OEM</b></td><td><b>Preinstalada</b>, <b>vinculada al hardware</b>, no transferible; más económica</td></tr>
 <tr><td><b>Retail (FPP)</b></td><td>Se compra por separado; instalable en varios equipos según el paquete</td></tr>
@@ -213,6 +217,7 @@
 <tr><td><b>2016</b></td><td>2016</td><td><b>Nano Server, contenedores</b>, Azure</td></tr>
 <tr><td><b>2019</b></td><td>2018</td><td>Seguridad, <b>clústeres híbridos</b></td></tr>
 <tr><td><b>2022</b></td><td>2021</td><td><b>TLS 1.3</b>, seguridad multicapa</td></tr>
+<tr><td><b>2025</b></td><td>2024</td><td><b>Hotpatching</b> (parcheo sin reinicios), <b>Secured-Core Server</b>, mejoras de Active Directory e integración con Azure Local</td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Licencia de servidor</th><th>Descripción</th></tr>
 <tr><td><b>Licencia + CAL</b></td><td>SO + <b>licencia de acceso por usuario o dispositivo</b>; común en pymes</td></tr>
@@ -329,7 +334,7 @@
 <tr><td><b>Requisitos</b></td><td>Amplia compatibilidad</td><td>Más exigentes (procesadores recientes)</td></tr>
 </table></div>
 <ul>
-<li><b>Requisitos mínimos</b>: procesador <b>1 GHz o superior, 2 o más núcleos de 64 bits</b>, <b>4 GB RAM</b>, <b>64 GB</b> de almacenamiento.</li>
+<li><b>Requisitos mínimos</b>: procesador <b>1 GHz o superior, 2 o más núcleos de 64 bits</b>, <b>4 GB RAM</b>, <b>64 GB</b> de almacenamiento, firmware <b>UEFI</b> con <b>arranque seguro (Secure Boot)</b> y módulo <b>TPM 2.0</b>.</li>
 </ul>
 <h2 id="s3">4. Unix</h2>
 <ul>
@@ -341,7 +346,7 @@
 <tr><td><b>Solaris</b></td><td><b>Oracle</b> (originalmente Sun Microsystems)</td><td>Robusto y escalable; servidores <b>SPARC y x86</b>; incluye <b>ZFS</b></td></tr>
 <tr><td><b>AIX</b></td><td><b>IBM</b></td><td>Para sistemas <b>Power</b> de IBM</td></tr>
 <tr><td><b>HP-UX</b></td><td><b>Hewlett-Packard</b></td><td>Servidores HP (<b>PA-RISC e Itanium</b>)</td></tr>
-<tr><td><b>macOS</b></td><td><b>Apple</b></td><td>Unix certificado (basado en <b>BSD</b>), interfaz <b>Aqua</b>; desarrollado en <b>Objective-C</b></td></tr>
+<tr><td><b>macOS</b></td><td><b>Apple</b></td><td>Unix certificado (basado en <b>BSD</b>), interfaz <b>Aqua</b>; núcleo <b>Darwin/XNU</b> en <b>C y C++</b>; <b>Objective-C</b> y, más recientemente, <b>Swift</b> en las capas superiores de aplicación (<b>Cocoa</b>)</td></tr>
 </table></div>
 </div>
 <h2 id="s4">5. Linux</h2>
@@ -359,7 +364,7 @@
 <tr><td><b>Núcleo independiente</b></td><td><b>Común a todas las arquitecturas</b>: procesos, planificación, memoria, sistemas de archivos, E/S, red, seguridad</td></tr>
 </table></div>
 <ul>
-<li>Al arrancar se carga el <b>kernel</b> y luego <b>init</b> (primer proceso), que gestiona los <b>niveles de ejecución</b>; scripts en <b>/etc/init.d/</b>.</li>
+<li>Al arrancar se carga el <b>kernel</b> y luego <b>init</b> (primer proceso), que gestiona los <b>niveles de ejecución</b>; scripts en <b>/etc/init.d/</b>. Las distribuciones modernas (Ubuntu, Debian, Fedora, RHEL/CentOS Stream…) han sustituido <b>SysV init</b> y los runlevels por <b>systemd</b>, que organiza el arranque mediante <b>«targets»</b> y mantiene compatibilidad con los runlevels.</li>
 </ul>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Niveles de ejecución (runlevels)</b></p>
@@ -478,7 +483,7 @@
 <tr><td><b>Knoppix</b></td><td>Basada en Debian; arranque desde <b>CD/DVD o USB</b>; rescate</td></tr>
 <tr><td><b>Linux Mint</b></td><td>Basada en Ubuntu y Debian; <b>escritorio</b> amigable</td></tr>
 <tr><td><b>Arch Linux</b></td><td>Ligera y minimalista; control total; <b>rolling release</b></td></tr>
-<tr><td><b>CentOS</b></td><td>Derivada de <b>RHEL</b>, gratuita; servidores</td></tr>
+<tr><td><b>CentOS</b></td><td>Tradicional derivada de <b>RHEL</b>, <b>descontinuada</b> (CentOS 8 a finales de 2021, CentOS 7 en junio de 2024); sustituida por <b>CentOS Stream</b> ("upstream" de RHEL, desarrollo continuo/rolling, ya no clon estable)</td></tr>
 <tr><td><b>Kali Linux</b></td><td>Basada en Debian; <b>seguridad informática y pentesting</b></td></tr>
 <tr><td><b>Manjaro</b></td><td>Basada en <b>Arch</b> pero más fácil</td></tr>
 </table></div>
@@ -528,7 +533,7 @@
 <p><b>Core OS</b> (núcleo): acceso directo al hardware; basado en <b>UNIX (Darwin)</b>; interfaces, energía, certificados y claves. <b>Core Services</b>: bases de datos, caché, preferencias, red, localización, notificaciones. <b>Media</b>: gráficos, audio, vídeo y animaciones (<b>AVFoundation, Core Audio, Core Graphics, Core Animation</b>). <b>Cocoa Touch</b>: interfaz gráfica y sensores (movimiento, cámara, localización). La interfaz de iOS se llama <b>Aqua</b>.</p>
 </div>
 <div class="tw"><table><tr><th>Otro SO móvil</th><th>Descripción</th></tr>
-<tr><td><b>HarmonyOS</b></td><td><b>Huawei</b>; <b>microkernel</b>; móviles, IoT, TV</td></tr>
+<tr><td><b>HarmonyOS</b></td><td><b>Huawei</b>; <b>microkernel</b>; móviles, IoT, TV. Desde <b>HarmonyOS NEXT</b> (HarmonyOS 5, 2024) ya no es compatible con el <b>kernel Linux</b> ni con las apps <b>Android (AOSP)</b>: sistema totalmente independiente</td></tr>
 <tr><td><b>KaiOS</b></td><td>Basado en <b>Firefox OS</b>; móviles básicos con apps web y 4G</td></tr>
 <tr><td><b>Tizen</b></td><td>Código abierto, impulsado por <b>Samsung</b>; wearables, TV</td></tr>
 <tr><td><b>Sailfish OS</b></td><td>Origen <b>europeo</b>, basado en Linux, compatible con apps Android</td></tr>

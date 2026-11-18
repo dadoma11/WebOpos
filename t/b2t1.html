@@ -4,7 +4,7 @@
 <div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción a la informática</a><a href="#s1">2. Representación de la información</a><a href="#s2">3. Sistemas de información (SI)</a><a href="#s3">4. Arquitectura de ordenadores</a><a href="#s4">5. Componentes internos de los equipos microinformáticos</a></aside>
 <main class="doc" data-key="b2t1"><div class="crumb">Bloque 2 · Tema 1</div><h1>Informática básica, representación de la información, arquitectura y componentes de equipos microinformáticos</h1>
 <div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
-<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (25)</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (28)</label>
 <a class="chip" href="../pdf/pc/Resumen_Bloque2_Tema1.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque2_Tema1.pdf">PDF móvil</a><a class="chip" href="../pdf/completo/b2t1.pdf">📄 PDF completo</a><a class="chip pr" href="../practicas.html#conv">🧪 Prácticas relacionadas</a></div>
 <h2 id="s0">1. Introducción a la informática</h2>
 <ul>
@@ -54,14 +54,14 @@
 <tr><td><b>Octal</b></td><td><b>8</b></td><td>0-7</td><td>Históricamente en lenguajes y sistemas <b>UNIX</b></td></tr>
 <tr><td><b>Hexadecimal</b></td><td><b>16</b></td><td>0-9 y <b>A (10) a F (15)</b></td><td>Programación, <b>direcciones de memoria</b>, <b>colores web</b>, depuración</td></tr>
 </table></div>
-<ul>
-<li><b>Decimal → binario</b>: <b>divisiones sucesivas entre 2</b> y leer los <b>restos de abajo arriba</b> (13 → <b>1101</b>).</li>
-<li><b>Binario → decimal</b>: multiplicar cada bit por la <b>potencia de 2</b> de su posición (desde 0 a la derecha) y sumar (1101 = 8+4+0+1 = <b>13</b>).</li>
-</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Conversión decimal ↔ binario</b></p>
+<p><b>Decimal → binario</b>: <b>divisiones sucesivas entre 2</b>, anotando los restos y leyéndolos de <b>abajo arriba</b> (13 ÷ 2 = 6 r1; 6 ÷ 2 = 3 r0; 3 ÷ 2 = 1 r1; 1 ÷ 2 = 0 r1 → <b>1101</b>). <b>Binario → decimal</b>: multiplicar cada bit por la <b>potencia de 2</b> de su posición (desde 0 a la derecha) y sumar (1101 = 1·2³ + 1·2² + 0·2¹ + 1·2⁰ = 8+4+0+1 = <b>13</b>).</p>
+</div>
 <h3>2.2 Codificación de caracteres</h3>
 <div class="tw"><table><tr><th>Código</th><th>Características</th></tr>
 <tr><td><b>ASCII</b></td><td><b>128 caracteres</b> (letras, dígitos, puntuación, control); versión extendida <b>ASCII-8 = 256</b></td></tr>
-<tr><td><b>Unicode</b></td><td>Estándar universal con <b>más de 143.000 caracteres</b>, emojis incluidos</td></tr>
+<tr><td><b>Unicode</b></td><td>Estándar universal con <b>más de 159.000 caracteres</b> (versión 17.0, 2025), emojis incluidos</td></tr>
 <tr><td><b>UTF-8</b></td><td><b>1 a 4 bytes</b> (variable); <b>compatible con ASCII</b>; muy usado en la <b>web</b></td></tr>
 <tr><td><b>UTF-16</b></td><td><b>2 o 4 bytes</b>; común en <b>Windows</b></td></tr>
 <tr><td><b>UTF-32</b></td><td><b>Siempre 4 bytes</b>; poco eficiente en almacenamiento</td></tr>
@@ -162,7 +162,7 @@
 </ul>
 <h3>4.1 Arquitectura Von Neumann</h3>
 <ul>
-<li><b>Propuesta en 1945</b> por <b>John von Neumann</b> (con Mauchly y Eckert) en *First Draft of a Report on the EDVAC*; idea del <b>programa almacenado</b>: <b>instrucciones y datos en la misma memoria</b>.</li>
+<li><b>Propuesta en 1945</b> por <b>John von Neumann</b> (matemático entonces en el Instituto de Estudios Avanzados de Princeton), a partir del trabajo del equipo del proyecto <b>EDVAC</b> (Moore School, Univ. de Pensilvania) liderado por <b>Mauchly y Eckert</b>, en *First Draft of a Report on the EDVAC*; idea del <b>programa almacenado</b>: <b>instrucciones y datos en la misma memoria</b>.</li>
 </ul>
 <div class="tw"><table><tr><th>Bloque</th><th>Función</th></tr>
 <tr><td><b>Unidad de entrada</b></td><td>Introduce datos y órdenes (teclado, ratón, escáner)</td></tr>
@@ -251,7 +251,7 @@
 </ul>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Evolución de los buses</b></p>
-<p><b>ISA</b> (PCs antiguos) · <b>PCI / PCI-X / PCI Express (PCIe)</b> (tarjetas gráficas, red…) · <b>AGP</b> (antigua interfaz de tarjetas gráficas) · <b>USB</b> (conexión universal de periféricos) · <b>SATA / NVMe</b> (discos duros y SSD).</p>
+<p><b>ISA</b> (PCs antiguos) · <b>PCI / PCI-X / PCI Express (PCIe)</b> (tarjetas gráficas, red…; velocidad por carril: <b>PCIe 3.0 = 8 GT/s</b>, <b>4.0 = 16 GT/s</b>, <b>5.0 = 32 GT/s</b> (estándar en gama alta desde 2021-2022), <b>6.0 = 64 GT/s</b> (especificación finalizada en 2022, primeros productos 2024-2025)) · <b>AGP</b> (antigua interfaz de tarjetas gráficas) · <b>USB</b> (conexión universal de periféricos) · <b>SATA / NVMe</b> (discos duros y SSD).</p>
 </div>
 <h3>4.5 Entrada/salida y periféricos</h3>
 <div class="tw"><table><tr><th>Clasificación</th><th>Ejemplos</th></tr>
@@ -323,6 +323,7 @@
 <tr><td><b>USB 3.1 Gen 2</b></td><td><b>10 Gbps</b></td><td>Conectores USB-A o USB-C</td></tr>
 <tr><td><b>USB 3.2 Gen 2x2</b></td><td><b>20 Gbps</b></td><td><b>Requiere USB-C</b></td></tr>
 <tr><td><b>USB4 / 4.0</b></td><td><b>40 Gbps</b></td><td>Basado en <b>Thunderbolt</b>, solo con USB-C</td></tr>
+<tr><td><b>USB4 2.0</b></td><td><b>80 Gbps</b> (hasta <b>120 Gbps</b> en modo asimétrico)</td><td>Carga de hasta <b>240 W</b>; requiere cables y controladores certificados</td></tr>
 </table></div>
 </div>
 <h3>4.6 Taxonomía de Flynn (1966)</h3>
@@ -345,13 +346,17 @@
 </div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>RISC</b></p>
-<p><b>Conjunto reducido y sencillo</b>; cada instrucción se ejecuta normalmente en <b>un solo ciclo de reloj</b>. Rasgos: instrucciones de <b>longitud fija</b>, <b>más uso de registros</b>, <b>menos lógica de control</b> y <b>pipelining</b>. Ejemplos: <b>ARM</b> (smartphones, tablets, Raspberry Pi), <b>MIPS, SPARC, PowerPC</b> y <b>RISC-V</b> (arquitectura libre). Otros enfoques: <b>VLIW, EPIC</b>.</p>
+<p><b>Conjunto reducido y sencillo</b>; cada instrucción se ejecuta normalmente en <b>un solo ciclo de reloj</b>. Rasgos: instrucciones de <b>longitud fija</b>, <b>más uso de registros</b>, <b>menos lógica de control</b> y <b>pipelining</b>. Ejemplos: <b>ARM</b> (smartphones, tablets, Raspberry Pi y también equipos de sobremesa y portátiles de gama alta: <b>Apple Silicon M1-M4</b>, <b>Qualcomm Snapdragon X Elite/Plus</b>), <b>MIPS, SPARC, PowerPC</b> y <b>RISC-V</b> (arquitectura libre). Otros enfoques: <b>VLIW, EPIC</b>.</p>
 </div>
 <div class="tw"><table><tr><th></th><th><b>Von Neumann</b></th><th><b>Harvard</b></th></tr>
 <tr><td><b>Memoria</b></td><td><b>Única</b> para datos e instrucciones</td><td><b>Dos memorias independientes</b> (instrucciones y datos)</td></tr>
 <tr><td><b>Buses</b></td><td>Un solo canal</td><td><b>Dos buses separados</b></td></tr>
 <tr><td><b>Efecto</b></td><td>Posible cuello de botella</td><td><b>Acceso simultáneo</b> a instrucciones y datos; mejora el rendimiento en <b>sistemas embebidos y microcontroladores</b></td></tr>
 </table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Arquitectura Harvard modificada</b></p>
+<p>Los procesadores actuales (x86, ARM, etc.) no usan Harvard pura ni Von Neumann pura, sino un <b>modelo híbrido</b>: separan la <b>caché L1</b> en dos bloques independientes (<b>instrucciones</b> y <b>datos</b>), permitiendo <b>accesos simultáneos</b>, mientras que la <b>memoria principal (RAM) permanece unificada</b> (datos e instrucciones en el mismo espacio, como en Von Neumann).</p>
+</div>
 <h2 id="s4">5. Componentes internos de los equipos microinformáticos</h2>
 <h3>5.1 Placa base y chipset</h3>
 <ul>
@@ -398,7 +403,7 @@
 <li><b>Elementos internos</b>: <b>ALU</b>, <b>CU</b>, <b>registros</b>, <b>bus interno</b> y <b>caché</b>.</li>
 </ul>
 <div class="tw"><table><tr><th>Clasificación</th><th>Tipos</th></tr>
-<tr><td><b>Fabricante</b></td><td><b>Intel</b>: Core (i3, i5, i7, i9), Pentium, Celeron, <b>Xeon</b> (servidores) · <b>AMD</b>: <b>Ryzen</b>, Athlon, <b>Threadripper</b> (alto rendimiento), <b>EPYC</b> (servidores) · <b>ARM</b>: móviles y embebidos</td></tr>
+<tr><td><b>Fabricante</b></td><td><b>Intel</b>: <b>Core Ultra</b> (sustituye progresivamente a Core i3/i5/i7/i9 desde 2023; incorpora una <b>NPU</b> para IA local, requisito de los «<b>Copilot+ PC</b>»), <b>Xeon</b> (servidores) · <b>AMD</b>: <b>Ryzen</b>, Athlon, <b>Threadripper</b> (alto rendimiento), <b>EPYC</b> (servidores) · <b>ARM</b>: móviles y embebidos</td></tr>
 <tr><td><b>Núcleos</b></td><td><b>Single-core</b> (en desuso), <b>Dual-core</b>, <b>Quad-core</b> (mínimo estándar hoy), <b>Hexa-core y superiores</b> (6, 8, 12 o más)</td></tr>
 <tr><td><b>Uso</b></td><td><b>Desktop</b>, <b>móviles</b> (bajo consumo), <b>embebidos</b> (IoT, automoción), <b>servidores</b> (alto rendimiento y disponibilidad)</td></tr>
 </table></div>
@@ -414,11 +419,11 @@
 </table></div>
 </div>
 <ul>
-<li><b>Características de la RAM</b>: acceso rápido y aleatorio, <b>temporal</b> (se borra al apagar), lectura y escritura, capacidad de <b>4 GB</b> a <b>más de 64 GB</b>.</li>
+<li><b>Características de la RAM</b>: acceso rápido y aleatorio, <b>temporal</b> (se borra al apagar), lectura y escritura, capacidad de <b>8 GB</b> en equipos básicos hasta <b>128 GB o más</b> en equipos avanzados de consumo.</li>
 </ul>
 <div class="tw"><table><tr><th>Formato</th><th>Descripción</th></tr>
-<tr><td><b>DIMM</b></td><td><b>Sobremesa</b>; contactos en ambos lados; ranuras verticales; DDR4: ~<b>133 mm</b>, <b>288 pines</b> (DDR3: 240), <b>1,2 V</b> (DDR5: <b>1,1 V</b>), 4-64 GB</td></tr>
-<tr><td><b>SO-DIMM</b></td><td><b>Portátiles, mini PCs, HTPC</b> y embebidos; ~<b>67 mm</b>, <b>260 pines</b> (DDR4; DDR3: 204), 1,2 V, 4-32 GB; ranuras horizontales o inclinadas</td></tr>
+<tr><td><b>DIMM</b></td><td><b>Sobremesa</b>; contactos en ambos lados; ranuras verticales; DDR4/DDR5: ~<b>133 mm</b>, <b>288 pines</b> (DDR4 y DDR5; DDR3: 240), <b>1,2 V</b> (DDR5: <b>1,1 V</b>), 4-64 GB</td></tr>
+<tr><td><b>SO-DIMM</b></td><td><b>Portátiles, mini PCs, HTPC</b> y embebidos; ~<b>67 mm</b>, <b>262 pines</b> (DDR5), <b>260</b> (DDR4), 204 (DDR3), 1,2 V, 4-32 GB; ranuras horizontales o inclinadas</td></tr>
 <tr><td><b>RIMM</b></td><td>Módulos <b>Rambus</b> (obsoleto)</td></tr>
 <tr><td><b>LR-DIMM</b></td><td><b>Load Reduced</b>, servidores, mayor densidad</td></tr>
 <tr><td><b>ECC DIMM</b></td><td>Con corrección de errores</td></tr>
@@ -465,7 +470,7 @@
 <div class="tw"><table><tr><th>Interfaz</th><th>Descripción</th></tr>
 <tr><td><b>SATA III</b></td><td>Mismo conector que los HDD SATA; hasta <b>600 MB/s</b></td></tr>
 <tr><td><b>M.2 SATA</b></td><td>Formato compacto con conector M.2 pero <b>interfaz SATA</b>; <b>no más rápido</b> que SATA estándar</td></tr>
-<tr><td><b>M.2 NVMe (PCIe)</b></td><td>Bus <b>PCI Express</b>; hasta <b>7.000 MB/s o más</b></td></tr>
+<tr><td><b>M.2 NVMe (PCIe)</b></td><td>Bus <b>PCI Express</b>; mucho más rápido que SATA: hasta ~<b>3.500 MB/s</b> en PCIe 3.0, ~<b>7.000 MB/s</b> en PCIe 4.0 y ~<b>14.000 MB/s</b> en PCIe 5.0</td></tr>
 <tr><td><b>U.2 (SFF-8639)</b></td><td><b>Servidores</b>; similar a NVMe pero con conector distinto</td></tr>
 <tr><td><b>PCIe (tarjetas AIC)</b></td><td>SSD en forma de tarjeta en ranura <b>PCIe x4 o superior</b>; máximo rendimiento</td></tr>
 <tr><td><b>SAS</b></td><td>Entornos profesionales; hasta <b>12 Gbps</b>, <b>dual-port</b>; servidores y cabinas</td></tr>
@@ -494,10 +499,15 @@
 <div class="tw"><table><tr><th>Tarjeta</th><th>Contenido</th></tr>
 <tr><td><b>Gráfica (GPU)</b></td><td>Procesa y genera la imagen. <b>Integradas</b> (en CPU o chipset, uso básico), <b>dedicadas</b> (ranura PCIe, memoria propia: gaming, vídeo, CAD, IA), <b>profesionales</b> (NVIDIA Quadro, AMD Radeon Pro). Claves: <b>GPU</b>, <b>VRAM</b> (GDDR5, GDDR6), salidas (HDMI, DisplayPort, DVI, VGA) y ventilación activa</td></tr>
 <tr><td><b>Sonido</b></td><td>Convierte señales <b>digitales ↔ analógicas</b> (altavoces, micrófonos); audio de 24 bits/192 kHz, multicanal (5.1, 7.1, Dolby Digital, DTS), conversores A/D y D/A</td></tr>
-<tr><td><b>Red (NIC)</b></td><td><b>Ethernet</b> (RJ45: 1, 2,5, 10 Gbps), <b>Wi-Fi</b> (Wi-Fi 5 = 802.11ac, <b>Wi-Fi 6 = 802.11ax</b>), <b>Bluetooth</b> (corto alcance), <b>fibra óptica (SFP+)</b></td></tr>
-<tr><td><b>Wi-Fi 2,4 GHz</b></td><td><b>Mayor alcance y penetración</b>, pero <b>menor velocidad</b> y <b>más interferencias</b></td></tr>
-<tr><td><b>Wi-Fi 5 GHz</b></td><td><b>Mayor velocidad</b>, menos congestión, pero <b>menor alcance y penetración</b></td></tr>
+<tr><td><b>Red (NIC)</b></td><td><b>Ethernet</b> (RJ45: 1, 2,5, 10 Gbps), <b>Wi-Fi</b> (Wi-Fi 5 = 802.11ac, <b>Wi-Fi 6 = 802.11ax</b>, <b>Wi-Fi 6E</b> = banda de 6 GHz, <b>Wi-Fi 7 = 802.11be</b>), <b>Bluetooth</b> (corto alcance), <b>fibra óptica (SFP+)</b></td></tr>
 <tr><td><b>Fuente de alimentación (PSU)</b></td><td>Convierte <b>corriente alterna (CA)</b> en <b>continua (CC)</b>. <b>Potencia</b> habitual <b>400-1000 W</b>; formatos <b>ATX, SFX, TFX</b>; certificación <b>80 PLUS</b> (White, Bronze, Silver, Gold, Platinum, Titanium)</td></tr>
 <tr><td><b>Conectores de la PSU</b></td><td><b>24 pines ATX</b> (placa base), <b>4/8 pines EPS</b> (CPU), <b>PCIe 6/8 pines</b> (gráficas), <b>SATA y Molex</b> (discos y periféricos)</td></tr>
 </table></div>
+<ul>
+<li><b>Conector 12V-2x6</b> (revisión del 12VHPWR) en gráficas de gama alta (NVIDIA RTX 40/50): asociado a casos de <b>sobrecalentamiento</b> si no se conecta bien; conviene revisarlo. Alternativa al ATX tradicional: <b>ATX12VO</b> (Intel), que distribuye únicamente <b>12 V</b> a los componentes.</li>
+</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Bandas Wi-Fi 2,4 GHz y 5 GHz</b></p>
+<p><b>2,4 GHz</b>: <b>mayor alcance y penetración</b> (paredes), pero <b>menor velocidad</b> y <b>más interferencias</b> (más usada por otros dispositivos). <b>5 GHz</b>: <b>mayor velocidad</b>, menos congestión e interferencias, pero <b>menor alcance y penetración</b>.</p>
+</div>
 <button id="tocbtn" class="fab">☰ Índice</button><div class="pn"><a href="b1t9.html">← 1.9</a><a href="b2t2.html">2.2 →</a></div></main></div><script src="../app.js"></script><script src="../sqlab.js"></script><script src="../topicq.js"></script><script>if("serviceWorker" in navigator)navigator.serviceWorker.register("../sw.js").catch(function(){})</script></body></html>

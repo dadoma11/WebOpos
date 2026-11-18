@@ -98,9 +98,10 @@
 <tr><td><b>Binario</b></td><td><b>Máximo dos hijos</b> (izquierdo y derecho)</td></tr>
 <tr><td><b>BST</b> (búsqueda)</td><td>Subárbol <b>izquierdo &lt; nodo &lt; subárbol derecho</b></td></tr>
 <tr><td><b>AVL</b></td><td>BST <b>autoequilibrado</b>: diferencia de altura entre subárboles <b>≤ 1</b></td></tr>
+<tr><td><b>Rojo-negro</b> (Red-Black)</td><td>BST <b>autoequilibrado</b>: cada nodo es <b>rojo o negro</b>; la <b>raíz es negra</b>, <b>ningún nodo rojo tiene hijo rojo</b> y todo camino de la raíz a una hoja (nulo) tiene el <b>mismo nº de nodos negros</b>. Altura <b>≤ 2× la de un árbol perfectamente balanceado</b> → <b>O(log n)</b> en inserción, búsqueda y borrado. Se usa en <code>std::map/std::set</code> (C++) y <code>TreeMap/TreeSet</code> (Java)</td></tr>
 <tr><td><b>B</b></td><td>Búsqueda balanceado de orden <b>m</b>; <b>hasta m hijos</b>; datos en <b>nodos internos y hojas</b>; <b>hojas al mismo nivel</b></td></tr>
 <tr><td><b>B+</b></td><td>Variante del B: <b>datos solo en las hojas</b>, <b>enlazadas secuencialmente</b></td></tr>
-<tr><td><b>Trie</b> (prefijo)</td><td>Para <b>cadenas</b>: cada nodo = un <b>carácter</b>; camino raíz→hoja = una <b>palabra</b></td></tr>
+<tr><td><b>Trie</b> (prefijo)</td><td>Para <b>cadenas</b>: cada nodo = un <b>carácter</b>; camino raíz→<b>nodo marcado como fin de palabra</b> = una <b>palabra</b> (no tiene por qué ser hoja: si «sol» es prefijo de «solo», «sol» termina en un nodo interno)</td></tr>
 </table></div>
 <h3>Grafos</h3>
 <ul>
@@ -157,6 +158,15 @@
 <tr><td><b>Árboles balanceados</b> (rojo-negro, AVL)</td><td>Claves <b>ordenadas</b>: búsquedas por rango y recorridos ordenados</td></tr>
 <tr><td><b>Tries</b></td><td>Claves tipo cadena: <b>búsqueda por prefijo, autocompletado</b></td></tr>
 </table></div>
+<h3>2.5 Conjuntos (Sets)</h3>
+<ul>
+<li>Estructura que almacena <b>elementos únicos</b>, <b>sin orden particular</b> y <b>sin duplicados</b> (insertar uno ya existente no modifica la estructura; no garantiza orden salvo variantes como el conjunto ordenado).</li>
+</ul>
+<div class="tw"><table><tr><th>Aspecto</th><th>Detalle</th></tr>
+<tr><td><b>Operaciones</b></td><td><code>add(e)</code>, <code>remove(e)</code>, <code>contains(e)</code> y de teoría de conjuntos: <b>unión, intersección, diferencia y diferencia simétrica</b></td></tr>
+<tr><td><b>Hash set</b></td><td>Basado en <b>tabla hash</b>; operaciones en tiempo medio <b>O(1)</b></td></tr>
+<tr><td><b>Tree set</b></td><td>Basado en <b>árboles balanceados</b>; <b>O(log n)</b> y elementos <b>ordenados</b></td></tr>
+</table></div>
 <h2 id="s2">3. Algoritmos</h2>
 <ul>
 <li><b>Algoritmo</b>: conjunto <b>finito y ordenado</b> de instrucciones para resolver un problema.</li>
@@ -171,7 +181,7 @@
 <h3>3.1 Algoritmos de búsqueda</h3>
 <div class="tw"><table><tr><th>Búsqueda</th><th>Funcionamiento</th><th>Complejidad</th></tr>
 <tr><td><b>Lineal (secuencial)</b></td><td>Recorre uno a uno; <b>no requiere orden</b></td><td>Peor <b>O(n)</b>; mejor <b>O(1)</b></td></tr>
-<tr><td><b>Binaria</b></td><td>Requiere datos <b>ordenados</b>; compara con el elemento <b>central</b> y divide el rango en mitades</td><td>Peor y mejor caso <b>O(log n)</b></td></tr>
+<tr><td><b>Binaria</b></td><td>Requiere datos <b>ordenados</b>; compara con el elemento <b>central</b> y divide el rango en mitades</td><td>Peor caso <b>O(log n)</b>; mejor caso <b>O(1)</b> (el elemento buscado es el central en la primera comparación)</td></tr>
 </table></div>
 <div class="box I"><div class="t">IMPORTANTE</div>
 <p><b>Complejidad temporal</b></p>
@@ -195,6 +205,9 @@
 <tr><td><b>Quicksort</b></td><td><b>Divide y vencerás</b>: elige un <b>pivote</b>, separa menores y mayores y ordena recursivamente</td><td>Peor <b>O(n²)</b> (pivote mínimo/máximo); promedio <b>O(n log n)</b></td></tr>
 <tr><td><b>Mergesort</b></td><td><b>Divide y vencerás</b>: divide en mitades, ordena y <b>fusiona</b></td><td><b>O(n log n)</b> en <b>todos</b> los casos</td></tr>
 </table></div>
+<ul>
+<li>En la práctica los lenguajes usan híbridos que evitan el peor caso (<b>O(n log n)</b> garantizado): <b>Timsort</b> (Mergesort + Insertion Sort) en Python <code>sorted()</code> y Java <code>Arrays.sort()</code> para objetos; <b>Introsort</b> (Quicksort + Heapsort + Insertion Sort) en C++ <code>std::sort</code>.</li>
+</ul>
 <h3>3.2 Recursividad</h3>
 <ul>
 <li>Una <b>función se llama a sí misma</b> para resolver subproblemas más simples. Requisitos:</li>
@@ -271,7 +284,7 @@
 <tr><td><b>TAR</b></td><td><b>Empaqueta</b> varios archivos <b>sin comprimir</b>; se combina con GZIP (<code>.tar.gz</code>)</td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Base de datos</th><th>Características</th></tr>
-<tr><td><b>MDB</b></td><td><b>Microsoft Access</b>; propietario (datos, consultas, formularios)</td></tr>
+<tr><td><b>MDB</b></td><td><b>Microsoft Access</b>; formato <b>heredado (legacy)</b>, sustituido por defecto por <b>ACCDB</b> desde Access 2007; propietario (datos, consultas, formularios); Access aún permite abrirlo y convertirlo</td></tr>
 <tr><td><b>DBF</b></td><td><b>dBASE</b>; fichero plano con estructura de tabla</td></tr>
 <tr><td><b>SQL</b></td><td>Texto con instrucciones SQL; <b>exportar/importar</b> BD</td></tr>
 <tr><td><b>SQLite</b> (<code>.sqlite</code>, <code>.db</code>)</td><td>BD ligera en <b>un solo archivo binario</b>; móviles y embebidas</td></tr>
