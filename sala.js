@@ -61,7 +61,16 @@ function lobby(){
  var g=document.getElementById('go');if(g)g.onclick=function(){g.disabled=true;api('/api/rooms/'+code+'/start',{method:'POST'}).then(function(r){room=r;render(true)}).catch(function(e){alert(e.message);g.disabled=false})}}
 function head(s,idx){return '<div class="exbar"><b>Pregunta '+Math.min(idx+1,room.n)+' / '+room.n+'</b><span>✔ '+s.ok+' · ✘ '+s.err+' · ≠ '+s.dis+'</span><span class="pls">'+who()+'</span></div><div class="pbar"><i style="width:'+(idx/room.n*100)+'%"></i></div>'}
 function nextIdx(){var ack=ackGet();for(var i=0;i<room.qids.length;i++)if(!ack[room.qids[i]])return i;return room.qids.length}
+var MAXS=120,tmr=null;
+function tStart(id){var k='sala_t_'+code+'_'+id,t=0;try{t=+sessionStorage.getItem(k)||0;if(!t){t=Date.now();sessionStorage.setItem(k,t)}}catch(e){t=tmem[id]||(tmem[id]=Date.now())}return t}
+var tmem={};
+function fmt(n){return Math.floor(n/60)+':'+('0'+n%60).slice(-2)}
+function startTimer(q){clearInterval(tmr);var el=document.getElementById('tm');if(!el)return;var t0=tStart(q.id);
+ function upd(){var left=Math.max(0,MAXS-Math.floor((Date.now()-t0)/1000));el.textContent='⏱ '+fmt(left);el.className=left<=20?'ko':'';
+  if(left<=0){clearInterval(tmr);el.textContent='⏱ Tiempo agotado';send(q,-1)}}
+ upd();tmr=setInterval(upd,1000)}
 function play(){
+ clearInterval(tmr);
  var idx=nextIdx(),s=stats();if(idx>=room.n)return results();
  var q=Qm[room.qids[idx]],me=room.players.filter(function(p){return p.me})[0],key=String(q.id),mine=me.answers&&me.answers[key],answered=mine!==undefined,v=verdict(q,room),ord=order(q);
  var h=head(s,idx)+'<section class="pcard"><div class="qmeta">'+(q.x?'<i class="E">EXAMEN</i> ':'')+(q.i?'<i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+esc(q.q)+'</p><div class="opts">';
@@ -69,13 +78,14 @@ function play(){
   var tags='';if(v)room.players.forEach(function(p){if((p.answers||{})[key]===oi)tags+='<span class="pl'+(p.me?' me':'')+'">'+esc(p.name)+'</span> '});
   h+='<div class="'+cls+'"><button class="pick" data-o="'+oi+'"'+(answered?' disabled':'')+'><span class="L">'+L[pos]+'</span><span class="ot">'+esc(q.o[oi])+'</span><span class="who">'+tags+'</span></button></div>'});
  h+='</div>';
- if(!answered){h+='<div class="row"><button id="ok" class="go"'+(sel==null?' disabled':'')+'>Marcar respuesta</button><button id="pass">No lo sé</button></div><p class="sub">No se revela nada hasta que todos hayáis marcado.</p>'}
+ if(!answered){h+='<p class="sub"><b id="tm">⏱ 2:00</b> · máximo 2 min por pregunta; si se acaba cuenta como «No lo sé».</p><div class="row"><button id="ok" class="go"'+(sel==null?' disabled':'')+'>Marcar respuesta</button><button id="pass">No lo sé</button></div><p class="sub">No se revela nada hasta que todos hayáis marcado.</p>'}
  else if(!v){var wait=room.players.filter(function(p){return !(p.answers||{})[key]&&!p.me&&true}).map(function(p){return p.name});
   h+='<p class="wait">✅ Has marcado. ⏳ Esperando a los demás…</p>'}
  else{var msg=v.k==='ok'?'<span class="ok">✔ Acierto: coincidís y es la correcta.</span>':v.k==='err'?'<span class="ko">✘ Error: coincidís, pero la respuesta es incorrecta.</span>':v.k==='dis'?'<span class="ko">≠ No coincidís: no cuenta como acierto.</span>':'<span>○ En blanco.</span>';
   h+='<div class="fb">'+msg+'<br>Correcta: <b>'+L[ord.indexOf(q.c)]+'</b>. '+esc(q.e||'')+(q.p?' <small><i>('+esc(q.p)+')</i></small>':'')+'</div><div class="row"><button id="nx" class="go">'+(idx+1>=room.n?'Ver resultados':'Siguiente →')+'</button></div>'}
  app.innerHTML=h+'</section>';
  app.querySelectorAll('.pick').forEach(function(b){b.onclick=function(){sel=+b.dataset.o;lastSig='';render(true)}});
+ if(!answered)startTimer(q);
  var ok=document.getElementById('ok');if(ok)ok.onclick=function(){send(q,sel)};var pass=document.getElementById('pass');if(pass)pass.onclick=function(){send(q,-1)};
  var nx=document.getElementById('nx');if(nx)nx.onclick=function(){var a=ackGet();a[q.id]=1;ackSet(a);sel=null;lastSig='';render(true)}}
 function send(q,v){var o={};o[q.id]=v;var b=document.getElementById('ok');if(b)b.disabled=true;
