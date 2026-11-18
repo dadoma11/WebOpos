@@ -255,7 +255,15 @@ function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res
   else h+='<div class="fans"><b>'+q.o[q.c]+'</b>'+(q.e?'<p>'+esc(q.e)+'</p>':'')+''+qa(q)+'</div><p class="sub">¿Qué tal la recordabas?</p><div class="row rate"><button class="r1" data-r="1">✘ No la sabía <small>(1)</small></button><button class="r2" data-r="2">~ Dudosa <small>(2)</small></button><button class="r3" data-r="3">✔ La sabía <small>(3)</small></button></div>';
   h+='</section>';app.innerHTML=h;
   var sh=$('#show');if(sh)sh.onclick=function(){shown=true;draw()};$('#fx').onclick=function(){if(confirm('¿Salir de las flashcards?')){end(true)}};
-  $$('.rate button').forEach(function(b){b.onclick=function(){rate(+b.dataset.r)}})}
+  $$('.rate button').forEach(function(b){b.onclick=function(){rate(+b.dataset.r)}});
+  var card=$('.fcard'),x0=null,y0=0,dx=0;
+  if(card&&'ontouchstart' in window){card.insertAdjacentHTML('beforeend','<p class="hint swh">'+(shown?'Desliza: ← no la sabía · la sabía →':'Desliza para ver la respuesta')+'</p>');
+   card.addEventListener('touchstart',function(e){var t=e.touches[0];x0=t.clientX;y0=t.clientY;dx=0;card.style.transition='none'},{passive:true});
+   card.addEventListener('touchmove',function(e){if(x0===null)return;var t=e.touches[0];dx=t.clientX-x0;if(Math.abs(t.clientY-y0)>Math.abs(dx)){return}card.style.transform='translateX('+dx+'px) rotate('+dx/30+'deg)';card.style.opacity=Math.max(.4,1-Math.abs(dx)/400)},{passive:true});
+   card.addEventListener('touchend',function(){if(x0===null)return;var d=dx;x0=null;card.style.transition='transform .18s,opacity .18s';
+    if(Math.abs(d)<70){card.style.transform='';card.style.opacity='';return}
+    if(!shown){card.style.transform='';card.style.opacity='';shown=true;draw();return}
+    card.style.transform='translateX('+(d>0?'110%':'-110%')+')';card.style.opacity='0';setTimeout(function(){rate(d>0?3:1)},160)})}}
  function rate(r){var q=list[i],m=srsAll(),fl=fails(),now=Date.now();srsUpd(m,q.id,r>1,now);if(r===2&&m[q.id])m[q.id][0]*=0.5;jset('ex_srs',m);if(r===1)fl[q.id]=1;else if(r===3)delete fl[q.id];jset('ex_fail',fl);addDay(1);
   if(r===3)res.ok++;else if(r===2)res.dd++;else res.ko++;i++;shown=false;draw()}
  flash.rate=rate;flash.reveal=function(){if(!shown){shown=true;draw()}};flash.on=function(){return view==='flash'&&i<list.length};flash.shown=function(){return shown};
