@@ -44,5 +44,5 @@ document.addEventListener('DOMContentLoaded',function(){var nav=document.querySe
  var th=nav.querySelector('#thm');
  [['examinate.html','📝 Examínate'],['laboratorio.html','🧪 Lab SQL'],['sync.html','☁ Sync']].forEach(function(p){if(has(p[0]))return;var a=document.createElement('a');a.href=ROOT+p[0];a.textContent=p[1];nav.insertBefore(a,th)});
  var cur=location.pathname.split('/').pop();Array.prototype.forEach.call(nav.querySelectorAll('a'),function(a){if(a.getAttribute('href').split('/').pop()===cur)a.className='cur'});
- var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.textContent='Salir · '+(REMOTE?s.name:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)});
+ var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.innerHTML='Salir<span class="un"> · </span><span class="un"></span>';b.lastChild.textContent=(REMOTE?s.name:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)});
 })();

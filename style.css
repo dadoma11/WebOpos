@@ -429,3 +429,16 @@ main.exm.wide,main.practicas.wide{max-width:1700px}
 .casegrid .dbt th{background:color-mix(in srgb,var(--ac) 18%,var(--card))}.casegrid .dbt small{color:var(--mu)}.nl{color:var(--mu);font-size:.72rem}
 .casegrid .tw{overflow-x:auto}.casegrid table.tn{border-collapse:collapse;font-size:.82rem;margin:.5rem 0}.casegrid table.tn th,.casegrid table.tn td{border:1px solid var(--bd);padding:.25rem .5rem;text-align:left}.casegrid table.tn th{background:color-mix(in srgb,var(--ac) 18%,var(--card))}
 @media(max-width:1100px){.casegrid,.casegrid.c3{grid-template-columns:1fr}.casegrid aside{position:static;max-height:none}.casegrid .ce{order:-1}}
+
+/* cabecera móvil: fila 1 logo+salir+tema, fila 2 iconos repartidos */
+@media(max-width:960px){
+ .top{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .5rem}
+ .top nav{display:contents}
+ .top .logo{order:1;flex:1 1 auto}
+ .top .lgo{order:2;max-width:none;flex:none}.top .lgo .un{display:none}
+ .top #thm{order:3;flex:none}
+ .top:before{content:"";order:4;flex:0 0 100%;height:0}
+ .top nav a{order:5;flex:1 1 0;display:flex;justify-content:center;padding:.5rem 0}
+ .top .side-promo{display:none}
+ .hx h1{font-size:1.9rem;line-height:1.15}.hx h1 .bk{width:48px;height:48px}.hx h1{display:flex;align-items:center;gap:.7rem}
+}
