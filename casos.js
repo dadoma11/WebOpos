@@ -223,8 +223,120 @@ function genServidores(){
   dyn.push(mk('¿Cuándo se ejecuta la tarea de cron «'+mi+' '+h+' * * '+dw[0]+'»?','A las '+pad(h)+':'+pad(mi)+' '+dw[1],['A las '+pad(mi)+':'+pad(h)+' '+dw[1],'A las '+pad(h)+':'+pad(mi)+' el día '+dw[0].replace(/\D.*/,'')+' de cada mes','Cada '+(mi||5)+' minutos a partir de las '+pad(h)+':00'],'Orden de campos: minuto, hora, día del mes, mes, día de la semana.'));
   return {id:'servidores',b:4,title:'Sala de servidores del organismo',enun:enun,db:null,qs:chooseMix(fixed,dyn,20)}}
 
-var GEN={prestamos:genPrestamos,pedidos:genPedidos,red:genRed,servidores:genServidores};
-var INFO=[{id:'prestamos',b:3,t:'Préstamos de biblioteca',db:1},{id:'pedidos',b:3,t:'Tienda online',db:1},{id:'red',b:4,t:'Red de una delegación'},{id:'servidores',b:4,t:'Sala de servidores'}];
+
+/* ================= BLOQUE III · desarrollo (estilo supuesto oficial: stack Java/Spring + Oracle + REST) ================= */
+var MINIS=['Ministerio de Educación','Ministerio de Sanidad','Ministerio de Cultura','Ministerio de Transportes','Ministerio de Hacienda','Ministerio de Industria'];
+var PROGN=['Formación profesional digital','Competencias básicas','Idiomas','Programación para jóvenes','Orientación laboral','Robótica educativa','Alfabetización digital','Ciberseguridad básica'];
+var CENT=['IES Cervantes','CEIP Miguel Hernández','IES Goya','CIFP Los Pinos','IES Clara Campoamor','CEIP Rosalía','IES Velázquez','CIFP La Vega'];
+var PROV=['Toledo','Madrid','Sevilla','Valencia','León','Cádiz','Soria'];
+function genDesarrollo(){
+  var min=pick(MINIS),sis=pick(['EDU-TRACK','SEGUI-PRO','GESTIA','INFOPLAN','PROG-STAT'])+' '+ri(2027,2032);
+  var nC=ri(3,4),C=take(CENT,nC).map(function(c,i){return [i+1,c,pick(PROV)]});
+  var nP=ri(3,4),PR=take(PROGN,nP).map(function(p,i){return ['PF'+(i+1),p,pick([40,60,80,120])]});
+  var nA=ri(7,9),A=take(NOMB,nA).map(function(n,i){return [i+1,n,pick(C)[0]]});
+  var M=[],used={};
+  A.slice(0,A.length-1).forEach(function(a){take(PR,ri(1,2)).forEach(function(p){M.push([a[0],p[0],ri(2023,2025),ri(2,10)])})});
+  var mc={};M.forEach(function(m){mc[m[1]]=(mc[m[1]]||0)+1});var ks=Object.keys(mc).sort(function(a,b){return mc[b]-mc[a]});if(ks.length>1&&mc[ks[0]]===mc[ks[1]])return null;
+  var db=[tbl('CENTRO_EDUCATIVO',['id_centro','nombre','provincia'],C,['id_centro']),tbl('PROGRAMA_FORMATIVO',['cod','nombre','horas'],PR,['cod']),tbl('ALUMNO',['id_alumno','nombre','id_centro'],A,['id_alumno'],{id_centro:'CENTRO_EDUCATIVO.id_centro'}),tbl('MATRICULA',['id_alumno','cod','anio','nota'],M,['id_alumno','cod','anio'],{id_alumno:'ALUMNO.id_alumno',cod:'PROGRAMA_FORMATIVO.cod'})];
+  var enun='<p>El '+min+' desarrolla <b>'+sis+'</b>, un sistema para el seguimiento de programas formativos. Se compone de servicios <b>REST</b> en <b>Java 17 con Spring Boot</b> (compilados con <b>Maven</b> y desplegados en <b>Tomcat</b>), una base de datos <b>Oracle 19c</b>, procesos <b>ETL</b> nocturnos, un front-end <b>HTML5/CSS3/JavaScript</b>, un módulo de analítica en <b>Python</b> y una aplicación auxiliar en <b>C#/.NET</b>. El código está en <b>Git</b> y se integra con <b>Jenkins</b>.</p><p>El modelo de datos relaciona centros, programas, alumnos y matrículas (tercera columna). Eres el técnico que da soporte al equipo de desarrollo y a la base de datos.</p>';
+  var fixed=[],dyn=[];
+  var F=function(q,ok,bad,e){fixed.push(mk(q,ok,bad,e))};
+  F('Un servicio REST crea un nuevo recurso con POST y debe indicarlo correctamente. ¿Qué código de estado HTTP es el más adecuado?','201 Created',['200 OK sin cuerpo','204 No Content','302 Found'],'201 indica que el recurso se ha creado (normalmente con la cabecera Location).');
+  F('Un cliente llama a un endpoint protegido sin enviar credenciales. ¿Qué código devuelve el servidor?','401 Unauthorized',['403 Forbidden','404 Not Found','400 Bad Request'],'401 = falta autenticación; 403 = autenticado pero sin permiso.');
+  F('En Spring, la anotación @RestController equivale a combinar:','@Controller y @ResponseBody',['@Service y @Repository','@Component y @Autowired','@Configuration y @Bean'],'Los métodos devuelven directamente el cuerpo de la respuesta (JSON/XML) sin resolver vistas.');
+  F('¿Qué anotación de Spring enlaza un fragmento variable de la URL (/alumnos/{id}) con un parámetro del método?','@PathVariable',['@RequestBody','@RequestParam','@ModelAttribute'],'@PathVariable lee la variable de la ruta; @RequestParam, el parámetro de consulta (?x=1).');
+  F('En JUnit 5, ¿qué anotación marca un método que debe ejecutarse antes de cada prueba?','@BeforeEach',['@BeforeAll','@AfterEach','@Test(before=true)'],'@BeforeAll se ejecuta una sola vez antes de todas las pruebas de la clase.');
+  F('En Java, una excepción comprobada (checked) como IOException:','Debe capturarse o declararse con throws',['Solo puede lanzarla el compilador','No puede capturarse con try/catch','Se ignora siempre en tiempo de ejecución'],'Las RuntimeException (no comprobadas) no obligan a capturarlas ni declararlas.');
+  F('¿Cuál es la diferencia entre git fetch y git pull?','fetch descarga los cambios remotos sin integrarlos; pull hace fetch y luego merge',['fetch sube los commits al remoto; pull los descarga','fetch crea una rama nueva; pull la elimina','No hay diferencia: son alias'],'pull = fetch + merge (o rebase si se configura).');
+  F('¿Cuál de estos documentos XML está bien formado?','<a><b>texto</b></a>',['<a><b>texto</a></b>','<a><b>texto</b>','<a><b>texto</b></a><c/>'],'Debe haber un único elemento raíz y los elementos se cierran en orden inverso al de apertura.');
+  F('Para estructurar una página con HTML5 semántico, ¿qué elementos se utilizan en lugar de div genéricos?','<header>, <nav>, <main>, <article>, <footer>',['<table>, <tr> y <td>','<font> y <center>','<frameset> y <frame>'],'Los elementos semánticos mejoran la accesibilidad y el SEO.');
+  F('Según las WCAG, ¿cuáles son los cuatro principios de la accesibilidad web?','Perceptible, operable, comprensible y robusto',['Rápido, seguro, escalable y portable','Legible, usable, estable y gratuito','Confidencial, íntegro, disponible y trazable'],'Son los principios POUR; el RD 1112/2018 los aplica a los sitios web del sector público español.');
+  F('Para prevenir ataques XSS en una aplicación web, lo más adecuado es:','Codificar (escapar) la salida y aplicar una política CSP',['Usar solo el método POST','Deshabilitar JavaScript en el servidor','Cifrar la base de datos'],'XSS inyecta scripts en la página; se evita escapando los datos al mostrarlos y limitando los orígenes de scripts.');
+  F('¿Qué técnica previene la inyección SQL al construir consultas con datos del usuario?','Sentencias preparadas (consultas parametrizadas)',['Convertir todo a mayúsculas','Concatenar los parámetros entre comillas','Limitar la longitud del formulario'],'Los parámetros se envían separados de la sentencia y nunca se interpretan como SQL.');
+  F('En una API REST, ¿qué método HTTP es idempotente y se usa para reemplazar un recurso completo?','PUT',['POST','PATCH','CONNECT'],'PUT repetido produce el mismo estado; POST normalmente crea y no es idempotente.');
+  F('En Maven, ¿qué hace mvn clean package?','Borra lo compilado previamente, compila, ejecuta las pruebas y empaqueta el artefacto',['Solo descarga las dependencias','Despliega el artefacto en Tomcat','Genera el pom.xml'],'clean limpia target/; package ejecuta las fases anteriores hasta empaquetar.');
+  F('En Spring, la inyección de dependencias es una aplicación del principio de:','Inversión de control (IoC)',['Herencia múltiple','Polimorfismo de sobrecarga','Encapsulamiento de datos'],'El contenedor crea y entrega los objetos que una clase necesita, en lugar de crearlos ella.');
+  F('En C#, ¿qué hace la palabra clave await dentro de un método async?','Espera a que termine la tarea sin bloquear el hilo',['Crea un nuevo proceso del sistema operativo','Bloquea el hilo hasta que acabe la tarea','Cancela la tarea en curso'],'El método cede el control y se reanuda cuando la tarea completa.');
+  F('En Jenkins, la definición de un pipeline como código se guarda normalmente en:','Un fichero Jenkinsfile en el repositorio',['El fichero pom.xml','Una base de datos Oracle','El fichero web.xml'],'El Jenkinsfile versiona el pipeline junto al código.');
+  F('Un diagrama UML que muestra el orden temporal de los mensajes entre objetos es un diagrama de:','Secuencia',['Clases','Casos de uso','Componentes'],'Los diagramas de secuencia muestran interacciones ordenadas en el tiempo.');
+  F('Se necesita garantizar que solo exista una instancia de la clase de configuración de la aplicación. ¿Qué patrón de diseño aplica?','Singleton',['Observer','Factory Method','Decorator'],'Singleton restringe la creación a una única instancia con acceso global.');
+  F('¿Qué significan las siglas ETL?','Extract, Transform, Load (extraer, transformar y cargar)',['Execute, Test, Launch','Encrypt, Transfer, Log','Estimate, Track, Learn'],'Un proceso ETL toma datos de origen, los transforma y los carga en el destino.');
+  F('En Oracle, ¿qué diferencia hay entre DELETE y TRUNCATE?','TRUNCATE es DDL: vacía la tabla de una vez y no se puede deshacer con ROLLBACK',['TRUNCATE borra solo la estructura','DELETE no admite cláusula WHERE','No hay diferencia en Oracle'],'DELETE es DML (admite WHERE y ROLLBACK); TRUNCATE hace commit implícito.');
+  F('Para entrenar un modelo de aprendizaje profundo en Python, ¿qué biblioteca se emplearía?','TensorFlow',['Spring Data','JUnit','Selenium'],'TensorFlow (o PyTorch) son bibliotecas de aprendizaje automático.');
+  F('¿Qué prueba verifica el funcionamiento aislado de un método o clase pequeña?','Prueba unitaria',['Prueba de aceptación','Prueba de carga','Prueba de regresión visual'],'Las pruebas unitarias (JUnit) validan unidades pequeñas de código.');
+  F('Un servicio expone OAuth 2.0. ¿Qué es OAuth 2.0?','Un marco de autorización delegada mediante tokens de acceso',['Un algoritmo de cifrado simétrico','Un formato de intercambio de datos','Un protocolo de transferencia de ficheros'],'Permite que una aplicación acceda a recursos en nombre del usuario sin conocer su contraseña.');
+  F('El principio de responsabilidad única (la «S» de SOLID) establece que:','Una clase debe tener una única razón para cambiar',['Una clase solo puede tener un método','Solo debe existir una clase por paquete','Una clase debe heredar de una sola clase'],'Cada clase debe encargarse de una sola responsabilidad.');
+  F('En la relación ALUMNO–PROGRAMA_FORMATIVO, un alumno puede cursar varios programas y un programa tiene muchos alumnos. ¿Cómo se resuelve en el modelo relacional?','Con la tabla intermedia MATRICULA, que contiene ambas claves foráneas',['Añadiendo una clave foránea a PROGRAMA_FORMATIVO','Fusionando ALUMNO y PROGRAMA_FORMATIVO','Con una vista'],'Una relación N:M se descompone en dos relaciones 1:N mediante una tabla intermedia.');
+  var cnt=function(f){return M.filter(f).length};
+  var ca=pick(C),na=A.filter(function(a){return a[2]===ca[0]}).length;
+  dyn.push(nq("¿Cuántos alumnos pertenecen al centro '"+ca[1]+"' (SELECT COUNT(*) FROM ALUMNO WHERE id_centro="+ca[0]+")?",na,[na+1,na+2,A.length],'Se cuentan las filas de ALUMNO con ese id_centro.'));
+  var ap=cnt(function(m){return m[3]>=5});
+  dyn.push(nq('¿Cuántas matrículas tienen nota igual o superior a 5 (SELECT COUNT(*) FROM MATRICULA WHERE nota >= 5)?',ap,[M.length,ap+1,ap-1],'Se cuentan las matrículas que cumplen la condición.'));
+  var sm=A.filter(function(a){return !M.some(function(m){return m[0]===a[0]})}).length;
+  dyn.push(nq('¿Cuántos alumnos no tienen ninguna matrícula? (LEFT JOIN ... WHERE m.id_alumno IS NULL)',sm,[sm+1,sm+2,0],'Alumnos de ALUMNO sin filas en MATRICULA.'));
+  var top=ks[0],tn=PR.filter(function(p){return p[0]===top})[0][1];
+  dyn.push(mk('¿Qué programa tiene más matrículas (GROUP BY cod, ORDER BY COUNT(*) DESC, primera fila)?',tn+' ('+mc[top]+')',take(PR.filter(function(p){return p[0]!==top}),3).map(function(p){return p[1]+' ('+(mc[p[0]]||0)+')'}).concat([tn+' ('+(mc[top]+2)+')']),'Matrículas por programa: '+PR.map(function(p){return p[1]+' '+(mc[p[0]]||0)}).join(' · ')+'.'));
+  var mx=M.reduce(function(a,m){return Math.max(a,m[3])},0);
+  dyn.push(nq('¿Qué devuelve SELECT MAX(nota) FROM MATRICULA;?',mx,[mx-1,Math.min(10,mx+1),5],'La nota más alta registrada es '+mx+'.'));
+  var pg=pick(PR),sums=M.filter(function(m){return m[1]===pg[0]}).map(function(m){return m[3]});
+  if(sums.length){var av=sums.reduce(function(a,b){return a+b},0)/sums.length;dyn.push(mk("¿Cuál es la nota media del programa '"+pg[1]+"' (SELECT AVG(nota) FROM MATRICULA WHERE cod='"+pg[0]+"')?",fmt(av),[fmt(av+0.5),fmt(Math.max(0,av-1)),fmt(av+1.25)],'Suma de notas / nº de matrículas = '+sums.join('+')+' / '+sums.length+' = '+fmt(av)+'.'))}
+  var dis=Object.keys(A.reduce(function(a,x){a[x[2]]=1;return a},{})).length;
+  dyn.push(nq('¿Cuántos centros distintos tienen alumnos (SELECT COUNT(DISTINCT id_centro) FROM ALUMNO)?',dis,[C.length,dis+1,1],'DISTINCT cuenta cada centro una vez.'));
+  var ao=pick([2023,2024,2025]),cy=cnt(function(m){return m[2]===ao});
+  dyn.push(nq('¿Cuántas matrículas hay del año '+ao+'?',cy,[cy+1,cy+2,M.length],'Se filtra MATRICULA por la columna anio.'));
+  dyn.push(mk('¿Qué clave primaria es la adecuada para MATRICULA?','(id_alumno, cod, anio)',['id_alumno','(id_alumno, cod): un alumno solo puede matricularse una vez en cada programa','nota'],'Un alumno puede repetir un programa en años distintos, así que el año forma parte de la clave.'));
+  return {id:'desarrollo',b:3,title:sis+': seguimiento de programas formativos ('+min+')',enun:enun,db:db,qs:chooseMix(fixed,dyn,20)}}
+
+/* ================= BLOQUE IV · CPD (estilo supuesto oficial: Windows Server + RHEL + red + seguridad) ================= */
+function genCPD(){
+  var min=pick(MINIS),sis=pick(['SGTIC','CPD-CENTRAL','SIS-OPERA','INFRA-PRO']);
+  var pre=pick([20,21]),a=pick([10,172]),b=a===10?ri(1,250):ri(16,30),thirdMask=pre===21?248:240,c=ri(0,31)*(256-thirdMask)%256,base=a+'.'+b+'.'+c+'.0';
+  var baseN=IPn(base),subP=pre+2,subSize=Math.pow(2,32-subP);
+  var subs=[0,1,2,3].map(function(i){return baseN+i*subSize});
+  var vl=take(['Servidores','Usuarios','Gestión','Invitados','Telefonía IP','Impresión'],4);
+  var rd=pick([1,5,6,10]),nd=rd===1?2:rd===10?pick([4,6,8]):rd===6?ri(4,8):ri(3,8),dsz=pick([2,4,8,12]),cap=raidCap(rd,nd,dsz),pol=pick(['Veeam','Veeam','otra herramienta de copias']);
+  var enun='<p>El Servicio de Sistemas, Comunicaciones y Seguridad ('+sis+') del '+min+' gestiona un <b>CPD</b> con servidores <b>Windows Server 2019</b> (Active Directory, DNS y DHCP) y <b>Linux RHEL 8</b>, virtualización con contenedores <b>Docker</b>, almacenamiento en <b>RAID '+rd+'</b> ('+nd+' discos de '+dsz+' TB) con <b>LVM</b>, y copias de seguridad '+(pol==='Veeam'?'con <b>Veeam</b> ':'')+'siguiendo la estrategia <b>3-2-1</b>.</p><p>La red corporativa dispone del bloque <b>'+base+'/'+pre+'</b>, que se divide en <b>4 subredes del mismo tamaño</b> asignadas, por orden, a las VLAN <b>'+vl.map(function(v,i){return (10*(i+1))+' '+esc(v)}).join(', ')+'</b>. Los conmutadores están conectados por troncales 802.1Q a un router Cisco que actúa de puerta de enlace; el servidor DHCP está en la VLAN de '+esc(vl[0])+'. El acceso a Internet pasa por un cortafuegos con DMZ y un WAF para las aplicaciones web.</p>';
+  var fixed=[],dyn=[];
+  var F=function(q,ok,bad,e){fixed.push(mk(q,ok,bad,e))};
+  F('El router debe reenviar las peticiones DHCP de los clientes de otra VLAN al servidor DHCP. ¿Qué comando de Cisco IOS se configura en la interfaz de esa VLAN?','ip helper-address <IP del servidor DHCP>',['ip dhcp pool <nombre>','switchport mode trunk','ip route 0.0.0.0 0.0.0.0'],'ip helper-address convierte los broadcast DHCP en unicast hacia el servidor.');
+  F('¿Qué comando de IOS muestra las VLAN configuradas en un conmutador y sus puertos?','show vlan brief',['show ip route','show running-config interface','show spanning-tree root'],'show vlan brief lista identificador, nombre y puertos de cada VLAN.');
+  F('Con 4 VLAN en un único conmutador (sin routers entre ellas), ¿cuántos dominios de broadcast hay?','4',['1','2','8'],'Cada VLAN es un dominio de broadcast independiente.');
+  F('En Linux, ¿qué comando muestra la tabla de rutas?','ip route show',['ip addr flush','ss -tulpn','route add default'],'ip route show (equivalente moderno de route -n) lista las rutas.');
+  F('¿Qué comando de Linux lista los puertos en escucha y el proceso que los usa?','ss -tulpn',['ip link show','df -h','top -n 1'],'ss (socket statistics) sustituye a netstat; -p muestra el proceso.');
+  F('En Docker, ¿qué comando descarga una imagen de un registro?','docker pull',['docker run -d','docker commit','docker build'],'docker pull imagen[:tag] descarga la imagen.');
+  F('En Docker, ¿qué comando envía la señal SIGKILL a un contenedor en ejecución?','docker kill',['docker stop (siempre SIGKILL)','docker rm','docker pause'],'docker stop envía SIGTERM y, tras un plazo, SIGKILL; docker kill envía SIGKILL directamente.');
+  F('¿Qué hace el comando tar -czf copia.tar.gz /datos?','Crea (c) un archivo (f) comprimido con gzip (z) de /datos',['Extrae el archivo copia.tar.gz','Lista el contenido de /datos','Comprime con bzip2 y borra el original'],'c = create, z = gzip, f = fichero de salida.');
+  F('¿Qué puerto utiliza por defecto IMAP sobre TLS (IMAPS)?','993',['143','995','465'],'IMAP 143; IMAPS 993; POP3S 995; SMTPS 465.');
+  F('En Linux, ¿qué sistema se utiliza para registrar y auditar eventos de seguridad y llamadas al sistema?','auditd',['cron','rsyslogd únicamente para correo','udev'],'auditd es el demonio del sistema de auditoría del kernel Linux.');
+  F('En PowerShell, ¿qué cmdlet copia ficheros o carpetas?','Copy-Item',['Move-Item','Get-ChildItem','Set-Location'],'Copy-Item copia; Move-Item mueve.');
+  F('¿Qué cmdlet de PowerShell se emplea para promover un servidor creando un nuevo bosque de Active Directory?','Install-ADDSForest',['New-ADUser','Add-WindowsFeature DNS','Set-ADDomainMode'],'Install-ADDSForest crea el primer controlador de dominio de un bosque nuevo.');
+  F('Según la estrategia de copias 3-2-1, ¿cuántas copias y en cuántos soportes distintos hay que mantener?','3 copias, en 2 soportes distintos, 1 de ellas fuera de la sede',['2 copias, en 3 soportes, 1 fuera','3 copias en el mismo soporte','1 copia completa y 2 incrementales'],'Reduce el riesgo de perder datos y copias a la vez.');
+  F('En el Esquema Nacional de Seguridad (RD 311/2022), ¿qué niveles se asignan a cada dimensión de seguridad (disponibilidad, integridad, confidencialidad, autenticidad y trazabilidad)?','Bajo, medio y alto',['Público, interno y confidencial','Básico, avanzado y experto','Uno, dos y tres'],'Según el nivel más alto de las dimensiones se determina la categoría del sistema: básica, media o alta.');
+  F('¿Qué ofrece TLS en una comunicación web?','Cifrado, integridad y autenticación del servidor',['Solo compresión de datos','Solo autenticación del cliente','Enrutamiento seguro entre redes'],'TLS protege la confidencialidad e integridad y autentica al servidor mediante su certificado.');
+  F('¿En qué se diferencia SFTP de FTPS?','SFTP funciona sobre SSH (puerto 22); FTPS añade TLS a FTP',['SFTP no cifra y FTPS sí','FTPS usa SSH y SFTP usa TLS','Son el mismo protocolo con distinto nombre'],'SFTP no es FTP seguro: es un protocolo distinto sobre SSH.');
+  F('Un WAF (Web Application Firewall) protege principalmente frente a:','Ataques a nivel de aplicación web (SQL injection, XSS…)',['Fallos de hardware','Ataques de denegación de servicio a la capa física','Pérdidas de paquetes en el router'],'Opera en la capa 7 e inspecciona el tráfico HTTP/HTTPS.');
+  F('¿Para qué se utiliza tcpdump?','Para capturar y analizar paquetes de red',['Para configurar rutas estáticas','Para medir el uso de CPU','Para sincronizar la hora'],'Es un analizador de paquetes de línea de comandos.');
+  F('¿Qué mecanismo de acceso al medio utiliza WiFi (802.11)?','CSMA/CA (evitación de colisiones)',['CSMA/CD (detección de colisiones)','Token Ring','TDMA fijo'],'Ethernet cableado clásico usaba CSMA/CD; WiFi usa CSMA/CA.');
+  F('Para ampliar un volumen lógico LVM en caliente, ¿qué comando se ejecuta primero?','lvextend (y luego se amplía el sistema de ficheros, p. ej. xfs_growfs)',['mkfs.xfs','pvremove','vgsplit'],'lvextend aumenta el volumen lógico; después hay que crecer el sistema de ficheros.');
+  F('Se quiere abrir HTTPS de forma permanente en el cortafuegos de RHEL 8. ¿Qué comando es correcto?','firewall-cmd --permanent --add-service=https',['iptables -F','ufw allow https','setenforce 0'],'firewalld es el cortafuegos de RHEL; después se recarga con --reload.');
+  F('En el servicio DNS de un dominio de Active Directory, ¿qué tipo de registro localiza los controladores de dominio y servicios?','SRV',['MX','PTR','TXT'],'Los registros SRV indican host y puerto de servicios como LDAP o Kerberos.');
+  var net=pick([1,2,3]);
+  var nth=['primera','segunda','tercera','cuarta'];
+  dyn.push(mk('Al dividir '+base+'/'+pre+' en 4 subredes iguales, ¿qué prefijo tiene cada una?','/'+subP,['/'+(subP+1),'/'+(subP-1),'/'+(pre+4)],'4 subredes = 2 bits más: /'+pre+' + 2 = /'+subP+'.'));
+  dyn.push(mk('¿Cuál es la dirección de red de la '+nth[net]+' subred (VLAN '+(10*(net+1))+')?',IPs(subs[net])+'/'+subP,[IPs(subs[net]+subSize)+'/'+subP,IPs(subs[net-1])+'/'+subP,IPs(subs[net])+'/'+pre],'Cada subred ocupa '+subSize+' direcciones: la '+nth[net]+' empieza en '+IPs(subs[net])+'.'));
+  var q2=ri(0,3);
+  dyn.push(mk('¿Cuál es la dirección de difusión de la subred de la VLAN '+(10*(q2+1))+'?',IPs(subs[q2]+subSize-1),[IPs(subs[q2]+subSize),IPs(subs[q2]+subSize-2),IPs(subs[q2])],'La última dirección del bloque es la de difusión.'));
+  dyn.push(nq('¿Cuántos equipos admite cada una de las 4 subredes?',subSize-2,[subSize,subSize-1,subSize/2-2],'2^'+(32-subP)+' − 2 = '+(subSize-2)+'.'));
+  dyn.push(mk('¿Qué máscara tienen las subredes resultantes?',IPs(maskOf(subP)),[IPs(maskOf(subP+1)),IPs(maskOf(subP-1)),IPs(maskOf(pre))],'/'+subP+' → '+IPs(maskOf(subP))+'.'));
+  dyn.push(nq('El almacenamiento usa RAID '+rd+' con '+nd+' discos de '+dsz+' TB. ¿Cuál es su capacidad útil?',cap,[nd*dsz,nd*dsz-dsz,nd*dsz-2*dsz,nd*dsz/2,dsz],rd===1?'RAID 1 es un espejo.':rd===5?'RAID 5: (n − 1) × tamaño.':rd===6?'RAID 6: (n − 2) × tamaño.':'RAID 10: la mitad de la capacidad bruta.',' TB'));
+  var pa=pick([99,99.5,99.9,99.95,99.99]),dh=(100-pa)/100*8760,dtxt=dh>=1?fmt(dh)+' horas':fmt(dh*60)+' minutos',pw=[99,99.5,99.9,99.95,99.99].filter(function(x){return x!==pa}).map(function(x){var h=(100-x)/100*8760;return h>=1?fmt(h)+' horas':fmt(h*60)+' minutos'});
+  dyn.push(mk('El CPD debe garantizar una disponibilidad del '+String(pa).replace('.',',')+' % anual. ¿Cuánta indisponibilidad admite aproximadamente?','Unas '+dtxt,take(pw,3).map(function(x){return 'Unas '+x}),'(100 − '+pa+') % de 8760 h = '+dtxt+'.'));
+  var fl=ri(2,4),inc=R()<.5;
+  dyn.push(nq('Copias: completa el domingo y '+(inc?'incrementales':'diferenciales')+' de lunes a sábado. Si el sistema falla el '+DAYN[fl]+' por la mañana, ¿cuántos juegos de copias hay que restaurar?',inc?1+fl:2,[1,2,3,4,5],inc?'La completa y cada incremental hasta el día anterior.':'La completa y la última diferencial.'));
+  return {id:'cpd',b:4,title:sis+': CPD con Windows Server, RHEL y red segmentada ('+min+')',enun:enun,db:null,qs:chooseMix(fixed,dyn,20)}}
+
+var GEN={prestamos:genPrestamos,pedidos:genPedidos,desarrollo:genDesarrollo,red:genRed,servidores:genServidores,cpd:genCPD};
+var INFO=[{id:'desarrollo',b:3,t:'Desarrollo: Java/Spring, REST y Oracle (estilo examen oficial)',db:1},{id:'prestamos',b:3,t:'Base de datos: préstamos de biblioteca',db:1},{id:'pedidos',b:3,t:'Base de datos y programación: tienda online',db:1},{id:'cpd',b:4,t:'CPD: Windows Server, Linux, red y seguridad (estilo examen oficial)'},{id:'red',b:4,t:'Red de una delegación (VLSM)'},{id:'servidores',b:4,t:'Sala de servidores (RAID y copias)'}];
 function gen(b,id){var c=INFO.filter(function(x){return x.b==b&&(!id||x.id===id)}),t=pick(c).id,r=null,n=0;while(!r&&n++<80){try{r=GEN[t]()}catch(e){r=null}}return r}
 root.CASOS={gen:gen,info:INFO};
 })(typeof window!=='undefined'?window:globalThis);
