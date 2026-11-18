@@ -71,7 +71,7 @@ function startTimer(q){clearInterval(tmr);var el=document.getElementById('tm');i
  upd();tmr=setInterval(upd,1000)}
 function play(){
  clearInterval(tmr);
- var idx=nextIdx(),s=stats();if(idx>=room.n)return results();
+ var idx=nextIdx(),s=stats();if(idx>=room.n||room.ended)return results();
  var q=Qm[room.qids[idx]],me=room.players.filter(function(p){return p.me})[0],key=String(q.id),mine=me.answers&&me.answers[key],answered=mine!==undefined,v=verdict(q,room),ord=order(q);
  var h=head(s,idx)+'<section class="pcard"><div class="qmeta">'+(q.x?'<i class="E">EXAMEN</i> ':'')+(q.i?'<i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+esc(q.q)+'</p><div class="opts">';
  ord.forEach(function(oi,pos){var cls='opt',picked=answered?mine===oi:sel===oi;if(v){if(oi===q.c)cls+=' good';else if(v.vals.indexOf(oi)>=0)cls+=' bad'}else if(picked)cls+=' sel';
@@ -91,7 +91,7 @@ function play(){
 function send(q,v){var o={};o[q.id]=v;var b=document.getElementById('ok');if(b)b.disabled=true;
  api('/api/rooms/'+code+'/progress',{method:'PUT',body:JSON.stringify({answers:o})}).then(function(r){room=r;sel=null;lastSig='';render(true)}).catch(function(e){alert(e.message)})}
 function results(){
- var s=stats(),h=head(s,room.n)+'<section class="pcard"><h2>Resultado conjunto</h2><p class="big"><b class="'+(s.nota>=5?'ok':'ko')+'">'+s.nota.toFixed(2)+'</b> / 10 <small>('+room.players.map(function(p){return esc(p.name)}).join(' + ')+')</small></p>'
+ var s=stats(),h=head(s,room.n)+'<section class="pcard"><h2>Resultado conjunto</h2>'+(room.ended?'<p class="ko">⛔ Test finalizado: '+(room.ended.name===(room.players.filter(function(p){return p.me})[0]||{}).name?'saliste de la sala':esc(room.ended.name)+' cerró la sala')+'. Solo cuentan las preguntas ya resueltas.</p>':'')+'<p class="big"><b class="'+(s.nota>=5?'ok':'ko')+'">'+s.nota.toFixed(2)+'</b> / 10 <small>('+room.players.map(function(p){return esc(p.name)}).join(' + ')+')</small></p>'
  +'<p>✔ <b>'+s.ok+'</b> aciertos · ✘ <b>'+s.err+'</b> errores · ≠ <b>'+s.dis+'</b> sin coincidir · ○ <b>'+s.blank+'</b> en blanco'+(s.seen<room.n?' <span class="sub">(faltan '+(room.n-s.seen)+' por responder entre todos)</span>':'')+'</p></section>';
  h+='<section class="pcard"><h2>Repaso</h2>';
  room.qids.forEach(function(id,i){var q=Qm[id],v=verdict(q,room);h+='<div class="rv '+(v?(v.k==='ok'?'g':v.k==='err'?'b':'n'):'n')+'"><b>'+(i+1)+'.</b> '+esc(q.q)+'<br><small>Correcta: <b>'+esc(q.o[q.c])+'</b></small>';
@@ -99,12 +99,17 @@ function results(){
   h+=(q.e?'<br><small class="sub">'+esc(q.e)+'</small>':'')+'</div>'});
  app.innerHTML=h+'<div class="row"><a class="chip" href="sala.html">👥 Nueva sala</a></div></section>'}
 function render(force){
- if(!room)return;var sig=JSON.stringify([room.started,room.joined,room.players.map(function(p){return[p.name,p.answered,Object.keys(p.answers||{}).length]}),nextIdx(),sel]);
+ if(!room)return;var sig=JSON.stringify([room.started,room.joined,room.ended?1:0,room.players.map(function(p){return[p.name,p.answered,Object.keys(p.answers||{}).length]}),nextIdx(),sel]);
  if(!force&&sig===lastSig)return;lastSig=sig;
  if(!room.started||!room.joined)return lobby();play()}
-function tick(){if(document.hidden||!room)return;api('/api/rooms/'+code).then(function(r){room=r;render(false)}).catch(function(){})}
+var TK=null;
+var gone=0;
+function leave(){gone=1;if(!room||!room.started||!room.joined||room.ended||!TK)return;try{fetch(AUTH.cfg.apiUrl.replace(/\/$/,'')+'/api/rooms/'+code+'/leave',{method:'POST',keepalive:true,headers:{Authorization:'Bearer '+TK,'Content-Type':'application/json'},body:'{}'})}catch(e){}}
+window.addEventListener('pagehide',leave);
+function tick(){if(!room||gone)return;api('/api/rooms/'+code).then(function(r){room=r;if(room.ended){clearInterval(tmr)}render(false)}).catch(function(){})}
 function init(){
  if(!window.AUTH||!AUTH.remote){return fail('El test conjunto necesita las cuentas con servidor (las de este dispositivo no sirven para compartir).')}
+ AUTH.accessToken().then(function(t){TK=t});
  load().then(function(){
   if(!code)return create();
   return api('/api/rooms/'+code).then(function(r){room=r;
