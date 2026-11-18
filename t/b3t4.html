@@ -23,6 +23,7 @@
 <tr><td><b>Datos y funciones</b></td><td><b>Separados</b></td><td><b>Agrupados</b></td></tr>
 <tr><td><b>Reutilización</b></td><td>Baja (copia/adaptación)</td><td><b>Alta</b> (herencia y composición)</td></tr>
 <tr><td><b>Mantenimiento</b></td><td>Difícil en proyectos grandes</td><td>Más sencillo (modular)</td></tr>
+<tr><td><b>Abstracción</b></td><td>Procedimientos y estructuras</td><td><b>Clases y objetos</b></td></tr>
 <tr><td><b>Ejemplos</b></td><td>C, Pascal</td><td>Java, C++, Python</td></tr>
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
@@ -48,8 +49,10 @@
 <tr><td><b>private</b></td><td>Sí</td><td>No</td><td>No</td></tr>
 <tr><td><b>protected</b></td><td>Sí</td><td><b>Sí</b></td><td>No</td></tr>
 <tr><td><b>public</b></td><td>Sí</td><td>Sí</td><td><b>Sí</b></td></tr>
+<tr><td><b>Sin especificar</b> (*default* o <b>package-private</b> en Java)</td><td>Sí</td><td><b>No</b> (bloquea subclases de otros paquetes)</td><td><b>Solo clases del mismo paquete</b></td></tr>
 </table></div>
 <ul>
+<li><b>Sin especificar</b> (default / package-private): el miembro es accesible <b>únicamente desde las clases del mismo paquete lógico</b>; a diferencia de <code>protected</code>, <b>se bloquea el acceso a las subclases de otros paquetes</b>.</li>
 <li>Se recomienda atributos <b>private</b> + <b>getters y setters</b> públicos.</li>
 </ul>
 <div class="tw"><table><tr><th>SOLID</th><th>Principio</th><th>Idea</th></tr>
@@ -91,7 +94,12 @@
 <p><b>Sobrecarga de métodos</b></p>
 <p>Permite definir <b>múltiples versiones de un método dentro de una misma clase</b>, diferenciándolas por el <b>número o tipo de parámetros</b>. La <b>sobrecarga de operadores</b> (redefinir <code>+</code>, etc.) está disponible en <b>C++</b>.</p>
 </div>
-<div class="tw"><table><tr><th></th><th><b>Composición</b></th><th><b>Agregación</b></th></tr>
+<div class="tw"><table><tr><th></th><th><b>Sobrecarga (overloading)</b></th><th><b>Sobrescritura (overriding)</b></th></tr>
+<tr><td><b>Ámbito</b></td><td><b>Misma clase</b></td><td><b>Superclase y subclase</b> (herencia)</td></tr>
+<tr><td><b>Firma</b></td><td><b>Mismo nombre, distintos parámetros</b> (número, tipo u orden)</td><td><b>Mismo nombre y mismos parámetros</b></td></tr>
+<tr><td><b>Resolución</b></td><td><b>Estática</b> (compilación)</td><td><b>Dinámica</b> (ejecución)</td></tr>
+<tr><td><b>Polimorfismo</b></td><td><b>Estático</b></td><td><b>Dinámico</b></td></tr>
+<tr><td></td><td><b>Composición</b></td><td><b>Agregación</b></td></tr>
 <tr><td><b>Relación</b></td><td><b>Parte-todo «tiene un»</b>, <b>fuerte</b></td><td>Parte-todo <b>débil</b></td></tr>
 <tr><td><b>Dependencia</b></td><td>Si se destruye el todo, <b>se destruyen las partes</b></td><td>Las partes <b>existen independientemente</b></td></tr>
 <tr><td><b>Ejemplo</b></td><td>Coche → <b>Motor</b></td><td>Departamento → <b>Profesores</b></td></tr>
@@ -107,6 +115,19 @@
 </table></div>
 <ul>
 <li><b>Objetivos</b>: reutilizar conocimiento de diseño, mejorar mantenibilidad, <b>vocabulario común</b>, no reinventar soluciones.</li>
+</ul>
+<h3>4.4 Patrones arquitectónicos: MVC</h3>
+<ul>
+<li>Actúan a <b>nivel superior</b> a los patrones de diseño: definen la <b>estructura global</b> de una aplicación y cómo se comunican sus grandes componentes (arquitectura <b>en capas</b>, <b>cliente-servidor</b>, <b>microservicios</b>).</li>
+<li><b>MVC (Modelo-Vista-Controlador)</b>, el más conocido, separa la aplicación en tres componentes:</li>
+</ul>
+<div class="tw"><table><tr><th>Componente</th><th>Función</th></tr>
+<tr><td><b>Modelo</b></td><td><b>Reglas de negocio</b> y acceso a los datos</td></tr>
+<tr><td><b>Vista</b></td><td><b>Interfaz de usuario</b>; presenta la información del modelo</td></tr>
+<tr><td><b>Controlador</b></td><td><b>Intermediario</b>: procesa las peticiones del usuario y coordina Modelo y Vista</td></tr>
+</table></div>
+<ul>
+<li><b>Funcionamiento</b>: el usuario interactúa con la Vista; el Controlador recibe la petición, pide al Modelo las operaciones y <b>selecciona la Vista</b> que muestra el resultado. Facilita <b>mantenimiento, reutilización y trabajo en paralelo</b>.</li>
 </ul>
 <h2 id="s4">5. Lenguajes orientados a objetos</h2>
 <div class="tw"><table><tr><th>Lenguaje</th><th>Características</th></tr>
@@ -125,6 +146,7 @@
 <tr><td><b>Java SE</b></td><td>Escritorio y consola</td></tr>
 <tr><td><b>Java EE</b> (hoy <b>Jakarta EE</b>)</td><td>Aplicaciones empresariales distribuidas</td></tr>
 <tr><td><b>Java ME</b></td><td>Dispositivos con pocos recursos</td></tr>
+<tr><td><b>Android SDK</b></td><td>Android se orienta a Kotlin, pero Java sigue siendo opción principal para apps móviles</td></tr>
 <tr><td><b>Frameworks y herramientas</b></td><td><b>Spring, Hibernate, JSF, JUnit</b> (pruebas), <b>Maven, Gradle</b> (dependencias)</td></tr>
 </table></div>
 <h2 id="s5">6. Modelado orientado a objetos con UML</h2>
@@ -145,9 +167,19 @@
 </table></div>
 <div class="tw"><table><tr><th>Relación en clases</th><th>Descripción</th></tr>
 <tr><td><b>Asociación</b></td><td>Entre objetos (Cliente *tiene* Pedido)</td></tr>
+<tr><td><b>Dependencia</b></td><td>Una clase depende de otra</td></tr>
 <tr><td><b>Herencia (generalización)</b></td><td>Una clase hereda de otra</td></tr>
 <tr><td><b>Composición</b></td><td>Contiene a otra de forma <b>exclusiva</b> (Coche–Motor)</td></tr>
 <tr><td><b>Agregación</b></td><td>Todo/parte <b>sin pertenencia exclusiva</b> (Universidad–Departamentos)</td></tr>
+<tr><td><b>Realización (implementación)</b></td><td>Entre una <b>interfaz</b> y la clase que la implementa</td></tr>
+</table></div>
+<div class="tw"><table><tr><th>Relación</th><th>Línea</th><th>Extremo</th></tr>
+<tr><td><b>Asociación</b></td><td>Continua</td><td>Sin decoración (flecha abierta = navegabilidad)</td></tr>
+<tr><td><b>Herencia</b></td><td>Continua</td><td><b>Triángulo hueco</b> hacia la superclase</td></tr>
+<tr><td><b>Realización</b></td><td><b>Discontinua</b></td><td><b>Triángulo hueco</b> hacia la interfaz</td></tr>
+<tr><td><b>Composición</b></td><td>Continua</td><td><b>Rombo negro</b> (relleno) en el lado del todo</td></tr>
+<tr><td><b>Agregación</b></td><td>Continua</td><td><b>Rombo blanco</b> (hueco) en el lado del todo</td></tr>
+<tr><td><b>Dependencia</b></td><td><b>Discontinua</b></td><td><b>Flecha abierta</b> hacia el elemento del que se depende</td></tr>
 </table></div>
 <h3>6.2 Diagramas de comportamiento</h3>
 <ul>
@@ -170,6 +202,9 @@
 <tr><td><b>Extensión</b></td><td>Línea punteada <b>«extend»</b></td><td>Un caso <b>opcionalmente amplía</b> otro</td></tr>
 <tr><td><b>Generalización</b></td><td><b>Flecha con triángulo vacío</b></td><td>Jerarquía entre actores o casos</td></tr>
 </table></div>
+<ul>
+<li>Dirección de las flechas: <b>«include»</b>: del caso <b>base</b> al caso <b>incluido</b>; <b>«extend»</b>: del caso de <b>extensión</b> (el que amplía) al caso <b>base</b>.</li>
+</ul>
 <h3>6.2.6 Diagramas de flujo de datos (DFD)</h3>
 <ul>
 <li><b>No son parte de UML</b>; propios del análisis estructurado, usados en la <b>Administración Pública</b> y entornos legacy.</li>
@@ -222,7 +257,8 @@
 </table></div>
 <h2 id="s6">7. Flujogramas</h2>
 <ul>
-<li>Representación gráfica <b>secuencial</b> de los pasos de un proceso (actividades, decisiones, entradas y salidas).</li>
+<li>Representación gráfica <b>secuencial</b> de los pasos de un proceso (actividades, decisiones, entradas y salidas), manual o automatizado; simbología estandarizada (<b>ANSI/ISO</b>). Se orienta al <b>control del flujo de tareas</b>, a diferencia del DFD (movimiento de información).</li>
+<li>Mención del <b>modelo ANSI/SPARC</b> (años 70): arquitectura de <b>tres niveles</b> de SGBD para independizar los datos de su almacenamiento; no trata de flujogramas.</li>
 </ul>
 <div class="tw"><table><tr><th></th><th><b>DFD</b></th><th><b>Flujograma</b></th></tr>
 <tr><td><b>Enfoque</b></td><td><b>Flujo de datos</b></td><td><b>Flujo de actividades/tareas</b></td></tr>

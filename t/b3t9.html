@@ -115,7 +115,14 @@
 </table></div>
 <ul>
 <li>Cada fase se completa <b>antes de comenzar la siguiente</b>; planificación inicial exhaustiva; alta formalización y documentación.</li>
+<li><b>Modelo en V</b>: variante del cascada en la que <b>cada fase de desarrollo</b> (bajada de la «V») tiene su <b>correspondiente fase de prueba</b> (subida de la «V»). <b>La codificación se sitúa en el vértice inferior de la «V»</b>.</li>
 </ul>
+<div class="tw"><table><tr><th>Fase de desarrollo (bajada)</th><th>Fase de prueba (subida)</th></tr>
+<tr><td><b>Análisis de requisitos</b></td><td>Pruebas de <b>aceptación</b></td></tr>
+<tr><td><b>Diseño del sistema</b></td><td>Pruebas del <b>sistema</b></td></tr>
+<tr><td><b>Diseño de la arquitectura</b></td><td>Pruebas de <b>integración</b></td></tr>
+<tr><td><b>Diseño de módulos</b></td><td>Pruebas <b>unitarias</b></td></tr>
+</table></div>
 <h3>4.2 Desarrollo ágil</h3>
 <ul>
 <li>Desarrollo <b>iterativo, incremental y flexible</b>: colaboración con el cliente, entrega continua y respuesta rápida al cambio.</li>
@@ -146,7 +153,7 @@
 </ul>
 <h3>4.2.2 Kanban</h3>
 <ul>
-<li>Sistema <b>visual</b> de gestión del trabajo; <b>flujo continuo</b>, <b>sin iteraciones fijas ni roles específicos</b>. «Kanban» = <b>tarjeta visual</b> en japonés; creado por <b>Toyota en los años 40</b>.</li>
+<li>Sistema <b>visual</b> de gestión del trabajo; <b>flujo continuo</b>, <b>sin iteraciones fijas ni roles específicos</b>. <b>Kanban es un sistema Pull</b>: las tareas no se asignan (<b>push</b>) a los desarrolladores, sino que estos <b>tiran (pull)</b> de nuevas tareas desde la columna anterior <b>solo cuando tienen capacidad</b>, regulando así el flujo de trabajo. «Kanban» = <b>tarjeta visual</b> en japonés; creado por <b>Toyota en los años 40</b>.</li>
 </ul>
 <div class="tw"><table><tr><th>Principio de Kanban</th><th>Idea</th></tr>
 <tr><td><b>1. Visualizar el flujo</b></td><td><b>Tablero</b> con columnas (Por hacer, En curso, En revisión, Hecho) y <b>tarjetas</b></td></tr>
@@ -209,6 +216,9 @@
 <p>Sistema de construcción basado en <b>JavaScript</b> que <b>automatiza tareas del desarrollo web</b>: <b>minificación</b> de JS y CSS, compilación de <b>Sass o LESS</b> a CSS, <b>concatenación</b> de archivos, <b>optimización de imágenes</b> y <b>recarga automática del navegador (live reload)</b>. Tareas programadas como funciones JavaScript.</p>
 </div>
 <h2 id="s4">5. Pruebas de software</h2>
+<ul>
+<li>Se clasifican según su <b>alcance, objetivo y nivel de ejecución</b>. <b>Enfoques</b>: <b>caja blanca (estructurales)</b>: se basan en el conocimiento del <b>código fuente</b> (p. ej. cobertura de caminos o bucles) · <b>caja negra (funcionales)</b>: prueban la funcionalidad <b>sin conocer el código interno</b>, a partir de las <b>especificaciones de requisitos</b>.</li>
+</ul>
 <div class="tw"><table><tr><th>Tipo de prueba</th><th>Descripción</th><th>Herramientas</th></tr>
 <tr><td><b>Unitarias</b></td><td>Unidades individuales (funciones, métodos, clases) <b>de forma aislada</b>, con <b>mocks o stubs</b>; detectan errores pronto</td><td><b>JUnit</b> (Java), <b>NUnit</b> (.NET), <b>pytest</b> (Python), <b>Jest</b> (JS), <b>xUnit</b></td></tr>
 <tr><td><b>Integración</b></td><td>Los módulos <b>interactúan correctamente</b> al integrarse</td><td><b>Postman, REST Assured</b> (APIs)</td></tr>
@@ -225,6 +235,9 @@
 <tr><td><b>Implantación</b></td><td>Pruebas de <b>instalación</b>, de <b>configuración</b> (parámetros, variables, rutas) y de <b>entorno</b> (hardware, red, permisos)</td></tr>
 <tr><td><b>Rendimiento</b></td><td><b>Latencia</b> (tiempo de respuesta), <b>throughput</b> (operaciones por unidad de tiempo), <b>eficiencia</b> (uso de recursos)</td></tr>
 <tr><td><b>Sobrecarga</b></td><td>Carga extrema sostenida, <b>picos de usuarios concurrentes</b>, indisponibilidad parcial de servicios</td></tr>
+<tr><td>Otras pruebas</td><td></td></tr>
+<tr><td><b>Humo (smoke tests)</b></td><td>Pruebas <b>rápidas y superficiales</b> para verificar que las <b>funciones más críticas</b> de un nuevo build funcionan (que el programa no «explota»)</td></tr>
+<tr><td><b>Sanity tests</b></td><td>Verifican <b>en profundidad</b> que un <b>módulo específico</b> o un <b>fallo concreto</b> ha sido arreglado tras un <b>cambio menor</b></td></tr>
 </table></div>
 <div class="box I"><div class="t">IMPORTANTE</div>
 <p><b>Selenium WebDriver</b></p>
@@ -259,7 +272,8 @@
 <tr><td></td><td><code>git commit -am</code></td><td>Añade y hace commit de archivos <b>modificados (no nuevos)</b></td></tr>
 <tr><td><b>Ramas</b></td><td><code>git branch</code></td><td>Lista ramas / <code>git branch &lt;nombre&gt;</code> crea una</td></tr>
 <tr><td></td><td><code>git checkout &lt;rama&gt;</code></td><td>Cambia de rama; <code>checkout -b</code> <b>crea y cambia</b></td></tr>
-<tr><td></td><td><code>git merge &lt;rama&gt;</code></td><td>Fusiona una rama en la actual</td></tr>
+<tr><td></td><td><code>git merge &lt;rama&gt;</code></td><td>Fusiona una rama en la actual: <b>nuevo commit de fusión</b> (conserva el historial exacto)</td></tr>
+<tr><td></td><td><code>git rebase</code></td><td><b>Mueve los commits</b> de la rama actual al extremo de la rama base: <b>historial lineal y limpio</b> (<b>reescribe el historial</b>)</td></tr>
 <tr><td><b>Remoto</b></td><td><code>git clone &lt;url&gt;</code></td><td>Clona un repositorio remoto</td></tr>
 <tr><td></td><td><code>git remote -v</code></td><td>Muestra los remotos</td></tr>
 <tr><td></td><td><code>git fetch</code></td><td>Descarga cambios <b>sin integrar</b></td></tr>
@@ -306,6 +320,7 @@
 <tr><td><b>SAST</b> (Static Application Security Testing)</td><td><b>Código fuente, bytecode o binarios sin ejecutar</b>; inyecciones SQL, errores de validación</td><td><b>Durante el desarrollo</b>, tras escribir el código</td><td><b>SonarQube, Checkmarx, Fortify SCA</b></td></tr>
 <tr><td><b>DAST</b> (Dynamic Application Security Testing)</td><td>La aplicación <b>en ejecución</b>, simulando un atacante externo (<b>black-box</b>); inyecciones, autenticación, configuraciones inseguras</td><td>En <b>pruebas o staging</b>, tras la implementación</td><td><b>OWASP ZAP, Burp Suite, AppScan</b></td></tr>
 <tr><td><b>SCA</b> (Software Composition Analysis)</td><td><b>Dependencias y librerías de terceros</b>; versiones vulnerables, <b>licencias incompatibles</b>, componentes desactualizados</td><td>Desarrollo y mantenimiento</td><td><b>OWASP Dependency-Check, Snyk, Black Duck</b></td></tr>
+<tr><td><b>IAST</b> (Interactive Application Security Testing)</td><td>Aplicación <b>desde dentro mientras se ejecuta</b> (mediante <b>agentes instrumentados</b>); <b>combina SAST y DAST</b></td><td>Durante las pruebas funcionales: detecta vulnerabilidades <b>en tiempo real</b></td><td></td></tr>
 </table></div>
 <h2 id="s8">9. Herramientas de seguimiento de errores (bug tracking)</h2>
 <ul>

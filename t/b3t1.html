@@ -4,7 +4,7 @@
 <div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Modelo conceptual de datos</a><a href="#s1">2. Entidades, atributos y relaciones</a><a href="#s2">3. Modelado de datos</a><a href="#s3">4. Reglas de integridad y construcción</a><a href="#s4">5. Diseño de bases de datos</a><a href="#s5">6. Álgebra relacional</a><a href="#s6">7. Modelo lógico relacional</a><a href="#s7">8. Modelo E/R Extendido (EER)</a><a href="#s8">9. Normalización</a><a href="#s9">🧪 Prácticas SQL</a></aside>
 <main class="doc" data-key="b3t1"><div class="crumb">Bloque 3 · Tema 1</div><h1>Modelado de datos, diseño de bases de datos, modelo relacional y normalización</h1>
 <div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
-<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (17)</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (19)</label>
 <a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema1.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema1.pdf">PDF móvil</a><a class="chip" href="../pdf/completo/b3t1.pdf">📄 PDF completo</a></div>
 <h2 id="s0">1. Modelo conceptual de datos</h2>
 <ul>
@@ -77,6 +77,7 @@
 <tr><td><b>(0,M)</b></td><td><b>Puede no impartir</b> ninguno; si lo hace, varios</td></tr>
 </table></div>
 <ul>
+<li><b>Rol</b>: función que desempeña una entidad en una relación; <b>obligatorio en relaciones reflexivas/unitarias</b> para distinguir las ocurrencias (Empleado «es jefe de» frente a Empleado «es subordinado de»).</li>
 <li><b>Dependencia débil</b>: la entidad <b>no puede existir sin otra</b> (pedido sin cliente); doble rectángulo. <b>Dependencia fuerte</b>: puede existir sin depender de otra (cliente sin pedidos).</li>
 </ul>
 <h2 id="s2">3. Modelado de datos</h2>
@@ -168,25 +169,43 @@
 <tr><td><b>Materialización de vistas</b></td><td>Guardar resultados <b>precalculados</b> de consultas complejas</td></tr>
 </table></div>
 </div>
+<ul>
+<li><b>Desnormalización: estrella y copo de nieve.</b> Mejora el <b>rendimiento de lectura</b> a costa de <b>redundancia controlada</b>; depende del tipo de sistema:</li>
+</ul>
+<div class="tw"><table><tr><th>Sistema</th><th>Características</th></tr>
+<tr><td><b>OLTP</b> (On-Line Transaction Processing)</td><td>Operacional, muchas <b>transacciones cortas</b> de inserción/actualización/borrado (gestión de pedidos); prioriza integridad y ausencia de anomalías → <b>normalizado (habitualmente 3FN)</b></td></tr>
+<tr><td><b>OLAP</b> (On-Line Analytical Processing)</td><td><b>Consultas complejas de análisis</b> sobre grandes volúmenes de datos históricos (<b>Data Warehouse</b>); predominan las lecturas → se admite <b>desnormalización</b> para reducir JOIN</td></tr>
+</table></div>
+<ul>
+<li>En OLAP el <b>modelo dimensional</b> se organiza en torno a una <b>tabla de hechos</b> (medidas numéricas del negocio y claves foráneas) y varias <b>tablas de dimensiones</b> (contexto: tiempo, producto, cliente).</li>
+</ul>
+<div class="tw"><table><tr><th>Esquema</th><th>Estructura</th><th>Dimensiones</th><th>Rendimiento</th></tr>
+<tr><td><b>Estrella</b></td><td>Tabla de hechos central rodeada de dimensiones unidas directamente a ella</td><td><b>Desnormalizadas</b> (una tabla por dimensión)</td><td><b>Menos JOIN</b>, consultas más rápidas; <b>más redundancia</b></td></tr>
+<tr><td><b>Copo de nieve</b></td><td>Variante de la estrella: cada dimensión se descompone en <b>tablas jerárquicas</b> vinculadas a la de hechos</td><td><b>Normalizadas</b></td><td><b>Menos redundancia y espacio</b>; <b>más JOIN</b></td></tr>
+</table></div>
+<ul>
+<li>Ejemplo: en estrella, la dimensión Producto incluye categoría y familia en <b>una tabla</b>; en copo de nieve, Categoría y Familia son <b>tablas propias</b> enlazadas con Producto.</li>
+</ul>
 <h2 id="s5">6. Álgebra relacional</h2>
 <ul>
-<li>Lenguaje formal de consultas sobre relaciones; <b>siempre devuelve una nueva relación</b> (es <b>cerrado</b>).</li>
+<li>Lenguaje formal de consultas sobre relaciones; <b>siempre devuelve una nueva relación</b> (es <b>cerrado</b>). Las derivadas <b>se construyen a partir de las fundamentales</b>.</li>
 </ul>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Operaciones fundamentales (primitivas)</b></p>
-<div class="tw"><table><tr><th>Operación</th><th>Símbolo</th><th>Descripción</th></tr>
-<tr><td><b>Selección</b></td><td><b>σ</b></td><td><b>Filtra filas</b> que cumplen una condición (σ salario &gt; 30000 (Empleado))</td></tr>
-<tr><td><b>Proyección</b></td><td><b>π</b></td><td>Devuelve <b>solo ciertas columnas</b></td></tr>
-<tr><td><b>Unión</b></td><td><b>∪</b></td><td>Une dos relaciones <b>con el mismo esquema</b>, <b>eliminando duplicados</b></td></tr>
-<tr><td><b>Diferencia</b></td><td><b>−</b></td><td>Tuplas de una relación que <b>no están en otra</b></td></tr>
-<tr><td><b>Producto cartesiano</b></td><td><b>×</b></td><td>Cada tupla de una con cada tupla de otra</td></tr>
-<tr><td><b>Renombramiento</b></td><td><b>ρ</b></td><td>Cambia el nombre de una relación o atributos</td></tr>
+<div class="tw"><table><tr><th>Operación</th><th>Símbolo</th><th>Notación</th><th>Descripción</th></tr>
+<tr><td><b>Selección</b></td><td><b>σ</b></td><td>σcondición(R)</td><td><b>Filtra filas</b> que cumplen una condición (σ salario &gt; 30000 (Empleado))</td></tr>
+<tr><td><b>Proyección</b></td><td><b>π</b></td><td>πatributos(R)</td><td>Devuelve <b>solo ciertas columnas</b></td></tr>
+<tr><td><b>Unión</b></td><td><b>∪</b></td><td>R ∪ S</td><td>Une dos relaciones <b>con el mismo esquema</b>, <b>eliminando duplicados</b></td></tr>
+<tr><td><b>Diferencia</b></td><td><b>−</b></td><td>R − S</td><td>Tuplas de una relación que <b>no están en otra</b></td></tr>
+<tr><td><b>Producto cartesiano</b></td><td><b>×</b></td><td>R × S</td><td>Cada tupla de una con cada tupla de otra</td></tr>
+<tr><td><b>Renombramiento</b></td><td><b>ρ</b></td><td>ρS(R)</td><td>Cambia el nombre de una relación o atributos</td></tr>
 </table></div>
 </div>
-<div class="tw"><table><tr><th>Operación derivada</th><th>Descripción</th></tr>
-<tr><td><b>Intersección</b></td><td><b>A ∩ B = A − (A − B)</b></td></tr>
-<tr><td><b>Join (unión natural)</b></td><td>Combinación por <b>igualdad de atributos</b></td></tr>
-<tr><td><b>División</b></td><td>Consultas tipo <b>«para todos»</b>; se construye con varias operaciones básicas</td></tr>
+<div class="tw"><table><tr><th>Operación derivada</th><th>Símbolo</th><th>Descripción</th></tr>
+<tr><td><b>Intersección</b></td><td><b>∩</b> (R ∩ S)</td><td><b>A ∩ B = A − (A − B)</b></td></tr>
+<tr><td><b>Join (reunión natural)</b></td><td><b>⋈</b> (R ⋈ S)</td><td>Combinación por <b>igualdad de atributos</b></td></tr>
+<tr><td><b>Theta-Join</b></td><td><b>θ</b> (R ⋈θ S)</td><td>Combinación según una <b>condición θ</b> de comparación (=, ≠, &lt;, ≤, &gt;, ≥); <b>equivale a σθ(R × S)</b></td></tr>
+<tr><td><b>División</b></td><td><b>÷</b> (R ÷ S)</td><td>Consultas tipo <b>«para todos»</b>; se construye con varias operaciones básicas</td></tr>
 </table></div>
 <div class="box I"><div class="t">IMPORTANTE</div>
 <p><b>Álgebra relacional</b></p>
@@ -194,39 +213,69 @@
 </div>
 <div class="sqlab" data-cats="algebra" data-title="Álgebra relacional en SQL"></div><h2 id="s6">7. Modelo lógico relacional</h2>
 <ul>
-<li>Datos en <b>tablas (relaciones)</b>: fila = <b>tupla</b>, columna = <b>atributo</b>. Base de MySQL, PostgreSQL, SQL Server y Oracle.</li>
+<li>Datos en <b>tablas (relaciones)</b>: fila = <b>tupla</b>, columna = <b>atributo</b>. Base de los <b>RDBMS</b>: MySQL, PostgreSQL, SQL Server y Oracle.</li>
 </ul>
 <div class="tw"><table><tr><th>Característica</th><th>Idea</th></tr>
 <tr><td><b>Estructura en tablas</b></td><td>Cada tabla con nombre único</td></tr>
 <tr><td><b>PK y FK</b></td><td>Identifican y relacionan</td></tr>
 <tr><td><b>Independencia lógica y física</b></td><td>Cambiar la estructura sin afectar a la aplicación</td></tr>
 <tr><td><b>Integridad</b></td><td>Integridad referencial</td></tr>
-<tr><td><b>SQL</b></td><td>Consultas, inserciones, actualizaciones y borrados</td></tr>
+<tr><td><b>SQL</b> (Structured Query Language)</td><td>Consultas, inserciones, actualizaciones y borrados</td></tr>
 <tr><td><b>Menos redundancia</b></td><td><b>Normalización</b></td></tr>
 </table></div>
 <ul>
-<li><b>Reglas</b>: nombre de relación <b>único</b> · <b>sin tuplas duplicadas</b> · atributos con nombres únicos · <b>el orden de las tuplas no importa</b> · valor <b>atómico o NULL</b>.</li>
+<li><b>Reglas</b>: nombre de relación <b>único</b> · <b>sin tuplas duplicadas</b> · atributos con nombres únicos · <b>el orden de las tuplas no importa</b> · valor <b>atómico o NULL</b> (con cuidado).</li>
+</ul>
+<div class="tw"><table><tr><th>Elemento</th><th>Descripción</th></tr>
+<tr><td><b>Relación (tabla)</b></td><td>Conjunto de <b>tuplas</b> con la misma estructura de atributos</td></tr>
+<tr><td><b>Atributo / Tupla</b></td><td><b>Columna</b> (propiedad del dato) / <b>fila</b> (registro único)</td></tr>
+<tr><td><b>Dominio</b></td><td>Conjunto de <b>valores válidos</b> de un atributo (<b>tipo + restricciones</b>)</td></tr>
+<tr><td><b>Clave primaria / foránea</b></td><td>Identifica unívocamente una tupla / referencia la PK de otra relación</td></tr>
+</table></div>
+<ul>
+<li><b>Independencia lógica y física</b> (el modelo está separado del almacenamiento) · <b>integridad referencial</b> · <b>SQL</b> · <b>normalización</b> para reducir redundancia.</li>
 </ul>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Clave primaria</b></p>
-<p>Atributo o conjunto de atributos que <b>identifican de manera única</b> cada registro. <b>No puede ser nula</b>, <b>no puede repetirse</b> y <b>solo puede haber una por tabla</b> (elegida entre las claves candidatas). Cumple <b>unicidad</b> y <b>no nulidad (NOT NULL)</b>.</p>
+<p>Atributo o conjunto de atributos que <b>identifican de manera única</b> cada registro en una tabla. <b>No puede ser nula</b>, <b>no puede repetirse (única)</b> y <b>solo puede haber una por tabla</b>.</p>
 </div>
-<ul>
-<li><b>Clave foránea</b>: garantiza <b>integridad referencial</b>; <b>puede repetirse</b> en 1:M y <b>puede ser nula</b> si la relación no es obligatoria (ej.: <code>ID_Curso</code> de Estudiantes → Cursos).</li>
-</ul>
+<div class="box I"><div class="t">IMPORTANTE</div>
+<p><b>Clave primaria: dos condiciones</b></p>
+<p><b>Unicidad</b> (no hay dos filas con el mismo valor) y <b>no nulidad</b> (NOT NULL). Cada tabla tiene <b>una única PK</b>, elegida entre sus <b>claves candidatas</b>.</p>
+</div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Clave foránea</b></p>
+<p>Atributo que establece una relación con la <b>PK de otra tabla</b>. Garantiza la <b>integridad referencial</b>; <b>puede aceptar valores repetidos</b> si la relación es <b>1:M</b> y <b>puede contener nulos</b> si la relación no es obligatoria (ej.: <code>ID_Curso</code> de Estudiantes → Cursos).</p>
+</div>
 <div class="tw"><table><tr><th>Dependencia</th><th>Definición</th><th>Ejemplo</th></tr>
 <tr><td><b>Funcional</b></td><td>El valor de un atributo está determinado por otro</td><td>Nombre depende de ID_Estudiante</td></tr>
 <tr><td><b>Transitiva</b></td><td>A depende de B y B de C</td><td>Ciudad ← Código_Postal ← Dirección</td></tr>
+</table></div>
+<p><b>Las 12 reglas de Codd</b> (Edgar F. Codd, creador del modelo relacional, <b>1985</b>): conjunto que debe cumplir un SGBD para ser <b>plenamente relacional</b>; son <b>trece, numeradas de la 0 a la 12</b>.</p>
+<div class="tw"><table><tr><th>Nº</th><th>Regla</th><th>Idea</th></tr>
+<tr><td><b>0</b></td><td><b>Regla fundamental</b></td><td>Gestionar la BD <b>exclusivamente con capacidades relacionales</b></td></tr>
+<tr><td><b>1</b></td><td><b>Información</b></td><td>Toda la información se representa <b>como valores en tablas</b></td></tr>
+<tr><td><b>2</b></td><td><b>Acceso garantizado</b></td><td>Todo dato accesible por <b>nombre de tabla + valor de PK + nombre de columna</b></td></tr>
+<tr><td><b>3</b></td><td><b>Tratamiento sistemático de nulos</b></td><td><b>NULL</b> distinto de cadena vacía o cero (información desconocida/inaplicable)</td></tr>
+<tr><td><b>4</b></td><td><b>Catálogo en línea</b></td><td><b>Metadatos</b> almacenados en tablas y consultables con el mismo lenguaje</td></tr>
+<tr><td><b>5</b></td><td><b>Sublenguaje completo</b></td><td>Un lenguaje que define datos y vistas, manipula datos, integridad, autorizaciones y transacciones (<b>SQL</b>)</td></tr>
+<tr><td><b>6</b></td><td><b>Actualización de vistas</b></td><td>Las vistas teóricamente actualizables <b>se pueden actualizar</b></td></tr>
+<tr><td><b>7</b></td><td><b>Inserción/actualización/borrado de alto nivel</b></td><td>Se aplican a <b>conjuntos de filas</b>, no solo a filas individuales</td></tr>
+<tr><td><b>8</b></td><td><b>Independencia física</b></td><td>Cambios en almacenamiento o métodos de acceso no afectan a programas</td></tr>
+<tr><td><b>9</b></td><td><b>Independencia lógica</b></td><td>Cambios en tablas que preservan la información no afectan a programas</td></tr>
+<tr><td><b>10</b></td><td><b>Independencia de integridad</b></td><td>Restricciones definidas en el sublenguaje y <b>almacenadas en el catálogo</b></td></tr>
+<tr><td><b>11</b></td><td><b>Independencia de distribución</b></td><td>La distribución de los datos en ubicaciones no afecta a usuarios/programas</td></tr>
+<tr><td><b>12</b></td><td><b>No subversión</b></td><td>Un lenguaje de bajo nivel (registro a registro) <b>no puede eludir</b> la integridad</td></tr>
 </table></div>
 <h2 id="s7">8. Modelo E/R Extendido (EER)</h2>
 <ul>
 <li>Extensión del E-R para BD complejas: <b>herencia, agregación, jerarquías</b>. <b>MÉTRICA v3</b> se basa en el EER.</li>
 </ul>
 <div class="tw"><table><tr><th>Concepto</th><th>Descripción</th></tr>
-<tr><td><b>Herencia</b></td><td>Las entidades especializadas <b>heredan atributos y relaciones</b> del padre (Persona → Profesor, Estudiante)</td></tr>
+<tr><td><b>Herencia</b></td><td>Las entidades especializadas <b>heredan atributos y relaciones</b> del padre (Persona → Profesor, Estudiante); <b>fomenta la reutilización y la claridad</b></td></tr>
 <tr><td><b>Agregación</b></td><td><b>Trata una relación como una entidad</b> para asociarla a otra (TrabajaEn → Evaluación)</td></tr>
-<tr><td><b>Superclase / subclase</b></td><td>General con atributos comunes / especializada con atributos adicionales</td></tr>
-<tr><td><b>Atributos</b></td><td>Simples o compuestos · monovalorados o multivalorados · derivados</td></tr>
+<tr><td><b>Superclase / subclase</b></td><td>General con atributos comunes / especializada con atributos o relaciones adicionales; estructuras <b>jerárquicas similares a la POO</b></td></tr>
+<tr><td><b>Atributos</b></td><td>Simples o compuestos · monovalorados o multivalorados · derivados (Empleado: nombre, teléfonos multivalorado, edad derivada)</td></tr>
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Entidades fuertes y débiles en EER</b></p>
@@ -241,8 +290,10 @@
 <tr><td><b>Especialización</b></td><td>De <b>lo general a lo específico</b></td><td>Empleado → Gerente, Técnico, Administrativo</td></tr>
 </table></div>
 <ul>
-<li>Notación: <b>flecha/triángulo</b>. En relacional, la herencia se representa con <b>claves foráneas</b>. La especialización puede ser por valores (tipo de contrato) o manual.</li>
-<li><b>Entidad asociativa</b>: representa una <b>relación N:M</b>, con <b>atributos propios</b>; se implementa descomponiendo en <b>dos relaciones 1:N</b> con claves foráneas a cada entidad (Matrícula: fecha, nota).</li>
+<li>La herencia en BD relacional se representa con <b>claves foráneas</b> (subclases Gerente, Técnico → superclase Empleado).</li>
+<li>Notación: <b>flecha/triángulo</b> (generalización: de las específicas hacia la general; especialización: de la general hacia las específicas). En relacional, la herencia se representa con <b>claves foráneas</b>. La especialización puede ser por valores (tipo de contrato) o manual.</li>
+<li><b>Entidad asociativa</b>: representa una <b>relación N:M</b>, con <b>atributos propios</b>; se implementa descomponiendo en <b>dos relaciones 1:N</b> con claves foráneas a cada entidad (Estudiante + Asignatura → Matrícula: fecha, nota); <b>no se permite implementar N:M directamente</b> en relacional.</li>
+<li><b>Agregación</b> (ejemplo): relación Asignación (Profesor–Proyecto) supervisada por un Departamento → no se conecta Departamento con una relación, así que se <b>agrega</b> Asignación y se conecta con Departamento; útil para <b>añadir atributos a una relación</b> o <b>relacionar una relación con otra entidad</b>.</li>
 </ul>
 <div class="box I"><div class="t">IMPORTANTE</div>
 <p><b>Asociativa vs. agregación</b></p>
@@ -254,12 +305,15 @@
 <p>Proceso de organizar los datos para <b>eliminar redundancias y mejorar la integridad</b>. <b>MÉTRICA v3</b> sigue las reglas de normalización estándar para que la estructura sea <b>eficiente y escalable</b>.</p>
 </div>
 <ul>
-<li><b>MÉTRICA v3</b>: metodología de <b>planificación, análisis, diseño y desarrollo de sistemas de información</b> de la <b>Administración Pública española</b>: gestiona el ciclo de vida, estandariza procesos, facilita la contratación pública e integra metodologías (ágiles, PMI).</li>
+<li><b>MÉTRICA v3</b>: metodología de <b>planificación, análisis, diseño y desarrollo de sistemas de información</b> de la <b>Administración Pública española</b> (evolución de versiones anteriores como v2; el PDF también la describe como metodología para <b>estimar el tamaño funcional del software</b> y la vincula a la documentación del <b>CCN</b>, aunque se usa sobre todo en desarrollo de sistemas del Sector Público): gestiona el ciclo de vida, estandariza procesos, facilita la contratación pública e integra metodologías (ágiles, PMI).</li>
 </ul>
 <div class="tw"><table><tr><th>Fase MÉTRICA v3</th><th>Proceso</th><th>Relación con la BD</th></tr>
 <tr><td><b>Diseño del Sistema de Información (DSI)</b></td><td><b>Diseño lógico de datos</b></td><td>Entidades, relaciones, atributos y restricciones, <b>independiente del SGBD</b></td></tr>
 <tr><td><b>Diseño Técnico del Sistema (DTS)</b></td><td><b>Diseño físico de datos</b></td><td>Modelo físico del SGBD: tipos, índices, particiones, normalización/desnormalización</td></tr>
 </table></div>
+<ul>
+<li>Según el PDF: en <b>ASI</b> (Análisis del Sistema de Información) se obtiene el <b>Modelo Lógico de Datos</b> normalizado; en <b>DSI</b> (Diseño del Sistema de Información) el <b>Modelo Físico de Datos</b> optimizado para un SGBD específico (la tabla anterior sitúa el diseño físico en DTS).</li>
+</ul>
 <div class="tw"><table><tr><th>Producto</th><th>Contenido</th></tr>
 <tr><td><b>Diccionario de datos</b></td><td>Nombre, descripción, tipo, longitud, valores permitidos</td></tr>
 <tr><td><b>Modelo de datos lógico</b></td><td>Entidades, relaciones, cardinalidades, atributos y claves; <b>normalizado (3FN o superior)</b></td></tr>
@@ -273,7 +327,8 @@
 <li><b>3FN</b>: 2FN + <b>sin dependencias transitivas</b>. Ej.: Nombre_Curso depende de ID_Curso → se separa en Estudiantes y Cursos.</li>
 <li><b>BCNF</b>: 3FN + <b>cada determinante debe ser clave candidata (superclave)</b>.</li>
 <li><b>4FN</b>: BCNF + sin <b>dependencias multivaluadas</b> no triviales (persona con varios títulos e idiomas → dos tablas).</li>
-<li><b>5FN (proyección-unión)</b>: 4FN + sin <b>dependencias de unión</b> injustificadas (si la unión natural de la descomposición no reproduce la tabla original, no es válida).</li>
+<li><b>5FN (proyección-unión)</b>: 4FN + sin <b>dependencias de unión</b> injustificadas (si la unión natural de la descomposición no reproduce la tabla original, no es válida). Se aplica en casos muy específicos (ej.: contratos entre empleados, proyectos y localizaciones).</li>
+<li><b>Teorema de Heath</b> (descomposición sin pérdida): dada R(A, B, C), si se cumple <b>A → B</b>, entonces R se descompone <b>sin pérdida</b> (mediante JOIN) en <b>R1(A, B) y R2(A, C)</b>.</li>
 </ul>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Resumen de formas normales</b></p>
@@ -294,7 +349,7 @@
 <tr><td><b>Total</b></td><td>Y depende de <b>todos</b> los atributos de X</td></tr>
 <tr><td><b>Parcial</b></td><td>Y depende <b>solo de una parte</b> de X (clave compuesta)</td></tr>
 <tr><td><b>Transitiva</b></td><td>X → Z porque X → Y e Y → Z</td></tr>
-<tr><td><b>Trivial</b></td><td><b>Y ⊆ X</b></td></tr>
+<tr><td><b>Trivial</b></td><td><b>Y ⊆ X</b> (ej. X = {A, B}, Y = {A})</td></tr>
 <tr><td><b>No trivial</b></td><td>Y no está incluido en X</td></tr>
 </table></div>
 <ul>

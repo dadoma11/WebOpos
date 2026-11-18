@@ -4,7 +4,7 @@
 <div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Lenguajes de programación</a><a href="#s1">2. Representación de tipos de datos</a><a href="#s2">3. Operadores</a><a href="#s3">4. Instrucciones condicionales</a><a href="#s4">5. Bucles y recursividad</a><a href="#s5">6. Procedimientos, funciones y parámetros</a><a href="#s6">7. Vectores y registros</a><a href="#s7">8. Estructura de un programa</a></aside>
 <main class="doc" data-key="b3t2"><div class="crumb">Bloque 3 · Tema 2</div><h1>Lenguajes de programación, tipos de datos, estructuras y algoritmos</h1>
 <div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
-<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (7)</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (10)</label>
 <a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema2.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema2.pdf">PDF móvil</a><a class="chip" href="../pdf/completo/b3t2.pdf">📄 PDF completo</a></div>
 <h2 id="s0">1. Lenguajes de programación</h2>
 <div class="tw"><table><tr><th>Nivel</th><th>Características</th><th>Ejemplos</th></tr>
@@ -27,7 +27,7 @@
 <tr><td><b>Intérprete</b></td><td>Ejecuta línea a línea sin generar ejecutable (Python, JavaScript)</td></tr>
 <tr><td><b>Compilador</b></td><td>Traduce a <b>código máquina/binario</b>; ejecutable independiente</td></tr>
 <tr><td><b>Transpilador</b></td><td>Traduce <b>de un lenguaje a otro de nivel similar</b></td></tr>
-<tr><td><b>Compilador cruzado</b></td><td>Genera código para <b>una plataforma distinta</b> a la que ejecuta el compilador; <b>sistemas embebidos y multiplataforma</b></td></tr>
+<tr><td><b>Compilador cruzado (cross compiler)</b></td><td>Genera código <b>ejecutable</b> para <b>una plataforma distinta</b> a la que ejecuta el compilador; <b>sistemas embebidos y desarrollo multiplataforma</b></td></tr>
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Transpilador (source-to-source compiler)</b></p>
@@ -40,7 +40,7 @@
 <h2 id="s1">2. Representación de tipos de datos</h2>
 <div class="tw"><table><tr><th>Tipo básico (primitivo)</th><th>Descripción</th></tr>
 <tr><td><b>Entero (int)</b></td><td>Sin decimales; tamaño según lenguaje (short, long, long long)</td></tr>
-<tr><td><b>Real (float, double)</b></td><td>Con parte decimal: <b>float</b> = menos precisión y memoria; <b>double</b> = <b>mayor precisión</b> (científico)</td></tr>
+<tr><td><b>Real (float, double)</b></td><td>Con parte decimal: <b>float</b> = menos precisión y memoria; <b>double</b> = <b>mayor precisión</b> (científico). <b>Representación interna según el estándar IEEE 754: signo, exponente y mantisa</b></td></tr>
 <tr><td><b>Carácter (char)</b></td><td>Un carácter; se guarda como <b>código numérico</b> (ASCII/Unicode); normalmente <b>1 byte</b></td></tr>
 <tr><td><b>Booleano (bool)</b></td><td><b>true/false</b>; 1 bit o 1 byte</td></tr>
 </table></div>
@@ -60,6 +60,15 @@
 <p><b>Bit</b>: unidad mínima (0 o 1). <b>Byte</b>: <b>8 bits</b>, unidad básica de almacenamiento; <b>256 valores</b> (0-255). <b>Nibble</b>: <b>4 bits</b>; muy usado en hexadecimal.</p>
 </div>
 <ul>
+<li><b>Números negativos</b> (nº fijo de bits, p. ej. 8): <b>tres sistemas</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Sistema</th><th>Cómo se obtiene</th><th>Ceros / rango (8 bits)</th></tr>
+<tr><td><b>Magnitud y signo</b></td><td><b>MSB (bit de la izquierda) = signo</b> (<b>0 = positivo, 1 = negativo</b>) y el resto el valor absoluto; +5 = 00000101, −5 = 10000101</td><td><b>Dos ceros</b> (00000000 y 10000000); <b>−127 a +127</b></td></tr>
+<tr><td><b>Complemento a 1 (C1)</b></td><td><b>Invertir todos los bits</b>; −5 = 11111010</td><td><b>Dos ceros</b> (00000000 y 11111111); <b>−127 a +127</b></td></tr>
+<tr><td><b>Complemento a 2 (C2)</b></td><td><b>Invertir los bits (C1) y sumar 1</b> al bit menos significativo (LSB); −5 = 11111010 + 1 = 11111011</td><td><b>Un único cero</b>; <b>−128 a +127</b>; permite <b>restar como sumar</b> → <b>el que usan la mayoría de ordenadores</b></td></tr>
+</table></div>
+<ul>
+<li>Ejemplo C2 de 22 (8 bits): 22 = 00010110 → C1 = 11101001 → +1 = <b>11101010</b> (representa −22).</li>
 <li><b>Hexadecimal (base 16)</b>: dígitos <b>0-9 y A-F (10-15)</b>; <b>1 dígito hexadecimal = 1 nibble (4 bits)</b>. Se usa en <b>direcciones de memoria</b>, <b>colores HTML/CSS</b> (<code>#FF0000</code> = rojo) y <b>códigos de caracteres</b>.</li>
 </ul>
 <div class="tw"><table><tr><th>Conversión</th><th>Método</th></tr>
@@ -95,6 +104,22 @@
 <tr><td><b>doble asterisco = , //=</b></td><td>Potencia / división entera (Python)</td></tr>
 <tr><td><b>&amp;= ^= &lt;&lt;= &gt;&gt;=</b></td><td>AND / XOR bit a bit, desplazamientos</td></tr>
 </table></div>
+<h3>Operadores a nivel de bit (bitwise)</h3>
+<ul>
+<li><b>Actúan directamente sobre cada bit</b> de los enteros; son la base de las asignaciones compuestas <b>&amp;=, |=, ^=, &lt;&lt;=, &gt;&gt;=</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Operador</th><th>Nombre</th><th>Funcionamiento</th><th>Ejemplo</th></tr>
+<tr><td><b>&amp;</b></td><td><b>AND bit a bit</b></td><td><b>1 solo si ambos bits son 1</b></td><td>1100 &amp; 1010 = 1000</td></tr>
+<tr><td><b>｜</b></td><td><b>OR bit a bit</b></td><td><b>1 si al menos uno es 1</b></td><td>1100 ｜ 1010 = 1110</td></tr>
+<tr><td><b>^</b></td><td><b>XOR bit a bit</b></td><td><b>1 si los bits son distintos</b></td><td>1100 ^ 1010 = 0110</td></tr>
+<tr><td><b>~</b></td><td><b>NOT unario</b></td><td><b>Invierte todos los bits</b></td><td>~00001100 = 11110011</td></tr>
+<tr><td><b>&lt;&lt;</b></td><td><b>Desplazamiento a la izquierda</b></td><td>Rellena con ceros; <b>equivale a multiplicar por 2ⁿ</b></td><td>0011 &lt;&lt; 2 = 1100 (3×4 = 12)</td></tr>
+<tr><td><b>&gt;&gt;</b></td><td><b>Desplazamiento a la derecha</b></td><td><b>Equivale a dividir por 2ⁿ</b> (división entera, enteros sin signo o positivos)</td><td>1100 &gt;&gt; 2 = 0011 (12/4 = 3)</td></tr>
+</table></div>
+<ul>
+<li><b>Desplazamiento lógico</b> rellena siempre con ceros; el <b>aritmético</b> a la derecha <b>conserva el bit de signo</b> (negativos en C2 mantienen su signo).</li>
+<li><b>No confundir</b> bit a bit (<b>&amp;, ｜, ~</b>; sobre enteros, bit a bit) con lógicos (<b>&amp;&amp;, ｜｜, !</b>; sobre booleanos).</li>
+</ul>
 <h2 id="s3">4. Instrucciones condicionales</h2>
 <div class="tw"><table><tr><th>Estructura</th><th>Uso</th></tr>
 <tr><td><b>if / else</b></td><td>Un bloque si la condición es verdadera y otro si es falsa</td></tr>
@@ -109,6 +134,10 @@
 <tr><td><b>while</b></td><td>Mientras se cumpla la condición</td><td>La condición se evalúa <b>antes</b> del cuerpo (puede no ejecutarse nunca)</td></tr>
 <tr><td><b>do…while</b></td><td>Igual que while</td><td>La condición se evalúa <b>al final</b>: el bloque se ejecuta <b>al menos una vez</b></td></tr>
 </table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Sintaxis do…while</b></p>
+<p><code>do { // bloque de instrucciones } while (condición);</code> — la condición se evalúa <b>al final</b> (el bloque se ejecuta <b>al menos una vez</b>) y la sentencia <b>termina en punto y coma</b>.</p>
+</div>
 <ul>
 <li><b>Recursividad</b>: la función <b>se llama a sí misma</b>. Necesita <b>caso base (condición de parada)</b> — sin él hay <b>desbordamiento de pila (stack overflow)</b> — y <b>llamada recursiva</b> con un valor más cercano al caso base.</li>
 <li>Ejemplo: <code>factorial(n)</code>: si n == 0 devuelve 1 (caso base); si no, <code>n * factorial(n-1)</code>.</li>
@@ -127,6 +156,15 @@
 <div class="tw"><table><tr><th></th><th><b>Paso por valor</b></th><th><b>Paso por referencia</b></th></tr>
 <tr><td><b>Qué se pasa</b></td><td><b>Copia</b> del valor</td><td><b>Referencia / dirección</b> del dato original</td></tr>
 <tr><td><b>Efecto</b></td><td>Los cambios <b>no afectan</b> al original (a sigue valiendo 10)</td><td>Los cambios <b>sí afectan</b> al original (a pasa a valer 20); parámetros de <b>entrada/salida</b></td></tr>
+</table></div>
+<ul>
+<li>Además de por valor (in) y por referencia (in/out indirecto), existen <b>otros dos mecanismos</b> (p. ej. Ada):</li>
+</ul>
+<div class="tw"><table><tr><th>Mecanismo</th><th>Modo</th><th>Comportamiento</th></tr>
+<tr><td><b>Por valor</b></td><td>Entrada (in)</td><td>Se pasa una copia; los cambios no afectan al original</td></tr>
+<tr><td><b>Por referencia</b></td><td>Entrada/salida (in/out indirecto)</td><td>Se accede directamente al original; cambios inmediatos</td></tr>
+<tr><td><b>Por resultado</b></td><td><b>Salida (out)</b></td><td><b>Sin valor inicial de entrada</b>; al finalizar <b>se copia en el argumento</b> original; sirve para <b>devolver resultados adicionales</b></td></tr>
+<tr><td><b>Por valor-resultado (copia-restauración, copy-restore)</b></td><td><b>Entrada/salida (in out)</b></td><td><b>Se copia al entrar y se copia de vuelta al salir</b>; durante la ejecución trabaja sobre una <b>copia local</b> (a diferencia de la referencia, cambios no inmediatos)</td></tr>
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Variables locales y globales</b></p>
@@ -185,15 +223,18 @@
 <div class="tw"><table><tr><th>Método de acceso</th><th>Descripción</th></tr>
 <tr><td><b>LIFO — Pila</b></td><td>Último en entrar, primero en salir (pila de platos); <b>push()</b> inserta en el tope, <b>pop()</b> elimina del tope</td></tr>
 <tr><td><b>Directo o aleatorio</b></td><td>Acceso a cualquier elemento <b>sin recorrer otros</b>; requiere <b>estructuras contiguas (arrays)</b>; mediante índices</td></tr>
-<tr><td><b>Secuencial</b></td><td><b>Elemento a elemento, en orden</b>; listas enlazadas y archivos secuenciales</td></tr>
 </table></div>
-<div class="tw"><table><tr><th>Algoritmo de ordenación</th><th>Idea</th></tr>
-<tr><td><b>Bubble Sort</b></td><td>Comparar e intercambiar <b>adyacentes</b> si están mal ordenados</td></tr>
-<tr><td><b>Selection Sort</b></td><td>Buscar el <b>menor</b> y colocarlo en la primera posición; repetir</td></tr>
-<tr><td><b>Insertion Sort</b></td><td>Colocar cada elemento en su lugar entre los <b>ya ordenados</b></td></tr>
-<tr><td><b>Merge Sort</b></td><td><b>Dividir en mitades</b>, ordenar recursivamente y <b>fusionar</b></td></tr>
-<tr><td><b>Quick Sort</b></td><td>Elegir un <b>pivote</b>, dividir en menores y mayores y ordenar recursivamente (<b>divide y vencerás</b>)</td></tr>
-<tr><td><b>Heap Sort</b></td><td>Construir un <b>montículo (heap)</b> y extraer sucesivamente el <b>máximo</b></td></tr>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Acceso secuencial</b></p>
+<p>Acceso <b>elemento a elemento, en orden</b>. Común en <b>listas enlazadas</b> y <b>archivos secuenciales</b>. Necesario cuando <b>no hay índices</b> o los datos están dispersos.</p>
+</div>
+<div class="tw"><table><tr><th>Algoritmo de ordenación</th><th>Idea</th><th>Complejidad</th></tr>
+<tr><td><b>Bubble Sort</b></td><td>Comparar e intercambiar <b>adyacentes</b> si están mal ordenados</td><td><b>O(n²)</b></td></tr>
+<tr><td><b>Selection Sort</b></td><td>Buscar el <b>menor</b> y colocarlo en la primera posición; repetir</td><td><b>O(n²)</b></td></tr>
+<tr><td><b>Insertion Sort</b></td><td>Colocar cada elemento en su lugar entre los <b>ya ordenados</b></td><td><b>O(n²)</b></td></tr>
+<tr><td><b>Merge Sort</b></td><td><b>Dividir en mitades</b>, ordenar recursivamente y <b>fusionar</b></td><td><b>O(n log n)</b></td></tr>
+<tr><td><b>Quick Sort</b></td><td>Elegir un <b>pivote</b>, dividir en menores y mayores y ordenar recursivamente (<b>divide y vencerás</b>)</td><td><b>O(n log n) caso promedio y O(n²) peor caso</b></td></tr>
+<tr><td><b>Heap Sort</b></td><td>Construir un <b>montículo (heap)</b> y extraer sucesivamente el <b>máximo</b></td><td><b>O(n log n)</b></td></tr>
 </table></div>
 <h3>7.3 Árboles binarios</h3>
 <ul>
@@ -205,9 +246,10 @@
 <tr><td><b>Inorden</b></td><td>izquierdo → raíz → derecho</td><td>En un <b>ABB</b> devuelve los datos <b>ordenados ascendentemente</b></td></tr>
 <tr><td><b>Postorden</b></td><td>izquierdo → derecho → raíz</td><td><b>Eliminar árboles</b>, expresiones postfijas (notación polaca inversa)</td></tr>
 </table></div>
-<ul>
-<li>Ejemplo (A; B, C; D, E, F): <b>Preorden</b> A,B,D,E,C,F · <b>Inorden</b> D,B,E,A,C,F · <b>Postorden</b> D,E,B,F,C,A.</li>
-</ul>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Recorridos del árbol de ejemplo</b></p>
+<p>Árbol: A raíz; hijos B y C; B con hijos D y E; C con hijo derecho F. <b>Preorden</b>: A, B, D, E, C, F · <b>Inorden</b>: D, B, E, A, C, F · <b>Postorden</b>: D, E, B, F, C, A.</p>
+</div>
 <h2 id="s7">8. Estructura de un programa</h2>
 <div class="tw"><table><tr><th>Parte</th><th>Contenido</th></tr>
 <tr><td><b>1. Zona de declaraciones</b></td><td><b>Bibliotecas/módulos</b>, constantes, tipos, variables globales</td></tr>
@@ -225,4 +267,20 @@
 <tr><td><b>Control de flujo</b></td><td>if, while, for</td></tr>
 <tr><td><b>Cifrado o compresión</b></td><td>Seguridad o ahorro de espacio</td></tr>
 </table></div>
+<h3>Complejidad algorítmica</h3>
+<ul>
+<li>Mide la <b>eficiencia</b> según el <b>tamaño de la entrada (n)</b>: cómo crecen el tiempo o la memoria al aumentar n. Se expresa con <b>notación asintótica</b>:</li>
+<li><b>O grande (Big O)</b>: <b>cota superior</b>; no crece más rápido que la función; se usa para el <b>peor caso</b>. <b>Omega (Ω)</b>: <b>cota inferior</b>; se asocia al <b>mejor caso</b>. <b>Theta (Θ)</b>: <b>cota ajustada</b> (acotada por arriba y por abajo por la misma función).</li>
+<li><b>No confundir cotas con casos</b>: O y Ω son cotas y pueden aplicarse a cualquier caso; asociar O al peor caso y Ω al mejor es una simplificación habitual.</li>
+</ul>
+<div class="tw"><table><tr><th>Notación</th><th>Tipo</th><th>Ejemplo</th></tr>
+<tr><td><b>O(1)</b></td><td>Constante</td><td>Acceso a un elemento de un array por índice</td></tr>
+<tr><td><b>O(log n)</b></td><td>Logarítmica</td><td>Búsqueda binaria</td></tr>
+<tr><td><b>O(n)</b></td><td>Lineal</td><td>Búsqueda secuencial</td></tr>
+<tr><td><b>O(n log n)</b></td><td>Cuasilineal</td><td>Merge Sort, Heap Sort</td></tr>
+<tr><td><b>O(n²)</b></td><td>Cuadrática</td><td>Bubble, Selection, Insertion Sort</td></tr>
+</table></div>
+<ul>
+<li>De más a menos eficiente: <b>O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²)</b>.</li>
+</ul>
 <button id="tocbtn" class="fab">☰ Índice</button><div class="pn"><a href="b3t1.html">← 3.1</a><a href="b3t3.html">3.3 →</a></div></main></div><script src="../app.js"></script><script src="../sqlab.js"></script><script src="../topicq.js"></script><script>if("serviceWorker" in navigator)navigator.serviceWorker.register("../sw.js").catch(function(){})</script></body></html>

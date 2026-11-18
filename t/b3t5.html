@@ -4,7 +4,7 @@
 <div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Introducción: plataformas empresariales</a><a href="#s1">2. Arquitectura multicapa</a><a href="#s2">3. Arquitectura Java EE / Jakarta EE</a><a href="#s3">4. Arquitectura de la plataforma .NET</a><a href="#s4">5. Lenguajes y herramientas</a><a href="#s5">6. Interfaces de usuario</a></aside>
 <main class="doc" data-key="b3t5"><div class="crumb">Bloque 3 · Tema 5</div><h1>Plataformas empresariales: Jakarta EE (Java EE) y .NET</h1>
 <div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
-<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (14)</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (15)</label>
 <a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema5.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema5.pdf">PDF móvil</a><a class="chip" href="../pdf/completo/b3t5.pdf">📄 PDF completo</a></div>
 <h2 id="s0">1. Introducción: plataformas empresariales</h2>
 <ul>
@@ -63,9 +63,16 @@
 <tr><td><b>JACC</b></td><td>Políticas de <b>autorización para contenedores</b> (no se usa directamente en aplicaciones)</td></tr>
 <tr><td><b>JNDI</b></td><td>Acceso a <b>servicios de nombres (LDAP)</b>; no gestiona autenticación</td></tr>
 </table></div>
+<ul>
+<li><b>Anotaciones para distinguir JAX-WS (SOAP) y JAX-RS (REST)</b>:</li>
+</ul>
+<div class="tw"><table><tr><th>Tecnología</th><th>Anotaciones básicas</th><th>Función</th></tr>
+<tr><td><b>JAX-WS (SOAP)</b></td><td><b><code>@WebService</code>, <code>@WebMethod</code>, <code>@WebParam</code></b></td><td><b>Exponen una clase como servicio web SOAP, sus métodos como operaciones y sus parámetros</b></td></tr>
+<tr><td><b>JAX-RS (REST)</b></td><td><b><code>@Path</code></b>; métodos HTTP <b><code>@GET</code>, <code>@POST</code>, <code>@PUT</code>, <code>@DELETE</code></b>; <b><code>@Produces</code> / <code>@Consumes</code></b></td><td><b>Definen la ruta del recurso REST, el método HTTP que atiende y el formato de los datos que produce o consume</b></td></tr>
+</table></div>
 <h3>3.2 Plataformas Java</h3>
 <div class="tw"><table><tr><th>Edición</th><th>Descripción</th></tr>
-<tr><td><b>Java SE</b> (Standard)</td><td>Bibliotecas y APIs <b>básicas</b>; base de las demás</td></tr>
+<tr><td><b>Java SE</b> (Standard)</td><td><b>Conjunto básico de bibliotecas y APIs</b> para aplicaciones generales; base de las demás ediciones</td></tr>
 <tr><td><b>Java EE / Jakarta EE</b> (Enterprise)</td><td>Amplía SE con APIs <b>empresariales</b> (servidores web, servicios distribuidos, transacciones)</td></tr>
 <tr><td><b>Java ME</b> (Micro)</td><td>Entornos con <b>recursos limitados</b> (móviles, embebidos)</td></tr>
 <tr><td><b>JavaFX</b></td><td>Interfaces gráficas ricas (<b>RIA</b>)</td></tr>
@@ -99,7 +106,8 @@
 </div>
 <h3>3.5 Servlets</h3>
 <ul>
-<li>Componente Java que <b>se ejecuta en el servidor</b> y genera contenido dinámico (HTML, XML, JSON) en respuesta a peticiones HTTP; vive en un <b>contenedor web (Tomcat, Jetty, GlassFish)</b>. Funciones: procesar <b>GET, POST, PUT, DELETE</b>, gestionar <b>sesiones</b>, actuar como <b>controlador MVC</b>, redirigir.</li>
+<li>Componente Java que <b>se ejecuta en el servidor</b> y genera contenido dinámico (HTML, XML, JSON) en respuesta a peticiones HTTP; vive en un <b>contenedor web (Tomcat, Jetty, GlassFish)</b>. Forma parte de la especificación <b>Jakarta Servlet</b>. Funciones: procesar <b>GET, POST, PUT, DELETE</b>, generar contenido dinámico (HTML, XML, JSON), gestionar <b>sesiones</b>, <b>servir como controlador en arquitecturas tipo MVC</b>, redirigir o reenviar peticiones (JSP, otros Servlets).</li>
+<li><b>Configuración y mapeo</b>: <b>descriptor de despliegue (<code>web.xml</code>)</b>: archivo XML (*Deployment Descriptor*) donde se declaran los Servlets y se mapean a las URL que atienden; <b>anotación <code>@WebServlet</code></b> (desde <b>Servlet 3.0</b>): mapea el Servlet directamente en el código Java, sin XML (ej. <code>@WebServlet("/saludo")</code>).</li>
 </ul>
 <div class="tw"><table><tr><th>Fase del ciclo de vida</th><th>Método</th></tr>
 <tr><td><b>1. Carga</b> de la clase</td><td></td></tr>
@@ -127,19 +135,22 @@
 <tr><td><b>Servidores de aplicaciones</b></td><td><b>GlassFish</b></td><td><b>Servidor de referencia</b> de Jakarta EE</td></tr>
 <tr><td></td><td><b>Payara</b></td><td>Derivado de GlassFish; producción</td></tr>
 <tr><td></td><td><b>WildFly</b> (antes <b>JBoss</b>)</td><td><b>Red Hat</b>; ligero y modular</td></tr>
-<tr><td></td><td><b>Apache TomEE</b></td><td><b>Tomcat</b> + soporte completo Jakarta EE</td></tr>
-<tr><td></td><td><b>WebLogic</b> (Oracle), <b>WebSphere</b> (IBM)</td><td><b>Comerciales</b></td></tr>
+<tr><td></td><td><b>Apache TomEE</b></td><td><b>Tomcat</b> + soporte completo Jakarta EE; útil para aprovechar la simplicidad de Tomcat con más funcionalidades empresariales</td></tr>
 <tr><td><b>IDEs</b></td><td><b>Eclipse</b></td><td>Gratuito, open source</td></tr>
 <tr><td></td><td><b>IntelliJ IDEA</b></td><td><b>JetBrains</b>; Community (gratis) y Ultimate (pago)</td></tr>
 <tr><td></td><td><b>Apache NetBeans</b></td><td>Buena integración con GlassFish</td></tr>
-<tr><td><b>Construcción</b></td><td><b>Maven</b></td><td>Estándar; <b><code>pom.xml</code></b></td></tr>
-<tr><td></td><td><b>Gradle</b></td><td>Moderno; scripts <b>Groovy/Kotlin</b></td></tr>
+<tr><td><b>Construcción</b></td><td><b>Maven</b></td><td>Estándar; <b><code>pom.xml</code></b> (dependencias, plugins y fases de construcción)</td></tr>
+<tr><td></td><td><b>Gradle</b></td><td>Moderno; scripts <b>Groovy/Kotlin</b>; <b>a diferencia de Maven (<code>pom.xml</code>), configura dependencias y tareas en <code>build.gradle</code></b> (Groovy o Kotlin DSL; en este caso <code>build.gradle.kts</code>)</td></tr>
 <tr><td></td><td><b>Apache Ant</b></td><td>Predecesora de Maven</td></tr>
 <tr><td><b>Frameworks</b></td><td><b>Spring</b></td><td>Alternativa <b>ligera a EJB</b>; DI, <b>AOP</b>, módulos Core, MVC, Security, Data</td></tr>
 <tr><td></td><td><b>Hibernate</b></td><td><b>ORM</b> que inspiró JPA</td></tr>
 <tr><td></td><td><b>PrimeFaces / OmniFaces / RichFaces</b></td><td>Componentes UI para <b>JSF</b></td></tr>
 <tr><td></td><td><b>Arquillian</b></td><td>Pruebas de integración en contenedor</td></tr>
 </table></div>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Servidores comerciales</b></p>
+<p><b>WebLogic (Oracle)</b> y <b>WebSphere (IBM)</b>: soluciones <b>comerciales</b> con alto rendimiento y escalabilidad.</p>
+</div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Spring Boot</b></p>
 <p>Extensión de Spring Framework que permite crear aplicaciones Java <b>autocontenidas</b>, que <b>incluyen su propio servidor embebido (Tomcat o Jetty)</b>, facilitando el despliegue <b>sin empaquetar en WAR</b> ni usar servidor externo.</p>
@@ -154,7 +165,8 @@
 <p><b>Especificación estándar de Jakarta EE</b> para la persistencia de objetos Java en bases de datos relacionales usando el patrón <b>ORM (Object-Relational Mapping)</b>.</p>
 </div>
 <ul>
-<li>Tablas ↔ <b>clases</b>, filas ↔ <b>objetos</b>; anotaciones <b><code>@Entity</code>, <code>@Id</code>, <code>@OneToMany</code></b>; consultas con <b>JPQL</b> (orientado a objetos).</li>
+<li>Tablas ↔ <b>clases</b>, filas ↔ <b>instancias (objetos)</b>; anotaciones <b><code>@Entity</code>, <code>@Id</code>, <code>@OneToMany</code></b>; consultas con <b>JPQL</b> (Java Persistence Query Language, orientado a objetos).</li>
+<li><b>Configuración</b>: el archivo estándar es <b><code>persistence.xml</code></b>, ubicado en <b><code>META-INF</code></b>; en él se define la <b>Persistence Unit</b> (Unidad de Persistencia), que agrupa las <b>clases de entidad (<code>@Entity</code>)</b> y los <b>datos de conexión al SGBD</b>.</li>
 </ul>
 <h3>3.9 Transacciones y conexión a BD</h3>
 <ul>
@@ -171,13 +183,24 @@
 </ul>
 <h3>4.1 Componentes principales</h3>
 <div class="tw"><table><tr><th>Componente</th><th>Descripción</th></tr>
-<tr><td><b>.NET Core / .NET 5+</b></td><td>Nueva generación <b>unificada</b>; <b>sustituye al .NET Framework</b> (solo Windows)</td></tr>
+<tr><td><b>.NET Core / .NET 5+</b></td><td>Nueva generación <b>unificada</b> (5, 6, 7, 8…); multiplataforma, modular, código abierto; <b>sustituye al .NET Framework</b> (solo Windows)</td></tr>
 <tr><td><b>ASP.NET / ASP.NET Core</b></td><td>Apps web y <b>APIs REST</b>; Core es ligera, de alto rendimiento (microservicios)</td></tr>
 <tr><td><b>Entity Framework</b></td><td><b>ORM</b>; consultas sin escribir SQL</td></tr>
 <tr><td><b>WCF</b></td><td>Orientado a servicios (<b>SOA</b>); sustituido en gran parte por REST</td></tr>
 <tr><td><b>WPF y Windows Forms</b></td><td>Escritorio Windows; WPF separa lógica y presentación (<b>MVVM</b>)</td></tr>
 <tr><td><b>Blazor</b></td><td>Interfaces web con <b>C# en lugar de JavaScript</b> (<b>WebAssembly</b> o servidor)</td></tr>
 <tr><td><b>MAUI</b></td><td>Evolución de <b>Xamarin.Forms</b>; móvil y escritorio con una base de código</td></tr>
+</table></div>
+<ul>
+<li><b>Ciclo de vida de las versiones de .NET</b>: desde <b>.NET 5</b>, Microsoft lanza <b>una versión principal cada año, en noviembre</b>. Las versiones <b>pares</b> (.NET 6, 8, 10) tienen soporte a largo plazo (<b>LTS, 3 años</b>); las <b>impares</b> (.NET 5, 7, 9) tienen soporte estándar (<b>STS</b>). El soporte STS era de <b>18 meses</b>, pero en <b>septiembre de 2025</b> Microsoft lo amplió a <b>24 meses</b> a partir de <b>.NET 9</b>.</li>
+</ul>
+<div class="tw"><table><tr><th>Versión</th><th>Tipo</th><th>Duración del soporte</th></tr>
+<tr><td><b>.NET 5</b></td><td>STS</td><td><b>18 meses</b></td></tr>
+<tr><td><b>.NET 6</b></td><td>LTS</td><td><b>3 años</b></td></tr>
+<tr><td><b>.NET 7</b></td><td>STS</td><td><b>18 meses</b></td></tr>
+<tr><td><b>.NET 8</b></td><td>LTS</td><td><b>3 años</b></td></tr>
+<tr><td><b>.NET 9</b></td><td>STS</td><td><b>24 meses</b> (primera versión con la ampliación)</td></tr>
+<tr><td><b>.NET 10</b></td><td>LTS</td><td><b>3 años</b></td></tr>
 </table></div>
 <h3>4.2 Capas y modelos</h3>
 <div class="tw"><table><tr><th>Capa</th><th>Descripción</th></tr>
@@ -208,7 +231,7 @@
 </div>
 <ul>
 <li>Menos código; gestiona conexión y conversión objeto↔tabla; define relaciones y restricciones con clases y atributos; <b>CRUD</b> con pocas líneas; soporta <b>LINQ</b> (consultas con sintaxis C#).</li>
-<li><b>POCO (Plain Old CLR Object)</b>: objeto C# <b>simple</b>, que <b>no hereda de clases específicas del framework</b> ni lo requiere. Deriva de <b>POJO</b> (Java). Solo <b>propiedades públicas get/set</b> (puede tener métodos, eventos, delegados); <b>sin anotaciones ni dependencias</b> de EF o ASP.NET. EF los detecta por convención o configuración.</li>
+<li><b>POCO (Plain Old CLR Object)</b>: objeto C# <b>simple</b>, que <b>no hereda de clases específicas del framework</b> ni lo requiere. Deriva de <b>POJO</b> (Java). Solo <b>propiedades públicas get/set</b>; puede incluir <b>métodos, eventos y delegados</b> básicos; <b>puede heredar de otras clases o implementar interfaces</b>, aunque no está obligado; <b>no contiene anotaciones, atributos ni dependencias</b> de frameworks como EF o ASP.NET. En EF los POCO representan <b>entidades que mapean a tablas</b>: el framework las detecta <b>por convención o configuración</b> y genera las estructuras para consultar, insertar o actualizar datos.</li>
 </ul>
 <h3>4.4 Seguridad: ASP.NET Identity</h3>
 <ul>
@@ -226,7 +249,9 @@
 <p><b>Common Language Runtime</b>: <b>motor de ejecución del framework .NET</b>; ejecuta el código compilado a <b>CIL (Common Intermediate Language)</b> y ofrece un entorno <b>seguro, gestionado y eficiente</b>.</p>
 </div>
 <ul>
-<li>Todos los lenguajes .NET compilan a <b>CIL</b> (independiente de SO y procesador); el CLR hace <b>compilación JIT</b> a código nativo, gestiona <b>memoria y recolector de basura (GC), hilos, seguridad y excepciones</b>, y aísla del hardware.</li>
+<li>Todos los lenguajes .NET (C#, VB.NET, F#…) compilan a <b>CIL</b> (independiente de SO y procesador, y siempre dentro de las normas de la <b>CLS</b>); el CLR <b>ejecuta ese código</b> con <b>compilación JIT</b> a código nativo, gestiona <b>memoria y recolector de basura (GC), hilos, seguridad y excepciones</b>, y garantiza ejecución <b>segura, eficiente y aislada</b> del hardware. Así .NET es <b>multilenguaje</b>, <b>portátil entre plataformas</b> e <b>interoperable entre lenguajes</b>.</li>
+<li><b>Ensamblado (Assembly)</b>: <b>unidad básica de despliegue, versionado y seguridad</b> en .NET (archivos <b><code>.dll</code> o <code>.exe</code></b>); contienen un <b>Manifiesto</b> con los metadatos.</li>
+<li><b>GAC (Global Assembly Cache)</b>: <b>caché de máquina</b> donde se almacenan los <b>ensamblados compartidos</b> para que puedan ser usados por varias aplicaciones simultáneamente.</li>
 </ul>
 <div class="tw"><table><tr><th>Lenguaje .NET</th><th>Uso</th></tr>
 <tr><td><b>C#</b></td><td>OO; desarrollo general, backend, escritorio, web</td></tr>
@@ -251,6 +276,9 @@
 <p><b>Command y Parameters</b></p>
 <p><b>Command</b>: instrucción SQL o procedimiento almacenado que se ejecuta sobre la BD (<code>SqlCommand</code>). <b>Parameters</b>: define parámetros para consultas parametrizadas, <b>evitando SQL Injection</b>.</p>
 </div>
+<ul>
+<li>Clases principales del modelo conectado: <b>SqlConnection</b> (conexión), <b>SqlCommand</b> (instrucciones SQL o procedimientos), <b>SqlDataReader</b> (lectura rápida hacia adelante), <b>SqlTransaction</b> (transacciones explícitas), <b>SqlParameter</b> (consultas parametrizadas).</li>
+</ul>
 <div class="tw"><table><tr><th>Proveedor</th><th>Fuente</th></tr>
 <tr><td><b>System.Data.SqlClient</b></td><td>SQL Server</td></tr>
 <tr><td><b>System.Data.OleDb</b></td><td>OLE DB</td></tr>
@@ -259,9 +287,9 @@
 <tr><td><b>Npgsql</b></td><td>PostgreSQL</td></tr>
 </table></div>
 <div class="tw"><table><tr><th><b>Modelo desconectado</b></th><th>Descripción</th></tr>
-<tr><td><b>DataSet</b></td><td>Contenedor en memoria de tablas, relaciones y restricciones; <b>sin conexión activa</b> una vez cargado</td></tr>
+<tr><td><b>DataSet</b></td><td>Contenedor en memoria de tablas (<b>DataTableCollection</b>), relaciones y restricciones; <b>sin conexión activa</b> una vez cargado</td></tr>
 <tr><td><b>DataTable</b></td><td>Tabla con filas (<b>DataRow</b>) y columnas (<b>DataColumn</b>); contiene <code>DataRowCollection</code>, <code>DataColumnCollection</code>, <code>ConstraintCollection</code></td></tr>
-<tr><td><b>DataRelation</b></td><td>Relaciones entre tablas (como claves foráneas)</td></tr>
+<tr><td><b>DataRelation</b></td><td>Relaciones entre tablas (como claves foráneas); se agrupan en <b>DataRelationCollection</b></td></tr>
 <tr><td><b>Constraint</b></td><td>Reglas de integridad (clave primaria, foránea)</td></tr>
 </table></div>
 <ul>
@@ -270,8 +298,11 @@
 <h3>4.6 Gestión de paquetes</h3>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>NuGet</b></p>
-<p><b>Gestor de paquetes oficial de .NET</b>: añade bibliotecas de terceros mediante comandos de consola; simplifica dependencias, actualizaciones y compatibilidad. Instalación CLI: <b><code>dotnet add package &lt;Nombre&gt;</code></b> (ej. <code>dotnet add package iText</code>); añade la referencia al <b>.csproj</b> y descarga desde <b>nuget.org</b>.</p>
+<p><b>Gestor de paquetes oficial de .NET</b>: añade bibliotecas de terceros mediante comandos de consola; simplifica dependencias, actualizaciones y compatibilidad. Instalación CLI: <b><code>dotnet add package &lt;NombreDelPaquete&gt;</code></b> (ej. <code>dotnet add package iText</code>); añade la referencia al <b>.csproj</b> y descarga desde <b>nuget.org</b>.</p>
 </div>
+<ul>
+<li>El desarrollo moderno en .NET requiere dominar la gestión de dependencias con <b>NuGet</b> y el uso adecuado de <b>tipos de datos opcionales (nullable)</b> en C#, útil en desarrollo backend.</li>
+</ul>
 <h2 id="s4">5. Lenguajes y herramientas</h2>
 <div class="tw"><table><tr><th>Lenguaje</th><th>Características</th></tr>
 <tr><td><b>Java</b></td><td>Principal en Jakarta EE; OO, robusto, <b>multiplataforma por la JVM</b>; de Servlets a JPA y REST</td></tr>
@@ -293,7 +324,7 @@
 <div class="tw"><table><tr><th>Tecnología</th><th>Descripción</th></tr>
 <tr><td><b>JSP</b></td><td>HTML dinámico en servidor; etiquetas <b><code>&lt;% … %&gt;</code></b>; <b>se traduce a Servlets</b>; obsoleta</td></tr>
 <tr><td><b>JSF</b></td><td>Estándar basado en <b>componentes reutilizables</b>; vistas <b><code>.xhtml</code></b> + <b>Managed Beans</b>; validación, navegación, estado</td></tr>
-<tr><td><b>PrimeFaces</b></td><td>Biblioteca de <b>más de 100 componentes</b> para JSF, con AJAX</td></tr>
+<tr><td><b>PrimeFaces</b></td><td>Biblioteca de <b>más de 100 componentes</b> visuales (gráficas, menús, tablas…) para JSF, con aspecto moderno y <b>AJAX</b>; simplifica interfaces ricas sin JavaScript</td></tr>
 <tr><td><b>Vaadin / Thymeleaf</b></td><td>Alternativas (SPA / plantillas); <b>JSF es la solución oficial</b></td></tr>
 </table></div>
 <h3>6.2 .NET</h3>
@@ -302,10 +333,10 @@
 </ul>
 <div class="tw"><table><tr><th>Tecnología</th><th>Descripción</th></tr>
 <tr><td><b>ASP.NET WebForms</b></td><td>Antigua; separa código y presentación; sustituida</td></tr>
-<tr><td><b>ASP.NET MVC</b></td><td>Patrón <b>Modelo-Vista-Controlador</b>; facilita pruebas unitarias</td></tr>
+<tr><td><b>ASP.NET MVC</b></td><td>Patrón <b>Modelo-Vista-Controlador</b>; separa lógica de presentación, negocio y acceso a datos; mejora las <b>pruebas unitarias</b> y el mantenimiento</td></tr>
 <tr><td><b>ASP.NET Web Pages</b></td><td>Simplificado; mezcla HTML y C# en <b><code>.cshtml</code></b>; prototipos</td></tr>
-<tr><td><b>Blazor</b></td><td>Apps web interactivas con <b>solo C#</b>: <b>Blazor Server</b> o <b>WebAssembly</b></td></tr>
-<tr><td><b>WPF</b></td><td>Escritorio Windows; <b>XAML</b> + <b>MVVM</b></td></tr>
+<tr><td><b>Blazor</b></td><td>Apps web interactivas con <b>solo C# y .NET, sin JavaScript</b>: <b>Blazor Server</b> o <b>WebAssembly</b>; reutiliza lógica entre cliente y servidor</td></tr>
+<tr><td><b>WPF</b></td><td>Escritorio Windows (gráficos avanzados, animaciones, multimedia); <b>XAML</b> + <b>MVVM</b></td></tr>
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Razor</b></p>
@@ -313,6 +344,6 @@
 </div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>MAUI</b></p>
-<p><b>.NET Multi-platform App UI</b>: framework multiplataforma para apps <b>móviles (Android, iOS) y de escritorio (Windows, macOS)</b>; <b>evolución de Xamarin.Forms</b>; usa <b>XAML y C#</b> con un único código base.</p>
+<p><b>.NET Multi-platform App UI</b>: framework multiplataforma para apps <b>móviles (Android, iOS) y de escritorio (Windows, macOS)</b>; <b>evolución de Xamarin.Forms</b>; usa <b>XAML y C#</b> con un único código base; framework unificado para crear <b>interfaces nativas</b> en Windows, Android, iOS y macOS.</p>
 </div>
 <button id="tocbtn" class="fab">☰ Índice</button><div class="pn"><a href="b3t4.html">← 3.4</a><a href="b3t6.html">3.6 →</a></div></main></div><script src="../app.js"></script><script src="../sqlab.js"></script><script src="../topicq.js"></script><script>if("serviceWorker" in navigator)navigator.serviceWorker.register("../sw.js").catch(function(){})</script></body></html>

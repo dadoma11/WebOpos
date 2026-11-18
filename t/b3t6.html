@@ -4,7 +4,7 @@
 <div class="layout"><aside class="toc"><div class="tochead">En esta página</div><a href="#s0">1. Sistemas distribuidos</a><a href="#s1">2. Modelo cliente/servidor</a><a href="#s2">3. Arquitectura en capas y multicapas</a><a href="#s3">4. Componentes y operación del sistema</a><a href="#s4">5. Arquitecturas de servicios web</a><a href="#s5">6. Protocolos asociados a servicios web</a><a href="#s6">7. Seguridad en sistemas distribuidos</a><a href="#s7">8. Tendencias actuales</a></aside>
 <main class="doc" data-key="b3t6"><div class="crumb">Bloque 3 · Tema 6</div><h1>Arquitecturas cliente/servidor y multicapas. Servicios web y protocolos</h1>
 <div class="bar"><label class="chip"><input type="checkbox" id="done"> Estudiado</label>
-<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (11)</label>
+<label class="chip"><input type="checkbox" id="only"> Solo EXAMEN / IMPORTANTE (12)</label>
 <a class="chip" href="../pdf/pc/Resumen_Bloque3_Tema6.pdf">PDF PC</a><a class="chip" href="../pdf/movil/Resumen_Bloque3_Tema6.pdf">PDF móvil</a><a class="chip" href="../pdf/completo/b3t6.pdf">📄 PDF completo</a></div>
 <h2 id="s0">1. Sistemas distribuidos</h2>
 <div class="box E"><div class="t">EXAMEN</div>
@@ -38,6 +38,7 @@
 <tr><td><b>Ligero (thin)</b></td><td><b>Solo interfaz de usuario</b>; lógica y datos en el servidor</td><td>Navegador web</td></tr>
 <tr><td><b>Pesado (thick)</b></td><td><b>Parte o toda la lógica de negocio</b>; menos comunicación pero <b>más difícil de actualizar</b></td><td>Aplicación de escritorio con acceso directo a BD</td></tr>
 <tr><td><b>Híbrido</b></td><td>Lógica local y <b>delega lo pesado</b> al servidor</td><td>Apps móviles, JavaScript + API REST</td></tr>
+<tr><td><b>Rico / RIA (Rich Internet Application)</b></td><td><b>Interfaz de usuario compleja en el navegador</b> con tecnologías del lado del cliente (JS, AJAX, Angular, React); <b>descarga trabajo del servidor</b>, mejora la interactividad y se comunica <b>asíncronamente</b> con el backend</td><td><b>Aplicaciones SPA (Single Page Application)</b> con Angular o React</td></tr>
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Combinaciones cliente/servidor</b></p>
@@ -120,15 +121,22 @@
 <tr><td><b>Mantenibilidad</b></td><td>Código mejor organizado</td></tr>
 </table></div>
 <h3>MVC (Modelo-Vista-Controlador)</h3>
+<div class="box E"><div class="t">EXAMEN</div>
+<p><b>Componentes del patrón MVC</b></p>
 <div class="tw"><table><tr><th>Componente</th><th>Responsabilidad</th></tr>
 <tr><td><b>Modelo</b></td><td><b>Datos y lógica de negocio</b>: acceso a BD, validaciones, reglas; <b>independiente de la presentación</b></td></tr>
 <tr><td><b>Vista</b></td><td>Interfaz visible (HTML, CSS, plantillas); <b>sin lógica de negocio</b></td></tr>
 <tr><td><b>Controlador</b></td><td><b>Intermediario</b>: recibe las entradas del usuario, las interpreta, <b>invoca al modelo y selecciona la vista</b></td></tr>
 </table></div>
+</div>
 <ul>
 <li><b>Flujo</b>: usuario envía petición → <b>controlador</b> la recibe y valida → llama al <b>modelo</b> → este devuelve datos → controlador elige la <b>vista</b> y le pasa los datos → la vista genera la respuesta al navegador.</li>
 <li><b>Servidor</b>: <b>Spring MVC, ASP.NET MVC, Django, Laravel</b>. <b>Cliente</b>: <b>Angular, React (Flux/Redux), Vue.js</b>.</li>
 </ul>
+<div class="tw"><table><tr><th>Variante moderna</th><th>Idea</th></tr>
+<tr><td><b>MVP (Model-View-Presenter)</b></td><td><b>El Presentador asume todo el control de la lógica de la interfaz de usuario y la Vista es totalmente pasiva</b></td></tr>
+<tr><td><b>MVVM (Model-View-ViewModel)</b></td><td><b>Usa Data Binding (enlace de datos bidireccional) para comunicar la Vista con el ViewModel automáticamente</b>; muy usado en <b>WPF y Angular</b></td></tr>
+</table></div>
 <h3>4.4 Monitorización y rendimiento</h3>
 <ul>
 <li>Detectar problemas, optimizar recursos y garantizar <b>SLA</b> (acuerdos de nivel de servicio).</li>
@@ -163,7 +171,7 @@
 </div>
 <h3>5.3 SOAP</h3>
 <ul>
-<li><b>Simple Object Access Protocol</b>: protocolo de <b>mensajería estándar</b> para intercambio estructurado entre aplicaciones, normalmente sobre <b>HTTP/HTTPS</b> (también <b>SMTP, JMS</b>). Adoptado por el <b>W3C</b>; <b>SOAP 1.2</b> publicado como estándar <b>ISO/IEC</b> (ISO/IEC 20022-1:2004). Muy usado en entornos empresariales y gubernamentales (seguridad, transacciones, interoperabilidad, comunicación fiable).</li>
+<li><b>Simple Object Access Protocol</b>: protocolo de <b>mensajería estándar</b> para intercambio estructurado entre aplicaciones, normalmente sobre <b>HTTP/HTTPS</b> (también <b>SMTP, JMS</b>). Especificación <b>inicialmente mantenida por Microsoft</b>, adoptada después como recomendación del <b>W3C</b> en sus versiones tempranas; <b>SOAP 1.2</b> publicado posteriormente como estándar <b>ISO/IEC</b> (ISO/IEC 20022-1:2004). Muy usado en entornos empresariales y gubernamentales (seguridad, transacciones, interoperabilidad, comunicación fiable).</li>
 </ul>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Estructura de un mensaje SOAP</b></p>
@@ -203,6 +211,7 @@
 <tr><td><b>Stateless</b></td><td>Cada petición lleva <b>toda la información</b>; el servidor <b>no guarda estado de sesión</b> (facilita escalar)</td></tr>
 <tr><td><b>Representación ligera</b></td><td><b>JSON</b> (preferido) o XML/YAML</td></tr>
 <tr><td><b>Versionado</b></td><td>Versión en URI o cabecera (<code>/api/v1/clientes</code>)</td></tr>
+<tr><td><b>HATEOAS</b> (Hypermedia As The Engine Of Application State)</td><td><b>Las respuestas incluyen hipervínculos (hipermedios) que indican al cliente las acciones y estados futuros disponibles</b>, permitiendo navegar la API sin conocer URL fijas. <b>Es la restricción más avanzada de REST: nivel 3 del modelo de madurez de Richardson</b></td></tr>
 <tr><td><b>Documentación</b></td><td><b>Swagger/OpenAPI</b>, Postman, Redoc, RAML</td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Código HTTP</th><th>Significado</th></tr>
@@ -236,6 +245,7 @@
 <div class="tw"><table><tr><th>Servicio</th><th>Herramienta</th><th>Descripción</th></tr>
 <tr><td><b>REST</b></td><td><b>OpenAPI / Swagger</b></td><td>Especificación estándar; documentación interactiva y generación de clientes/servidores</td></tr>
 <tr><td></td><td><b>RAML</b></td><td>Basado en <b>YAML</b></td></tr>
+<tr><td></td><td><b>WADL</b> (Web Application Description Language)</td><td>Especificación <b>XML propuesta por Sun Microsystems</b> para describir servicios REST (equivalente al WSDL de SOAP); <b>no es estándar oficial</b>: el <b>estándar de facto actual es Swagger/OpenAPI</b></td></tr>
 <tr><td></td><td><b>API Blueprint</b></td><td>Legibilidad humana</td></tr>
 <tr><td></td><td><b>Postman</b></td><td>Pruebas y documentación automática</td></tr>
 <tr><td></td><td><b>Redoc</b></td><td>Visualizador de OpenAPI</td></tr>
@@ -247,7 +257,14 @@
 <h3>6.1 HTTP y HTTPS</h3>
 <ul>
 <li><b>HTTP</b>: principal protocolo de transporte; modelo cliente/servidor; <b>stateless</b>; métodos <b>GET, POST, PUT, DELETE, PATCH</b>; puertos <b>80 (HTTP) y 443 (HTTPS)</b>. <b>HTTPS</b>: añade cifrado <b>TLS</b> (confidencialidad e integridad).</li>
+<li><b>Idempotencia</b>: <b>un método es idempotente si repetir la misma petición varias veces tiene el mismo efecto en el servidor que hacerla una sola vez</b>.</li>
 </ul>
+<div class="tw"><table><tr><th>Método</th><th>¿Idempotente?</th><th>Efecto de repetir la petición</th></tr>
+<tr><td><b>GET</b></td><td><b>Sí</b></td><td>Devuelve el mismo recurso, sin modificarlo</td></tr>
+<tr><td><b>PUT</b></td><td><b>Sí</b></td><td>El recurso queda en el mismo estado final</td></tr>
+<tr><td><b>DELETE</b></td><td><b>Sí</b></td><td>El recurso sigue eliminado</td></tr>
+<tr><td><b>POST</b></td><td><b>No</b></td><td><b>Crea un recurso nuevo cada vez</b></td></tr>
+</table></div>
 <div class="box I"><div class="t">IMPORTANTE</div>
 <p><b>CORS</b></p>
 <p><b>Cross-Origin Resource Sharing</b>: mecanismo que <b>permite o restringe peticiones HTTP de origen cruzado</b> hechas desde scripts del navegador (<code>fetch()</code>, <code>XMLHttpRequest</code>). Si el frontend está en un dominio distinto al backend, el navegador <b>bloquea por defecto</b>; el <b>backend</b> debe configurar <b>cabeceras CORS</b> indicando qué orígenes se permiten.</p>
@@ -299,7 +316,7 @@
 <tr><td><b>TLS</b></td><td>Protocolo actual (<b>SSL obsoleto</b>): <b>cifrado</b>, <b>autenticación del servidor</b> (y opcionalmente del cliente), <b>integridad</b></td></tr>
 <tr><td><b>Certificados digitales</b></td><td>Emitidos por <b>Autoridades de Certificación (CA)</b>: verifican la identidad del servidor y establecen conexión cifrada basada en confianza</td></tr>
 <tr><td><b>API Keys</b></td><td>Claves <b>estáticas</b> que identifican/autorizan al cliente; sencillas, pero menos seguras sin HTTPS</td></tr>
-<tr><td><b>OAuth2</b></td><td>Protocolo estándar de <b>delegación de autorización</b>: acceso limitado a recursos de otro <b>sin compartir credenciales</b>; <b>Access Tokens</b> con permisos y duración limitados</td></tr>
+<tr><td><b>OAuth2</b></td><td>Protocolo estándar de <b>delegación de autorización</b>: acceso limitado a recursos de otro <b>sin compartir credenciales</b>; <b>Access Tokens</b> con permisos y duración limitados. <b>Flujos (grants)</b>: <b>Authorization Code</b> (apps de servidor/backend; <b>combinado con PKCE (Proof Key for Code Exchange) es también el flujo recomendado hoy para SPA y apps móviles</b>) · <b>Client Credentials</b> (<b>máquina a máquina, M2M</b>, microservicios) · <b>Implicit</b> (<b>obsoleto/peligroso</b> para SPA; sustituido por Authorization Code con PKCE) · <b>Resource Owner Password</b> (<b>obsoleto</b>; intercambio directo de credenciales por token)</td></tr>
 <tr><td><b>JWT (JSON Web Token)</b></td><td>Token compacto basado en JSON; <b>3 partes en base64: header, payload y firma</b>; se usa con OAuth2; <b>autocontenido</b> (incluye usuario y permisos)</td></tr>
 </table></div>
 <h2 id="s7">8. Tendencias actuales</h2>

@@ -9,13 +9,14 @@
 <h2 id="s0">1. Lenguajes de bases de datos. Estándar ANSI/SQL</h2>
 <ul>
 <li><b>SQL</b> (Structured Query Language): lenguaje estándar de las BD relacionales; <b>declarativo</b>. Desarrollado por <b>IBM en los 70</b> (proyecto <b>System R</b>, nombre <b>SEQUEL</b>); normalizado por <b>ANSI (1986)</b> e <b>ISO (1987)</b>.</li>
+<li>Los lenguajes de consulta <b>extraen información sin modificar</b> el contenido de la BD y se fundamentan en el <b>álgebra y el cálculo relacional</b>.</li>
 <li><b>Objetivos del estándar</b>: lenguaje <b>común y portable</b>, fijar sintaxis y semántica, <b>interoperabilidad</b> entre SGBD, consultas/manipulación/definición/control de acceso de forma declarativa.</li>
 </ul>
 <div class="tw"><table><tr><th>Versión</th><th>Año</th><th>Novedades</th></tr>
 <tr><td><b>SQL-86</b></td><td>1986</td><td>Primera versión estándar ANSI</td></tr>
-<tr><td><b>SQL-89</b></td><td>1989</td><td>Mejoras menores</td></tr>
+<tr><td><b>SQL-89</b></td><td>1989</td><td>Mejoras menores (referencias cruzadas, precisión numérica)</td></tr>
 <tr><td><b>SQL-92</b></td><td>1992</td><td><b>Muy extendido</b>: JOIN, CHECK, IN, UNION, subconsultas</td></tr>
-<tr><td><b>SQL:1999</b></td><td>1999</td><td><b>Procedures y triggers</b></td></tr>
+<tr><td><b>SQL:1999</b></td><td>1999</td><td><b>Programación estructurada: procedures y triggers</b></td></tr>
 <tr><td><b>SQL:2003</b></td><td>2003</td><td><b>XML</b>, tipos autoincrementales (<b>IDENTITY</b>)</td></tr>
 <tr><td><b>SQL:2011</b></td><td>2011</td><td><b>Consultas temporales</b> (PERIOD, SYSTEM_TIME)</td></tr>
 <tr><td><b>SQL:2016</b></td><td>2016</td><td><b>JSON</b>, funciones analíticas y agregadas</td></tr>
@@ -77,7 +78,9 @@
 <tr><td><b>INNER JOIN</b></td><td>Solo filas con <b>coincidencia</b> en la condición ON</td></tr>
 <tr><td><b>LEFT JOIN</b></td><td><b>Todas las de la izquierda</b> + coincidencias de la derecha (resto a NULL)</td></tr>
 <tr><td><b>RIGHT JOIN</b></td><td><b>Todas las de la derecha</b> + coincidencias de la izquierda</td></tr>
-<tr><td><b>FULL JOIN</b></td><td><b>Todas las filas de ambas</b>; no lo soportan todos (<b>MySQL</b> no, hay que emular con <b>UNION</b>)</td></tr>
+<tr><td><b>FULL JOIN</b></td><td><b>Todas las filas de ambas</b> (sin coincidencia, NULL); no lo soportan todos (<b>MySQL</b> no, hay que emular con <b>UNION</b>)</td></tr>
+<tr><td><b>CROSS JOIN</b></td><td><b>Producto cartesiano</b>: cada fila de A con cada fila de B, <b>sin condición</b> (m × n filas)</td></tr>
+<tr><td><b>NATURAL JOIN</b></td><td>Une <b>automáticamente por todas las columnas con el mismo nombre</b>, sin ON, y <b>elimina la columna duplicada</b>; si hay otras columnas homónimas también se usan (resultados inesperados)</td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Combinación de resultados</th><th>Descripción</th></tr>
 <tr><td><b>UNION</b></td><td>Combina y <b>elimina duplicados</b></td></tr>
@@ -106,7 +109,14 @@
 </div>
 <ul>
 <li><b>Lógicos</b>: <b>AND</b> (ambas), <b>OR</b> (al menos una), <b>NOT</b> (niega). <b>Aritméticos</b>: + − * /.</li>
+<li><b>Concatenación</b>: el estándar ANSI usa <b><code>||</code></b> para unir cadenas (<code>Nombre || ' ' || Apellido</code>); SQL Server usa <b>+</b> y MySQL <b>CONCAT()</b>.</li>
+<li><b>NULL y lógica trivaluada</b>: NULL = ausencia de valor; una condición puede ser <b>TRUE, FALSE o UNKNOWN</b>.</li>
 </ul>
+<p>  - <b>Cualquier operación aritmética con NULL devuelve NULL</b> (5 + NULL = NULL); la <b>concatenación con NULL también</b> (excepción: <b>Oracle</b> lo trata como cadena vacía).</p>
+<p>  - <b>Cualquier comparación con NULL (=, &lt;&gt;, &lt;, &gt;) devuelve UNKNOWN</b>: para comprobarlo se usa <b>IS NULL / IS NOT NULL</b>.</p>
+<p>  - <b>WHERE solo devuelve filas con condición TRUE</b>; las UNKNOWN se descartan. <b>GROUP BY trata los NULL como un mismo grupo.</b></p>
+<p>  - Tablas: <b>TRUE AND UNKNOWN = UNKNOWN</b>; <b>FALSE AND UNKNOWN = FALSE</b>; <b>TRUE OR UNKNOWN = TRUE</b>; <b>FALSE OR UNKNOWN = UNKNOWN</b>; <b>NOT UNKNOWN = UNKNOWN</b>.</p>
+<p>  - <b>COALESCE(a, b, …)</b>: función estándar que devuelve el <b>primer valor no nulo</b> (<code>Salario + COALESCE(Comision, 0)</code>).</p>
 <div class="tw"><table><tr><th>Funciones integradas</th><th>Ejemplos</th></tr>
 <tr><td><b>Numéricas</b></td><td><b>ABS(x)</b>, <b>ROUND(x,n)</b>, <b>CEIL(x)</b> (hacia arriba), <b>FLOOR(x)</b> (hacia abajo), <b>MOD(x,y)</b></td></tr>
 <tr><td><b>Texto</b></td><td><b>UPPER, LOWER, LENGTH, CONCAT, SUBSTRING(texto, inicio, longitud)</b></td></tr>
@@ -120,10 +130,16 @@
 <tr><td><b>Escalar</b></td><td>Devuelve <b>un único valor</b> (una fila, una columna): <code>Salario &gt; (SELECT AVG(Salario) …)</code></td></tr>
 <tr><td><b>De conjunto (tabla)</b></td><td>Varias filas y columnas; con <b>IN, = ANY, = ALL</b> o en el <b>FROM</b> como tabla derivada</td></tr>
 <tr><td><b>Correlacionada</b></td><td>Se ejecuta <b>una vez por cada fila</b> de la consulta externa (depende de ella); como un bucle interno</td></tr>
+<tr><td><b>EXISTS / NOT EXISTS</b></td><td><b>EXISTS</b>: TRUE si la subconsulta <b>devuelve al menos una fila</b>; <b>NOT EXISTS</b>: TRUE si <b>no devuelve ninguna</b>. Eficiente en correlacionadas: el SGBD <b>se detiene al primer registro que cumple</b> (cortocircuito)</td></tr>
 </table></div>
+<ul>
+<li><b>Diferencia con IN</b>: IN compara un valor con la lista que devuelve la subconsulta; EXISTS solo comprueba si existen filas. <b>Si la subconsulta puede devolver NULL, NOT IN no devuelve ninguna fila, mientras que NOT EXISTS funciona correctamente.</b></li>
+</ul>
 <div class="tw"><table><tr><th>Objeto</th><th>Descripción</th></tr>
 <tr><td><b>Vista (VIEW)</b></td><td><b>Consulta almacenada = tabla virtual</b>; no guarda datos (<code>CREATE VIEW … AS SELECT …</code>)</td></tr>
-<tr><td><b>Índice (INDEX)</b></td><td>Acelera las búsquedas (como el índice de un libro); <b>únicos, compuestos, clustered y non-clustered</b></td></tr>
+<tr><td><b>Vista actualizable</b></td><td>Permite <b>INSERT, UPDATE, DELETE</b> a través de ella (se trasladan a la tabla base); <b>no debe contener</b> agrupamientos (GROUP BY), DISTINCT, funciones de agregación, JOIN de varias tablas ni UNION</td></tr>
+<tr><td><b>WITH CHECK OPTION</b></td><td>Cláusula opcional: las inserciones/actualizaciones por la vista <b>deben cumplir el WHERE de la vista</b>; si la fila quedara fuera de ella, <b>se rechaza</b> (ej.: <code>UPDATE VistaActivos SET Activo = FALSE</code>)</td></tr>
+<tr><td><b>Índice (INDEX)</b></td><td>Acelera las búsquedas (como el índice de un libro); <b>únicos (UNIQUE: impiden duplicados), compuestos (varias columnas), clustered y non-clustered</b> (<code>CREATE INDEX idx ON tabla (columna);</code>)</td></tr>
 <tr><td><b>PRIMARY KEY</b></td><td>Identifica cada fila; <b>no admite NULL</b></td></tr>
 <tr><td><b>FOREIGN KEY</b></td><td>Relación con otra tabla</td></tr>
 <tr><td><b>UNIQUE / NOT NULL / CHECK</b></td><td>Valores distintos / sin nulos / condición lógica</td></tr>
@@ -149,7 +165,7 @@
 <h3>3.2 DML (datos, sin alterar estructura)</h3>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>INSERT</b></p>
-<p><b>Añade nuevas filas</b> a una tabla existente; se puede indicar el valor de todas o algunas columnas. <code>INSERT INTO tabla (c1, c2) VALUES (v1, v2);</code> <b>INSERT … SELECT</b> inserta los resultados de una consulta (mismo nº y tipo de columnas).</p>
+<p><b>Añade nuevas filas</b> a una tabla existente; se puede indicar el valor de todas o algunas columnas. <code>INSERT INTO tabla (c1, c2) VALUES (v1, v2);</code> Sin indicar columnas, se asignan <b>en el orden de la tabla</b>. <b>INSERT … SELECT</b> inserta los resultados de una consulta (mismo nº y tipo de columnas).</p>
 </div>
 <ul>
 <li><b>UPDATE</b>: <code>UPDATE tabla SET col = valor [, …] WHERE condición;</code> — <b>solo una tabla por instrucción</b>; el valor puede ser constante, expresión o subconsulta. <b>Sin WHERE se modifican todas las filas</b> (peligroso).</li>
@@ -166,6 +182,10 @@
 <p><b>REVOKE</b></p>
 <p><b>Retira permisos</b> previamente otorgados a un usuario o rol sobre un objeto. <code>REVOKE privilegios ON objeto FROM usuario;</code></p>
 </div>
+<ul>
+<li><b>WITH GRANT OPTION</b> (en el GRANT): el <b>receptor puede conceder ese mismo privilegio a otros usuarios</b>.</li>
+<li>Opciones del REVOKE: <b>CASCADE</b> (retira el permiso también a quienes lo recibieron por delegación) y <b>RESTRICT</b> (<b>aborta</b> el REVOKE si el usuario había propagado el permiso a terceros). Ej.: <code>REVOKE SELECT ON Empleados FROM usuario1 CASCADE;</code></li>
+</ul>
 <h3>3.4 OQL (Object Query Language)</h3>
 <ul>
 <li>Para <b>BD orientadas a objetos</b>; parte del estándar <b>ODMG</b>; inspirado en SQL (SELECT, FROM, WHERE, GROUP BY, ORDER BY) pero con <b>clases, objetos, herencia, colecciones</b> y <b>navegación por referencias</b> (<code>e.departamento.nombre</code>). Usado con <b>ObjectStore, Versant</b>, C++ y Java. Hoy <b>residual</b> frente a <b>JPQL, HQL (Hibernate), LINQ</b>.</li>
@@ -201,7 +221,8 @@
 </ul>
 <div class="tw"><table><tr><th>Elemento</th><th>Descripción</th></tr>
 <tr><td><b>OF columna</b></td><td>Limita un UPDATE a una columna</td></tr>
-<tr><td><b>FOR EACH ROW</b></td><td>Una vez <b>por cada fila afectada</b></td></tr>
+<tr><td><b>nombre / ON tabla</b></td><td>Nombre <b>único en el esquema</b>; tabla (o <b>vista</b>) sobre la que se define</td></tr>
+<tr><td><b>FOR EACH ROW</b></td><td>Una vez <b>por cada fila afectada</b> (si se omite, puede ser por sentencia)</td></tr>
 <tr><td><b>WHEN (condición)</b></td><td>Solo si se cumple</td></tr>
 </table></div>
 <div class="tw"><table><tr><th>Tipo</th><th>Momento</th><th>Uso</th></tr>
@@ -218,9 +239,14 @@
 </ul>
 <div class="sqlab" data-cats="triggers" data-title="Triggers"></div><h2 id="s5">6. Transacciones y niveles de aislamiento</h2>
 <ul>
-<li><b>Transacción</b>: unidad lógica de trabajo que se ejecuta <b>completa o no se ejecuta</b>; propiedades <b>ACID</b>.</li>
+<li><b>Transacción</b>: unidad lógica de trabajo que se ejecuta <b>completa o no se ejecuta</b>; propiedades <b>ACID</b>. También pueden usarse <b>dentro de procedimientos almacenados</b>.</li>
 </ul>
-<div class="tw"><table><tr><th>Sentencia</th><th>Descripción</th></tr>
+<div class="tw"><table><tr><th>Propiedad ACID</th><th>Significado</th><th>Mecanismo que la garantiza</th></tr>
+<tr><td><b>Atomicidad</b></td><td><b>Todo o nada</b></td><td><b>COMMIT / ROLLBACK</b></td></tr>
+<tr><td><b>Consistencia</b></td><td>La BD pasa de un estado válido a otro <b>respetando la integridad</b></td><td><b>Restricciones (constraints) y triggers</b></td></tr>
+<tr><td><b>Aislamiento</b></td><td>Las transacciones concurrentes <b>no se interfieren</b></td><td><b>Bloqueos y niveles de aislamiento</b></td></tr>
+<tr><td><b>Durabilidad</b></td><td>Los cambios confirmados <b>sobreviven a fallos</b> del sistema</td><td><b>Log de transacciones</b></td></tr>
+<tr><td>Sentencia</td><td>Descripción</td></tr>
 <tr><td><b>BEGIN / START TRANSACTION</b></td><td><b>Inicia</b> la transacción</td></tr>
 <tr><td><b>COMMIT</b></td><td><b>Confirma</b> y guarda los cambios</td></tr>
 <tr><td><b>ROLLBACK</b></td><td><b>Cancela</b> y revierte los cambios desde el último BEGIN</td></tr>
