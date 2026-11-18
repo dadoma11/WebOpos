@@ -46,7 +46,7 @@ async function auth(env, req) {
 
 const CODE_CH = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const newCode = () => [...crypto.getRandomValues(new Uint8Array(6))].map((x) => CODE_CH[x % CODE_CH.length]).join('');
-const ROOM_TTL = 3 * DAY, MAX_PLAYERS = 4;
+const ROOM_TTL = 60 * 60 * 1000, MAX_PLAYERS = 4;
 async function roomView(env, room, a) {
   const pl = (await env.DB.prepare('SELECT user_id,name,answers,ok,err,done,joined FROM room_players WHERE code=? ORDER BY joined').bind(room.code).all()).results;
   const me = pl.find((x) => x.user_id === a.uid); let mine = {}; try { mine = me ? JSON.parse(me.answers) : {}; } catch (e) {}
