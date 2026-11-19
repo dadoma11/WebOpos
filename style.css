@@ -443,3 +443,4 @@ main.exm.wide,main.practicas.wide{max-width:1700px}
  .hx h1{font-size:1.9rem;line-height:1.15}.hx h1 .bk{width:48px;height:48px}.hx h1{display:flex;align-items:center;gap:.7rem}
 }
 .fcard{touch-action:pan-y}.swh{text-align:center}
+.fopts{display:grid;gap:.5rem;margin:.8rem 0}.fo{text-align:left;padding:.7rem .8rem;border-radius:12px;border:1px solid var(--bd);background:var(--code);color:var(--fg);font:inherit;cursor:pointer}.fo.good{border-color:#22c55e;background:rgba(34,197,94,.16)}.fo.bad{border-color:#ef4444;background:rgba(239,68,68,.16)}.fo[disabled]{opacity:1;cursor:default}.ghost{background:none;border:1px solid var(--bd);color:var(--mu);border-radius:10px;padding:.5rem .9rem;font:inherit}

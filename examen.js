@@ -247,26 +247,32 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
  $('#fcf').onclick=function(){var l=sub(c.items.filter(function(it){return !(it.ans>=0&&it.ord[it.ans]===it.q.c)}));if(!l.length){alert('No hay falladas 🎉');return}flash(shuf(l),{})}}
 
 /* ---------- flashcards ---------- */
-function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res={ok:0,dd:0,ko:0};
- function draw(){if(i>=list.length)return end();var q=list[i],tp=topicOf(q.k);
+function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res={ok:0,dd:0,ko:0},pk=-1,ord=null,L='ABCD';
+ function mkOrd(q){var r=q.o.map(function(_,k){return k});if(!/anteriores|ninguna de|ambas|todas las|ninguna es|ambos/i.test(q.o.join(' ')))r=shuf(r);return r}
+ function draw(){if(i>=list.length)return end();var q=list[i],tp=topicOf(q.k);if(!ord)ord=mkOrd(q);
+  var good=pk>=0&&ord[pk]===q.c;
   var h='<div class="exbar"><b>Tarjeta '+(i+1)+' / '+list.length+'</b><span>✔ '+res.ok+' · ~ '+res.dd+' · ✘ '+res.ko+'</span><button id="fx">Salir</button></div><div class="pbar"><i style="width:'+(i/list.length*100)+'%"></i></div>'
-   +'<section class="pcard fcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>'+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p>';
-  if(!shown)h+='<div class="row"><button id="show" class="go big">Mostrar respuesta</button></div><p class="hint">Piensa la respuesta antes de destaparla · Espacio o Intro</p>';
-  else h+='<div class="fans"><b>'+q.o[q.c]+'</b>'+(q.e?'<p>'+esc(q.e)+'</p>':'')+''+qa(q)+'</div><p class="sub">¿Qué tal la recordabas?</p><div class="row rate"><button class="r1" data-r="1">✘ No la sabía <small>(1)</small></button><button class="r2" data-r="2">~ Dudosa <small>(2)</small></button><button class="r3" data-r="3">✔ La sabía <small>(3)</small></button></div>';
+   +'<section class="pcard fcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>'+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="fopts">'
+   +ord.map(function(oi,p){var c='';if(shown){if(oi===q.c)c=' good';else if(p===pk)c=' bad'}return '<button class="fo'+c+'" data-p="'+p+'"'+(shown?' disabled':'')+'><b>'+L[p]+')</b> '+q.o[oi]+(shown&&oi===q.c?' ✔':'')+(shown&&p===pk&&oi!==q.c?' ✘':'')+'</button>'}).join('')+'</div>';
+  if(!shown)h+='<div class="row"><button id="show" class="ghost">No lo sé · ver respuesta</button></div><p class="hint">Elige una opción · teclas 1–4 · Espacio = no lo sé</p>';
+  else h+=(pk<0?'<p class="sub">Sin contestar.</p>':'<p class="sub">'+(good?'✔ ¡Correcta!':'✘ Incorrecta')+'</p>')+(q.e?'<div class="fans"><p>'+esc(q.e)+'</p>'+qa(q)+'</div>':'')+'<div class="row rate"><button class="r3" id="nx">Siguiente →</button>'+(good?'<button class="r2" data-r="2">~ Acerté dudando</button>':'')+'</div>';
   h+='</section>';app.innerHTML=h;
-  var sh=$('#show');if(sh)sh.onclick=function(){shown=true;draw()};$('#fx').onclick=function(){if(confirm('¿Salir de las flashcards?')){end(true)}};
-  $$('.rate button').forEach(function(b){b.onclick=function(){rate(+b.dataset.r)}});
+  $$('.fo').forEach(function(b){b.onclick=function(){pick(+b.dataset.p)}});
+  var sh=$('#show');if(sh)sh.onclick=function(){pick(-1)};var nx=$('#nx');if(nx)nx.onclick=function(){next()};
+  $('#fx').onclick=function(){if(confirm('¿Salir de las flashcards?')){end(true)}};
+  $$('.rate button[data-r]').forEach(function(b){b.onclick=function(){rate(+b.dataset.r)}});
   var card=$('.fcard'),x0=null,y0=0,dx=0;
-  if(card&&'ontouchstart' in window){card.insertAdjacentHTML('beforeend','<p class="hint swh">'+(shown?'Desliza: ← no la sabía · la sabía →':'Desliza para ver la respuesta')+'</p>');
+  if(card&&'ontouchstart' in window){if(shown)card.insertAdjacentHTML('beforeend','<p class="hint swh">Desliza para pasar a la siguiente</p>');
    card.addEventListener('touchstart',function(e){var t=e.touches[0];x0=t.clientX;y0=t.clientY;dx=0;card.style.transition='none'},{passive:true});
-   card.addEventListener('touchmove',function(e){if(x0===null)return;var t=e.touches[0];dx=t.clientX-x0;if(Math.abs(t.clientY-y0)>Math.abs(dx)){return}card.style.transform='translateX('+dx+'px) rotate('+dx/30+'deg)';card.style.opacity=Math.max(.4,1-Math.abs(dx)/400)},{passive:true});
+   card.addEventListener('touchmove',function(e){if(x0===null||!shown)return;var t=e.touches[0];dx=t.clientX-x0;if(Math.abs(t.clientY-y0)>Math.abs(dx))return;card.style.transform='translateX('+dx+'px) rotate('+dx/30+'deg)';card.style.opacity=Math.max(.4,1-Math.abs(dx)/400)},{passive:true});
    card.addEventListener('touchend',function(){if(x0===null)return;var d=dx;x0=null;card.style.transition='transform .18s,opacity .18s';
-    if(Math.abs(d)<70){card.style.transform='';card.style.opacity='';return}
-    if(!shown){card.style.transform='';card.style.opacity='';shown=true;draw();return}
-    card.style.transform='translateX('+(d>0?'110%':'-110%')+')';card.style.opacity='0';setTimeout(function(){rate(d>0?3:1)},160)})}}
+    if(!shown||Math.abs(d)<70){card.style.transform='';card.style.opacity='';return}
+    card.style.transform='translateX('+(d>0?'110%':'-110%')+')';card.style.opacity='0';setTimeout(next,160)})}}
+ function pick(p){if(shown)return;pk=p;shown=true;draw();window.scrollTo(0,0)}
+ function next(){var q=list[i];rate(pk>=0&&ord[pk]===q.c?3:1)}
  function rate(r){var q=list[i],m=srsAll(),fl=fails(),now=Date.now();srsUpd(m,q.id,r>1,now);if(r===2&&m[q.id])m[q.id][0]*=0.5;jset('ex_srs',m);if(r===1)fl[q.id]=1;else if(r===3)delete fl[q.id];jset('ex_fail',fl);addDay(1);
-  if(r===3)res.ok++;else if(r===2)res.dd++;else res.ko++;i++;shown=false;draw()}
- flash.rate=rate;flash.reveal=function(){if(!shown){shown=true;draw()}};flash.on=function(){return view==='flash'&&i<list.length};flash.shown=function(){return shown};
+  if(r===3)res.ok++;else if(r===2)res.dd++;else res.ko++;i++;shown=false;pk=-1;ord=null;draw()}
+ flash.rate=rate;flash.pick=pick;flash.next=next;flash.reveal=function(){if(!shown)pick(-1)};flash.on=function(){return view==='flash'&&i<list.length};flash.shown=function(){return shown};flash.nopt=function(){return list[i].o.length};
  function end(early){view=null;window.__inExam=false;if(early&&i===0)return config();
   app.innerHTML='<section class="pcard res"><h2>🃏 Tanda terminada</h2><div class="stats"><span class="ok">✔ '+res.ok+' la sabía</span><span>~ '+res.dd+' dudosas</span><span class="ko">✘ '+res.ko+' no la sabía</span></div><p class="sub">Las que fallaste o dudaste volverán a salir antes en tu repaso inteligente.</p><div class="row"><button id="again" class="go">Volver</button>'+(res.ko+res.dd?'<button id="rpt">Repetir las que no sabía</button>':'')+'</div></section>';
   $('#again').onclick=config;var rp=$('#rpt');if(rp)rp.onclick=function(){var ids=list.slice(0,i);flash(shuf(ids.filter(function(q){return fails()[q.id]})),o)}}
@@ -307,7 +313,7 @@ function listen(list,o){if(!S){alert('Tu navegador no admite lectura en voz alta
 document.addEventListener('keydown',function(e){if(/INPUT|TEXTAREA|SELECT/.test((e.target||{}).tagName)||e.ctrlKey||e.metaKey||e.altKey)return;var k=e.key.toLowerCase();
  if(view==='exam'&&cur&&!cur.done){var it=cur.items[cur.i],idx='1234'.indexOf(k);if(idx<0)idx='abcd'.indexOf(k);
   if(idx>=0){if(cur.study&&it.ans>=0)return;it.ans=idx;render()}else if(k==='arrowright'&&cur.i<cur.items.length-1){cur.i++;render()}else if(k==='arrowleft'&&cur.i>0){cur.i--;render()}else if(k==='f'){setFlag(it,!it.flag);render()}}
- else if(view==='flash'&&flash.on()){if(k===' '||k==='enter'){e.preventDefault();if(!flash.shown())flash.reveal()}else if(flash.shown()&&'123'.indexOf(k)>=0&&k)flash.rate(+k)}
+ else if(view==='flash'&&flash.on()){if(k===' '||k==='enter'){e.preventDefault();if(!flash.shown())flash.reveal();else flash.next()}else if(!flash.shown()&&'1234'.indexOf(k)>=0&&k&&+k<=flash.nopt())flash.pick(+k-1);else if(flash.shown()&&k==='2')flash.rate(2)}
  else if(view==='listen'&&listen.on()){var j='1234'.indexOf(k);if(j<0)j='abcd'.indexOf(k);if(j>=0)listen.ans(j);else if(k==='r')listen.rep();else if(k==='n')listen.next()}});
 window.addEventListener('beforeunload',function(e){if(view==='exam'&&cur&&!cur.done){e.preventDefault();e.returnValue=''}});
 window.addEventListener('pagehide',function(){try{if(S)S.cancel()}catch(e){}});
