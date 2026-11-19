@@ -197,6 +197,7 @@ function start(list,mins,shuffleOpts,o){o=o||{};var fg=flags();
   if(cur.total&&cur.left<=60&&t)t.classList.add('ko');if(cur.total&&cur.left<=0){finish(true)}},500)}
 function dbHtml(db){return db.map(function(t){return '<div class="dbt"><h4>'+t.name+'</h4><div class="tw"><table><tr>'+t.cols.map(function(c){var pk=t.pk.indexOf(c)>=0,fk=t.fk[c];return '<th'+(fk?' title="Clave foránea → '+esc(fk)+'"':'')+'>'+(pk?'🔑 ':'')+c+(fk?' ↗':'')+'</th>'}).join('')+'</tr>'+t.rows.map(function(r){return '<tr>'+r.map(function(v){return '<td>'+(v===null?'<i class="nl">NULL</i>':esc(v))+'</td>'}).join('')+'</tr>'}).join('')+'</table></div>'+(Object.keys(t.fk).length?'<small>'+Object.keys(t.fk).map(function(k){return k+' → '+t.fk[k]}).join(' · ')+'</small>':'')+'</div>'}).join('')+'<p class="sub">🔑 clave primaria · ↗ clave foránea</p>'}
 function caseWrap(c,card){var cs=c.cs;return '<div class="casegrid'+(cs.db?' c3':'')+'"><div class="cq">'+card+'</div><aside class="ce"><h3>📋 '+esc(cs.title)+'</h3>'+cs.enun+'</aside>'+(cs.db?'<aside class="cd"><h3>🗄 Base de datos</h3>'+dbHtml(cs.db)+'</aside>':'')+'</div>'}
+function det(q){var t=[];if(q.e)t.push('<p>'+esc(q.e)+'</p>');if(q.d)t.push('<p class="dt"><b>📖 En el temario'+(q.dh?' · '+esc(q.dh):'')+':</b> '+esc(q.d)+'</p>');return t.length?'<div class="fans">'+t.join('')+'</div>':''}
 function qa(q){return q.cs?'':'<a href="'+qlink(q)+'" target="_blank" rel="noopener">📖 Ver en el temario</a>'}
 function setFlag(it,v){it.flag=v;var f=flags();if(v)f[it.q.id]=1;else delete f[it.q.id];jset('ex_flag',f)}
 function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans>=0;
@@ -207,7 +208,7 @@ function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans
  h+='<section class="pcard qcard"><div class="qmeta">'+(c.sim?'<i class="ptag">'+(it.part===2?'Parte 2 · Supuesto práctico':'Parte 1 · Teoría')+'</i> ':'')+(q.cs?'<b>'+esc(q.cs)+'</b> · pregunta '+q.n+' de 20':'B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>')+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
   +it.ord.map(function(oi,p){var cl=it.ans===p?' sel':'';if(lock){if(oi===q.c)cl=' good';else if(it.ans===p)cl=' bad'}return '<div class="opt'+cl+'"><button class="pick" data-p="'+p+'"><span class="L">'+L[p]+'</span><span class="ot">'+q.o[oi]+'</span></button></div>'}).join('')
   +'</div>';
- if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+(q.e?esc(q.e):'')+' '+qa(q)+'</div>';
+ if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+det(q)+' '+qa(q)+'</div>';
  h+='<div class="row nav"><button id="prev"'+(c.i?'':' disabled')+'>← Anterior</button><button id="clr"'+(lock?' disabled':'')+'>Borrar respuesta</button><button id="flag">'+(it.flag?'🚩 Quitar marca':'⚑ Marcar')+'</button><button id="next"'+(c.i<c.items.length-1?'':' disabled')+'>Siguiente →</button></div><p class="hint">Atajos: 1-4 o A-D responden · ← → navegan · F marca</p></section>';
  h=h0+(it.part===2&&c.cs?caseWrap(c,h):h);var mm=document.querySelector('main');if(mm)mm.classList.toggle('wide',it.part===2&&!!c.cs);
  app.innerHTML=h;
@@ -255,7 +256,7 @@ function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res
    +'<section class="pcard fcard"><div class="qmeta">B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>'+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="fopts">'
    +ord.map(function(oi,p){var c='';if(shown){if(oi===q.c)c=' good';else if(p===pk)c=' bad'}return '<button class="fo'+c+'" data-p="'+p+'"'+(shown?' disabled':'')+'><b>'+L[p]+')</b> '+q.o[oi]+(shown&&oi===q.c?' ✔':'')+(shown&&p===pk&&oi!==q.c?' ✘':'')+'</button>'}).join('')+'</div>';
   if(!shown)h+='<div class="row"><button id="show" class="ghost">No lo sé · ver respuesta</button></div><p class="hint">Elige una opción · teclas 1–4 · Espacio = no lo sé</p>';
-  else h+=(pk<0?'<p class="sub">Sin contestar.</p>':'<p class="sub">'+(good?'✔ ¡Correcta!':'✘ Incorrecta')+'</p>')+(q.e?'<div class="fans"><p>'+esc(q.e)+'</p>'+qa(q)+'</div>':'')+'<div class="row rate"><button class="r3" id="nx">Siguiente →</button>'+(good?'<button class="r2" data-r="2">~ Acerté dudando</button>':'')+'</div>';
+  else h+=(pk<0?'<p class="sub">Sin contestar.</p>':'<p class="sub">'+(good?'✔ ¡Correcta!':'✘ Incorrecta')+'</p>')+det(q)+'<p>'+qa(q)+'</p>'+'<div class="row rate"><button class="r3" id="nx">Siguiente →</button>'+(good?'<button class="r2" data-r="2">~ Acerté dudando</button>':'')+'</div>';
   h+='</section>';app.innerHTML=h;
   $$('.fo').forEach(function(b){b.onclick=function(){pick(+b.dataset.p)}});
   var sh=$('#show');if(sh)sh.onclick=function(){pick(-1)};var nx=$('#nx');if(nx)nx.onclick=function(){next()};
