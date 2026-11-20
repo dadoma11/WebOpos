@@ -208,7 +208,7 @@ function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans
  h+='<section class="pcard qcard"><div class="qmeta">'+(c.sim?'<i class="ptag">'+(it.part===2?'Parte 2 · Supuesto práctico':'Parte 1 · Teoría')+'</i> ':'')+(q.cs?'<b>'+esc(q.cs)+'</b> · pregunta '+q.n+' de 20':'B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>')+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
   +it.ord.map(function(oi,p){var cl=it.ans===p?' sel':'';if(lock){if(oi===q.c)cl=' good';else if(it.ans===p)cl=' bad'}return '<div class="opt'+cl+'"><button class="pick" data-p="'+p+'"><span class="L">'+L[p]+'</span><span class="ot">'+q.o[oi]+'</span></button></div>'}).join('')
   +'</div>';
- if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+det(q)+' '+qa(q)+'</div>';
+ if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><img class="owl" src="img/owl-'+(it.ord[it.ans]===q.c?'ok':'ko')+'.webp" alt="" width="56" height="56"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+det(q)+' '+qa(q)+'</div>';
  h+='<div class="row nav"><button id="prev"'+(c.i?'':' disabled')+'>← Anterior</button><button id="clr"'+(lock?' disabled':'')+'>Borrar respuesta</button><button id="flag">'+(it.flag?'🚩 Quitar marca':'⚑ Marcar')+'</button><button id="next"'+(c.i<c.items.length-1?'':' disabled')+'>Siguiente →</button></div><p class="hint">Atajos: 1-4 o A-D responden · ← → navegan · F marca</p></section>';
  h=h0+(it.part===2&&c.cs?caseWrap(c,h):h);var mm=document.querySelector('main');if(mm)mm.classList.toggle('wide',it.part===2&&!!c.cs);
  app.innerHTML=h;
