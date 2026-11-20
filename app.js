@@ -1,8 +1,6 @@
 (function(){
 var ls={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 var t=document.getElementById('thm');if(t)t.onclick=function(){var d=document.documentElement,c=d.dataset.theme||'dark',n=c==='dark'?'light':'dark';d.dataset.theme=n;ls.s('theme',n)};
-/* nav activa */
-try{var pth=location.pathname.split('/').pop()||'index.html',hs=location.hash;document.querySelectorAll('.top nav a').forEach(function(l){var h=l.getAttribute('href'),f=h.split('#')[0].split('/').pop();if(f===pth&&((h.indexOf('#')>0)===(hs==='#bloques')||pth!=='index.html'))l.classList.add('on');else if(pth.indexOf('.html')>0&&location.pathname.indexOf('/t/')>=0&&h.indexOf('#bloques')>0)l.classList.add('on')})}catch(e){}
 var done=JSON.parse(ls.g('done')||'{}');
 var doc=document.querySelector('.doc');
 if(doc){var rs=document.createElement('script');rs.src=(document.currentScript&&document.currentScript.src||'').replace(/app\.js.*$/,'')+'reader.js';document.body.appendChild(rs);var ts=document.createElement('script');ts.src=rs.src.replace('reader.js','tts.js');document.body.appendChild(ts);var rcs=document.createElement('script');rcs.src=rs.src.replace('reader.js','recall.js');document.body.appendChild(rcs);var key=doc.dataset.key,cb=document.getElementById('done'),on=document.getElementById('only');

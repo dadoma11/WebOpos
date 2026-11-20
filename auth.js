@@ -43,6 +43,20 @@ document.addEventListener('DOMContentLoaded',function(){var nav=document.querySe
  var has=function(h){return nav.querySelector('a[href$="'+h+'"]')};
  var th=nav.querySelector('#thm');
  [['examinate.html','📝 Examínate'],['laboratorio.html','🧪 Lab SQL'],['sync.html','☁ Sync']].forEach(function(p){if(has(p[0]))return;var a=document.createElement('a');a.href=ROOT+p[0];a.textContent=p[1];nav.insertBefore(a,th)});
- var cur=location.pathname.split('/').pop();Array.prototype.forEach.call(nav.querySelectorAll('a'),function(a){if(a.getAttribute('href').split('/').pop()===cur)a.className='cur'});
+ function updateNavigation(){
+  var pathname=location.pathname, page=pathname.split('/').pop()||'index.html';
+  var topic=!!document.querySelector('.doc');
+  var inSyllabus=/^#bloque(?:s|-[1-4])$/.test(location.hash);
+  nav.querySelectorAll('a').forEach(function(link){
+   var target=new URL(link.href);
+   var homeLink=page==='index.html'&&target.pathname.endsWith('/index.html');
+   var active=topic?target.hash==='#bloques':homeLink?Boolean(target.hash)===inSyllabus:target.pathname===pathname;
+   link.classList.toggle('cur',active);
+   if(active)link.setAttribute('aria-current',target.hash?'location':'page');
+   else link.removeAttribute('aria-current');
+  });
+ }
+ updateNavigation();
+ window.addEventListener('hashchange',updateNavigation);
  var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.innerHTML='Salir<span class="un"> · </span><span class="un"></span>';b.lastChild.textContent=(REMOTE?s.name:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)});
 })();
