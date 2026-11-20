@@ -648,3 +648,25 @@ body:has(main.doc) .top { overflow: visible; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+.topic-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem .85rem;
+  margin: .75rem 0;
+}
+.topic-filter label { font-weight: 650; }
+.topic-filter select {
+  font: inherit;
+  color: var(--fg);
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: .65rem;
+  min-height: 44px;
+  padding: .45rem .75rem;
+}
+.topic-filter select:focus-visible { outline: 2px solid var(--ac); outline-offset: 3px; }
+#topic-count { color: var(--mu); }
+.topic-filter[hidden], .home .card[hidden], .home .blk[hidden],
+.block-jump a[hidden] { display: none; }
