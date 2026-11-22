@@ -11,6 +11,30 @@ var tb=document.getElementById('tocbtn'),tc=document.querySelector('.toc');if(tb
 var cards=document.querySelectorAll('.card');
 if(cards.length){var n=0;cards.forEach(function(c){if(done[c.dataset.key]){c.classList.add('done');n++}});
  var pc=Math.round(100*n/cards.length),g=function(i){return document.getElementById(i)};if(g('pb'))g('pb').style.width=pc+'%';if(g('pt'))g('pt').textContent=n+' de '+cards.length+' temas estudiados';if(g('sdone'))g('sdone').textContent=n+' / '+cards.length;if(g('spct'))g('spct').textContent=pc+'%';if(g('sring'))g('sring').style.setProperty('--p',pc);
+
+ var filter = document.getElementById('topic-filter');
+ if (filter) {
+   var state = document.getElementById('topic-state');
+   var count = document.getElementById('topic-count');
+   function filterTopics() {
+     var total = 0;
+     cards.forEach(function(card) {
+       var studied = card.classList.contains('done');
+       card.hidden = (state.value === 'done' && !studied) || (state.value === 'pending' && studied);
+       if (!card.hidden) total++;
+     });
+     document.querySelectorAll('.blk').forEach(function(block) {
+       block.hidden = !block.querySelector('.card:not([hidden])');
+       var link = document.querySelector('.block-jump a[href="#' + block.id + '"]');
+       if (link) link.hidden = block.hidden;
+     });
+     count.textContent = total ? total + (total === 1 ? ' tema' : ' temas') :
+       (state.value === 'done' ? 'Todavía no has marcado temas como estudiados.' : 'Has completado todo el temario.');
+   }
+   state.addEventListener('change', filterTopics);
+   filter.hidden = false;
+   filterTopics();
+ }
  var q=document.getElementById('q'),res=document.getElementById('res'),idx=null,tm;
  function esc(s){return s.replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
