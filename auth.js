@@ -14,13 +14,14 @@ function api(path,opt,tk){opt=opt||{};opt.headers=Object.assign({'Content-Type':
  return fetch(CFG.apiUrl.replace(/\/$/,'')+path,opt).then(function(r){return r.text().then(function(t){var j={};try{j=JSON.parse(t)}catch(e){}if(!r.ok){var e=new Error(j.error||('Error '+r.status));e.status=r.status;e.body=j;throw e}return j})},function(){throw new Error('No se pudo conectar con el servidor')})}
 function devId(){var d=LS.g('tai_dev');if(!d||!/^[a-f0-9]{16,64}$/.test(d)){d=b2h(crypto.getRandomValues(new Uint8Array(16)));LS.s('tai_dev',d)}return d}
 function startRemote(j){var s={remote:1,user:String(j.user).toLowerCase(),name:j.user,token:j.token,t:Date.now(),exp:Date.now()+DAYS*864e5};LS.s('tai_sess',JSON.stringify(s));return s}
-function accessToken(){var s=session();return s&&s.remote?Promise.resolve(s.token):Promise.reject(new Error('Sin sesión'))}
+function accessToken(){var s=session();return s&&s.remote&&!s.offline?Promise.resolve(s.token):Promise.reject(new Error(s&&s.offline?'Modo sin conexión: inicia sesión para sincronizar':'Sin sesión'))}
+function startOffline(){var s={remote:1,offline:1,user:'sin-conexion',name:'Sin conexión',token:'',t:Date.now(),exp:Date.now()+7*864e5};LS.s('tai_sess',JSON.stringify(s));return s}
 function wipeLab(){try{Object.keys(sessionStorage).forEach(function(k){if(/^lab_/.test(k))sessionStorage.removeItem(k)})}catch(e){}
  try{Object.keys(localStorage).forEach(function(k){if(/^lab_/.test(k))localStorage.removeItem(k)})}catch(e){}
  try{window.dispatchEvent(new Event('tai-logout'))}catch(e){}}
 var AUTH=window.AUTH={
  user:function(){var s=session();return s&&s.user},
- remote:REMOTE,cfg:CFG,accessToken:accessToken,api:function(p,o){return accessToken().then(function(t){return api(p,o,t)})},
+ remote:REMOTE,cfg:CFG,offline:startOffline,accessToken:accessToken,api:function(p,o){return accessToken().then(function(t){return api(p,o,t)})},
  register:function(u,pw,inv){if(REMOTE)return api('/api/register',{method:'POST',body:JSON.stringify({user:u,password:pw,invite:inv||'',dev:devId()})}).then(startRemote);
   u=(u||'').trim();if(!/^[\w.\-áéíóúñÁÉÍÓÚÑ ]{3,24}$/.test(u))return Promise.reject(new Error('Usuario de 3 a 24 caracteres (letras, números, . _ -)'));
   if((pw||'').length<6)return Promise.reject(new Error('La contraseña necesita al menos 6 caracteres'));
@@ -31,7 +32,7 @@ var AUTH=window.AUTH={
   var att=JSON.parse(LS.g('tai_att')||'{"n":0,"t":0}');if(att.n>=5&&Date.now()-att.t<60000)return Promise.reject(new Error('Demasiados intentos. Espera un minuto.'));
   if(!r){att.n++;att.t=Date.now();LS.s('tai_att',JSON.stringify(att));return Promise.reject(fail)}
   return derive(pw,h2b(r.salt),r.it).then(function(h){if(h!==r.hash){att.n++;att.t=Date.now();LS.s('tai_att',JSON.stringify(att));throw fail}LS.d('tai_att');return startSession(k)})},
- logout:function(){wipeLab();var s=session();if(s&&s.remote)try{fetch(CFG.apiUrl.replace(/\/$/,'')+'/api/logout',{method:'POST',headers:{Authorization:'Bearer '+s.token},keepalive:true})}catch(e){}LS.d('tai_sess');location.href=ROOT+'login.html'},
+ logout:function(){wipeLab();var s=session();if(s&&s.remote&&!s.offline)try{fetch(CFG.apiUrl.replace(/\/$/,'')+'/api/logout',{method:'POST',headers:{Authorization:'Bearer '+s.token},keepalive:true})}catch(e){}LS.d('tai_sess');location.href=ROOT+'login.html'},
  key:function(n){return (AUTH.user()||'anon')+':'+n}
 };
 var isLogin=/login\.html$/.test(location.pathname);

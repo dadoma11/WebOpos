@@ -16,6 +16,7 @@
 </form></main>
 <script>
 var $=function(i){return document.getElementById(i)},reg=false;
+function offerOffline(){if($('off'))return;var b=document.createElement('button');b.id='off';b.type='button';b.className='lgb';b.style.cssText='margin-top:.6rem;width:100%;opacity:.9';b.textContent='Continuar sin conexión';b.onclick=function(){AUTH.offline();var nx=new URLSearchParams(location.search).get('next');if(!nx||/^(https?:)?\/\//.test(nx)||nx.indexOf('..')>=0)nx='index.html';location.replace(nx)};var m=$('msg');m.parentNode.insertBefore(b,m.nextSibling);var n=document.createElement('p');n.id='offn';n.className='sub';n.style.cssText='font-size:.8rem;margin:.4rem 0 0';n.textContent='Podrás estudiar con normalidad. El progreso se guarda en este dispositivo y se sincroniza cuando inicies sesión con conexión.';b.parentNode.insertBefore(n,b.nextSibling)}
 function mode(r){reg=r;$('tabs').className='lgt'+(r?' reg':'');$('tl').className=r?'':'on';$('tr').className=r?'on':'';$('gt').textContent=r?'Crear cuenta':'Entrar';$('p').autocomplete=r?'new-password':'current-password';$('msg').textContent='';if(AUTH.remote)$('invw').className='fld xtra'+(r?' show':'')}
 $('tl').onclick=function(){mode(false)};$('tr').onclick=function(){mode(true)};
 if(AUTH.remote)$('note').innerHTML='Cuenta <b>única para todos tus dispositivos</b>: tu progreso se sincroniza solo. <b>Nada de SQL se guarda.</b> Se anota la IP de cada sesión y puedes cerrarlas desde ☁ Sync.';
@@ -24,5 +25,5 @@ $('eye').onclick=function(){var s=$('p').type==='password';$('p').type=s?'text':
 $('thm').onclick=function(){var d=document.documentElement,c=d.dataset.theme||'dark',n=c==='dark'?'light':'dark';d.dataset.theme=n;try{localStorage.setItem('theme',n)}catch(e){}};
 function bad(t){var m=$('msg');m.className='ko';m.textContent=t;void m.offsetWidth;m.classList.add('shake');$('go').disabled=false}
 $('f').onsubmit=function(e){e.preventDefault();$('msg').textContent='';$('go').disabled=true;
- (reg?AUTH.register($('u').value,$('p').value,$('inv').value):AUTH.login($('u').value,$('p').value)).then(function(){$('msg').className='ok';$('msg').textContent='¡Bienvenido!';var nx=new URLSearchParams(location.search).get('next');if(!nx||/^(https?:)?\/\//.test(nx)||nx.indexOf('..')>=0)nx='index.html';location.replace(nx)}).catch(function(x){bad(x.message);if(/invitaci/i.test(x.message)&&!reg)mode(true)})};
+ (reg?AUTH.register($('u').value,$('p').value,$('inv').value):AUTH.login($('u').value,$('p').value)).then(function(){$('msg').className='ok';$('msg').textContent='¡Bienvenido!';var nx=new URLSearchParams(location.search).get('next');if(!nx||/^(https?:)?\/\//.test(nx)||nx.indexOf('..')>=0)nx='index.html';location.replace(nx)}).catch(function(x){bad(x.message);if(/invitaci/i.test(x.message)&&!reg)mode(true);if(/conectar/i.test(x.message))offerOffline()})};
 </script></body></html>
