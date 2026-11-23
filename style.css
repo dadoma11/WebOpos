@@ -648,3 +648,6 @@ body:has(main.doc) .top { overflow: visible; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* examínate: cuadro único modo+ajustes+empezar */
+#cfgcard h3{margin:1.1rem 0 .4rem;font-size:1.05rem}.modehint{margin:.6rem 0 0;padding:.55rem .75rem;border-left:3px solid var(--ac);background:rgba(127,127,127,.08);border-radius:6px}.startbar{position:sticky;bottom:0;z-index:5;margin:1rem -1rem -1rem;padding:.7rem 1rem;background:var(--card);border-top:1px solid var(--bd);border-radius:0 0 12px 12px;align-items:center}.startbar .go{flex:1 1 260px}.startbar button:disabled{opacity:.55;cursor:not-allowed}
