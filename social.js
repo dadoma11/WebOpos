@@ -20,7 +20,9 @@ function shrink(file,o){return loadImg(file).then(function(im){var w=im.naturalW
  throw new Error('La imagen es demasiado grande')})}
 
 /* ---------- carga ---------- */
-function load(){return api('/api/social').then(function(r){S=r;render();if(chat)refreshChatHead()}).catch(function(e){if(!S)app.innerHTML='<section class="pcard"><p class="ko">'+esc(e.message)+'</p></section>'})}
+function load(background){return api('/api/social').then(function(r){var input=$('addu');
+ if(background===true && input && (document.activeElement===input || input.value.trim()))return;
+ S=r;render();if(chat)refreshChatHead()}).catch(function(e){if(!S)app.innerHTML='<section class="pcard"><p class="ko">'+esc(e.message)+'</p></section>'})}
 function render(){
  if(!S)return;var me=S.me,h='';
  h+='<section class="pcard prof"><h2>Mi perfil</h2><div class="pr"><button class="avbtn" id="avb" title="Cambiar imagen">'+av(me,'big')+'<span class="avc">📷</span></button><div><b class="pn">'+esc(me.name)+'</b><div class="row tight"><button id="avc">Cambiar imagen</button>'+(me.avatar?'<button id="avx">Quitar</button>':'')+'</div></div></div><input type="file" id="avf" accept="image/*" hidden>'
@@ -28,7 +30,7 @@ function render(){
   +'<label class="sw"><input type="checkbox" id="p1"'+(me.share_online?' checked':'')+'><span></span> Mostrar cuándo estoy conectado</label>'
   +'<label class="sw"><input type="checkbox" id="p2"'+(me.share_topic?' checked':'')+'><span></span> Mostrar qué tema estoy repasando</label>'
   +'<label class="sw"><input type="checkbox" id="p3"'+(me.share_stats?' checked':'')+'><span></span> Compartir mis estadísticas de exámenes y progreso</label></section>';
- h+='<section class="pcard"><h2>Añadir compañero</h2><form id="addf" class="row"><div class="f grow acw"><label for="addu">Buscar usuario</label><span class="sbar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="addu" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Busca por nombre de usuario" role="combobox" aria-expanded="false" aria-controls="acl"></span><div id="acl" class="acl" role="listbox" hidden></div></div><button class="go" type="submit">Enviar solicitud</button></form><p id="addm" class="'+addMsg.c+'">'+esc(addMsg.t)+'</p></section>';
+ h+='<section class="pcard"><h2>Añadir compañero</h2><form id="addf" class="row"><div class="f grow acw"><label for="addu">Buscar usuario</label><span class="sbar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="addu" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Busca por nombre de usuario" role="combobox" aria-expanded="false" aria-controls="acl"></span><div id="acl" class="acl" role="listbox" hidden></div></div><button class="go" type="submit">Enviar solicitud</button></form><p role="status" id="addm" class="'+addMsg.c+'">'+esc(addMsg.t)+'</p></section>';
  if(S.incoming.length)h+='<section class="pcard rq"><h2>Solicitudes recibidas <i class="cnt">'+S.incoming.length+'</i></h2>'+S.incoming.map(function(u){return '<div class="fr">'+av(u)+'<b class="fn">'+esc(u.name)+'</b><span class="fa"><button class="go" data-ac="'+esc(u.name)+'">Aceptar</button><button data-rm="'+esc(u.name)+'">Rechazar</button></span></div>'}).join('')+'</section>';
  if(S.invites.length)h+='<section class="pcard"><h2>Invitaciones a test conjunto <i class="cnt">'+S.invites.length+'</i></h2>'+S.invites.map(function(i){return '<div class="fr"><span class="av ph">👥</span><span class="fn"><b>'+esc(i.from)+'</b> te invita a un test<small>'+(i.title?esc(i.title)+' · ':'')+i.n+' preguntas · '+ago(i.created)+'</small></span><span class="fa"><a class="chip go" href="sala.html?c='+esc(i.code)+'">Unirme</a><button data-ig="'+esc(i.code)+'">Ignorar</button></span></div>'}).join('')+'</section>';
  h+='<section class="pcard fl"><h2>Mis compañeros <small class="sub">('+S.friends.length+')</small></h2>';
@@ -83,11 +85,32 @@ function lastRes(){try{return JSON.parse(localStorage.getItem(AUTH.key('rx_last'
 function openChat(name){chat={name:name,last:0,msgs:[],busy:false};var f=S.friends.filter(function(x){return x.name===name})[0]||{name:name};
  chatw.hidden=false;document.body.classList.add('noscroll');
  chatw.innerHTML='<div class="cbox"><div class="chd"><button id="cb" aria-label="Volver">←</button><span id="chh"></span></div><div class="cms" id="cms"><p class="sub">Cargando…</p></div>'
-  +'<div class="cmp" id="cmp" hidden></div><form class="cin" id="cf"><button type="button" id="cimg" title="Enviar imagen o captura">📎</button><button type="button" id="cres" title="Enviar un resultado de test">📝</button><textarea id="ct" rows="1" maxlength="1000" placeholder="Escribe un mensaje…  (puedes pegar capturas)"></textarea><button class="go" id="cs" type="submit">Enviar</button></form><input type="file" id="cfi" accept="image/*" hidden></div>';
+  +'<div class="cmp" id="cmp" hidden></div><form class="cin" id="cf"><button type="button" id="cimg" title="Enviar imagen o captura">📎</button><button type="button" id="cres" title="Enviar un resultado de test">📝</button><textarea id="ct" rows="1" maxlength="1000" aria-label="Mensaje" placeholder="Escribe un mensaje…  (puedes pegar capturas)"></textarea><button class="go" id="cs" type="submit">Enviar</button></form><p class="send-status" role="status" id="send-status"></p><input type="file" id="cfi" accept="image/*" hidden></div>';
  refreshChatHead();
  $('cb').onclick=closeChat;
- $('cf').onsubmit=function(e){e.preventDefault();var t=$('ct').value.trim();if(!t)return;$('ct').value='';sendMsg('text',t)};
- $('ct').onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('cf').requestSubmit()}};
+ var field=$('ct'), submit=$('cs'), status=$('send-status'), sending=false;
+ function updateSend(){submit.disabled=sending || !field.value.trim()}
+ field.oninput=updateSend;
+ updateSend();
+ $('cf').onsubmit=async function(e){
+   e.preventDefault();
+   var draft=field.value, recipient=chat;
+   if(sending || !draft.trim())return;
+   sending=true;
+   updateSend();
+   status.textContent='Enviando…';
+   try {
+     await postMessageTo(recipient,'text',draft.trim());
+     if(field.value===draft)field.value='';
+     status.textContent='';
+   } catch(error) {
+     status.textContent='No se pudo enviar. '+error.message;
+   } finally {
+     sending=false;
+     updateSend();
+   }
+ };
+ field.onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();$('cf').requestSubmit()}};
  $('cimg').onclick=function(){$('cfi').click()};$('cfi').onchange=function(){var f=this.files[0];this.value='';if(f)sendImg(f)};
  $('ct').onpaste=function(e){var it=[].slice.call((e.clipboardData||{}).items||[]).filter(function(x){return /^image\//.test(x.type)})[0];if(it){e.preventDefault();sendImg(it.getAsFile())}};
  $('cres').onclick=pickResult;
@@ -96,8 +119,9 @@ function refreshChatHead(){if(!chat)return;var f=S.friends.filter(function(x){re
  $('chh').innerHTML='<span class="avw">'+av(f,'sm')+st+'</span><span class="fn"><b>'+esc(f.name)+'</b><small>'+(f.online===true?(f.label?'📖 '+esc(f.label):'Conectado'):f.online===false?(f.last?'Última vez '+ago(f.last):'Desconectado'):'')+'</small></span>'}
 function closeChat(){chat=null;clearInterval(pollC);chatw.hidden=true;chatw.innerHTML='';document.body.classList.remove('noscroll');load()}
 function fetchMsgs(first){if(!chat)return;var c=chat;return api('/api/chat/'+encodeURIComponent(c.name)+(c.last?'?after='+c.last:'')).then(function(r){if(chat!==c)return;if(!r.messages.length&&!first)return;var box=$('cms'),bottom=first||box.scrollHeight-box.scrollTop-box.clientHeight<80;
-  if(first)box.innerHTML='';
-  r.messages.forEach(function(m){if(m.id>c.last)c.last=m.id;box.appendChild(bubble(m))});
+  if(first&&c.last)return;
+  if(first||!c.last)box.innerHTML='';
+  r.messages.forEach(function(m){if(m.id<=c.last)return;c.last=m.id;box.appendChild(bubble(m))});
   if(first&&!r.messages.length)box.innerHTML='<p class="sub cempty">Aún no hay mensajes. Escribe algo, pega una captura o envía el resultado de un test.</p>';
   else{var e=box.querySelector('.cempty');if(e)e.remove()}
   if(bottom)box.scrollTop=box.scrollHeight}).catch(function(e){if(first&&chat===c)$('cms').innerHTML='<p class="ko">'+esc(e.message)+'</p>'})}
@@ -110,8 +134,18 @@ function bubble(m){var d=document.createElement('div');d.className='msg '+(m.min
  return d}
 function getImg(id){if(imgCache[id])return Promise.resolve(imgCache[id]);return api('/api/chat/image/'+id).then(function(r){imgCache[id]=r.data;return r.data})}
 function zoom(u){modal.hidden=false;modal.innerHTML='<div class="zoom"><img src="'+esc(u)+'" alt=""><button class="sx" id="mx">✕</button></div>';$('mx').onclick=closeModal}
-function sendMsg(kind,body){if(!chat)return Promise.resolve();return api('/api/chat/'+encodeURIComponent(chat.name),{method:'POST',body:J({kind:kind,body:body})}).then(function(){return fetchMsgs(false)}).catch(function(e){toast(e.message)})}
-function sendImg(file){toast('Preparando imagen…');shrink(file,{max:1100,q:.72,limit:140000}).then(function(d){return sendMsg('img',d)}).catch(function(e){toast(e.message)})}
+async function postMessageTo(recipient,kind,body){
+ await api('/api/chat/'+encodeURIComponent(recipient.name),{method:'POST',body:J({kind:kind,body:body})});
+ if(chat===recipient)await fetchMsgs(false);
+}
+function sendMsg(kind,body){if(chat)return postMessageTo(chat,kind,body).catch(function(e){toast(e.message)})}
+function sendImg(file){
+ var recipient=chat;
+ toast('Preparando imagen…');
+ shrink(file,{max:1100,q:.72,limit:140000}).then(function(data){
+   if(chat===recipient)return postMessageTo(recipient,'img',data);
+ }).catch(function(e){toast(e.message)})
+}
 function pickResult(){var l=lastRes(),p=$('cmp');if(!p.hidden){p.hidden=true;return}
  if(!l.length){toast('Aún no tienes resultados guardados. Termina un test y vuelve.');return}
  p.hidden=false;p.innerHTML='<div class="cph"><b>Elige el resultado a enviar</b><button type="button" id="cpx">✕</button></div>'+l.map(function(r,i){return '<button type="button" class="cpi" data-i="'+i+'"><b class="'+(r.nota>=5?'ok':'ko')+'">'+(+r.nota||0).toFixed(2)+'</b> <span>✔'+r.a+' ✘'+r.e+' ○'+r.b+' de '+r.qids.length+(MODE[r.m]?' · '+MODE[r.m]:'')+'</span><small>'+new Date(r.t).toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+'</small></button>'}).join('');
@@ -119,5 +153,5 @@ function pickResult(){var l=lastRes(),p=$('cmp');if(!p.hidden){p.hidden=true;ret
 
 /* ---------- arranque ---------- */
 if(!AUTH.remote||!AUTH.canSocial()){app.innerHTML='<section class="pcard"><h2>Inicia sesión para usar los compañeros</h2><p class="sub">Esta función necesita tu cuenta en el servidor. Estás en modo sin conexión: cierra sesión e inicia sesión con conexión.</p></section>'}
-else{load().then(function(){var q=new URLSearchParams(location.search).get('chat');if(q&&S&&S.friends.some(function(f){return f.name===q}))openChat(q)});pollS=setInterval(function(){if(!document.hidden&&!chat)load()},20000)}
+else{load().then(function(){var q=new URLSearchParams(location.search).get('chat');if(q&&S&&S.friends.some(function(f){return f.name===q}))openChat(q)});pollS=setInterval(function(){if(!document.hidden&&!chat)load(true)},20000)}
 })();
