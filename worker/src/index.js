@@ -165,8 +165,7 @@ export default {
       }
       if (p === '/api/users' && m === 'GET') { // autocompletar al añadir compañeros (solo usuarios que aún no son compañeros ni tienen solicitud)
         const q = (url.searchParams.get('q') || '').trim().slice(0, 24).replace(/[\\%_]/g, '');
-        if (q.length < 1) return json({ users: [] }, 200, H);
-        const r = await env.DB.prepare("SELECT u.name,p.avatar FROM users u LEFT JOIN profiles p ON p.user_id=u.id WHERE u.id<>? AND u.name LIKE ? AND u.id NOT IN (SELECT CASE WHEN a=? THEN b ELSE a END FROM friends WHERE a=? OR b=?) ORDER BY (u.name LIKE ?) DESC, u.name COLLATE NOCASE LIMIT 8")
+        const r = await env.DB.prepare("SELECT u.name,p.avatar FROM users u LEFT JOIN profiles p ON p.user_id=u.id WHERE u.id<>? AND u.name LIKE ? AND u.id NOT IN (SELECT CASE WHEN a=? THEN b ELSE a END FROM friends WHERE a=? OR b=?) ORDER BY (u.name LIKE ?) DESC, u.name COLLATE NOCASE LIMIT 30")
           .bind(a.uid, '%' + q + '%', a.uid, a.uid, a.uid, q + '%').all();
         return json({ users: r.results.map((x) => ({ name: x.name, avatar: x.avatar || '' })) }, 200, H);
       }
