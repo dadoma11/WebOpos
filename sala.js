@@ -13,8 +13,9 @@ function order(q){var ord=q.o.map(function(_,i){return i});if(/anteriores|ningun
 function load(){return Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()})]).then(function(a){Q=a[0];Q.forEach(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q});T=a[1]})}
 function fail(m){app.innerHTML='<section class="pcard"><p class="ko">'+esc(m)+'</p><p><a href="sala.html">← Crear una sala</a> · <a href="examinate.html">Examínate</a></p></section>'}
 /* ---------- crear ---------- */
+var INV=(new URLSearchParams(location.search).get('invitar')||'').slice(0,40);
 function create(){
- var h='<p class="sub lead">Practicad juntos con las mismas preguntas. Se revela cada una cuando <b>todos</b> habéis marcado: si <b>coincidís</b> y es la correcta, cuenta como <b>acierto</b>; si coincidís en una incorrecta, es un <b>error</b>; si <b>no coincidís</b>, no cuenta como acierto. Crea la sala y comparte el enlace.</p>';
+ var h=(INV?'<p class="pcard" style="padding:.7rem 1rem">👥 Vas a invitar a <b>'+esc(INV)+'</b>: configura el test y crea la sala; le llegará la invitación al momento.</p>':'')+'<p class="sub lead">Practicad juntos con las mismas preguntas. Se revela cada una cuando <b>todos</b> habéis marcado: si <b>coincidís</b> y es la correcta, cuenta como <b>acierto</b>; si coincidís en una incorrecta, es un <b>error</b>; si <b>no coincidís</b>, no cuenta como acierto. Crea la sala y comparte el enlace.</p>';
  h+='<section class="pcard"><h2>1 · Temas</h2><div class="row"><button id="all">Todos</button><button id="none">Ninguno</button>'+[1,2,3,4].map(function(b){return '<button class="bsel" data-b="'+b+'">Bloque '+b+'</button>'}).join('')+'</div>';
  [1,2,3,4].forEach(function(b){h+='<details><summary><b>'+BL[b]+'</b></summary><div class="tgrid">'+T.filter(function(t){return t.b===b}).map(function(t){return '<label class="tchk"><input type="checkbox" class="tk" value="'+t.key+'" checked> <span><b>'+t.t+'</b> '+esc(t.title.length>70?t.title.slice(0,68)+'…':t.title)+'</span></label>'}).join('')+'</div></details>'});
  h+='</section><section class="pcard"><h2>2 · Opciones</h2><div class="row"><label class="f">Preguntas<select id="n"><option>10</option><option selected>20</option><option>30</option><option>50</option><option>100</option></select></label>'
@@ -35,7 +36,7 @@ function create(){
   for(var i=p.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=p[i];p[i]=p[j];p[j]=t}
   var pr=p.filter(function(q){return q.x||q.i}),lo=p.filter(function(q){return !(q.x||q.i)}),pick=pr.slice(0,Math.ceil(n/2)).concat(lo).concat(pr.slice(Math.ceil(n/2))).slice(0,n);
   this.disabled=true;m.textContent='';
-  api('/api/rooms',{method:'POST',body:JSON.stringify({qids:pick.map(function(q){return q.id}),pen:+document.getElementById('pen').value,title:document.getElementById('ttl').value})}).then(function(r){location.href='sala.html?c='+r.code}).catch(function(e){m.textContent=e.message;document.getElementById('mk').disabled=false})}
+  api('/api/rooms',{method:'POST',body:JSON.stringify({qids:pick.map(function(q){return q.id}),pen:+document.getElementById('pen').value,title:document.getElementById('ttl').value})}).then(function(r){return (INV?api('/api/rooms/'+r.code+'/invite',{method:'POST',body:JSON.stringify({user:INV})}).catch(function(){}):Promise.resolve()).then(function(){location.href='sala.html?c='+r.code})}).catch(function(e){m.textContent=e.message;document.getElementById('mk').disabled=false})}
 }
 /* ---------- sala ---------- */
 function link(){return location.origin+location.pathname.replace(/[^\/]*$/,'')+'sala.html?c='+code}
@@ -48,14 +49,23 @@ function verdict(q,room){ // null si aún no han marcado todos
  return{k:vals[0]===q.c?'ok':'err',vals:vals}}
 function stats(){var s={ok:0,err:0,dis:0,blank:0,seen:0};room.qids.forEach(function(id){var v=verdict(Qm[id],room);if(v){s.seen++;s[v.k]++}});s.nota=room.n?(s.ok-(room.pen?s.err/room.pen:0))/room.n*10:0;return s}
 function who(){return room.players.map(function(p){return '<span class="pl'+(p.me?' me':'')+'">'+esc(p.name)+(p.host?' ★':'')+'</span>'}).join(' ')}
+var friendsC=null,invSent={};
+function invUI(){var box=document.getElementById('invb');if(!box||!AUTH.canSocial())return;
+ function draw(){var inRoom={};room.players.forEach(function(p){inRoom[p.name.toLowerCase()]=1});var l=friendsC.filter(function(f){return !inRoom[f.name.toLowerCase()]});
+  if(!l.length){box.innerHTML='';return}
+  box.innerHTML='<h3>Invitar a un compañero</h3><div class="pls">'+l.map(function(f){return '<button class="pl" data-n="'+esc(f.name)+'"'+(invSent[f.name]?' disabled':'')+'>'+(f.online===true?'🟢 ':'')+esc(f.name)+(invSent[f.name]?' ✔':' +')+'</button>'}).join('')+'</div>';
+  box.querySelectorAll('button[data-n]').forEach(function(b){b.onclick=function(){b.disabled=true;api('/api/rooms/'+code+'/invite',{method:'POST',body:JSON.stringify({user:b.dataset.n})}).then(function(){invSent[b.dataset.n]=1;b.textContent='🟢 '.slice(0,0)+b.dataset.n+' ✔'}).catch(function(e){b.disabled=false;alert(e.message)})}})}
+ if(friendsC)return draw();api('/api/social').then(function(r){friendsC=r.friends;draw()}).catch(function(){})}
 function lobby(){
  var h='<section class="pcard"><h2>'+esc(room.title||'Sala '+room.code)+'</h2><p class="sub">'+room.n+' preguntas · creada por <b>'+esc(room.host)+'</b></p>';
  if(!room.joined){h+=room.started?'<p class="ko">La sala ya ha empezado.</p>':room.full?'<p class="ko">La sala está llena.</p>':'<p>Te han invitado a un test conjunto.</p><button id="join" class="go big">Unirme a la sala</button>';app.innerHTML=h+'</section>';var j=document.getElementById('join');if(j)j.onclick=function(){j.disabled=true;api('/api/rooms/'+code+'/join',{method:'POST'}).then(function(r){room=r;render(true)}).catch(function(e){fail(e.message)})};return}
  h+='<h3>En la sala ('+room.players.length+')</h3><p class="pls">'+who()+'</p>';
  h+='<div class="lnk-box"><input id="lk" readonly value="'+esc(link())+'"><button id="cp">Copiar enlace</button>'+(navigator.share?'<button id="sh">Compartir</button>':'')+'</div><p class="sub">Quien abra el enlace tendrá que iniciar sesión con su cuenta y pulsar «Unirme».</p>';
+ if(!room.started)h+='<div id="invb"></div>';
  if(room.isHost)h+='<div class="row"><button id="go" class="go big"'+(room.players.length<2?' disabled':'')+'>▶ Empezar ahora</button><span class="sub">'+(room.players.length<2?'Esperando a que se una alguien…':'Podéis empezar cuando estéis todos.')+'</span></div>';
  else h+='<p class="sub">⏳ Esperando a que '+esc(room.host)+' empiece…</p>';
  app.innerHTML=h+'</section>';
+ invUI();
  var cp=document.getElementById('cp');if(cp)cp.onclick=function(){var i=document.getElementById('lk');i.select();(navigator.clipboard?navigator.clipboard.writeText(i.value):Promise.reject()).catch(function(){document.execCommand('copy')});cp.textContent='¡Copiado!';setTimeout(function(){cp.textContent='Copiar enlace'},1500)};
  var sh=document.getElementById('sh');if(sh)sh.onclick=function(){navigator.share({title:'Test conjunto TAI',text:'Hagamos un test juntos',url:link()}).catch(function(){})};
  var g=document.getElementById('go');if(g)g.onclick=function(){g.disabled=true;api('/api/rooms/'+code+'/start',{method:'POST'}).then(function(r){room=r;render(true)}).catch(function(e){alert(e.message);g.disabled=false})}}

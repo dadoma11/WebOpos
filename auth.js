@@ -21,7 +21,7 @@ function wipeLab(){try{Object.keys(sessionStorage).forEach(function(k){if(/^lab_
  try{window.dispatchEvent(new Event('tai-logout'))}catch(e){}}
 var AUTH=window.AUTH={
  user:function(){var s=session();return s&&s.user},
- remote:REMOTE,cfg:CFG,offline:startOffline,accessToken:accessToken,api:function(p,o){return accessToken().then(function(t){return api(p,o,t)})},
+ remote:REMOTE,cfg:CFG,offline:startOffline,canSocial:function(){var x=session();return !!(x&&x.remote&&!x.offline&&x.token)},accessToken:accessToken,api:function(p,o){return accessToken().then(function(t){return api(p,o,t)})},
  register:function(u,pw,inv){if(REMOTE)return api('/api/register',{method:'POST',body:JSON.stringify({user:u,password:pw,invite:inv||'',dev:devId()})}).then(startRemote);
   u=(u||'').trim();if(!/^[\w.\-áéíóúñÁÉÍÓÚÑ ]{3,24}$/.test(u))return Promise.reject(new Error('Usuario de 3 a 24 caracteres (letras, números, . _ -)'));
   if((pw||'').length<6)return Promise.reject(new Error('La contraseña necesita al menos 6 caracteres'));
@@ -44,6 +44,9 @@ document.addEventListener('DOMContentLoaded',function(){var nav=document.querySe
  var has=function(h){return nav.querySelector('a[href$="'+h+'"]')};
  var th=nav.querySelector('#thm');
  [['examinate.html','📝 Examínate'],['laboratorio.html','🧪 Lab SQL'],['sync.html','☁ Sync']].forEach(function(p){if(has(p[0]))return;var a=document.createElement('a');a.href=ROOT+p[0];a.textContent=p[1];nav.insertBefore(a,th)});
+ if(REMOTE&&!s.offline&&!has('companeros.html')){var fa=document.createElement('a');fa.href=ROOT+'companeros.html';fa.setAttribute('data-i','friends');fa.textContent='Compañeros';var sy=has('sync.html');nav.insertBefore(fa,sy||th)}
+ var fl=has('companeros.html');if(fl&&!fl.querySelector('.nb')){var nb=document.createElement('i');nb.className='nb';nb.hidden=true;fl.appendChild(nb)}
+ function setBadge(n){var e=nav.querySelector('.nb');if(e){e.textContent=n>9?'9+':n;e.hidden=!n}}
  function updateNavigation(){
   var pathname=location.pathname, page=pathname.split('/').pop()||'index.html';
   var topic=!!document.querySelector('.doc');
@@ -59,5 +62,13 @@ document.addEventListener('DOMContentLoaded',function(){var nav=document.querySe
  }
  updateNavigation();
  window.addEventListener('hashchange',updateNavigation);
- var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.innerHTML='Salir<span class="un"> · </span><span class="un"></span>';b.lastChild.textContent=(REMOTE?s.name:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)});
+ var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.innerHTML='Salir<span class="un"> · </span><span class="un"></span>';b.lastChild.textContent=(REMOTE?s.name:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)
+ if(REMOTE&&!s.offline){var lastBeat=0;
+  function plabel(){if(window.__plabel)return String(window.__plabel);var p=location.pathname;
+   if(/\/t\/[^\/]+\.html$/.test(p)){var h=document.querySelector('main h1,.doc h1,h1'),tt=document.title.replace(/\s*·\s*Oposiciones TAI\s*$/,''),ht=h?h.textContent.trim():'';return 'Repasando '+tt+(ht?': '+ht:'')}
+   if(/examinate/.test(p))return 'En Examínate';if(/laboratorio/.test(p))return 'En el Lab SQL';if(/practicas/.test(p))return 'En Prácticas';if(/sala\.html/.test(p))return 'En un test conjunto';return ''}
+  function beat(){if(document.hidden)return;lastBeat=Date.now();api('/api/presence',{method:'POST',body:JSON.stringify({label:plabel()})},s.token).then(function(r){setBadge(r.badge|0)}).catch(function(e){})}
+  AUTH.beat=function(){if(Date.now()-lastBeat>15000)beat()};beat();setInterval(beat,60000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-lastBeat>20000)beat()})}
+});
 })();

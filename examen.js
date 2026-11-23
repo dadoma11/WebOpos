@@ -20,7 +20,19 @@ function topicOf(k){return T.filter(function(t){return t.key===k})[0]||{t:'?',b:
 function tshort(k){var t=topicOf(k).title||'';t=t.split(/[:(]/)[0].trim();return t.length>64?t.slice(0,62)+'…':t}
 function qlink(q){return 't/'+q.k+'.html?buscar='+encodeURIComponent(q.q+' '+q.o[q.c])}
 Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()})]).then(function(a){
- Q=a[0].map(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q;return q});T=a[1];config()});
+ Q=a[0].map(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q;return q});T=a[1];config();sameTest()});
+
+/* ---------- test recibido de un compañero: «hacer el mismo test» ---------- */
+function sameTest(){if(!/[?&]mismo=1/.test(location.search))return;var r=null;try{r=JSON.parse(LS.g('rx_same')||'null')}catch(e){}LS.s('rx_same','');
+ history.replaceState(null,'',location.pathname);if(!r||!r.qids)return;var list=r.qids.map(function(id){return Qm[id]}).filter(Boolean);
+ if(list.length<3){alert('No se encontraron las preguntas de ese test');return}
+ var sn=seen();list.forEach(function(q){sn[q.id]=1});jset('ex_seen',sn);
+ start(list,Math.round(list.length*1.2),true,{pen:r.pen?1/r.pen:0,study:false,mode:'rnd'})}
+function shareResult(rx){var ov=document.createElement('div');ov.className='smodal';ov.innerHTML='<div class="sbox"><button class="sx" id="shx">✕</button><h2>📤 Enviar a un compañero</h2><p class="sub">Recibirá tu nota y un botón para hacer el mismo test.</p><div id="shl"><p class="sub">Cargando…</p></div></div>';document.body.appendChild(ov);
+ function close(){ov.remove()}document.getElementById('shx').onclick=close;ov.onclick=function(e){if(e.target===ov)close()};
+ AUTH.api('/api/social').then(function(r){var l=document.getElementById('shl');if(!r.friends.length){l.innerHTML='<p class="sub">Aún no tienes compañeros. <a href="companeros.html">Añade alguno</a>.</p>';return}
+  l.innerHTML=r.friends.map(function(f){return '<div class="fr"><span class="fn"><b>'+esc(f.name)+'</b><small>'+(f.online===true?'Conectado':'')+'</small></span><span class="fa"><button class="go" data-n="'+esc(f.name)+'">Enviar</button></span></div>'}).join('');
+  l.querySelectorAll('button[data-n]').forEach(function(b){b.onclick=function(){b.disabled=true;AUTH.api('/api/chat/'+encodeURIComponent(b.dataset.n),{method:'POST',body:JSON.stringify({kind:'result',body:rx})}).then(function(){b.textContent='✔ Enviado';var a=document.createElement('a');a.className='chip';a.href='companeros.html?chat='+encodeURIComponent(b.dataset.n);a.textContent='Abrir chat';b.parentNode.appendChild(a)}).catch(function(e){b.disabled=false;alert(e.message)})}})}).catch(function(e){document.getElementById('shl').innerHTML='<p class="ko">'+esc(e.message)+'</p>'})}
 
 /* ---------- Curva del olvido ---------- */
 function Rt(c,now){return Math.pow(0.9,(now-c[2])/DAY/c[0])}
@@ -81,7 +93,7 @@ function weakCard(){var w=weakTopics(),h='<section class="pcard"><h2>🎯 Tus pu
 
 /* ---------- configuración ---------- */
 var MODES=[['rnd','🎲','Aleatorio','Prioriza las que no has visto','Test con las preguntas y el tiempo que elijas, con nota al final. Prioriza las que aún no has visto.'],['srs','🧠','Repaso inteligente','Lo que estás a punto de olvidar','Sin elegir cantidad: te pone todas las preguntas que toca repasar sí o sí, empezando por las que más estás olvidando.'],['weak','🎯','Puntos débiles','Tus temas más flojos y falladas','Test centrado en tus 5 temas más flojos y en las preguntas que más fallas.'],['sim','🏛','Simulacro','80 de teoría + 20 de supuesto práctico, como el examen','Examen completo de 100 preguntas en 120 minutos (teoría + supuesto práctico), puntuado como el oficial.'],['flash','🃏','Flashcards','Sin opciones: recuerda y autoevalúate','Tarjetas sin opciones: ves la pregunta, piensas la respuesta, la destapas y te autoevalúas. Sin nota.'],['listen','🎧','Modo escucha','Te lee las preguntas; respondes A–D','Te lee cada pregunta en voz alta y respondes A–D. Sin nota.']];
-function config(){var mm=document.querySelector('main');if(mm)mm.classList.remove('wide');clearInterval(tick);cur=null;view=null;window.__inExam=false;if(S)S.cancel();
+function config(){window.__plabel='';var mm=document.querySelector('main');if(mm)mm.classList.remove('wide');clearInterval(tick);cur=null;view=null;window.__inExam=false;if(S)S.cancel();
  var cfg=cfgGet(),tp=new URLSearchParams(location.search).get('t'),sel=(tp&&T.some(function(t){return t.key===tp})?[tp]:null)||cfg.sel||T.map(function(t){return t.key}),n=cfg.n||20,mins=cfg.mins==null?Math.round(n*1.2):cfg.mins,mode=cfg.mode||'rnd',pen=cfg.pen||'3';
  var cnt={};Q.forEach(function(q){cnt[q.k]=(cnt[q.k]||0)+1});var fl=fails(),nf=Object.keys(fl).length,fg=flags(),ng=Object.keys(fg).length;
  var h='<p class="sub lead">'+Q.length+' preguntas tipo test (Anki + redactadas del temario + automáticas, 4 opciones). La nota por defecto es <b>(aciertos − errores/3) sobre 10</b>; puedes cambiar la penalización en las opciones.</p>';
@@ -197,7 +209,8 @@ function simScore(c){var p={1:{a:0,e:0,n:0},2:{a:0,e:0,n:0}};c.items.forEach(fun
  var a=g(p[1]),b=g(p[2]);return {p1:a,p2:b,total:a.g+b.g,ok1:a.g>=25,ok2:b.g>=25}}
 
 /* ---------- examen ---------- */
-function start(list,mins,shuffleOpts,o){o=o||{};var fg=flags();
+function plab(list,pre){var ks={};list.forEach(function(q){if(q.k&&!q.cs)ks[q.k]=1});var k=Object.keys(ks);window.__plabel=pre+' ('+list.length+' preguntas'+(k.length&&k.length<=2?' · Tema '+k.map(function(x){return topicOf(x).t}).join(', '):k.length>2?' · '+k.length+' temas':'')+')';if(window.AUTH&&AUTH.beat)AUTH.beat()}
+function start(list,mins,shuffleOpts,o){o=o||{};var fg=flags();plab(list,o.mode==='sim'?'Haciendo un simulacro':'Haciendo un test');
  var items=list.map(function(q){var ord=q.o.map(function(_,i){return i});
   if(shuffleOpts&&!/anteriores|ninguna de|ambas|todas las|ninguna es|ambos/i.test(q.o.join(' ')))ord=shuf(ord);
   return {q:q,ord:ord,ans:-1,flag:!!fg[q.id],part:0}});items.forEach(function(it,i){it.part=(o.parts&&o.parts[i])||1});
@@ -226,7 +239,7 @@ function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans
  $('#prev').onclick=function(){c.i--;render()};$('#next').onclick=function(){c.i++;render()};
  $('#clr').onclick=function(){it.ans=-1;render()};$('#flag').onclick=function(){setFlag(it,!it.flag);render()};
  $('#fin').onclick=function(){var b=c.items.filter(function(x){return x.ans<0}).length,f=c.items.filter(function(x){return x.flag&&x.ans<0}).length;if((!b&&!f)||confirm('Te quedan '+b+' sin contestar'+(f?' ('+f+' marcadas para revisar)':'')+'. ¿Terminar el examen?'))finish(false)}}
-function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam=false;view='res';clearInterval(tick);
+function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam=false;window.__plabel='';view='res';clearInterval(tick);
  var A=0,E=0,B=0,per={},pt={},fl=fails();
  c.items.forEach(function(it){var q=it.q,b=q.k.charAt(1);per[b]=per[b]||{a:0,e:0,b:0};pt[q.k]=pt[q.k]||{a:0,e:0,b:0};
   if(it.ans<0){B++;per[b].b++;pt[q.k].b++}else if(it.ord[it.ans]===q.c){A++;per[b].a++;pt[q.k].a++;if(!q.cs)delete fl[q.id]}else{E++;per[b].e++;pt[q.k].e++;if(!q.cs)fl[q.id]=1}});
@@ -235,6 +248,8 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
  var sm=srsAll(),nw=Date.now();c.items.forEach(function(it){if(it.ans>=0&&!it.q.cs)srsUpd(sm,it.q.id,it.ord[it.ans]===it.q.c,nw)});jset('ex_srs',sm);addDay(A+E);
  var N=c.items.length,pts=A-E*c.pen,nota=Math.max(0,pts/N*10),notaSin=A/N*10,S2=c.sim?simScore(c):null;if(S2)nota=S2.total/10;
  var hs=hist();hs.push({t:Date.now(),a:A,e:E,b:B,n:N,nota:nota,m:c.mode});jset('ex_hist',hs.slice(-50));
+ var qn=c.items.filter(function(it){return typeof it.q.id==='number'}).map(function(it){return it.q.id}),rx={t:Date.now(),qids:qn,a:A,e:E,b:B,nota:nota,m:c.mode,pen:c.pen?(c.pen===1/3?3:4):0};
+ if(qn.length>=3){var rl=[];try{rl=JSON.parse(LS.g(AUTH.key('rx_last'))||'[]')}catch(e){}rl.unshift(rx);LS.s(AUTH.key('rx_last'),JSON.stringify(rl.slice(0,10)))}
  var used=Math.round((Date.now()-c.t0)/1000),pen=c.pen?(c.pen===1/3?'1/3':'1/4'):'';
  var h='<section class="pcard res"><h2>Resultado'+(auto?' <small class="ko">(se acabó el tiempo)</small>':'')+'</h2><div class="reshero">'+ring(nota/10,nota.toFixed(2),'sobre 10',nota>=5?'okr':'kor')+'<div><div class="verdict '+(nota>=5?'ok':'ko')+'">'+(nota>=8?'¡Excelente!':nota>=5?'Aprobado':nota>=3?'Te falta un empujón':'A seguir repasando')+'</div>'
   +(S2?'<p>Total: <b>'+S2.total.toFixed(1)+'</b> / 100 · '+(S2.ok1&&S2.ok2?'<b class="ok">APTO</b>':'<b class="ko">NO APTO</b>')+'</p>':'<p>'+(c.pen?'Puntos: <b>'+pts.toFixed(2)+'</b> sobre '+N+' <small>(= '+A+' aciertos − '+E+' errores × '+pen+')</small>':'Sin penalización: <b>'+A+'</b> de '+N)+'</p>')+(!S2&&c.pen?'<p class="sub">Sin penalización tendrías un <b>'+notaSin.toFixed(2)+'</b>.</p>':'')+'</div></div>'
@@ -242,7 +257,7 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
   +'<div class="stats"><span class="ok">✔ '+A+' aciertos</span><span class="ko">✘ '+E+' errores</span><span>○ '+B+' en blanco</span><span>⏱ '+fmt(used)+'</span></div>'
   +'<h3>Por tema</h3><div class="ptl">'+Object.keys(pt).sort().map(function(k){var x=pt[k],tot=x.a+x.e+x.b,tpc=k.indexOf('caso')>0?{t:'📋',title:'Supuesto práctico'}:topicOf(k);return '<div class="wk"><div class="wkt"><b>'+tpc.t+'</b> '+esc(tpc.title.length>48?tpc.title.slice(0,46)+'…':tpc.title)+'</div><div class="wkb"><i class="'+(x.a/tot>=.75?'g':x.a/tot>=.5?'m':'b')+'" style="width:'+Math.round(x.a/tot*100)+'%"></i></div><span class="wkp">'+x.a+'/'+tot+'</span></div>'}).join('')+'</div>'
   +'<table class="pt"><tr><th>Bloque</th><th>✔</th><th>✘</th><th>○</th></tr>'+Object.keys(per).sort().map(function(b){return '<tr><td>Bloque '+b+'</td><td>'+per[b].a+'</td><td>'+per[b].e+'</td><td>'+per[b].b+'</td></tr>'}).join('')+'</table>'
-  +'<div class="row"><button id="again" class="go">Nuevo examen</button><button id="rf">Repetir solo las falladas/en blanco</button>'+(c.items.some(function(x){return x.flag})?'<button id="rm">Repasar las marcadas ⚑</button>':'')+'<button id="fcf">🃏 Flashcards de las falladas</button></div></section>';
+  +'<div class="row"><button id="again" class="go">Nuevo examen</button><button id="rf">Repetir solo las falladas/en blanco</button>'+(c.items.some(function(x){return x.flag})?'<button id="rm">Repasar las marcadas ⚑</button>':'')+'<button id="fcf">🃏 Flashcards de las falladas</button>'+(qn.length>=3&&window.AUTH&&AUTH.canSocial()?'<button id="shr">📤 Enviar a un compañero</button>':'')+'</div></section>';
  h+='<section class="pcard"><h2>Revisión</h2><div class="row"><label class="tchk"><input type="checkbox" id="onlyw" checked> Solo errores y en blanco</label><label class="tchk"><input type="checkbox" id="onlym"> Solo marcadas ⚑</label></div><div id="rev"></div></section>';
  app.innerHTML=h;window.scrollTo(0,0);
  function rev(){var w=$('#onlyw').checked,mk=$('#onlym').checked,L='ABCD';$('#rev').innerHTML=c.items.map(function(it,i){var q=it.q,ok=it.ans>=0&&it.ord[it.ans]===q.c;if(mk&&!it.flag)return '';if(w&&ok&&!mk)return '';
@@ -255,10 +270,11 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
  function sub(l){return l.map(function(it){return it.q})}
  $('#rf').onclick=function(){var l=sub(c.items.filter(function(it){return !(it.ans>=0&&it.ord[it.ans]===it.q.c)}));if(!l.length){alert('No hay falladas 🎉');return}start(shuf(l),c.total?Math.ceil(c.total/60*l.length/N):0,true,{pen:c.pen,study:true,mode:'rep'})}
  var rm=$('#rm');if(rm)rm.onclick=function(){start(shuf(sub(c.items.filter(function(it){return it.flag}))),0,true,{pen:c.pen,study:true,mode:'rep'})};
+ var sh=$('#shr');if(sh)sh.onclick=function(){shareResult(rx)};
  $('#fcf').onclick=function(){var l=sub(c.items.filter(function(it){return !(it.ans>=0&&it.ord[it.ans]===it.q.c)}));if(!l.length){alert('No hay falladas 🎉');return}flash(shuf(l),{})}}
 
 /* ---------- flashcards ---------- */
-function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res={ok:0,dd:0,ko:0},pk=-1,ord=null,L='ABCD';
+function flash(list,o){plab(list,'Con flashcards');view='flash';window.__inExam=true;var i=0,shown=false,res={ok:0,dd:0,ko:0},pk=-1,ord=null,L='ABCD';
  function mkOrd(q){var r=q.o.map(function(_,k){return k});if(!/anteriores|ninguna de|ambas|todas las|ninguna es|ambos/i.test(q.o.join(' ')))r=shuf(r);return r}
  function draw(){if(i>=list.length)return end();var q=list[i],tp=topicOf(q.k);if(!ord)ord=mkOrd(q);
   var good=pk>=0&&ord[pk]===q.c;
@@ -293,7 +309,7 @@ function flash(list,o){view='flash';window.__inExam=true;var i=0,shown=false,res
 function voiceList(){return S?S.getVoices().filter(function(v){return /^es/i.test(v.lang)}):[]}
 function speak(text,cb){if(!S){cb&&cb();return}S.cancel();var u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=parseFloat(LS.g('tts_rate'))||1;var vn=LS.g('tts_voice'),vs=voiceList(),v=vs.filter(function(x){return x.name===vn})[0]||vs.filter(function(x){return /^es[-_]ES/i.test(x.lang)})[0]||vs[0];if(v){u.voice=v;u.lang=v.lang}
  var done=false;function fin(){if(done)return;done=true;cb&&cb()}u.onend=fin;u.onerror=function(e){if(e.error!=='interrupted'&&e.error!=='canceled')fin()};S.speak(u)}
-function listen(list,o){if(!S){alert('Tu navegador no admite lectura en voz alta.');return config()}
+function listen(list,o){if(!S){alert('Tu navegador no admite lectura en voz alta.');return config()}plab(list,'En modo escucha');
  view='listen';window.__inExam=true;var i=0,L='ABCD',res={a:0,e:0},auto=LS.g('ex_lauto')!=='0',got=false,gen=0;
  var items=list.map(function(q){var ord=q.o.map(function(_,k){return k});if(!/anteriores|ninguna de|ambas|todas las|ninguna es|ambos/i.test(q.o.join(' ')))ord=shuf(ord);return {q:q,ord:ord}});
  function say(t,cb){var g=++gen;speak(t,function(){if(g===gen&&cb)cb()})}
