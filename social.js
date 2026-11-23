@@ -42,7 +42,7 @@ function render(){
    +'<a class="chip" href="sala.html?invitar='+encodeURIComponent(f.name)+'">👥 Test conjunto</a>'
    +'<button class="x" data-rm="'+esc(f.name)+'" data-del="1" title="Eliminar compañero">✕</button></span></div>'}).join('')+'</section>';
  if(S.outgoing.length)h+='<section class="pcard"><h2>Solicitudes enviadas</h2>'+S.outgoing.map(function(u){return '<div class="fr">'+av(u)+'<b class="fn">'+esc(u.name)+' <small>pendiente</small></b><span class="fa"><button data-rm="'+esc(u.name)+'">Cancelar</button></span></div>'}).join('')+'</section>';
- app.innerHTML=h;bind()}
+ app.innerHTML=h;bind();if(document.documentElement.classList.contains('embed'))app.querySelectorAll('.fl .fr[data-f]').forEach(function(r){r.style.cursor='pointer';r.onclick=function(e){if(!e.target.closest('[data-chat]'))openChat(r.dataset.f)}})}
 
 function bind(){
  var f=$('avf');$('avb').onclick=$('avc').onclick=function(){f.click()};

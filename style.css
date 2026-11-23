@@ -671,7 +671,11 @@ html.embed .top,html.embed .ban,html.embed .bbl,html.embed .bblp{display:none!im
 html.embed main{padding:8px!important;margin:0!important;max-width:none!important}
 html.embed .cbox{max-width:none}
 html.embed #app{display:flex;flex-direction:column}
-html.embed #app>.prof{display:none}
+html.embed #app>section:not(.fl){display:none}
+html.embed .fl .fa>:not([data-chat]){display:none}
+html.embed .fl .fa{width:auto}
+html.embed .fl h2{font-size:15px}
+html.embed .fl .fr{flex-wrap:nowrap}
 html.embed #app>section:nth-of-type(n){order:5}
 html.embed .lgo,html.embed .side,html.embed footer{display:none!important}
 html.embed #app>.rq{order:1}html.embed #app>.fl{order:2}
