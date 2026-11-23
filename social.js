@@ -63,13 +63,14 @@ function bind(){
   inp.onkeydown=function(e){if(l.hidden||!items.length)return;if(e.key==='ArrowDown'){e.preventDefault();hi=(hi+1)%items.length;mark()}else if(e.key==='ArrowUp'){e.preventDefault();hi=(hi-1+items.length)%items.length;mark()}else if(e.key==='Enter'&&hi>=0){e.preventDefault();pick(items[hi].name)}else if(e.key==='Escape')hide()}})();
  $('addf').onsubmit=function(e){e.preventDefault();var u=$('addu').value.trim(),m=$('addm');if(!u)return;m.className='sub';m.textContent='Enviando…';api('/api/friends',{method:'POST',body:J({user:u})}).then(function(r){addMsg={c:'sub ok',t:r.accepted?'¡Ahora sois compañeros!':'Solicitud enviada a '+r.name};return load()}).catch(function(e){addMsg={c:'sub ko',t:e.message};m.className=addMsg.c;m.textContent=addMsg.t})};
  app.querySelectorAll('[data-ac]').forEach(function(b){b.onclick=function(){api('/api/friends/'+encodeURIComponent(b.dataset.ac)+'/accept',{method:'POST'}).then(load).catch(function(e){toast(e.message)})}});
- app.querySelectorAll('[data-rm]').forEach(function(b){b.onclick=function(){if(b.dataset.del&&!confirm('¿Eliminar a '+b.dataset.rm+' de tus compañeros? También dejaréis de ver el chat.'))return;api('/api/friends/'+encodeURIComponent(b.dataset.rm),{method:'DELETE'}).then(function(){if(chat&&chat.name===b.dataset.rm)closeChat();load()}).catch(function(e){toast(e.message)})}});
+ app.querySelectorAll('[data-rm]').forEach(function(b){b.onclick=function(){var nm=b.dataset.rm,doIt=function(){api('/api/friends/'+encodeURIComponent(nm),{method:'DELETE'}).then(function(){if(chat&&chat.name===nm)closeChat();load()}).catch(function(e){toast(e.message)})};if(b.dataset.del)ask('Eliminar compañero','¿Eliminar a <b>'+esc(nm)+'</b> de tus compañeros? Dejaréis de veros y se perderá el acceso al chat. Tendrías que volver a enviar una solicitud.','Sí, eliminar',doIt);else doIt()}});
  app.querySelectorAll('[data-ig]').forEach(function(b){b.onclick=function(){api('/api/invites/'+b.dataset.ig,{method:'DELETE'}).then(load)}});
  app.querySelectorAll('[data-chat]').forEach(function(b){b.onclick=function(){openChat(b.dataset.chat)}});
  app.querySelectorAll('[data-st]').forEach(function(b){b.onclick=function(){showStats(b.dataset.st)}})}
 
 /* ---------- estadísticas ---------- */
 function closeModal(){modal.hidden=true;modal.innerHTML=''}
+function ask(title,html,okTxt,fn){modal.hidden=false;modal.innerHTML='<div class="cfm" role="alertdialog"><h3>'+title+'</h3><p>'+html+'</p><div class="cfr"><button type="button" id="cfn">Cancelar</button><button type="button" class="dng" id="cfy">'+okTxt+'</button></div></div>';$('cfn').onclick=closeModal;$('cfy').onclick=function(){closeModal();fn()};$('cfn').focus()}
 function showStats(name){modal.hidden=false;modal.innerHTML='<div class="sbox"><button class="sx" id="mx">✕</button><p class="sub">Cargando…</p></div>';$('mx').onclick=closeModal;
  api('/api/friends/'+encodeURIComponent(name)+'/stats').then(function(r){var s=r.stats,mx=Math.max(5,Math.max.apply(null,s.last7.map(function(d){return d.n})));
   var k=function(v,l){return '<div class="kp"><b>'+v+'</b><small>'+l+'</small></div>'};
@@ -118,20 +119,36 @@ function openChat(name){chat={name:name,last:0,msgs:[],busy:false};var f=S.frien
 function refreshChatHead(){if(!chat)return;var f=S.friends.filter(function(x){return x.name===chat.name})[0]||{name:chat.name};var st=f.online===true?'<span class="dot on"></span>':f.online===false?'<span class="dot"></span>':'';
  $('chh').innerHTML='<span class="avw">'+av(f,'sm')+st+'</span><span class="fn"><b>'+esc(f.name)+'</b><small>'+(f.online===true?(f.label?'📖 '+esc(f.label):'Conectado'):f.online===false?(f.last?'Última vez '+ago(f.last):'Desconectado'):'')+'</small></span>'}
 function closeChat(){chat=null;clearInterval(pollC);chatw.hidden=true;chatw.innerHTML='';document.body.classList.remove('noscroll');load()}
-function fetchMsgs(first){if(!chat)return;var c=chat;return api('/api/chat/'+encodeURIComponent(c.name)+(c.last?'?after='+c.last:'')).then(function(r){if(chat!==c)return;if(!r.messages.length&&!first)return;var box=$('cms'),bottom=first||box.scrollHeight-box.scrollTop-box.clientHeight<80;
+function fetchMsgs(first){if(!chat)return;var c=chat;return api('/api/chat/'+encodeURIComponent(c.name)+(c.last?'?after='+c.last:'')).then(function(r){if(chat!==c)return;var box=$('cms');if(!box)return;applyMeta(box,r);if(!r.messages.length&&!first)return;var bottom=first||box.scrollHeight-box.scrollTop-box.clientHeight<80;
   if(first&&c.last)return;
   if(first||!c.last)box.innerHTML='';
-  r.messages.forEach(function(m){if(m.id<=c.last)return;c.last=m.id;box.appendChild(bubble(m))});
+  r.messages.forEach(function(m){if(m.id<=c.last)return;c.last=m.id;var d=bubble(m);box.appendChild(d);if(r.reacts&&r.reacts[m.id])drawReacts(d,r.reacts[m.id])});
   if(first&&!r.messages.length)box.innerHTML='<p class="sub cempty">Aún no hay mensajes. Escribe algo, pega una captura o envía el resultado de un test.</p>';
   else{var e=box.querySelector('.cempty');if(e)e.remove()}
   if(bottom)box.scrollTop=box.scrollHeight}).catch(function(e){if(first&&chat===c)$('cms').innerHTML='<p class="ko">'+esc(e.message)+'</p>'})}
-function bubble(m){var d=document.createElement('div');d.className='msg '+(m.mine?'me':'ot');var t='<time>'+hhmm(m.created)+'</time>';
+function bubble(m){var d=document.createElement('div');d.className='msg '+(m.mine?'me':'ot');d.dataset.id=m.id;d.dataset.mine=m.mine?1:0;var t='<time>'+hhmm(m.created)+'</time>';
+ if(m.kind==='del'){d.classList.add('gone');d.innerHTML='<p class="mdel">🚫 Mensaje eliminado</p>'+t;return d}
  if(m.kind==='text')d.innerHTML='<p>'+esc(m.body).replace(/\n/g,'<br>')+'</p>'+t;
  else if(m.kind==='img'){d.innerHTML='<div class="mi"><span class="sub">Cargando imagen…</span></div>'+t;getImg(m.id).then(function(u){var i=d.querySelector('.mi');i.innerHTML='<img src="'+esc(u)+'" alt="Imagen">';i.firstChild.onclick=function(){zoom(u)}}).catch(function(){d.querySelector('.mi').textContent='No se pudo cargar la imagen'})}
  else if(m.kind==='result'){var r={};try{r=JSON.parse(m.body)}catch(e){}var ok=r.nota>=5;
   d.innerHTML='<div class="rc"><div class="rh"><b class="'+(ok?'ok':'ko')+'">'+(+r.nota||0).toFixed(2)+'</b><span>'+(r.title?esc(r.title)+'<br>':'')+'<small>✔ '+(r.a|0)+' · ✘ '+(r.e|0)+' · ○ '+(r.b|0)+' de '+(r.n|0)+(MODE[r.m]?' · '+MODE[r.m]:'')+'</small></span></div><button class="go same">🔁 Hacer el mismo test</button></div>'+t;
   d.querySelector('.same').onclick=function(){try{localStorage.setItem('rx_same',J({qids:r.qids,pen:r.pen,title:r.title,from:chat?chat.name:''}))}catch(e){}location.href='examinate.html?mismo=1'}}
+
+ var ab=document.createElement('button');ab.type='button';ab.className='mact';ab.title='Reaccionar o borrar';ab.setAttribute('aria-label','Opciones del mensaje');ab.textContent='⋯';ab.onclick=function(e){e.stopPropagation();msgMenu(d,ab)};d.appendChild(ab);
  return d}
+var RX=['👍','❤️','😂','😮','😢','🙏'];
+function closeMenu(){var o=document.querySelector('.mmenu');if(o)o.remove()}
+document.addEventListener('click',closeMenu);
+function msgMenu(d,ab){var had=document.querySelector('.mmenu');closeMenu();if(had&&had._for===d)return;var id=+d.dataset.id,mine=d.dataset.mine==='1',m=document.createElement('div');m.className='mmenu';m._for=d;
+ m.innerHTML='<div class="mrx">'+RX.map(function(e){return '<button type="button" data-e="'+e+'">'+e+'</button>'}).join('')+'</div>'+(mine?'<button type="button" class="mdl">🗑 Eliminar mensaje</button>':'');
+ m.onclick=function(e){e.stopPropagation()};
+ m.querySelectorAll('[data-e]').forEach(function(b){b.onclick=function(){closeMenu();api('/api/chat/msg/'+id+'/react',{method:'POST',body:J({emoji:b.dataset.e})}).then(function(){return fetchMsgs(false)}).catch(function(e){toast(e.message)})}});
+ var dl=m.querySelector('.mdl');if(dl)dl.onclick=function(){closeMenu();ask('Eliminar mensaje','¿Eliminar este mensaje para los dos? No se puede deshacer.','Eliminar',function(){api('/api/chat/msg/'+id,{method:'DELETE'}).then(function(){return fetchMsgs(false)}).catch(function(e){toast(e.message)})})};
+ d.appendChild(m)}
+function drawReacts(d,list){var o=d.querySelector('.rxs');if(o)o.remove();if(!list||!list.length||d.classList.contains('gone'))return;var g={};list.forEach(function(x){var k=g[x.e]||(g[x.e]={n:0,mine:false});k.n++;if(x.mine)k.mine=true});
+ var w=document.createElement('div');w.className='rxs';Object.keys(g).forEach(function(e){var b=document.createElement('button');b.type='button';b.className='rxc'+(g[e].mine?' on':'');b.textContent=e+(g[e].n>1?' '+g[e].n:'');b.onclick=function(ev){ev.stopPropagation();api('/api/chat/msg/'+d.dataset.id+'/react',{method:'POST',body:J({emoji:e})}).then(function(){return fetchMsgs(false)}).catch(function(x){toast(x.message)})};w.appendChild(b)});d.appendChild(w)}
+function applyMeta(box,r){(r.dels||[]).forEach(function(id){var d=box.querySelector('.msg[data-id="'+id+'"]');if(d&&!d.classList.contains('gone')){var nd=bubble({id:id,mine:d.dataset.mine==='1',kind:'del',created:Date.now()});var t=d.querySelector('time');if(t)nd.querySelector('time').textContent=t.textContent;d.replaceWith(nd)}});
+ box.querySelectorAll('.msg:not(.gone)').forEach(function(d){if(r.reacts||r.dels)drawReacts(d,(r.reacts||{})[d.dataset.id]||[])})}
 function getImg(id){if(imgCache[id])return Promise.resolve(imgCache[id]);return api('/api/chat/image/'+id).then(function(r){imgCache[id]=r.data;return r.data})}
 function zoom(u){modal.hidden=false;modal.innerHTML='<div class="zoom"><img src="'+esc(u)+'" alt=""><button class="sx" id="mx">✕</button></div>';$('mx').onclick=closeModal}
 async function postMessageTo(recipient,kind,body){

@@ -45,6 +45,7 @@ async function auth(env, req) {
 
 
 // ---- Compañeros, perfil y presencia ----
+const REACTS = ['👍', '❤️', '😂', '😮', '😢', '🙏'];
 const MAX_TXT = 1000, MAX_IMG = 150000, KEEP_MSGS = 300, MAX_AVATAR = 40000, ONLINE_MS = 150000, MAX_FRIENDS = 60;
 const madridDay = (t) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid' }).format(t);
 async function userByName(env, name) { name = String(name || '').trim(); if (!name || name.length > 40) return null; return env.DB.prepare('SELECT id,name FROM users WHERE name=?').bind(name).first(); }
@@ -213,6 +214,26 @@ export default {
         if (!r || (r.from_id !== a.uid && r.to_id !== a.uid)) return json({ error: 'No encontrado' }, 404, H);
         return json({ data: r.body }, 200, H);
       }
+      const cm = /^\/api\/chat\/msg\/(\d+)(\/react)?$/.exec(p);
+      if (cm) {
+        const mid = +cm[1], row = await env.DB.prepare('SELECT id,from_id,to_id,kind FROM messages WHERE id=?').bind(mid).first();
+        if (!row || (row.from_id !== a.uid && row.to_id !== a.uid)) return json({ error: 'No encontrado' }, 404, H);
+        if (!cm[2] && m === 'DELETE') {
+          if (row.from_id !== a.uid) return json({ error: 'Solo puedes borrar tus mensajes' }, 403, H);
+          await env.DB.prepare("UPDATE messages SET kind='del',body='' WHERE id=?").bind(mid).run();
+          await env.DB.prepare('DELETE FROM msg_react WHERE msg_id=?').bind(mid).run();
+          return json({ ok: 1 }, 200, H);
+        }
+        if (cm[2] && m === 'POST') {
+          if (row.kind === 'del') return json({ error: 'Mensaje eliminado' }, 410, H);
+          const b = await req.json().catch(() => ({})), em = String(b.emoji || '');
+          if (!REACTS.includes(em) && em !== '') return json({ error: 'Reacción no válida' }, 400, H);
+          const cur = await env.DB.prepare('SELECT emoji FROM msg_react WHERE msg_id=? AND user_id=?').bind(mid, a.uid).first();
+          if (!em || (cur && cur.emoji === em)) await env.DB.prepare('DELETE FROM msg_react WHERE msg_id=? AND user_id=?').bind(mid, a.uid).run();
+          else await env.DB.prepare('INSERT INTO msg_react(msg_id,user_id,emoji) VALUES(?,?,?) ON CONFLICT(msg_id,user_id) DO UPDATE SET emoji=excluded.emoji').bind(mid, a.uid, em).run();
+          return json({ ok: 1 }, 200, H);
+        }
+      }
       const ch = /^\/api\/chat\/([^/]+)$/.exec(p);
       if (ch) {
         let nm = ''; try { nm = decodeURIComponent(ch[1]); } catch (e) { return json({ error: 'Nombre no válido' }, 400, H); }
@@ -226,7 +247,10 @@ export default {
             : "SELECT * FROM (SELECT id,from_id,kind,CASE WHEN kind='img' THEN '' ELSE body END body,created FROM messages WHERE " + PAIR + ' AND id>? ORDER BY id DESC LIMIT 60) ORDER BY id';
           const rows = (await env.DB.prepare(q).bind(a.uid, t.id, t.id, a.uid, after).all()).results;
           await env.DB.prepare('UPDATE messages SET read=1 WHERE to_id=? AND from_id=? AND read=0').bind(a.uid, t.id).run();
-          return json({ messages: rows.map((r) => ({ id: r.id, mine: r.from_id === a.uid, kind: r.kind, body: r.body, created: r.created })) }, 200, H);
+          const dels = (await env.DB.prepare("SELECT id FROM messages WHERE " + PAIR + " AND kind='del' ORDER BY id DESC LIMIT 100").bind(a.uid, t.id, t.id, a.uid).all()).results.map((r) => r.id);
+          const rr = (await env.DB.prepare('SELECT r.msg_id,r.user_id,r.emoji FROM msg_react r JOIN messages m ON m.id=r.msg_id WHERE ' + PAIR.replace(/from_id/g, 'm.from_id').replace(/to_id/g, 'm.to_id') + ' ORDER BY r.msg_id DESC LIMIT 300').bind(a.uid, t.id, t.id, a.uid).all()).results;
+          const reacts = {}; rr.forEach((x) => { (reacts[x.msg_id] = reacts[x.msg_id] || []).push({ e: x.emoji, mine: x.user_id === a.uid }); });
+          return json({ messages: rows.map((r) => ({ id: r.id, mine: r.from_id === a.uid, kind: r.kind, body: r.body, created: r.created })), dels, reacts }, 200, H);
         }
         if (m === 'POST') {
           const b = await req.json(), kind = String(b.kind || 'text'); let body = '';
@@ -248,6 +272,7 @@ export default {
           const ins = await env.DB.prepare('INSERT INTO messages(from_id,to_id,kind,body,created) VALUES(?,?,?,?,?)').bind(a.uid, t.id, kind, body, Date.now()).run();
           await env.DB.prepare('DELETE FROM messages WHERE ' + PAIR + ' AND id NOT IN (SELECT id FROM messages WHERE ' + PAIR + ' ORDER BY id DESC LIMIT ' + KEEP_MSGS + ')').bind(a.uid, t.id, t.id, a.uid, a.uid, t.id, t.id, a.uid).run();
           await env.DB.prepare('DELETE FROM messages WHERE created<?').bind(Date.now() - 60 * DAY).run();
+          await env.DB.prepare('DELETE FROM msg_react WHERE msg_id NOT IN (SELECT id FROM messages)').run();
           return json({ ok: 1, id: ins.meta.last_row_id }, 200, H);
         }
       }
