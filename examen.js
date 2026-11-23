@@ -20,7 +20,7 @@ function topicOf(k){return T.filter(function(t){return t.key===k})[0]||{t:'?',b:
 function tshort(k){var t=topicOf(k).title||'';t=t.split(/[:(]/)[0].trim();return t.length>64?t.slice(0,62)+'…':t}
 function qlink(q){return 't/'+q.k+'.html?buscar='+encodeURIComponent(q.q+' '+q.o[q.c])}
 Promise.all([fetch('data/preguntas.json').then(function(r){return r.json()}),fetch('data/topics.json').then(function(r){return r.json()})]).then(function(a){
- Q=a[0].map(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q;return q});T=a[1];config();sameTest()});
+ Q=a[0].map(function(q,i){if(q.id===undefined)q.id=i;Qm[q.id]=q;return q});T=a[1];config();sameTest();supTest()});
 
 /* ---------- test recibido de un compañero: «hacer el mismo test» ---------- */
 function sameTest(){if(!/[?&]mismo=1/.test(location.search))return;var r=null;try{r=JSON.parse(LS.g('rx_same')||'null')}catch(e){}LS.s('rx_same','');
@@ -28,6 +28,11 @@ function sameTest(){if(!/[?&]mismo=1/.test(location.search))return;var r=null;tr
  if(list.length<3){alert('No se encontraron las preguntas de ese test');return}
  var sn=seen();list.forEach(function(q){sn[q.id]=1});jset('ex_seen',sn);
  start(list,Math.round(list.length*1.2),true,{pen:r.pen?1/r.pen:0,study:false,mode:'rnd'})}
+function supTest(){var m=/[?&]supuesto=([34])/.exec(location.search);if(!m)return;var id=(/[?&]caso=([a-z]+)/.exec(location.search)||[])[1]||null,study=/[?&]estudio=1/.test(location.search);history.replaceState(null,'',location.pathname);
+ var cs=null;try{cs=CASOS.gen(m[1],id)}catch(e){}if(!cs){alert('No se pudo generar el supuesto');return}
+ var list=cs.qs.map(function(x,i){return {id:'c:'+cs.id+':'+i,q:x.q,o:x.o,c:x.c,e:x.e,k:'b'+cs.b+'caso',cs:cs.title,n:i+1,x:0,i:0}});
+ start(list,Math.round(list.length*1.2),true,{pen:1/3,study:study,mode:'sup',parts:list.map(function(){return 2}),cs:cs})}
+function supScore(A,E,N){var d=A-E/3,M=.3*N;return d>=M?25+25*(d-M)/(N-M):25*Math.max(d,0)/M}
 function shareResult(rx){var ov=document.createElement('div');ov.className='smodal';ov.innerHTML='<div class="sbox"><button class="sx" id="shx">✕</button><h2>📤 Enviar a un compañero</h2><p class="sub">Recibirá tu nota y un botón para hacer el mismo test.</p><div id="shl"><p class="sub">Cargando…</p></div></div>';document.body.appendChild(ov);
  function close(){ov.remove()}document.getElementById('shx').onclick=close;ov.onclick=function(e){if(e.target===ov)close()};
  AUTH.api('/api/social').then(function(r){var l=document.getElementById('shl');if(!r.friends.length){l.innerHTML='<p class="sub">Aún no tienes compañeros. <a href="companeros.html">Añade alguno</a>.</p>';return}
@@ -210,7 +215,7 @@ function simScore(c){var p={1:{a:0,e:0,n:0},2:{a:0,e:0,n:0}};c.items.forEach(fun
 
 /* ---------- examen ---------- */
 function plab(list,pre){var ks={};list.forEach(function(q){if(q.k&&!q.cs)ks[q.k]=1});var k=Object.keys(ks);window.__plabel=pre+' ('+list.length+' preguntas'+(k.length&&k.length<=2?' · Tema '+k.map(function(x){return topicOf(x).t}).join(', '):k.length>2?' · '+k.length+' temas':'')+')';if(window.AUTH&&AUTH.beat)AUTH.beat()}
-function start(list,mins,shuffleOpts,o){o=o||{};var fg=flags();plab(list,o.mode==='sim'?'Haciendo un simulacro':'Haciendo un test');
+function start(list,mins,shuffleOpts,o){o=o||{};var fg=flags();plab(list,o.mode==='sim'?'Haciendo un simulacro':o.mode==='sup'?'Haciendo un supuesto práctico':'Haciendo un test');
  var items=list.map(function(q){var ord=q.o.map(function(_,i){return i});
   if(shuffleOpts&&!/anteriores|ninguna de|ambas|todas las|ninguna es|ambos/i.test(q.o.join(' ')))ord=shuf(ord);
   return {q:q,ord:ord,ans:-1,flag:!!fg[q.id],part:0}});items.forEach(function(it,i){it.part=(o.parts&&o.parts[i])||1});
@@ -252,12 +257,12 @@ function finish(auto){var c=cur;if(!c||c.done)return;c.done=true;window.__inExam
  if(qn.length>=3){var rl=[];try{rl=JSON.parse(LS.g(AUTH.key('rx_last'))||'[]')}catch(e){}rl.unshift(rx);LS.s(AUTH.key('rx_last'),JSON.stringify(rl.slice(0,10)))}
  var used=Math.round((Date.now()-c.t0)/1000),pen=c.pen?(c.pen===1/3?'1/3':'1/4'):'';
  var h='<section class="pcard res"><h2>Resultado'+(auto?' <small class="ko">(se acabó el tiempo)</small>':'')+'</h2><div class="reshero">'+ring(nota/10,nota.toFixed(2),'sobre 10',nota>=5?'okr':'kor')+'<div><div class="verdict '+(nota>=5?'ok':'ko')+'">'+(nota>=8?'¡Excelente!':nota>=5?'Aprobado':nota>=3?'Te falta un empujón':'A seguir repasando')+'</div>'
-  +(S2?'<p>Total: <b>'+S2.total.toFixed(1)+'</b> / 100 · '+(S2.ok1&&S2.ok2?'<b class="ok">APTO</b>':'<b class="ko">NO APTO</b>')+'</p>':'<p>'+(c.pen?'Puntos: <b>'+pts.toFixed(2)+'</b> sobre '+N+' <small>(= '+A+' aciertos − '+E+' errores × '+pen+')</small>':'Sin penalización: <b>'+A+'</b> de '+N)+'</p>')+(!S2&&c.pen?'<p class="sub">Sin penalización tendrías un <b>'+notaSin.toFixed(2)+'</b>.</p>':'')+'</div></div>'
+  +(S2?'<p>Total: <b>'+S2.total.toFixed(1)+'</b> / 100 · '+(S2.ok1&&S2.ok2?'<b class="ok">APTO</b>':'<b class="ko">NO APTO</b>')+'</p>':'<p>'+(c.pen?'Puntos: <b>'+pts.toFixed(2)+'</b> sobre '+N+' <small>(= '+A+' aciertos − '+E+' errores × '+pen+')</small>':'Sin penalización: <b>'+A+'</b> de '+N)+'</p>')+(!S2&&c.pen?'<p class="sub">Sin penalización tendrías un <b>'+notaSin.toFixed(2)+'</b>.</p>':'')+(c.mode==='sup'?(function(){var sp=supScore(A,E,N);return '<p>Parte práctica: <b>'+sp.toFixed(1)+'</b> / 50 · '+(sp>=25?'<b class="ok">APTO</b>':'<b class="ko">NO APTO</b>')+' <small>(mínimo 25)</small></p>'})():'')+'</div></div>'
   +(S2?'<div class="simres">'+[['Parte 1 · Teoría',S2.p1,S2.ok1],['Parte 2 · Supuesto práctico',S2.p2,S2.ok2]].map(function(r){return '<div class="sp '+(r[2]?'g':'b')+'"><b>'+r[0]+'</b><span>'+r[1].g.toFixed(1)+' / 50</span><small>'+r[1].a+' ✔ · '+r[1].e+' ✘ · '+r[1].d.toFixed(2)+' puntos directos de '+r[1].n+' (mínimo 25 / 50)</small></div>'}).join('')+'</div><p class="sub">Cada parte vale 50: 25 en el mínimo (30 % de los puntos directos) y el resto proporcional. En el examen real el supuesto solo se corrige si superas la primera parte.</p>':'')
   +'<div class="stats"><span class="ok">✔ '+A+' aciertos</span><span class="ko">✘ '+E+' errores</span><span>○ '+B+' en blanco</span><span>⏱ '+fmt(used)+'</span></div>'
   +'<h3>Por tema</h3><div class="ptl">'+Object.keys(pt).sort().map(function(k){var x=pt[k],tot=x.a+x.e+x.b,tpc=k.indexOf('caso')>0?{t:'📋',title:'Supuesto práctico'}:topicOf(k);return '<div class="wk"><div class="wkt"><b>'+tpc.t+'</b> '+esc(tpc.title.length>48?tpc.title.slice(0,46)+'…':tpc.title)+'</div><div class="wkb"><i class="'+(x.a/tot>=.75?'g':x.a/tot>=.5?'m':'b')+'" style="width:'+Math.round(x.a/tot*100)+'%"></i></div><span class="wkp">'+x.a+'/'+tot+'</span></div>'}).join('')+'</div>'
   +'<table class="pt"><tr><th>Bloque</th><th>✔</th><th>✘</th><th>○</th></tr>'+Object.keys(per).sort().map(function(b){return '<tr><td>Bloque '+b+'</td><td>'+per[b].a+'</td><td>'+per[b].e+'</td><td>'+per[b].b+'</td></tr>'}).join('')+'</table>'
-  +'<div class="row"><button id="again" class="go">Nuevo examen</button><button id="rf">Repetir solo las falladas/en blanco</button>'+(c.items.some(function(x){return x.flag})?'<button id="rm">Repasar las marcadas ⚑</button>':'')+'<button id="fcf">🃏 Flashcards de las falladas</button>'+(qn.length>=3&&window.AUTH&&AUTH.canSocial()?'<button id="shr">📤 Enviar a un compañero</button>':'')+'</div></section>';
+  +'<div class="row"><button id="again" class="go">Nuevo examen</button>'+(c.mode==='sup'?'<a class="chip go" href="practicas.html#supuestos">📋 Otro supuesto</a>':'')+'<button id="rf">Repetir solo las falladas/en blanco</button>'+(c.items.some(function(x){return x.flag})?'<button id="rm">Repasar las marcadas ⚑</button>':'')+'<button id="fcf">🃏 Flashcards de las falladas</button>'+(qn.length>=3&&window.AUTH&&AUTH.canSocial()?'<button id="shr">📤 Enviar a un compañero</button>':'')+'</div></section>';
  h+='<section class="pcard"><h2>Revisión</h2><div class="row"><label class="tchk"><input type="checkbox" id="onlyw" checked> Solo errores y en blanco</label><label class="tchk"><input type="checkbox" id="onlym"> Solo marcadas ⚑</label></div><div id="rev"></div></section>';
  app.innerHTML=h;window.scrollTo(0,0);
  function rev(){var w=$('#onlyw').checked,mk=$('#onlym').checked,L='ABCD';$('#rev').innerHTML=c.items.map(function(it,i){var q=it.q,ok=it.ans>=0&&it.ord[it.ans]===q.c;if(mk&&!it.flag)return '';if(w&&ok&&!mk)return '';

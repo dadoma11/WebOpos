@@ -1,7 +1,7 @@
 /* Compañeros de estudio: perfil con imagen, lista, presencia, estadísticas compartidas, chat y test conjuntos. */
 (function(){
 var app=document.getElementById('app'),chatw=document.getElementById('chatw'),modal=document.getElementById('modal');
-var addMsg={c:'sub',t:''},S=null,chat=null,pollS=null,pollC=null,imgCache={},MODE={rnd:'Aleatorio',srs:'Repaso',weak:'Puntos débiles',sim:'Simulacro',rep:'Repaso',flash:'Flashcards'};
+var addMsg={c:'sub',t:''},S=null,chat=null,pollS=null,pollC=null,imgCache={},MODE={rnd:'Aleatorio',srs:'Repaso',weak:'Puntos débiles',sim:'Simulacro',sup:'Supuesto',rep:'Repaso',flash:'Flashcards'};
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function api(p,o){return AUTH.api(p,o)}
