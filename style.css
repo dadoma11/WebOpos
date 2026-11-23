@@ -651,3 +651,7 @@ body:has(main.doc) .top { overflow: visible; }
 
 /* examínate: cuadro único modo+ajustes+empezar */
 #cfgcard h3{margin:1.1rem 0 .4rem;font-size:1.05rem}.modehint{margin:.6rem 0 0;padding:.55rem .75rem;border-left:3px solid var(--ac);background:rgba(127,127,127,.08);border-radius:6px}.startbar{position:sticky;bottom:0;z-index:5;margin:1rem -1rem -1rem;padding:.7rem 1rem;background:var(--card);border-top:1px solid var(--bd);border-radius:0 0 12px 12px;align-items:center}.startbar .go{flex:1 1 260px}.startbar button:disabled{opacity:.55;cursor:not-allowed}
+/* icono de Compañeros (persona con +) disponible en todas las páginas */
+.top nav a[data-i=friends]:before{--m:var(--i-friends)}
+:root{--i-friends:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='10' cy='8' r='3.4'/><path d='M3.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2M19 7.5v6M16 10.5h6'/></svg>")}
+.top nav a .nb{font-style:normal;background:#ef4444;color:#fff;border-radius:999px;font-size:.68rem;line-height:1;padding:.18rem .38rem;margin-left:.35rem;font-weight:700;opacity:1;margin-left:auto}

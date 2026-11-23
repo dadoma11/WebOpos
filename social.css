@@ -12,9 +12,6 @@
 .fn{display:flex;flex-direction:column;min-width:0;flex:1 1 140px}.fn small{color:var(--mut,#8a8f98);font-size:.8rem;overflow-wrap:anywhere}
 .fa{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}.fa button,.fa .chip{font-size:.82rem;min-height:36px}.fa .x{padding:.3rem .6rem}
 .cnt{font-style:normal;background:var(--ac);color:#fff;border-radius:999px;font-size:.72rem;padding:.05rem .45rem;margin-left:.2rem}
-.nb{font-style:normal;background:#ef4444;color:#fff;border-radius:999px;font-size:.68rem;line-height:1;padding:.18rem .38rem;margin-left:.35rem;font-weight:700}
-.top nav a[data-i=friends]:before{--m:var(--i-friends)}
-:root{--i-friends:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3.2'/><path d='M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M19 8v6M16 11h6'/></svg>")}
 .stoast{position:fixed;left:50%;bottom:5.5rem;transform:translateX(-50%);background:#111827;color:#fff;padding:.55rem 1rem;border-radius:999px;font-size:.88rem;z-index:80;box-shadow:0 6px 20px rgba(0,0,0,.35)}
 body.noscroll{overflow:hidden}
 /* chat */
