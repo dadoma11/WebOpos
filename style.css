@@ -655,3 +655,23 @@ body:has(main.doc) .top { overflow: visible; }
 .top nav a[data-i=friends]:before{--m:var(--i-friends)}
 :root{--i-friends:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='10' cy='8' r='3.4'/><path d='M3.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2M19 7.5v6M16 10.5h6'/></svg>")}
 .top nav a .nb{font-style:normal;background:#ef4444;color:#fff;border-radius:999px;font-size:.68rem;line-height:1;padding:.18rem .38rem;margin-left:.35rem;font-weight:700;opacity:1;margin-left:auto}
+/* burbuja de chat */
+.bbl{position:fixed;right:20px;bottom:20px;z-index:70;width:56px;height:56px;border-radius:50%;border:0;padding:0;display:flex;align-items:center;justify-content:center;background:var(--ac,#6d3df5);color:#fff;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.35);transition:transform .15s}
+.bbl:hover{transform:scale(1.07)}.bbl.on{background:#4a2bb0}
+.bbl .nb{position:absolute;top:-3px;right:-3px;min-width:20px;height:20px;border-radius:10px;background:#ef4444;color:#fff;font:700 11px/20px system-ui;text-align:center;padding:0 5px;font-style:normal}
+.bbl .nb[hidden]{display:none}
+.bblp{position:fixed;right:20px;bottom:88px;z-index:70;width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100dvh - 110px));background:var(--bg,#fff);border:1px solid rgba(128,128,128,.35);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.45);display:flex;flex-direction:column;overflow:hidden}
+.bblp[hidden]{display:none}
+.bblh{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--ac,#6d3df5);color:#fff}
+.bblh b{flex:1}.bblh a,.bblh button{background:none;border:0;color:#fff;font-size:17px;cursor:pointer;text-decoration:none;padding:2px 6px}
+.bblp iframe{flex:1;border:0;width:100%;background:transparent}
+body.focus .bbl,body.focus .bblp{display:none}
+@media(max-width:560px){.bblp{right:8px;bottom:80px}.bbl{right:12px;bottom:12px}}
+html.embed .top,html.embed .ban,html.embed .bbl,html.embed .bblp{display:none!important}
+html.embed main{padding:8px!important;margin:0!important;max-width:none!important}
+html.embed .cbox{max-width:none}
+html.embed #app{display:flex;flex-direction:column}
+html.embed #app>.prof{display:none}
+html.embed #app>section:nth-of-type(n){order:5}
+html.embed .lgo,html.embed .side,html.embed footer{display:none!important}
+html.embed #app>.rq{order:1}html.embed #app>.fl{order:2}

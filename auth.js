@@ -37,6 +37,7 @@ var AUTH=window.AUTH={
 };
 var isLogin=/login\.html$/.test(location.pathname);
 var s=session();
+var EMB=/[?&]embed=1/.test(location.search)&&window!==window.top;if(EMB){document.documentElement.classList.add('embed');var bs=document.createElement('base');bs.target='_top';document.head.appendChild(bs)}
 if(!isLogin&&!s){location.replace(ROOT+'login.html?next='+encodeURIComponent(location.pathname.split('/').pop()+location.search+location.hash));document.documentElement.style.visibility='hidden';return}
 if(isLogin&&s){var nx=new URLSearchParams(location.search).get('next');if(!nx||/^(https?:)?\/\//.test(nx)||nx.indexOf('..')>=0)nx='index.html';location.replace(ROOT+nx);return}
 if(!isLogin&&!/sync\.html$/.test(location.pathname)&&(REMOTE||LS.g('tai_token'))){var sc=document.createElement('script');sc.src=ROOT+'sync.js';document.head.appendChild(sc)}
@@ -46,7 +47,8 @@ document.addEventListener('DOMContentLoaded',function(){var nav=document.querySe
  [['examinate.html','📝 Examínate'],['laboratorio.html','🧪 Lab SQL'],['sync.html','☁ Sync']].forEach(function(p){if(has(p[0]))return;var a=document.createElement('a');a.href=ROOT+p[0];a.textContent=p[1];nav.insertBefore(a,th)});
  if(REMOTE&&!s.offline&&!has('companeros.html')){var fa=document.createElement('a');fa.href=ROOT+'companeros.html';fa.setAttribute('data-i','friends');fa.textContent='Compañeros';var sy=has('sync.html');nav.insertBefore(fa,sy||th)}
  var fl=has('companeros.html');if(fl&&!fl.querySelector('.nb')){var nb=document.createElement('i');nb.className='nb';nb.hidden=true;fl.appendChild(nb)}
- function setBadge(n){var e=nav.querySelector('.nb');if(e){e.textContent=n>9?'9+':n;e.hidden=!n}}
+ function setBadge(n){document.querySelectorAll('.nb').forEach(function(e){e.textContent=n>9?'9+':n;e.hidden=!n})}
+ if(REMOTE&&!s.offline&&!EMB&&!/(companeros|sala)\.html$/.test(location.pathname)){var bj=document.createElement('script');bj.src=ROOT+'bubble.js';document.body.appendChild(bj)}
  function updateNavigation(){
   var pathname=location.pathname, page=pathname.split('/').pop()||'index.html';
   var topic=!!document.querySelector('.doc');
@@ -63,7 +65,7 @@ document.addEventListener('DOMContentLoaded',function(){var nav=document.querySe
  updateNavigation();
  window.addEventListener('hashchange',updateNavigation);
  var b=document.createElement('button');b.className='lgo';b.title='Cerrar sesión (borra el laboratorio)';b.innerHTML='Salir<span class="un"> · </span><span class="un"></span>';b.lastChild.textContent=(REMOTE?s.name:users()[s.user].name);b.onclick=function(){AUTH.logout()};nav.appendChild(b)
- if(REMOTE&&!s.offline){var lastBeat=0;
+ if(REMOTE&&!s.offline&&!EMB){var lastBeat=0;
   function plabel(){if(window.__plabel)return String(window.__plabel);var p=location.pathname;
    if(/\/t\/[^\/]+\.html$/.test(p)){var h=document.querySelector('main h1,.doc h1,h1'),tt=document.title.replace(/\s*·\s*Oposiciones TAI\s*$/,''),ht=h?h.textContent.trim():'';return 'Repasando '+tt+(ht?': '+ht:'')}
    if(/examinate/.test(p))return 'En Examínate';if(/laboratorio/.test(p))return 'En el Lab SQL';if(/practicas/.test(p))return 'En Prácticas';if(/sala\.html/.test(p))return 'En un test conjunto';return ''}
