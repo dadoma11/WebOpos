@@ -23,6 +23,8 @@ function tbl(name,cols,rows,pk,fk){return {name:name,cols:cols,rows:rows,pk:pk||
 function sq(x){return '<code>'+esc(x)+'</code>'}
 function qry(goal,ok,bad,e){return mk(goal,sq(ok),bad.map(sq),e)}
 function qrys(goal,ok,okSig,cands,e){var k=JSON.stringify(okSig),bad=cands.filter(function(c){return JSON.stringify(c[1])!==k}).map(function(c){return c[0]});if(bad.length<3)throw new Error('distractores insuficientes');return qry(goal,ok,take(bad,3),e)}
+function cmd(lines){return '<code>'+lines.map(esc).join('<br>')+'</code>'}
+function qc(goal,ok,bad,e){return mk(goal,cmd(ok),bad.map(cmd),e)}
 function cnt(a,f){return a.filter(f).length}
 function uniqN(a){var o={};a.forEach(function(x){o[x]=1});return Object.keys(o).length}
 function topBy(a,key,dir){var m=null,r=[];a.forEach(function(x){var v=key(x);if(m===null||(dir>0?v>m:v<m)){m=v;r=[x]}else if(v===m)r.push(x)});return r.length===1?r[0]:null}
@@ -197,6 +199,36 @@ function genRed(){
   var free=256-(order.reduce(function(a,o){return a+o.size},0)+4);
   dyn.push(nq('Tras repartir las '+nd+' VLAN y el enlace WAN de '+base+'/24, ¿cuántas direcciones quedan libres sin asignar?',free,[free+4,Math.max(0,free-4),free+16],'256 − ('+order.map(function(o){return o.size}).join(' + ')+' + 4) = '+free+'.'));
   dyn.push(mk('¿Qué subred se asigna a la VLAN '+esc(order[1].n)+' siguiendo VLSM de mayor a menor?',IPs(order[1].net)+'/'+order[1].p,[IPs(order[1].net+order[1].size)+'/'+order[1].p,IPs(order[1].net-order[1].size)+'/'+order[1].p,IPs(order[1].net)+'/'+(order[1].p+1)],'Cada bloque empieza donde acaba el anterior: tras '+esc(A.n)+' ('+IPs(A.net)+'/'+A.p+').'));
+  // ---- preguntas de configuración (qué comando / qué configuración)
+  var sv=pick(order),sw=IPs((~maskOf(sv.p))>>>0),sm=IPs(maskOf(sv.p)),gw=IPs(sv.net+1),ov=order.filter(function(o){return o!==sv}),ov1=pick(ov);
+  dyn.push(qc('Se configura el router (router on a stick) para la VLAN '+sv.vlan+' ('+esc(sv.n)+', '+IPs(sv.net)+'/'+sv.p+'), con la primera dirección útil como puerta de enlace. ¿Qué configuración de subinterfaz es correcta?',
+    ['interface GigabitEthernet0/0.'+sv.vlan,' encapsulation dot1Q '+sv.vlan,' ip address '+gw+' '+sm],
+    [['interface GigabitEthernet0/0.'+sv.vlan,' encapsulation dot1Q '+ov1.vlan,' ip address '+gw+' '+sm],['interface GigabitEthernet0/0.'+sv.vlan,' encapsulation dot1Q '+sv.vlan,' ip address '+IPs(sv.net)+' '+sm],['interface GigabitEthernet0/0.'+sv.vlan,' encapsulation dot1Q '+sv.vlan,' ip address '+gw+' '+sw],['interface GigabitEthernet0/0.'+sv.vlan,' switchport access vlan '+sv.vlan,' ip address '+gw+' '+sm]].slice(0,4),
+    'Cada subinterfaz lleva el VID en encapsulation dot1Q, la primera dirección útil como puerta de enlace y la máscara de la subred (no la wildcard). switchport access vlan es de conmutador, no de router.'));
+  var aw=IPs((~maskOf(A.p))>>>0),bw=IPs((~maskOf(B.p))>>>0);
+  dyn.push(qc('Se quiere denegar el tráfico de la VLAN '+esc(B.n)+' ('+IPs(B.net)+'/'+B.p+') hacia la VLAN '+esc(A.n)+' ('+IPs(A.net)+'/'+A.p+') y permitir todo lo demás. ¿Qué ACL extendida lo consigue?',
+    ['access-list 101 deny ip '+IPs(B.net)+' '+bw+' '+IPs(A.net)+' '+aw,'access-list 101 permit ip any any'],
+    [['access-list 101 deny ip '+IPs(B.net)+' '+IPs(maskOf(B.p))+' '+IPs(A.net)+' '+IPs(maskOf(A.p)),'access-list 101 permit ip any any'],['access-list 101 permit ip any any','access-list 101 deny ip '+IPs(B.net)+' '+bw+' '+IPs(A.net)+' '+aw],['access-list 101 deny ip '+IPs(B.net)+' '+bw+' '+IPs(A.net)+' '+aw],['access-list 101 deny ip '+IPs(A.net)+' '+aw+' '+IPs(B.net)+' '+bw,'access-list 101 permit ip any any']],
+    'Las ACL usan máscara wildcard (inversa), se evalúan en orden y terminan en un «deny any» implícito, por eso hace falta el permit final después del deny.'));
+  var pv=pick(order),puerto='FastEthernet0/'+ri(2,20);
+  dyn.push(qc('Se conecta un PC de la VLAN '+pv.vlan+' ('+esc(pv.n)+') al puerto '+puerto+' del conmutador. ¿Qué configuración es la correcta?',
+    ['interface '+puerto,' switchport mode access',' switchport access vlan '+pv.vlan],
+    [['interface '+puerto,' switchport mode trunk',' switchport trunk allowed vlan '+pv.vlan],['interface '+puerto,' switchport mode access',' switchport trunk native vlan '+pv.vlan],['interface '+puerto,' ip address '+IPs(pv.net+1)+' '+IPs(maskOf(pv.p)),' no switchport'],['interface vlan '+pv.vlan,' switchport mode access',' switchport access vlan '+pv.vlan]],
+    'Un puerto de acceso pertenece a una sola VLAN: switchport mode access + switchport access vlan N. El modo trunk es para enlaces entre conmutadores o hacia el router.'));
+  var tv=take(order,2).map(function(o){return o.vlan}).sort(function(x,y){return x-y});
+  dyn.push(qc('El enlace entre el conmutador y el router solo debe transportar las VLAN '+tv[0]+' y '+tv[1]+'. ¿Qué configuración se aplica en el puerto del conmutador?',
+    ['interface GigabitEthernet0/1',' switchport mode trunk',' switchport trunk allowed vlan '+tv[0]+','+tv[1]],
+    [['interface GigabitEthernet0/1',' switchport mode access',' switchport access vlan '+tv[0]+','+tv[1]],['interface GigabitEthernet0/1',' switchport mode trunk',' switchport trunk native vlan '+tv[0]+','+tv[1]],['interface GigabitEthernet0/1',' switchport mode trunk',' switchport access vlan '+tv[0]],['interface GigabitEthernet0/1',' switchport mode trunk',' no switchport trunk allowed vlan '+tv[0]+','+tv[1]]],
+    'En un trunk se limitan las VLAN transportadas con switchport trunk allowed vlan. La VLAN nativa es la que viaja sin etiquetar, no la lista de permitidas.'));
+  var cv=pick(order.slice(1)),dh=IPs(order[0].net+2),cgw=IPs(cv.net+1);
+  dyn.push(qc('El servidor DHCP ('+dh+') está en la VLAN '+order[0].vlan+' y los clientes de la VLAN '+cv.vlan+' ('+esc(cv.n)+') no reciben IP. ¿Qué se configura y dónde?',
+    ['interface GigabitEthernet0/0.'+cv.vlan,' ip helper-address '+dh],
+    [['interface GigabitEthernet0/0.'+order[0].vlan,' ip helper-address '+cgw],['interface GigabitEthernet0/0.'+cv.vlan,' ip dhcp pool '+dh],['interface GigabitEthernet0/0.'+cv.vlan,' ip route 0.0.0.0 0.0.0.0 '+dh],['interface GigabitEthernet0/0.'+cv.vlan,' ip nat inside source static '+dh]],
+    'Los clientes están en otra VLAN: el relay (ip helper-address con la IP del servidor) se pone en la interfaz del router de la VLAN de los clientes. Ponerlo en la VLAN del servidor no ayuda a los clientes.'));
+  dyn.push(qc('Las VLAN deben salir a Internet con la IP pública del enlace WAN (GigabitEthernet0/1) compartida. ¿Qué configuración de NAT es la correcta?',
+    ['access-list 1 permit '+base+' 0.0.0.255','ip nat inside source list 1 interface GigabitEthernet0/1 overload'],
+    [['access-list 1 permit '+base+' 255.255.255.0','ip nat inside source list 1 interface GigabitEthernet0/1 overload'],['access-list 1 permit '+base+' 0.0.0.255','ip nat inside source list 1 interface GigabitEthernet0/1'],['access-list 1 permit '+base+' 0.0.0.255','ip nat outside source list 1 interface GigabitEthernet0/1 overload'],['access-list 1 deny '+base+' 0.0.0.255','ip nat inside source list 1 interface GigabitEthernet0/1 overload']],
+    'PAT necesita la ACL con wildcard que selecciona las redes internas y la palabra overload para compartir una sola IP por puertos; se traduce el origen de dentro hacia fuera (inside source).'));
   return {id:'red',b:4,title:'Red de la nueva delegación provincial',enun:enun,db:null,qs:chooseMix(fixed,dyn,20)}}
 
 /* ================= BLOQUE IV · servidores ================= */
@@ -235,6 +267,26 @@ function genServidores(){
   dyn.push(mk('Con umask 0'+pad(um)+', ¿qué permisos tendrá un fichero nuevo creado con los permisos base 666?',fm,[dm,(0o666&~parseInt(String(um===22?2:22),8)).toString(8),(0o666&~parseInt('077',8)).toString(8)],'666 con la máscara '+pad(um)+' = '+fm+'; los directorios (base 777) quedarían en '+dm+'.'));
   var mi=pick([0,15,30,45]),h=ri(1,5),dw=pick([['1-5','de lunes a viernes'],['0','los domingos'],['6','los sábados'],['*','todos los días']]);
   dyn.push(mk('¿Cuándo se ejecuta la tarea de cron «'+mi+' '+h+' * * '+dw[0]+'»?','A las '+pad(h)+':'+pad(mi)+' '+dw[1],['A las '+pad(mi)+':'+pad(h)+' '+dw[1],'A las '+pad(h)+':'+pad(mi)+' el día '+dw[0].replace(/\D.*/,'')+' de cada mes','Cada '+(mi||5)+' minutos a partir de las '+pad(h)+':00'],'Orden de campos: minuto, hora, día del mes, mes, día de la semana.'));
+  // ---- preguntas de configuración
+  var rs=pick(S.filter(function(x){return x.l!==1||true})),dev=function(n){var l='bcdefghijkl'.split('').slice(0,n).map(function(c){return '/dev/sd'+c});return l.join(' ')};
+  var mdOk='mdadm --create /dev/md0 --level='+rs.l+' --raid-devices='+rs.nd+' '+dev(rs.nd);
+  var lvOther=[0,1,5,6,10].filter(function(x){return x!==rs.l&&(rs.nd>=(x===6||x===10?4:x===1?2:3))});
+  dyn.push(qc('En '+rs.n+' se monta el RAID '+rs.l+' por software con '+rs.nd+' discos. ¿Qué comando mdadm lo crea?',[mdOk],
+    [['mdadm --create /dev/md0 --level='+pick(lvOther.length?lvOther:[0])+' --raid-devices='+rs.nd+' '+dev(rs.nd)],['mdadm --create /dev/md0 --level='+rs.l+' --raid-devices='+(rs.nd+1)+' '+dev(rs.nd)],['mdadm --assemble /dev/md0 --level='+rs.l+' --raid-devices='+rs.nd+' '+dev(rs.nd)],['mdadm --create /dev/md0 --level='+rs.l+' --raid-devices='+rs.nd]],
+    'mdadm --create indica el nivel y el número de discos, y hay que listar tantos dispositivos como --raid-devices. --assemble reensambla un RAID que ya existe.'));
+  var pr=[[6,4,0,'rw-','r--','---'],[6,4,4,'rw-','r--','r--'],[7,5,5,'rwx','r-x','r-x'],[6,6,0,'rw-','rw-','---'],[7,5,0,'rwx','r-x','---'],[6,0,0,'rw-','---','---']];
+  var pp=pick(pr),pn2=''+pp[0]+pp[1]+pp[2],fname=pick(['config.yml','backup.sh','/etc/app/db.conf','/srv/datos/informe.ods']),words={'rw-':'lectura y escritura','r--':'solo lectura','rwx':'lectura, escritura y ejecución','r-x':'lectura y ejecución','---':'ningún permiso'};
+  var wrongM=function(n){return 'chmod '+n+' '+fname};
+  dyn.push(mk('Se quiere que '+fname+' tenga: propietario con '+words[pp[3]]+', grupo con '+words[pp[4]]+' y otros con '+words[pp[5]]+'. ¿Qué comando lo establece?',sq(wrongM(pn2)),[sq(wrongM(''+pp[2]+pp[1]+pp[0])),sq(wrongM(''+pp[0]+pp[0]+pp[2])===sq(wrongM(pn2))?wrongM('644'):wrongM(''+pp[0]+pp[0]+pp[2])),sq(wrongM(''+(pp[0]^1)+pp[1]+pp[2]))].filter(function(x,i,ar){return x!==sq(wrongM(pn2))&&ar.indexOf(x)===i}).concat([sq(wrongM('777')),sq('chown '+pn2+' '+fname)]),'Cada dígito octal suma r=4, w=2, x=1 y se escribe en el orden propietario-grupo-otros: '+pn2+'. chown cambia el propietario, no los permisos.'));
+  var cm=pick([0,10,20,30,45]),ch=ri(1,5),cd=pick([['1-5','de lunes a viernes'],['0','los domingos'],['6','los sábados'],['*','todos los días']]);
+  dyn.push(qc('Se quiere lanzar el script /opt/backup.sh '+cd[1]+' a las '+pad(ch)+':'+pad(cm)+'. ¿Qué línea de crontab es la correcta?',
+    [cm+' '+ch+' * * '+cd[0]+' /opt/backup.sh'],
+    [[ch+' '+cm+' * * '+cd[0]+' /opt/backup.sh'],[cm+' '+ch+' '+(cd[0]==='*'?'1':cd[0].replace(/\D.*/,''))+' * * /opt/backup.sh'],['*/'+(cm||5)+' '+ch+' * * '+cd[0]+' /opt/backup.sh'],[cm+' * '+ch+' * '+cd[0]+' /opt/backup.sh']],
+    'Campos: minuto, hora, día del mes, mes y día de la semana. El orden minuto-hora es el que se confunde con más frecuencia.'));
+  var vm=pick(['sshd','nginx','chronyd','rsyslog']);
+  dyn.push(qc('En un servidor RHEL se quiere arrancar el servicio '+vm+' ahora y que se inicie automáticamente en cada arranque. ¿Qué comando lo hace?',['systemctl enable --now '+vm],
+    [['systemctl start '+vm],['systemctl enable '+vm+' --no-start && systemctl mask '+vm],['service '+vm+' restart && chkconfig '+vm+' off'],['systemctl daemon-reload '+vm]],
+    'enable crea el enlace para el arranque y --now lo inicia también en el momento. start solo arranca el servicio hasta el siguiente reinicio.'));
   return {id:'servidores',b:4,title:'Sala de servidores del organismo',enun:enun,db:null,qs:chooseMix(fixed,dyn,20)}}
 
 
@@ -403,6 +455,20 @@ function genCPD(){
   dyn.push(mk('El CPD debe garantizar una disponibilidad del '+String(pa).replace('.',',')+' % anual. ¿Cuánta indisponibilidad admite aproximadamente?','Unas '+dtxt,take(pw,3).map(function(x){return 'Unas '+x}),'(100 − '+pa+') % de 8760 h = '+dtxt+'.'));
   var fl=ri(2,4),inc=R()<.5;
   dyn.push(nq('Copias: completa el domingo y '+(inc?'incrementales':'diferenciales')+' de lunes a sábado. Si el sistema falla el '+DAYN[fl]+' por la mañana, ¿cuántos juegos de copias hay que restaurar?',inc?1+fl:2,[1,2,3,4,5],inc?'La completa y cada incremental hasta el día anterior.':'La completa y la última diferencial.'));
+  var cq=ri(0,3),cvl=10*(cq+1),cg=IPs(subs[cq]+1),cmsk=IPs(maskOf(subP)),cwl=IPs((~maskOf(subP))>>>0),otherQ=(cq+1)%4;
+  dyn.push(qc('En el router Cisco del CPD, ¿qué configuración crea la subinterfaz de la VLAN '+cvl+' ('+IPs(subs[cq])+'/'+subP+') usando la primera dirección útil como puerta de enlace?',
+    ['interface GigabitEthernet0/0.'+cvl,' encapsulation dot1Q '+cvl,' ip address '+cg+' '+cmsk],
+    [['interface GigabitEthernet0/0.'+cvl,' encapsulation dot1Q '+(10*(otherQ+1)),' ip address '+cg+' '+cmsk],['interface GigabitEthernet0/0.'+cvl,' encapsulation dot1Q '+cvl,' ip address '+cg+' '+cwl],['interface GigabitEthernet0/0.'+cvl,' encapsulation dot1Q '+cvl,' ip address '+IPs(subs[cq])+' '+cmsk],['interface GigabitEthernet0/0.'+cvl,' switchport access vlan '+cvl,' ip address '+cg+' '+cmsk]],
+    'La subinterfaz usa encapsulation dot1Q con el VID, la primera dirección útil y la máscara (no la wildcard).'));
+  var dv=[]; for(var di=0;di<nd;di++)dv.push('/dev/sd'+'bcdefghij'[di]);
+  var lvl=[1,5,6,10].filter(function(x){return x!==rd});
+  dyn.push(qc('El almacenamiento del CPD usa RAID '+rd+' con '+nd+' discos. ¿Qué comando de RHEL crea el volumen RAID por software?',['mdadm --create /dev/md0 --level='+rd+' --raid-devices='+nd+' '+dv.join(' ')],
+    [['mdadm --create /dev/md0 --level='+pick(lvl)+' --raid-devices='+nd+' '+dv.join(' ')],['mdadm --create /dev/md0 --level='+rd+' --raid-devices='+(nd+1)+' '+dv.join(' ')],['mdadm --assemble /dev/md0 --level='+rd+' '+dv.join(' ')],['lvcreate --type raid'+rd+' /dev/md0']],
+    'mdadm --create indica nivel y número de dispositivos; --assemble solo reensambla uno existente y lvcreate trabaja sobre volúmenes LVM, no crea el RAID.'));
+  var lvs=pick([5,10,20]);
+  dyn.push(qc('Se amplía el volumen lógico /dev/vg_datos/lv_app (sistema XFS montado en /srv/app) en '+lvs+' GB. ¿Qué secuencia es correcta?',['lvextend -L +'+lvs+'G /dev/vg_datos/lv_app','xfs_growfs /srv/app'],
+    [['lvextend -L '+lvs+'G /dev/vg_datos/lv_app','resize2fs /srv/app'],['xfs_growfs /srv/app','lvextend -L +'+lvs+'G /dev/vg_datos/lv_app'],['lvreduce -L +'+lvs+'G /dev/vg_datos/lv_app','xfs_growfs /srv/app'],['vgextend -L +'+lvs+'G /dev/vg_datos/lv_app','xfs_repair /srv/app']],
+    'Primero se amplía el volumen lógico con lvextend (+ añade espacio en vez de fijar el tamaño) y después se crece el sistema de ficheros XFS con xfs_growfs; resize2fs es para ext4.'));
   return {id:'cpd',b:4,title:sis+': CPD con Windows Server, RHEL y red segmentada ('+min+')',enun:enun,db:null,qs:chooseMix(fixed,dyn,20)}}
 
 var GEN={prestamos:genPrestamos,pedidos:genPedidos,desarrollo:genDesarrollo,red:genRed,servidores:genServidores,cpd:genCPD};
