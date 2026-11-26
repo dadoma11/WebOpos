@@ -6,7 +6,7 @@ function show(z,keep){var b=z==='s';$('zp').hidden=b;$('zs').hidden=!b;$('tzp').
 $('tzp').onclick=function(){show('p')};$('tzs').onclick=function(){show('s')};
 function bloque(){return document.querySelector('input[name=sb]:checked').value}
 function fill(){var b=bloque(),l=window.CASOS?CASOS.info.filter(function(c){return String(c.b)===b}):[];$('scase').innerHTML='<option value="">Aleatorio (uno distinto cada vez)</option>'+l.map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.t)+(c.db?' · con base de datos':'')+'</option>'}).join('');lab()}
-function lab(){var o=$('scase'),t=o.value?o.options[o.selectedIndex].text.replace(/ · con base de datos$/,''):'Bloque '+(bloque()==='3'?'III':'IV')+' al azar';$('sgo').textContent='▶ Empezar · '+t+' · 20 preguntas · 24 min'}
+function lab(){var o=$('scase'),t=o.value?o.options[o.selectedIndex].text.replace(/ · con base de datos$/,''):'Bloques II + '+(bloque()==='3'?'III':'IV')+' al azar';$('sgo').textContent='▶ Empezar · '+t+' · 20 preguntas · 24 min'}
 document.querySelectorAll('input[name=sb]').forEach(function(r){r.onchange=fill});$('scase').onchange=lab;
 $('sgo').onclick=function(){var u='examinate.html?supuesto='+bloque()+($('scase').value?'&caso='+encodeURIComponent($('scase').value):'')+($('sest').checked?'&estudio=1':'');location.href=u};
 function hist(){var l=[];try{l=JSON.parse(localStorage.getItem(AUTH.key('ex_hist'))||'[]')}catch(e){}l=l.filter(function(x){return x.m==='sup'}).slice(-8).reverse();if(!l.length)return;

@@ -30,7 +30,7 @@ function sameTest(){if(!/[?&]mismo=1/.test(location.search))return;var r=null;tr
  start(list,Math.round(list.length*1.2),true,{pen:r.pen?1/r.pen:0,study:false,mode:'rnd'})}
 function supTest(){var m=/[?&]supuesto=([34])/.exec(location.search);if(!m)return;var id=(/[?&]caso=([a-z]+)/.exec(location.search)||[])[1]||null,study=/[?&]estudio=1/.test(location.search);history.replaceState(null,'',location.pathname);
  var cs=null;try{cs=CASOS.gen(m[1],id)}catch(e){}if(!cs){alert('No se pudo generar el supuesto');return}
- var list=cs.qs.map(function(x,i){return {id:'c:'+cs.id+':'+i,q:x.q,o:x.o,c:x.c,e:x.e,k:'b'+cs.b+'caso',cs:cs.title,n:i+1,x:0,i:0}});
+ var list=cs.qs.map(function(x,i){return {id:'c:'+cs.id+':'+i,q:x.q,o:x.o,c:x.c,e:x.e,k:'b'+cs.b+'caso',cs:cs.title,n:i+1,bl:x.b2?'II':(cs.b===3?'III':'IV'),x:0,i:0}});
  start(list,Math.round(list.length*1.2),true,{pen:1/3,study:study,mode:'sup',parts:list.map(function(){return 2}),cs:cs})}
 function supScore(A,E,N){var d=A-E/3,M=.3*N;return d>=M?25+25*(d-M)/(N-M):25*Math.max(d,0)/M}
 function shareResult(rx){var ov=document.createElement('div');ov.className='smodal';ov.innerHTML='<div class="sbox"><button class="sx" id="shx">✕</button><h2>📤 Enviar a un compañero</h2><p class="sub">Recibirá tu nota y un botón para hacer el mismo test.</p><div id="shl"><p class="sub">Cargando…</p></div></div>';document.body.appendChild(ov);
@@ -109,8 +109,8 @@ function config(){window.__plabel='';var mm=document.querySelector('main');if(mm
  h+='<section class="pcard" id="cfgcard"><h2>¿Qué quieres hacer?</h2><div class="modes">'+MODES.map(function(m){return '<label class="mode"><input type="radio" name="mode" value="'+m[0]+'"'+(m[0]===mode?' checked':'')+'><span class="mc"><span class="mi">'+m[1]+'</span><b>'+m[2]+'</b><small>'+m[3]+'</small></span></label>'}).join('')+'</div><p class="sub modehint" id="modehint"></p>';
  /* simulacro */
  h+='<div id="secsim" hidden><h3>🏛 Simulacro del examen oficial</h3><p class="sub">Un solo ejercicio de <b>120 min</b> con dos partes. Cada parte se puntúa de 0 a 50 y necesitas 25 en cada una.</p>'
-  +'<div class="simparts"><div class="sp"><b>Parte 1 · Teoría</b><span>80 preguntas</span><small>Los 4 bloques (22 · 12 · 22 · 24 según nº de temas) · cada error resta 1/3</small></div><div class="sp"><b>Parte 2 · Supuesto práctico</b><span>20 preguntas</span><small>Al final, del bloque que elijas · cada error resta 1/3</small></div></div>'
-  +'<h3>Supuesto práctico</h3><div class="seg big"><label><input type="radio" name="sup" value="3"'+(sc.sup!=='4'?' checked':'')+'><span><b>Bloque III</b><small>Desarrollo de sistemas</small></span></label><label><input type="radio" name="sup" value="4"'+(sc.sup==='4'?' checked':'')+'><span><b>Bloque IV</b><small>Sistemas y comunicaciones</small></span></label></div>'
+  +'<div class="simparts"><div class="sp"><b>Parte 1 · Teoría</b><span>80 preguntas</span><small>Los 4 bloques (21 · 14 · 21 · 24 según nº de temas del programa 2026) · cada error resta 1/3</small></div><div class="sp"><b>Parte 2 · Supuesto práctico</b><span>20 preguntas</span><small>Un caso a elegir entre dos: bloques II + III o II + IV · cada error resta 1/3</small></div></div>'
+  +'<h3>Supuesto práctico</h3><div class="seg big"><label><input type="radio" name="sup" value="3"'+(sc.sup!=='4'?' checked':'')+'><span><b>Bloques II + III</b><small>Tecnología básica + Desarrollo de sistemas</small></span></label><label><input type="radio" name="sup" value="4"'+(sc.sup==='4'?' checked':'')+'><span><b>Bloques II + IV</b><small>Tecnología básica + Sistemas y comunicaciones</small></span></label></div>'
   +'<label class="f" style="margin-top:.6rem;max-width:460px">Caso práctico<select id="casesel"></select></label>'
   +'<h3>Dificultad de la teoría</h3><div class="seg"><label><input type="radio" name="dif" value="easy"'+(sc.dif==='easy'?' checked':'')+'><span>Más fáciles</span></label><label><input type="radio" name="dif" value="mid"'+(!sc.dif||sc.dif==='mid'?' checked':'')+'><span>Equilibrada</span></label><label><input type="radio" name="dif" value="hard"'+(sc.dif==='hard'?' checked':'')+'><span>Más difíciles</span></label></div><p class="sub">Fáciles, medias y difíciles van intercaladas. La dificultad se estima por la redacción de la pregunta y, si ya la has contestado, por tus fallos.</p>'
   +'<p class="sub">Puntuación: acierto +1, error −1/3, blanco 0. Las notas de corte de la última convocatoria (2026) quedaron en 24 puntos directos en teoría y 9,67 en el supuesto; aquí se usa el 30 % de cada parte como mínimo (24 y 6).</p>'
@@ -203,11 +203,11 @@ function pickMix(arr,n,mix){n=Math.min(n,arr.length);var lv=levelsOf(arr),q=mix.
  return out}
 function weave(lv){var tot=lv.map(function(x){return x.length}),N=tot[0]+tot[1]+tot[2],tk=[0,0,0],res=[];
  for(var i=0;i<N;i++){var b=-1,bd=-9;for(var l=0;l<3;l++){if(tk[l]>=tot[l])continue;var d=tot[l]*(i+1)/N-tk[l]+Math.random()*.01;if(d>bd){bd=d;b=l}}res.push(lv[b][tk[l=b]++])}return res}
-function simBuild(o){var mix=MIX[o.dif]||MIX.mid,alloc={1:22,2:12,3:22,4:24},t1=[],used={};
+function simBuild(o){var mix=MIX[o.dif]||MIX.mid,alloc={1:21,2:14,3:21,4:24},t1=[],used={};
  var lv1=[[],[],[]];[1,2,3,4].forEach(function(b){var pool=Q.filter(function(q){return q.k.charAt(1)==b}),r=pickMix(pool,alloc[b],mix);r.forEach(function(x,i){x.forEach(function(q){used[q.id]=1});lv1[i]=lv1[i].concat(x)})});
  var p1=weave(lv1.map(shuf));
  var cs=CASOS.gen(o.sup,o.cs||null);
- var p2=cs.qs.map(function(x,i){return {id:'c:'+cs.id+':'+i,q:x.q,o:x.o,c:x.c,e:x.e,k:'b'+cs.b+'caso',cs:cs.title,n:i+1,x:0,i:0}});
+ var p2=cs.qs.map(function(x,i){return {id:'c:'+cs.id+':'+i,q:x.q,o:x.o,c:x.c,e:x.e,k:'b'+cs.b+'caso',cs:cs.title,n:i+1,bl:x.b2?'II':(cs.b===3?'III':'IV'),x:0,i:0}});
  return {list:p1.concat(p2),parts:p1.map(function(){return 1}).concat(p2.map(function(){return 2})),cs:cs}}
 function simulacro(o){var r=simBuild(o),sn=seen();r.list.forEach(function(q){sn[q.id]=1});jset('ex_seen',sn);
  start(r.list,120,true,{pen:1/3,study:false,mode:'sim',parts:r.parts,sim:o,cs:r.cs})}
@@ -234,7 +234,7 @@ function render(){var c=cur,it=c.items[c.i],L='ABCD',q=it.q,lock=c.study&&it.ans
  var h='<div class="exbar"><b>Pregunta '+(c.i+1)+' / '+c.items.length+'</b><span>'+ans+' contestadas'+(nfl?' · ⚑ '+nfl:'')+'</span><span class="clk">⏱ <b id="clock">'+fmt(Math.abs(c.left))+'</b>'+(c.total?'':' (sin límite)')+'</span><button id="fin" class="go">Terminar</button></div><div class="pbar"><i style="width:'+(ans/c.items.length*100)+'%"></i></div>';
  h+='<div class="qgrid">'+c.items.map(function(x,i){var st='';if(c.study&&x.ans>=0)st=x.ord[x.ans]===x.q.c?' okk':' koo';return '<button class="qn'+(x.part===2?' p2':'')+(i===c.i?' cur':'')+(x.ans>=0?' ans':'')+st+(x.flag?' flg':'')+'" data-i="'+i+'">'+(i+1)+'</button>'}).join('')+'</div>';
  var tp=topicOf(q.k),h0=h;h='';
- h+='<section class="pcard qcard"><div class="qmeta">'+(c.sim?'<i class="ptag">'+(it.part===2?'Parte 2 · Supuesto práctico':'Parte 1 · Teoría')+'</i> ':'')+(q.cs?'<b>'+esc(q.cs)+'</b> · pregunta '+q.n+' de 20':'B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>')+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
+ h+='<section class="pcard qcard"><div class="qmeta">'+(c.sim?'<i class="ptag">'+(it.part===2?'Parte 2 · Supuesto práctico':'Parte 1 · Teoría')+'</i> ':'')+(q.cs?'<b>'+esc(q.cs)+'</b> · pregunta '+q.n+' de 20'+(q.bl?' · Bloque '+q.bl:''):'B'+q.k.charAt(1)+' · Tema '+tp.t+' · <b>'+esc(tshort(q.k))+'</b>')+(q.x?' <i class="E">EXAMEN</i>':'')+(q.i?' <i class="I">IMPORTANTE</i>':'')+'</div><p class="qq">'+q.q+'</p><div class="opts">'
   +it.ord.map(function(oi,p){var cl=it.ans===p?' sel':'';if(lock){if(oi===q.c)cl=' good';else if(it.ans===p)cl=' bad'}return '<div class="opt'+cl+'"><button class="pick" data-p="'+p+'"><span class="L">'+L[p]+'</span><span class="ot">'+q.o[oi]+'</span></button></div>'}).join('')
   +'</div>';
  if(lock)h+='<div class="fb '+(it.ord[it.ans]===q.c?'g':'b')+'"><img class="owl" src="img/owl-'+(it.ord[it.ans]===q.c?'ok':'ko')+'.webp" alt="" width="56" height="56"><b>'+(it.ord[it.ans]===q.c?'✔ Correcto':'✘ Incorrecto')+'</b> '+det(q)+' '+qa(q)+'</div>';
