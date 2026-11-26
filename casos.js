@@ -15,8 +15,29 @@ function nq(text,n,cands,e,suf){suf=suf||'';return mk(text,n+suf,near(n,cands).m
 function pad(n){return n<10?'0'+n:''+n}
 function dstr(y,m,d){return y+'-'+pad(m)+'-'+pad(d)}
 function addDays(s,n){var d=new Date(s+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return dstr(d.getUTCFullYear(),d.getUTCMonth()+1,d.getUTCDate())}
+/* ---- dificultad de las preguntas generadas ---- */
+var CUR_DF='any',CUR_NEED=null,CUR_TOTAL=0;
+function rawCase(q){var ok=(q.o[q.c]||''),txt=q.q.replace(/<[^>]+>/g,' '),sc=0;
+ var code=ok.indexOf('<code>')===0;
+ if(code){sc+=1;if(/<br>/.test(ok))sc+=1;var t=ok.replace(/<[^>]+>/g,' ');if(/JOIN|HAVING|UNION|GROUP BY|NOT IN|FETCH FIRST|IN \(SELECT|SUM\(|AVG\(|MAX\(|DISTINCT|access-list|encapsulation|mdadm|lvextend|crontab|helper-address|overload/i.test(t))sc+=1;if(t.length>110)sc+=1}
+ else{var nums=q.o.filter(function(x){return /^[-−]?[\d.,]+\s*[A-Za-z%/ ]{0,6}$/.test(x.trim())||/^\d+(\.\d+){3}/.test(x.trim())||/^[-−]?\d+ a /.test(x)}).length;if(nums>=3){sc+=1;if(/subred|máscara|CIDR|VLSM|hosts|direcci[oó]n de (red|broadcast)|RAID|capacidad|disponibilidad|ancho de banda|kVA|SAI|potencia/i.test(txt))sc+=1}}
+ if(txt.length>150)sc+=1;if(/\b(NO|EXCEPTO|incorrecta|falsa)\b/.test(txt)||/\b(no es|excepto|salvo)\b/i.test(txt))sc+=1;
+ var avg=q.o.reduce(function(a,x){return a+x.length},0)/q.o.length;if(!code&&avg>45)sc+=1;
+ return sc}
+var CUT=[0,1];
+function lvlCase(q){var sc=rawCase(q);return sc<=CUT[0]?1:sc<=CUT[1]?2:3}
+function tagLv(a){a.forEach(function(q){q.df=lvlCase(q)});return a}
 function chooseMix(fixed,dyn,total){ // mezcla de conceptuales (fixed) y calculadas (dyn), siempre 'total'
-  var nd=Math.min(dyn.length,total-Math.min(fixed.length,6)),nf=total-nd,F=shuf(fixed),D=shuf(dyn),out=F.slice(0,nf).concat(D.slice(0,nd));
+  if(CUR_TOTAL)total=CUR_TOTAL;
+  tagLv(fixed);tagLv(dyn);
+  var nd=Math.min(dyn.length,total-Math.min(fixed.length,Math.round(total*.3))),nf=total-nd,F=shuf(fixed),D=shuf(dyn),out;
+  if(CUR_NEED){ // cupos por nivel (f/m/d) y por clase (conceptual/calculada)
+    var need=CUR_NEED.slice(),cl={f:nf,d:nd},pool=F.map(function(q){return [q,'f']}).concat(D.map(function(q){return [q,'d']})),pick1=[],left=[];
+    pool=shuf(pool);pool.forEach(function(x){var l=x[0].df-1;if(need[l]>0&&cl[x[1]]>0){pick1.push(x[0]);need[l]--;cl[x[1]]--}else left.push(x)});
+    left.forEach(function(x){if(pick1.length<total&&cl[x[1]]>0){pick1.push(x[0]);cl[x[1]]--}});
+    left.forEach(function(x){if(pick1.length<total&&pick1.indexOf(x[0])<0)pick1.push(x[0])});
+    return pick1.slice(0,total)}
+  out=F.slice(0,nf).concat(D.slice(0,nd));
   var rest=F.slice(nf).concat(D.slice(nd));while(out.length<total&&rest.length)out.push(rest.shift());return shuf(out)}
 function hrs(n){return n+(n===1?' hora':' horas')}
 function tbl(name,cols,rows,pk,fk){return {name:name,cols:cols,rows:rows,pk:pk||[],fk:fk||{}}}
@@ -512,10 +533,21 @@ var II_FIX=[
 function genII(n){var pool=shuf(II_DYN.map(function(f){return {f:f,d:1}}).concat(II_FIX.map(function(f){return {f:f,d:0}}))),out=[],nd=0,i;
  for(i=0;i<pool.length&&out.length<n;i++){var x=pool[i];if(x.d&&nd>=3)continue;try{var q=x.f();q.b2=1;out.push(q);if(x.d)nd++}catch(e){}}
  return out}
-function withII(r){if(!r)return r;var k=Math.min(II_N,r.qs.length-4),ii=genII(k),keep=shuf(r.qs.map(function(_,i){return i})).slice(0,r.qs.length-ii.length).sort(function(a,b){return a-b}),qs=keep.map(function(i){return r.qs[i]});
- r.qs=shuf(qs.concat(ii));r.blocks=r.b===3?'II + III':'II + IV';r.nII=ii.length;return r}
+function withII(r,ii,m){if(!r)return r;var qs=r.qs.concat(ii);
+ r.qs=(m&&m!=='any'&&root.DIFF)?arrangeQ(qs,m):shuf(qs);r.blocks=r.b===3?'II + III':'II + IV';r.nII=ii.length;return r}
+function arrangeQ(qs,m){var lv=[[],[],[]];qs.forEach(function(q){lv[(q.df||2)-1].push(q)});return root.DIFF.arrange(lv.map(shuf),m)}
 var GEN={prestamos:genPrestamos,pedidos:genPedidos,desarrollo:genDesarrollo,red:genRed,servidores:genServidores,cpd:genCPD};
 var INFO=[{id:'desarrollo',b:3,t:'Desarrollo: Java/Spring, REST y Oracle (estilo examen oficial)',db:1},{id:'prestamos',b:3,t:'Base de datos: préstamos de biblioteca',db:1},{id:'pedidos',b:3,t:'Base de datos y programación: tienda online',db:1},{id:'cpd',b:4,t:'CPD: Windows Server, Linux, red y seguridad (estilo examen oficial)'},{id:'red',b:4,t:'Red de una delegación (VLSM)'},{id:'servidores',b:4,t:'Sala de servidores (RAID y copias)'}];
-function gen(b,id){var c=INFO.filter(function(x){return x.b==b&&(!id||x.id===id)}),t=pick(c).id,r=null,n=0;while(!r&&n++<80){try{r=withII(GEN[t]())}catch(e){r=null}}return r}
-root.CASOS={gen:gen,info:INFO};
+function gen1(b,id,m){var c=INFO.filter(function(x){return x.b==b&&(!id||x.id===id)}),t=pick(c).id,r=null,n=0;
+ while(!r&&n++<80){try{var ii=tagLv(genII(Math.min(II_N,16)));CUR_DF=m;CUR_NEED=null;CUR_TOTAL=20-ii.length;
+   if(m!=='any'){var want=root.DIFF.counts(20,m,[20,20,20],true),have=[0,0,0];ii.forEach(function(q){have[q.df-1]++});CUR_NEED=[Math.max(0,want[0]-have[0]),Math.max(0,want[1]-have[1]),Math.max(0,want[2]-have[2])];
+     var tot=CUR_NEED[0]+CUR_NEED[1]+CUR_NEED[2],ex=tot-(20-ii.length);for(var z=0;ex>0&&z<30;z++){var l=z%3;if(CUR_NEED[l]>0){CUR_NEED[l]--;ex--}}for(z=0;ex<0&&z<30;z++){CUR_NEED[[1,0,2][z%3]]++;ex++}}
+   var r0=GEN[t]();CUR_NEED=null;CUR_TOTAL=0;CUR_DF='any';r=withII(r0,ii,m)}catch(e){CUR_NEED=null;CUR_TOTAL=0;r=null}}
+ return r}
+/* con dificultad: se generan varios casos y se queda el que mejor encaja con el reparto pedido */
+function gen(b,id,opt){var m=(opt&&opt.df)||'any';if(!root.DIFF||m==='any')return gen1(b,id,'any');
+ var want=root.DIFF.counts(20,m,[20,20,20],true),best=null,bd=1e9,k,c=INFO.filter(function(x){return x.b==b&&(!id||x.id===id)}),fixed=id||pick(c).id;
+ for(k=0;k<14;k++){var r=gen1(b,fixed,m);if(!r)continue;var h=[0,0,0];r.qs.forEach(function(q){h[q.df-1]++});var d=Math.abs(h[0]-want[0])+Math.abs(h[1]-want[1])+Math.abs(h[2]-want[2]);if(d<bd){bd=d;best=r;if(d===0)break}}
+ return best}
+root.CASOS={gen:gen,info:INFO,raw:rawCase};
 })(typeof window!=='undefined'?window:globalThis);

@@ -679,3 +679,8 @@ html.embed .fl .fr{flex-wrap:nowrap}
 html.embed #app>section:nth-of-type(n){order:5}
 html.embed .lgo,html.embed .side,html.embed footer{display:none!important}
 html.embed #app>.rq{order:1}html.embed #app>.fl{order:2}
+/* etiqueta de dificultad */
+i.df{font-style:normal;font-size:.72rem;font-weight:600;padding:.08rem .5rem;border-radius:999px;border:1px solid;white-space:nowrap;margin-left:.2rem}
+i.df1{color:#16a34a;border-color:rgba(22,163,74,.5);background:rgba(22,163,74,.12)}
+i.df2{color:#ca8a04;border-color:rgba(202,138,4,.5);background:rgba(202,138,4,.12)}
+i.df3{color:#dc2626;border-color:rgba(220,38,38,.5);background:rgba(220,38,38,.12)}
