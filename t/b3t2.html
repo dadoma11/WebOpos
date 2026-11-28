@@ -237,6 +237,7 @@
 <tr><td><b>Heap Sort</b></td><td>Construir un <b>montículo (heap)</b> y extraer sucesivamente el <b>máximo</b></td><td><b>O(n log n)</b></td></tr>
 </table></div>
 <h3>7.3 Árboles binarios</h3>
+<figure class="fig"><svg viewBox="0 0 300 190" role="img" aria-label="Árbol binario con raíz A" style="max-width:300px;width:100%;height:auto"><line x1="150" y1="30" x2="90" y2="95" stroke="var(--mu)" stroke-width="2"/><line x1="150" y1="30" x2="210" y2="95" stroke="var(--mu)" stroke-width="2"/><line x1="90" y1="95" x2="50" y2="160" stroke="var(--mu)" stroke-width="2"/><line x1="90" y1="95" x2="130" y2="160" stroke="var(--mu)" stroke-width="2"/><line x1="210" y1="95" x2="250" y2="160" stroke="var(--mu)" stroke-width="2"/><circle cx="150" cy="30" r="19" fill="var(--card)" stroke="var(--ac)" stroke-width="2"/><text x="150" y="30" text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="700" fill="var(--fg)">A</text><circle cx="90" cy="95" r="19" fill="var(--card)" stroke="var(--ac)" stroke-width="2"/><text x="90" y="95" text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="700" fill="var(--fg)">B</text><circle cx="210" cy="95" r="19" fill="var(--card)" stroke="var(--ac)" stroke-width="2"/><text x="210" y="95" text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="700" fill="var(--fg)">C</text><circle cx="50" cy="160" r="19" fill="var(--card)" stroke="var(--ac)" stroke-width="2"/><text x="50" y="160" text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="700" fill="var(--fg)">D</text><circle cx="130" cy="160" r="19" fill="var(--card)" stroke="var(--ac)" stroke-width="2"/><text x="130" y="160" text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="700" fill="var(--fg)">E</text><circle cx="250" cy="160" r="19" fill="var(--card)" stroke="var(--ac)" stroke-width="2"/><text x="250" y="160" text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="700" fill="var(--fg)">F</text></svg><figcaption><b>Árbol de ejemplo</b>: raíz <b>A</b>; B y C hijos de A; D y E hijos de B; F hijo derecho de C. <b>Preorden</b> A-B-D-E-C-F · <b>Inorden</b> D-B-E-A-C-F · <b>Postorden</b> D-E-B-F-C-A.</figcaption></figure>
 <ul>
 <li><b>Estructura jerárquica dinámica no lineal</b>; cada nodo tiene <b>como máximo dos hijos</b> (subárbol izquierdo y derecho). Recorridos: <b>en profundidad (DFS)</b>: preorden, inorden, postorden; <b>en amplitud (BFS)</b>: por niveles <b>usando una cola</b>.</li>
 <li><b>Grado del árbol</b> = máximo de hijos por nodo (en un binario, <b>2</b>). No confundir con <b>altura del árbol</b> (niveles hasta la hoja más profunda) ni <b>grado de un nodo</b> (hijos de ese nodo).</li>
@@ -248,7 +249,7 @@
 </table></div>
 <div class="box E"><div class="t">EXAMEN</div>
 <p><b>Recorridos del árbol de ejemplo</b></p>
-<p>Árbol: A raíz; hijos B y C; B con hijos D y E; C con hijo derecho F. <b>Preorden</b>: A, B, D, E, C, F · <b>Inorden</b>: D, B, E, A, C, F · <b>Postorden</b>: D, E, B, F, C, A.</p>
+<p>Árbol (ver imagen): A raíz; hijos B y C; B con hijos D y E; C con hijo derecho F. <b>Preorden</b>: A, B, D, E, C, F · <b>Inorden</b>: D, B, E, A, C, F · <b>Postorden</b>: D, E, B, F, C, A.</p>
 </div>
 <h2 id="s7">8. Estructura de un programa</h2>
 <div class="tw"><table><tr><th>Parte</th><th>Contenido</th></tr>
